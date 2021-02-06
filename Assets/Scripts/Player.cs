@@ -13,8 +13,8 @@ public class Player : MonoBehaviour
     private State m_State = default;
     [SerializeField]
     private GameObject m_ViewObject = default;
-
-    //private CharacterController m_CharacterController = default;
+    [SerializeField]
+    private Animator m_Animator = default;
 
     public enum State
     {
@@ -22,6 +22,11 @@ public class Player : MonoBehaviour
         IDEL,//立ち状態
         WALKING,//歩き
         MINIGAME,//ミニゲーム
+    }
+
+    public bool IsWalking
+    {
+        get { return Input.GetAxis("Horizontal") != 0; }
     }
 
     // Start is called before the first frame update
@@ -44,8 +49,6 @@ public class Player : MonoBehaviour
         
         //横移動
         transform.position = transform.position + vel;
-        //m_CharacterController.SimpleMove(vel);
-        //m_CharacterController.Move(vel);
 
         //移動する向きに見た目を回転
         if (moveX != 0)
@@ -57,9 +60,29 @@ public class Player : MonoBehaviour
 
     }
 
-    public void ChangeState(State stete)
+    public void ChangeState(State state)
     {
+        m_State = state;
+        if (m_State == State.FREEZE)
+        {
 
+        }
+        else if (m_State == State.IDEL)
+        {
+            m_Animator.SetBool("IsWalking", false);
+        }
+        else if (m_State == State.WALKING)
+        {
+            m_Animator.SetBool("IsWalking", true);
+        }
+        else if (m_State == State.MINIGAME)
+        {
+
+        }
+        else
+        {
+            Debug.LogWarning("対応できていない状態です");
+        }
     }
 
     private void UpdateState()
@@ -70,10 +93,13 @@ public class Player : MonoBehaviour
         }
         else if (m_State == State.IDEL)
         {
-            Move();
+            if (IsWalking)
+                ChangeState(State.WALKING);
         }
         else if (m_State == State.WALKING)
         {
+            if (!IsWalking)
+                ChangeState(State.IDEL);
             Move();
         }
         else if (m_State == State.MINIGAME)
@@ -82,7 +108,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("対応できていない状態が存在します");
+            Debug.LogWarning("対応できていない状態です");
         }
     }
 
