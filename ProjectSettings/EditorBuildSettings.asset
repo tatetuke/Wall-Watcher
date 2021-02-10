@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleMainScene.unity
     guid: d6cad0a6e2090fd4fafea51493f07c3a
+  - enabled: 1
+    path: Assets/Scenes/MainMap/MainMap3_CircleWay.unity
+    guid: 795461e4cb62b4744a4b245e1118d623
+  - enabled: 1
+    path: Assets/Scenes/MainMap/MainMap3_Room1.unity
+    guid: fb6c1edff146f3246ba5587c2f6f2039
   m_configObjects: {}
