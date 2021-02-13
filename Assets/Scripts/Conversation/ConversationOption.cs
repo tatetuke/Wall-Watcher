@@ -1,0 +1,17 @@
+using UnityEngine;
+
+namespace RPGM.Gameplay
+{
+    /// <summary>
+    /// A choice in a conversation script.
+    /// ëIëéà
+    /// </summary>
+    [System.Serializable]
+    public struct ConversationOption
+    {
+        public string text;//ÇÕÇ¢ÅEÇ¢Ç¢Ç¶Ç»Ç«
+        public AudioClip audio;
+        public string targetId;
+        public bool enabled;
+    }
+}
