@@ -20,4 +20,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMap/MainMap3_Room1.unity
     guid: fb6c1edff146f3246ba5587c2f6f2039
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: ec008b25c20bf2a468961925f1143198,
+      type: 2}

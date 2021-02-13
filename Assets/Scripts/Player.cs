@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
     private GameObject m_ViewObject = default;
     [SerializeField]
     private Animator m_Animator = default;
+    [SerializeField]
+    private Rigidbody2D m_Rigidbody2D = default;
 
     public enum State
     {
@@ -48,7 +50,8 @@ public class Player : MonoBehaviour
         Vector3 vel = new Vector3(moveX, 0, 0);
         
         //横移動
-        transform.position = transform.position + vel;
+        //transform.position = transform.position + vel;
+        //m_Rigidbody2D.AddForce
 
         //移動する向きに見た目を回転
         if (moveX != 0)
