@@ -9,7 +9,7 @@ namespace RPGM.Gameplay
     /// </summary>
     public class NPCController : MonoBehaviour
     {
-        public Conversations[] conversations;
+        public ConversationData[] convesations;
 
         //Quest activeQuest = null;
 
@@ -22,6 +22,14 @@ namespace RPGM.Gameplay
         //    quests = gameObject.GetComponentsInChildren<Quest>();
         //}
 
+        void OnTriggerStay2D(Collider2D other)
+        {
+            if (other.gameObject.tag == "Player")
+            {
+                Debug.Log("NPCÇ∆ê⁄ãﬂ!");
+            }
+
+        }
         public void OnCollisionEnter2D(Collision2D collision)
         {
             //var c = GetConversation();

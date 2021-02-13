@@ -18,7 +18,19 @@ MonoBehaviour:
     targetID: 1
     text: aaa
     audio: {fileID: 0}
-    options: []
+    options:
+    - text: 
+      audio: {fileID: 0}
+      targetId: 0
+      enabled: 0
+    - text: 
+      audio: {fileID: 0}
+      targetId: 0
+      enabled: 0
+    - text: 
+      audio: {fileID: 0}
+      targetId: 0
+      enabled: 0
     eventName: 
   - type: 0
     id: 1

@@ -1071,7 +1071,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -1149,7 +1149,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1319213721
 MonoBehaviour:
@@ -1163,21 +1163,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee225730a2b3074a8dc2c6326b49d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  conversations:
-  - type: 0
-    id: A1
-    targetID: A2
-    text: HelloWorld!
-    audio: {fileID: 0}
-    options: []
-    eventName: 
-  - type: 0
-    id: A1
-    targetID: A2
-    text: HelloWorld!
-    audio: {fileID: 0}
-    options: []
-    eventName: 
+  convesations:
+  - {fileID: 11400000, guid: a7b9c01bc5174284ab1517bff496a756, type: 2}
+  - {fileID: 11400000, guid: b8047ede55487a94bbff42b96bce2a92, type: 2}
 --- !u!4 &1459766886 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6626503895012448115, guid: 1b80aed50585236448d951105186f9a2,
@@ -1292,6 +1280,33 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1596206011 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6626503895012448112, guid: 1b80aed50585236448d951105186f9a2,
+    type: 3}
+  m_PrefabInstance: {fileID: 6626503896337994005}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &1596206012
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1596206011}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1788499311
 GameObject:
   m_ObjectHideFlags: 0
@@ -1481,7 +1496,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2086595833
 GameObject:
