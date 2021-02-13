@@ -11,14 +11,20 @@ namespace RPGM.Gameplay
     {
         [SerializeField] Text TextBox;
         public ConversationData[] ConversationsList;
-        Conversations CurrentConversation;
+        private Conversations CurrentConversation;
         string id;
+        string FirstText;
+        private bool IsTalk=false;
         private void Start()
         {
+
             if (ConversationsList.Length == 0) return ;
-            id=ConversationsList[0].GetFirst();
+            FirstText = TextBox.text;
+            id =ConversationsList[0].GetFirst();
             CurrentConversation = ConversationsList[0].Get(id);
         }
+
+
         //Quest activeQuest = null;
 
         //Quest[] quests;
@@ -30,20 +36,36 @@ namespace RPGM.Gameplay
         //    quests = gameObject.GetComponentsInChildren<Quest>();
         //}
 
-        void OnTriggerStay2D(Collider2D other)
+        private void Update()
+        {
+            if(IsTalk)Texting();
+        }
+
+
+        private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.gameObject.tag == "Player")
             {
+                IsTalk = true;
                 Debug.Log("NPCと接近!");
-                Texting();
 
             }
             
         }
-        private void OnCollisionExit(Collision collision)
+        private void OnTriggerExit2D(Collider2D collision)
         {
-            Debug.Log("NPCと離れた!");
+            if (collision.gameObject.tag == "Player")
+            {
+
+                IsTalk = false;
+                id = ConversationsList[0].GetFirst();
+                CurrentConversation = ConversationsList[0].Get(id);
+                //元からテキストボックスに入力されていた文字を再度表示
+                TextBox.text = FirstText;
+                Debug.Log("NPCと離れた!");
+            }
         }
+
 
         /// <summary>
         /// 文章を表示します。
@@ -55,6 +77,7 @@ namespace RPGM.Gameplay
             TextBox.text = CurrentConversation.text;
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                Debug.Log("スペースキーが押されました");
                 id = CurrentConversation.targetID;
                 CurrentConversation = ConversationsList[0].Get(id);
 
