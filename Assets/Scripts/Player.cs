@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
         Vector3 vel = new Vector3(moveX, 0, 0);
         
         //横移動
-        //transform.position = transform.position + vel;
+        transform.position = transform.position + vel;
         //m_Rigidbody2D.AddForce
 
         //移動する向きに見た目を回転

@@ -18,7 +18,15 @@ MonoBehaviour:
     targetID: TOKUGAWA
     text: "\u3053\u3053\u3067\u4E00\u53E5"
     audio: {fileID: 0}
-    options: []
+    options:
+    - text: 
+      audio: {fileID: 0}
+      targetId: HAIKU
+      enabled: 0
+    - text: 
+      audio: {fileID: 0}
+      targetId: HAIKU
+      enabled: 0
     eventName: 
   - type: 0
     id: TOKUGAWA
@@ -36,15 +44,8 @@ MonoBehaviour:
     eventName: 
   - type: 0
     id: 3
-    targetID: END
+    targetID: 3
     text: "\u30DB\u30C8\u30C8\u30AE\u30B9"
-    audio: {fileID: 0}
-    options: []
-    eventName: 
-  - type: 0
-    id: END
-    targetID: 
-    text: 
     audio: {fileID: 0}
     options: []
     eventName: 
