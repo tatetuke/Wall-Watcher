@@ -40,7 +40,10 @@ namespace RPGM.Gameplay
             }
             
         }
-
+        private void OnCollisionExit(Collision collision)
+        {
+            Debug.Log("NPCÇ∆ó£ÇÍÇΩ!");
+        }
 
         /// <summary>
         /// ï∂èÕÇï\é¶ÇµÇ‹Ç∑ÅB
@@ -52,7 +55,6 @@ namespace RPGM.Gameplay
             TextBox.text = CurrentConversation.text;
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                ConversationsList[0].Delete(id);
                 id = CurrentConversation.targetID;
                 CurrentConversation = ConversationsList[0].Get(id);
 
