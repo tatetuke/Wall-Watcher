@@ -1,7 +1,7 @@
 using RPGM.Core;
 using RPGM.Gameplay;
 using UnityEngine;
-
+using UnityEngine.UI;
 namespace RPGM.Gameplay
 {
     /// <summary>
@@ -9,8 +9,16 @@ namespace RPGM.Gameplay
     /// </summary>
     public class NPCController : MonoBehaviour
     {
-        public ConversationData[] convesations;
-
+        [SerializeField] Text TextBox;
+        public ConversationData[] ConversationsList;
+        Conversations CurrentConversation;
+        string id;
+        private void Start()
+        {
+            if (ConversationsList.Length == 0) return ;
+            id=ConversationsList[0].GetFirst();
+            CurrentConversation = ConversationsList[0].Get(id);
+        }
         //Quest activeQuest = null;
 
         //Quest[] quests;
@@ -27,13 +35,47 @@ namespace RPGM.Gameplay
             if (other.gameObject.tag == "Player")
             {
                 Debug.Log("NPCと接近!");
-            }
+                Texting();
 
+            }
+            
         }
+        private void OnCollisionExit(Collision collision)
+        {
+            Debug.Log("NPCと離れた!");
+        }
+
+        /// <summary>
+        /// 文章を表示します。
+        /// スペースキーが押されたときに文章を送ります。
+        /// </summary>
+        private void Texting()
+        {
+            if (ConversationsList.Length == 0) return;
+            TextBox.text = CurrentConversation.text;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                id = CurrentConversation.targetID;
+                CurrentConversation = ConversationsList[0].Get(id);
+
+            }
+        }
+
+        // private string Texting(Conversations CurrentConversation)
+        //{
+        //    if (Input.GetKeyDown(KeyCode.Space))
+        //    {
+        //        return CurrentConversation.targetID;
+
+        //    }
+        //    return CurrentConversation.id;
+        //}
         public void OnCollisionEnter2D(Collision2D collision)
         {
             //var c = GetConversation();
             Debug.Log("NPCと接近!");
+
+
             //if (c != null)
             //{
             //    var ev = Schedule.Add<Events.ShowConversation>();
