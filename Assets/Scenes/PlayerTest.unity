@@ -1504,21 +1504,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2340973621617953646, guid: 57238a586d1d5464ebbd1ca8dbb51423,
-        type: 3}
-      propertyPath: m_LookaheadTime
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2340973621617953646, guid: 57238a586d1d5464ebbd1ca8dbb51423,
-        type: 3}
-      propertyPath: m_LookaheadIgnoreY
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2340973621617953646, guid: 57238a586d1d5464ebbd1ca8dbb51423,
-        type: 3}
-      propertyPath: m_LookaheadSmoothing
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2340973621884196719, guid: 57238a586d1d5464ebbd1ca8dbb51423,
         type: 3}
       propertyPath: m_CompositePaths.m_Paths.Array.data[0].Array.data[0].x
