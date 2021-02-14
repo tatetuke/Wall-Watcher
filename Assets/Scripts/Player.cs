@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -46,19 +46,21 @@ public class Player : MonoBehaviour
         UpdateState();
     }
 
-    float t = 0;
     private void Move()
     {
+        //横移動
+        //座標を直接いじる
         //float moveX = Input.GetAxis("Horizontal") * m_WalkSpeed * Time.deltaTime;
         //Vector3 vel = new Vector3(moveX, 0, 0);
         //transform.position = transform.position + vel;
 
-        //横移動
+        //速度を直接いじる
         //float moveX = Input.GetAxis("Horizontal") * m_WalkSpeed;
         //Vector3 vel = m_Rigidbody2D.velocity;
         //vel.x = moveX;
         //m_Rigidbody2D.velocity = vel;
 
+        //力を加える
         float moveX = Input.GetAxis("Horizontal") * m_WalkForce;
         float moveForceMultiplier = 10;
         Vector3 vel = new Vector3(moveForceMultiplier *( moveX - m_Rigidbody2D.velocity.x), 0, 0);

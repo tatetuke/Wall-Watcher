@@ -21,5 +21,5 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMap/MainMap3_Room1.unity
     guid: fb6c1edff146f3246ba5587c2f6f2039
   m_configObjects:
-    com.unity.addressableassets: {fileID: 11400000, guid: ec008b25c20bf2a468961925f1143198,
+    com.unity.addressableassets: {fileID: 11400000, guid: 4825a4e1bc6314a4b8e0e0a366b6b1b4,
       type: 2}
