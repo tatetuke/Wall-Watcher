@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6626503895012448115}
   - component: {fileID: 6626503895012448114}
+  - component: {fileID: 1975863534}
   - component: {fileID: 6626503895012448124}
   - component: {fileID: 6626503895012448125}
   - component: {fileID: 341799687}
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 6626503895012448112}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1.68, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6626503895902429367}
   m_Father: {fileID: 0}
@@ -48,8 +49,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_WalkSpeed: 8
+  m_WalkForce: 10
   m_State: 0
   m_ViewObject: {fileID: 6626503895902429364}
+  m_Rigidbody2D: {fileID: 341799687}
+  m_AnimationModule: {fileID: 1975863534}
+--- !u!114 &1975863534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6626503895012448112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b34968397b707ff4aa0b7ef1e045b101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_State: 0
   m_Animator: {fileID: 6626503895012448124}
 --- !u!95 &6626503895012448124
 Animator:
@@ -101,7 +118,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
