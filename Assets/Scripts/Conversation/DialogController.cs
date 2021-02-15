@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class DialogController
 {
     // ボタンのテキストを選択肢のテキストに書き換える
-    public void SetText(Text button, string newtext)
+    public void SetText(Text option, string newtext)
     {
-        button.text = newtext;
+        option.text = newtext;
     }
 
     public void Display(GameObject option)

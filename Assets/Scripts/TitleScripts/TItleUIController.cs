@@ -62,7 +62,9 @@ public class TItleUIController : MonoBehaviour
     /// </summary>
     private void ChangeColorDown()
     {
+        //黒
         TitleText[m_Select].color = new Color32(0, 0, 0, 100);
+        //無色透明
         TitleImage[m_Select].color = new Color32(255, 255, 255, 0);
     }
     /// <summary>
@@ -70,7 +72,9 @@ public class TItleUIController : MonoBehaviour
     /// </summary>
     private void ChangeColorUp()
     {
+        //黒
         TitleText[m_Select].color = new Color32(0, 0, 0, 255);
+        //元画像のまま
         TitleImage[m_Select].color = new Color32(255, 255, 255, 255);
     }
 }

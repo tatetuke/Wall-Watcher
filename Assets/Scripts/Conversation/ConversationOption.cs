@@ -13,5 +13,6 @@ namespace RPGM.Gameplay
         public AudioClip audio;
         public string targetId;
         public bool enabled;
+
     }
 }
