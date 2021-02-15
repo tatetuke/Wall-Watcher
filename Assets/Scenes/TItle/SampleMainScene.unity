@@ -529,7 +529,7 @@ MonoBehaviour:
   Options:
   - {fileID: 1392045553}
   - {fileID: 672282485}
-  Texts:
+  OptionTexts:
   - {fileID: 1392045554}
   - {fileID: 672282486}
 --- !u!222 &696582878
