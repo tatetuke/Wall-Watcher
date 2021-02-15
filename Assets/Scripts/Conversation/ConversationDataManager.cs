@@ -8,7 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using RPGM.Core;
 using RPGM.Gameplay;
 
-public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataManager> ,ILoadableAsync
+public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataManager>, ILoadableAsync
 {
     [SerializeField] private AssetLabelReference _labelReference;
     [SerializeField] Text TextBox;
@@ -39,7 +39,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     }
 
     AsyncOperationHandle<IList<ConversationData>> m_handle;
-    public Dictionary<string,ConversationData> m_data = new Dictionary<string, ConversationData>();
+    public Dictionary<string, ConversationData> m_data = new Dictionary<string, ConversationData>();
 
     public async Task Load()
     {
@@ -62,7 +62,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         return;
     }
 
-    public ConversationData GetConversation(string ID) 
+    public ConversationData GetConversation(string ID)
     {
         if (!m_data.ContainsKey(ID)) return null;
         return m_data[ID];
@@ -82,13 +82,13 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
     private void Update()
     {
-        
+
 
         if (CanTalk && IsOptionTalks(CurrentConversation))
         {
             Select();
         }
-        else if ( CanTalk && Input.GetKeyDown(KeyCode.Space))
+        else if (CanTalk && Input.GetKeyDown(KeyCode.Space))
         {
             ProceedTalk();
         }
@@ -115,7 +115,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     {
         if (collision.gameObject.tag == "Player")
         {
-  
+
             CanTalk = false;
             id = CurrentConversationData.GetFirst();
             CurrentConversation = CurrentConversationData.Get(id);
@@ -146,17 +146,17 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         // Branchesからテキストを抽出
         //if (CurrentConversation.options.Count == 0)  // 選択肢がない場合 : 選択肢は隠す
         //{
-            dialogController.Hide(Options[0]);
-            dialogController.Hide(Options[1]);
+        dialogController.Hide(Options[0]);
+        dialogController.Hide(Options[1]);
         //}
         //else                                         // 選択肢がある場合 : 選択肢を表示する
         //{
-           
+
 
 
         //}
 
-       
+
     }
 
 
@@ -194,7 +194,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         }
         if (Input.GetKeyDown("left"))
         {
-            
+
             ChangeColorDown();
 
             SelectNum += CurrentConversation.options.Count;
@@ -233,9 +233,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             Debug.Log("null");
             return false;
         }
-        if (conversations.options.Count == 0) return false; 
+        if (conversations.options.Count == 0) return false;
 
         else return true;
-        
+
     }
 }
