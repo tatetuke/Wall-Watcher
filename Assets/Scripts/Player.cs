@@ -128,4 +128,9 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void PlayFootStepSE()
+    {
+        SEManager.Instance.Play(SEManager.SEType.FOOTSTEPS);
+    }
+
 }
