@@ -14,39 +14,68 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   items:
   - type: 0
-    id: HAIKU
-    targetID: TOKUGAWA
-    text: "\u3053\u3053\u3067\u4E00\u53E5"
+    id: 0
+    targetID: 1
+    text: 0
     audio: {fileID: 0}
     options:
-    - text: 
+    - text: 1
       audio: {fileID: 0}
-      targetId: HAIKU
+      targetId: 1
       enabled: 0
-    - text: 
+    - text: 2
       audio: {fileID: 0}
-      targetId: HAIKU
+      targetId: 2
       enabled: 0
     eventName: 
   - type: 0
-    id: TOKUGAWA
+    id: 1
     targetID: 2
-    text: "\u9CF4\u304B\u306C\u306A\u3089"
+    text: 1
     audio: {fileID: 0}
     options: []
     eventName: 
   - type: 0
     id: 2
     targetID: 3
-    text: "\u9CF4\u304F\u307E\u3067\u5F85\u3068\u3046"
+    text: 2
     audio: {fileID: 0}
     options: []
     eventName: 
   - type: 0
     id: 3
-    targetID: 3
-    text: "\u30DB\u30C8\u30C8\u30AE\u30B9"
+    targetID: 4
+    text: 3
+    audio: {fileID: 0}
+    options:
+    - text: 0
+      audio: {fileID: 0}
+      targetId: 0
+      enabled: 0
+    - text: 5
+      audio: {fileID: 0}
+      targetId: 4
+      enabled: 0
+    eventName: 
+  - type: 0
+    id: 4
+    targetID: 5
+    text: 4
     audio: {fileID: 0}
     options: []
     eventName: 
-  m_firstConversation: HAIKU
+  - type: 0
+    id: 5
+    targetID: 6
+    text: 5
+    audio: {fileID: 0}
+    options: []
+    eventName: 
+  - type: 0
+    id: 6
+    targetID: 6
+    text: 6
+    audio: {fileID: 0}
+    options: []
+    eventName: 
+  m_firstConversation: 0
