@@ -98,7 +98,7 @@ MonoBehaviour:
   - type: 0
     id: 6
     targetID: 9
-    text: 9
+    text: 6
     audio: {fileID: 0}
     options: []
     eventName: 
