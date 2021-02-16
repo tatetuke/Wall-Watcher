@@ -8,24 +8,27 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using RPGM.Core;
 using RPGM.Gameplay;
 
+/// <summary>
+/// 文章を表示します。
+/// スペースキーが押されたときに文章を送ります。
+/// </summary>
 public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataManager>, ILoadableAsync
 {
     [SerializeField] private AssetLabelReference _labelReference;
     [SerializeField] Text TextBox;
 
+    DialogController dialogController;
+    SelectManager selectManager;
+
     public GameObject[] Options;
     public Text[] OptionTexts;
-
-    private Text ButtonAText, ButtonBText;
-    DialogController dialogController;
-
-    Conversations FirstConversation;
     private int SelectNum;
     private Conversations CurrentConversation = null;
     private ConversationData CurrentConversationData;
-    string id;
-    //string FirstText;
+    string FileId;
+    string Id;
     private bool CanTalk = false;
+
     private void Awake()
     {
         //base.Awake();
@@ -36,6 +39,11 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     {
         SelectNum = 0;
         dialogController = new DialogController();
+        selectManager = new SelectManager(OptionTexts, Color.yellow, Color.black);
+
+        // どの会話セットを使うか指定
+        // TODO : クエストやら進行度やらによってどうやって指定するか
+        FileId = "test";
     }
 
     AsyncOperationHandle<IList<ConversationData>> m_handle;
@@ -53,12 +61,6 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             Debug.Log($"Load Conversation: '{res.name}'");
         }
         Addressables.Release(m_handle);
-        id = "test";
-        //FirstText = TextBox.text;
-        CurrentConversationData = GetConversation(id);
-        id = CurrentConversationData.GetFirst();
-        CurrentConversation = CurrentConversationData.Get(id);
-        FirstConversation = CurrentConversation;
         return;
     }
 
@@ -67,7 +69,6 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         if (!m_data.ContainsKey(ID)) return null;
         return m_data[ID];
     }
-
 
     //Quest activeQuest = null;
 
@@ -80,162 +81,116 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     //    quests = gameObject.GetComponentsInChildren<Quest>();
     //}
 
+
     private void Update()
     {
-
-
-        if (CanTalk && IsOptionTalks(CurrentConversation))
+        if (CanTalk)
         {
-            Select();
-        }
-        else if (CanTalk && Input.GetKeyDown(KeyCode.Space))
-        {
-            ProceedTalk();
-        }
-        //if (!IsOptionTalks(CurrentConversation)&& CanTalk && Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    ProceedTalk();
-        //}
+            // セレクトに関する更新
+            if (IsOptionTalk(CurrentConversation))
+            {
+                if (Input.GetKeyDown("left"))
+                {
+                    selectManager.UpdateLeft(ref SelectNum);
+                }
+                if (Input.GetKeyDown("right"))
+                {
+                    selectManager.UpdateRight(ref SelectNum);
+                }
+            }
 
+            // スペースが押されたら会話を進める
+            if (Input.GetKeyDown("space"))
+            {
+                // CurrentConversationの更新
+                if (IsOptionTalk(CurrentConversation))
+                {
+                    // 選ばれた選択肢の色を元に戻す
+                    selectManager.ChangeColorDown(SelectNum);
+                    // ConversationsのConversationOption型リストのtargetIdをIdとして指定
+                    Id = CurrentConversation.options[SelectNum].targetId;
+                    CurrentConversation = CurrentConversationData.Get(Id);
+                }
+                else
+                {
+                    if (CurrentConversation == null)  // 一番最初だけ例外
+                    {
+                        // FirstConversationをIdとして指定
+                        CurrentConversationData = GetConversation(FileId);
+                        Id = CurrentConversationData.GetFirst();
+                        CurrentConversation = CurrentConversationData.Get(Id);
+                    }
+                    else
+                    {
+                        // ConversationsのtargetIdをIdとして指定
+                        Id = CurrentConversation.targetID;
+                        CurrentConversation = CurrentConversationData.Get(Id);
+                    }
+                }
 
+                // 会話の内容の更新
+                TextBox.text = CurrentConversation.text;
+
+                // 番兵だったら会話を終了し、CurrentConversationを初期化
+                if (CurrentConversation.id == "FINISH")
+                {
+                    CurrentConversation = null;
+                }
+
+                // 選択肢に関する更新
+                if (IsOptionTalk(CurrentConversation))
+                {
+                    // 選択肢を表示する
+                    dialogController.Display(Options[0]);
+                    dialogController.Display(Options[1]);
+                    int itr = 0;
+                    // 選択肢の内容の更新
+                    foreach (var option in CurrentConversation.options)
+                    {
+                        dialogController.SetText(OptionTexts[itr], option.text);
+                        itr++;
+                    }
+
+                    // 初期化 : 左を選択している状態にする
+                    SelectNum = 0;
+                    selectManager.ChangeColorUp(SelectNum);
+                }
+                else
+                {
+                    // 選択肢を隠す
+                    dialogController.Hide(Options[0]);
+                    dialogController.Hide(Options[1]);
+                }
+            }
+        }
     }
 
+
+    private bool IsOptionTalk(Conversations conversations)
+    {
+        if (conversations == null) return false;
+
+        return conversations.options.Count != 0;
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "Player")
         {
             CanTalk = true;
-            Debug.Log("NPCと接近!");
-
         }
-
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-
             CanTalk = false;
-            id = CurrentConversationData.GetFirst();
-            CurrentConversation = CurrentConversationData.Get(id);
-            //元からテキストボックスに入力されていた文字を再度表示
-            //TextBox.text = FirstText;
-            Debug.Log("NPCと離れた!");
+            // MEMO : 以下は初期化だが、会話中プレイヤーを操作できないようにすれば要らない
+            CurrentConversation = null;
+            TextBox.text = "";
+            selectManager.ChangeColorDown(SelectNum);
+            dialogController.Hide(Options[0]);
+            dialogController.Hide(Options[1]);
         }
-    }
-
-
-    /// <summary>
-    /// 文章を表示します。
-    /// スペースキーが押されたときに文章を送ります。
-    /// </summary>
-    private void ProceedTalk()
-    {
-        if (CurrentConversation != FirstConversation)
-        {
-            // CurrentConversationの更新
-            id = CurrentConversation.targetID;
-            CurrentConversation = CurrentConversationData.Get(id);
-        }
-        // TODO : 最後の会話の処理
-
-        // 会話の内容の更新
-        TextBox.text = CurrentConversation.text;
-
-        // Branchesからテキストを抽出
-        //if (CurrentConversation.options.Count == 0)  // 選択肢がない場合 : 選択肢は隠す
-        //{
-        dialogController.Hide(Options[0]);
-        dialogController.Hide(Options[1]);
-        //}
-        //else                                         // 選択肢がある場合 : 選択肢を表示する
-        //{
-
-
-
-        //}
-
-
-    }
-
-
-    /// <summary>
-    /// タイトル画面の選択肢において、テキストとスプライトの色を薄くする関数
-    /// </summary>
-    private void ChangeColorDown()
-    {
-        //黒
-        OptionTexts[SelectNum].color = new Color32(0, 0, 0, 100);
-    }
-    /// <summary>
-    /// タイトル画面の選択肢において、テキストとスプライトの色を濃くする関数
-    /// </summary>
-    private void ChangeColorUp()
-    {
-        //黒
-        //OptionTexts[SelectNum].color = new Color32(255, 0, 0, 255);
-        OptionTexts[SelectNum].color = Color.yellow;
-    }
-
-    private void Select()
-    {
-
-        TextBox.text = CurrentConversation.text;
-        dialogController.Display(Options[0]);
-        dialogController.Display(Options[1]);
-        int itr = 0;
-        // 選択肢の内容の更新
-        foreach (var option in CurrentConversation.options)
-        {
-            Debug.Log(option.text);
-            dialogController.SetText(OptionTexts[itr], option.text);
-            itr++;
-        }
-        if (Input.GetKeyDown("left"))
-        {
-
-            ChangeColorDown();
-
-            SelectNum += CurrentConversation.options.Count;
-            SelectNum--;
-            SelectNum %= CurrentConversation.options.Count;
-
-            ChangeColorUp();
-
-
-        }
-        if (Input.GetKeyDown("right"))
-        {
-            ChangeColorDown();
-
-            SelectNum++;
-            SelectNum %= CurrentConversation.options.Count;
-
-            ChangeColorUp();
-
-        }
-
-
-        if (Input.GetKeyDown("space"))
-        {
-            // CurrentConversationの更新
-            id = CurrentConversation.options[SelectNum].targetId;
-            CurrentConversation = CurrentConversationData.Get(id);
-            SelectNum = 0;
-        }
-    }
-
-    private bool IsOptionTalks(Conversations conversations)
-    {
-        if (conversations == null)
-        {
-            Debug.Log("null");
-            return false;
-        }
-        if (conversations.options.Count == 0) return false;
-
-        else return true;
-
     }
 }

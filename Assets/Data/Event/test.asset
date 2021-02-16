@@ -30,7 +30,7 @@ MonoBehaviour:
     eventName: 
   - type: 0
     id: 1
-    targetID: 2
+    targetID: 0
     text: 1
     audio: {fileID: 0}
     options: []
@@ -40,7 +40,15 @@ MonoBehaviour:
     targetID: 3
     text: 2
     audio: {fileID: 0}
-    options: []
+    options:
+    - text: 3
+      audio: {fileID: 0}
+      targetId: 3
+      enabled: 0
+    - text: 4
+      audio: {fileID: 0}
+      targetId: 4
+      enabled: 0
     eventName: 
   - type: 0
     id: 3
@@ -52,9 +60,9 @@ MonoBehaviour:
       audio: {fileID: 0}
       targetId: 0
       enabled: 0
-    - text: 5
+    - text: 1
       audio: {fileID: 0}
-      targetId: 4
+      targetId: 1
       enabled: 0
     eventName: 
   - type: 0
@@ -62,19 +70,71 @@ MonoBehaviour:
     targetID: 5
     text: 4
     audio: {fileID: 0}
-    options: []
+    options:
+    - text: 5
+      audio: {fileID: 0}
+      targetId: 5
+      enabled: 0
+    - text: 6
+      audio: {fileID: 0}
+      targetId: 6
+      enabled: 0
     eventName: 
   - type: 0
     id: 5
     targetID: 6
     text: 5
     audio: {fileID: 0}
-    options: []
+    options:
+    - text: 7
+      audio: {fileID: 0}
+      targetId: 7
+      enabled: 0
+    - text: 8
+      audio: {fileID: 0}
+      targetId: 8
+      enabled: 0
     eventName: 
   - type: 0
     id: 6
-    targetID: 6
-    text: 6
+    targetID: 9
+    text: 9
+    audio: {fileID: 0}
+    options: []
+    eventName: 
+  - type: 0
+    id: 7
+    targetID: 8
+    text: 7
+    audio: {fileID: 0}
+    options: []
+    eventName: 
+  - type: 0
+    id: 8
+    targetID: 9
+    text: 8
+    audio: {fileID: 0}
+    options:
+    - text: 3
+      audio: {fileID: 0}
+      targetId: 3
+      enabled: 0
+    - text: 5
+      audio: {fileID: 0}
+      targetId: 5
+      enabled: 0
+    eventName: 
+  - type: 0
+    id: 9
+    targetID: FINISH
+    text: 9
+    audio: {fileID: 0}
+    options: []
+    eventName: 
+  - type: 0
+    id: FINISH
+    targetID: FINISH
+    text: "\u4F1A\u8A71\u7D42\u4E86(\u672C\u5F53\u306F\u7A7A\u6587\u5B57\u5217)"
     audio: {fileID: 0}
     options: []
     eventName: 
