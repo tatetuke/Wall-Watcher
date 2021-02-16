@@ -71,6 +71,8 @@ MonoBehaviour:
     m_LabelNames:
     - default
     - test
+    - SE
+    - BGM
   m_SchemaTemplates: []
   m_GroupTemplateObjects: []
   m_InitializationObjects: []
