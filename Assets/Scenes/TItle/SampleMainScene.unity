@@ -524,7 +524,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _labelReference:
-    m_LabelString: test
+    m_LabelString: SubQuest
   TextBox: {fileID: 1276851245}
   Options:
   - {fileID: 1392045553}

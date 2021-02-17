@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5891681e936e3e943bf8fba4ac194268, type: 3}
-  m_Name: test
+  m_Name: SubQuest0
   m_EditorClassIdentifier: 
   items:
   - type: 0
