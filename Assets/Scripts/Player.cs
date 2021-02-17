@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,11 +10,15 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float m_WalkSpeed = 0;
     [SerializeField]
+    private float m_WalkForce = 0;
+    [SerializeField]
     private State m_State = default;
     [SerializeField]
     private GameObject m_ViewObject = default;
     [SerializeField]
-    private Animator m_Animator = default;
+    private Rigidbody2D m_Rigidbody2D = default;
+    [SerializeField]
+    private AnimationModule m_AnimationModule = default;
 
     public enum State
     {
@@ -32,23 +36,35 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_State = State.IDEL;
+        ChangeState(State.IDEL);
         //m_CharacterController = GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
         UpdateState();
     }
 
     private void Move()
     {
-        float moveX = Input.GetAxis("Horizontal") * m_WalkSpeed * Time.deltaTime;
-        Vector3 vel = new Vector3(moveX, 0, 0);
-        
         //横移動
-        transform.position = transform.position + vel;
+        //座標を直接いじる
+        //float moveX = Input.GetAxis("Horizontal") * m_WalkSpeed * Time.deltaTime;
+        //Vector3 vel = new Vector3(moveX, 0, 0);
+        //transform.position = transform.position + vel;
+
+        //速度を直接いじる
+        //float moveX = Input.GetAxis("Horizontal") * m_WalkSpeed;
+        //Vector3 vel = m_Rigidbody2D.velocity;
+        //vel.x = moveX;
+        //m_Rigidbody2D.velocity = vel;
+
+        //力を加える
+        float moveX = Input.GetAxis("Horizontal") * m_WalkForce;
+        float moveForceMultiplier = 10;
+        Vector3 vel = new Vector3(moveForceMultiplier *( moveX - m_Rigidbody2D.velocity.x), 0, 0);
+        m_Rigidbody2D.AddForce(vel);
 
         //移動する向きに見た目を回転
         if (moveX != 0)
@@ -69,11 +85,11 @@ public class Player : MonoBehaviour
         }
         else if (m_State == State.IDEL)
         {
-            m_Animator.SetBool("IsWalking", false);
+            m_AnimationModule.ChangeState(AnimationModule.State.IDEL);
         }
         else if (m_State == State.WALKING)
         {
-            m_Animator.SetBool("IsWalking", true);
+            m_AnimationModule.ChangeState(AnimationModule.State.WALKING);
         }
         else if (m_State == State.MINIGAME)
         {
@@ -110,6 +126,11 @@ public class Player : MonoBehaviour
         {
             Debug.LogWarning("対応できていない状態です");
         }
+    }
+
+    public void PlayFootStepSE()
+    {
+        SEManager.Instance.Play(SEManager.SEType.FOOTSTEPS);
     }
 
 }

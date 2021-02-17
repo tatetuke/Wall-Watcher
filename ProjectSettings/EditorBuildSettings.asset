@@ -9,10 +9,10 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/TItleScene.unity
+    path: Assets/Scenes/TItle/TItleScene.unity
     guid: c11ea4e5ad14f6a4da7bef011b279525
   - enabled: 1
-    path: Assets/Scenes/SampleMainScene.unity
+    path: Assets/Scenes/TItle/SampleMainScene.unity
     guid: d6cad0a6e2090fd4fafea51493f07c3a
   - enabled: 1
     path: Assets/Scenes/MainMap/MainMap3_CircleWay.unity
@@ -20,4 +20,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMap/MainMap3_Room1.unity
     guid: fb6c1edff146f3246ba5587c2f6f2039
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 4825a4e1bc6314a4b8e0e0a366b6b1b4,
+      type: 2}

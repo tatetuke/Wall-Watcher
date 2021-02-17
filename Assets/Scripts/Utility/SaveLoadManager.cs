@@ -11,7 +11,10 @@ using UnityEngine.Events;
 /// </summary>
 sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
 {
-
+    private void Start()
+    {
+        Load();
+    }
     Queue<ISaveable> m_saveables = new Queue<ISaveable>();
     Queue<ILoadable> m_loadables = new Queue<ILoadable>();
     Queue<ISaveableAsync> m_saveablesAsync = new Queue<ISaveableAsync>();
