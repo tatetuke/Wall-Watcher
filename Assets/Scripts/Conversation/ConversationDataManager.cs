@@ -29,6 +29,11 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     string Id;
     private bool CanTalk = false;
 
+    string ConversationDataFolderPath;
+    string[] Files;
+    List<string> ConversationDataList;
+
+
     private void Awake()
     {
         //base.Awake();
@@ -41,9 +46,32 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         dialogController = new DialogController();
         selectManager = new SelectManager(OptionTexts, Color.yellow, Color.black);
 
-        // どの会話セットを使うか指定
-        // TODO : クエストやら進行度やらによってどうやって指定するか
-        FileId = "test";
+
+        /// <summary>
+        /// 指定したフォルダからConversationDataを全て取ってくる
+        /// </summary>
+        List<string> ConversationDataList = new List<string>();
+        // インスペクターのLabel Referenceで指定されたものを用いてPathを取得
+        ConversationDataFolderPath = "Assets/Data/" + _labelReference.labelString;
+        // フォルダ内のすべてのファイル名を取得する
+        Files = System.IO.Directory.GetFiles(@ConversationDataFolderPath, "*");
+        for(int i = 0; i < Files.Length; i++)
+        {
+            // 拡張子名部分を取得
+            string extension= System.IO.Path.GetExtension(Files[i]);
+            if (extension == ".asset")
+            {
+                // 拡張子をのぞいたファイル名部分を取得
+                string filename = System.IO.Path.GetFileNameWithoutExtension(Files[i]);
+                ConversationDataList.Add(filename);
+            }
+        }
+        Debug.Log("ファイル名を出力します");
+        foreach (var output in ConversationDataList) Debug.Log(output);
+        Debug.Log("ファイル名を出力しました");
+
+        // TODO : クエストの進行度によって用いるConversationDataを決める
+        FileId = ConversationDataList[0];
     }
 
     AsyncOperationHandle<IList<ConversationData>> m_handle;
