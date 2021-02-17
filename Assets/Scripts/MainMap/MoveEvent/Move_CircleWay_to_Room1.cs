@@ -9,7 +9,12 @@ public class Move_CircleWay_to_Room1 : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             bool value = Input.GetKey("up");
-            if (value) FadeManager.Instance.LoadLevel("MainMap3_Room1", 1f);
+            if (value)
+            {
+                FadeManager.Instance.LoadLevel("MainMap3_Room1", 1f);
+                GameObject.Find("Player").transform.position = new Vector3(0, 0, 0);
+            }
+
         }
     }
 }
