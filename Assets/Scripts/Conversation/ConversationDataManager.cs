@@ -7,6 +7,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using RPGM.Core;
 using RPGM.Gameplay;
+using TMPro;
 
 /// <summary>
 /// 文章を表示します。
@@ -15,13 +16,14 @@ using RPGM.Gameplay;
 public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataManager>, ILoadableAsync
 {
     [SerializeField] private AssetLabelReference _labelReference;
-    [SerializeField] Text TextBox;
+    [SerializeField] TextMeshProUGUI TextBox;
 
     DialogController dialogController;
     SelectManager selectManager;
 
     public GameObject[] Options;
-    public Text[] OptionTexts;
+    public TextMeshProUGUI[] OptionTexts;
+   // public Text[] OptionTexts;
     private int SelectNum;
     private Conversations CurrentConversation = null;
     private ConversationData CurrentConversationData;
