@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 public class DialogController
 {
     // ボタンのテキストを選択肢のテキストに書き換える
-    public void SetText(Text option, string newtext)
+    public void SetText(TextMeshProUGUI option, string newtext)
     {
         option.text = newtext;
     }
