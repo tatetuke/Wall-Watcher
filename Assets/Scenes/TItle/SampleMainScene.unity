@@ -215,7 +215,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.384612, g: 0.509434, b: 0.3772695, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -651,10 +651,45 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5039402347959731770, guid: 3b1d8160d391d824e9e783e24911fa04,
+        type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5039402347959731770, guid: 3b1d8160d391d824e9e783e24911fa04,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5039402347959731770, guid: 3b1d8160d391d824e9e783e24911fa04,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5039402347959731770, guid: 3b1d8160d391d824e9e783e24911fa04,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5039402347959731770, guid: 3b1d8160d391d824e9e783e24911fa04,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5039402347959731770, guid: 3b1d8160d391d824e9e783e24911fa04,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5039402348683494300, guid: 3b1d8160d391d824e9e783e24911fa04,
         type: 3}
       propertyPath: m_Name
       value: NPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 5039402348683494301, guid: 3b1d8160d391d824e9e783e24911fa04,
+        type: 3}
+      propertyPath: _labelReference.m_LabelString
+      value: SubQuest
       objectReference: {fileID: 0}
     - target: {fileID: 5039402348683494304, guid: 3b1d8160d391d824e9e783e24911fa04,
         type: 3}

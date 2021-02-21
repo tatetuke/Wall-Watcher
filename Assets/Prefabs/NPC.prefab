@@ -590,6 +590,7 @@ GameObject:
   - component: {fileID: 5039402347959731768}
   - component: {fileID: 5039402347959731769}
   - component: {fileID: 5039402347959731770}
+  - component: {fileID: 7371136868678522520}
   m_Layer: 0
   m_Name: TalkText
   m_TagString: Untagged
@@ -736,6 +737,19 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7371136868678522520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5039402347959731767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f75dc27cf541f14d923307248c9b4a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_textUI: {fileID: 5039402347959731770}
 --- !u!1 &5039402348224725649
 GameObject:
   m_ObjectHideFlags: 0
@@ -1227,6 +1241,7 @@ MonoBehaviour:
   _labelReference:
     m_LabelString: test
   TextBox: {fileID: 5039402347959731770}
+  m_typewriter: {fileID: 7371136868678522520}
   Options:
   - {fileID: 5039402347871436770}
   - {fileID: 5039402348565709186}
