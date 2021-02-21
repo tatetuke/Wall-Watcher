@@ -8,7 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using RPGM.Core;
 using RPGM.Gameplay;
 using TMPro;
-
+using KoganeUnityLib;
 /// <summary>
 /// 文章を表示します。
 /// スペースキーが押されたときに文章を送ります。
@@ -20,7 +20,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
     DialogController dialogController;
     SelectManager selectManager;
-
+    public TMP_Typewriter m_typewriter;
     public GameObject[] Options;
     public TextMeshProUGUI[] OptionTexts;
    // public Text[] OptionTexts;
@@ -116,6 +116,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     {
         if (CanTalk)
         {
+           
             // セレクトに関する更新
             if (IsOptionTalk(CurrentConversation))
             {
@@ -161,6 +162,11 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                 // 会話の内容の更新
                 TextBox.text = CurrentConversation.text;
 
+                //テキストを一文字一文字出力する。
+                //Play(テキスト本文,一秒間に送る文字数,文字送り終了時に呼び出されるもの)
+                m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete:()=>Debug.Log("完了"));
+              
+
                 // 番兵だったら会話を終了し、CurrentConversationを初期化
                 if (CurrentConversation.id == "FINISH")
                 {
@@ -192,7 +198,15 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                     dialogController.Hide(Options[1]);
                 }
             }
+            //下キーが押されたら文字送りをスキップして本文を出力する。
+            if (Input.GetKeyDown("down"))
+            {
+                m_typewriter.Skip();
+            }
+
+
         }
+
     }
 
 
