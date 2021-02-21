@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
@@ -83,12 +84,20 @@ sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
         Debug.Log("All Data Loading Finished");
     }
 
+
+    private CancellationTokenSource loadCancellationTokenSource;
+    private CancellationTokenSource saveCancellationTokenSource;
+    private void Awake()
+    {
+        loadCancellationTokenSource = new CancellationTokenSource();
+        saveCancellationTokenSource = new CancellationTokenSource();
+    }
     async Task LoadAsync()
     {
         while (m_loadablesAsync.Count > 0)
         {
             var obj = m_loadablesAsync.Peek();
-            await obj.Load();
+            await obj.Load(loadCancellationTokenSource.Token);
             m_loadablesAsync.Dequeue();
         }
     }
@@ -97,7 +106,7 @@ sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
         while (m_saveablesAsync.Count > 0)
         {
             var obj = m_saveablesAsync.Peek();
-            await obj.Save();
+            await obj.Save(saveCancellationTokenSource.Token);
             m_saveablesAsync.Dequeue();
         }
     }
