@@ -9,6 +9,7 @@ using RPGM.Core;
 using RPGM.Gameplay;
 using TMPro;
 using KoganeUnityLib;
+using System.Threading;
 /// <summary>
 /// 文章を表示します。
 /// スペースキーが押されたときに文章を送ります。
@@ -79,7 +80,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     AsyncOperationHandle<IList<ConversationData>> m_handle;
     public Dictionary<string, ConversationData> m_data = new Dictionary<string, ConversationData>();
 
-    public async Task Load()
+    public async Task Load(CancellationToken cancellationToken)
     {
         Debug.Log("try conversation load", gameObject);
         //ゲーム内アイテムデータを読み込む
