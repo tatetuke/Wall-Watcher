@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using System.Linq;
 
 
@@ -32,7 +33,9 @@ namespace Kyoichi
                 return inventryFilename.Replace("{{name}}", gameObject.name);
             }
         }
-
+        public class ItemEvent : UnityEvent<ItemStack> { }
+        public ItemEvent OnItemAdd { get; } = new ItemEvent();
+        public ItemEvent OnItemRemove { get; } = new ItemEvent();
         List<ItemStack> inventry = new List<ItemStack>();
         public IEnumerable<ItemStack> Data
         {
@@ -63,42 +66,35 @@ namespace Kyoichi
         }
         public void AddItem(ItemSO item)
         {
-            if (item == null) return;
-            int index = 0;
-            foreach (var i in inventry)
-            {
-                if (i.item == item)
-                {
-                    inventry[index].count++;
-                    return;
-                }
-            }
             inventry.Add(new ItemStack(item,1));
         }
         public void AddItem(ItemStack item)
         {
-            int index = 0;
-            foreach(var i in inventry)
+            if (item == null) return;
+            foreach (var i in inventry)
             {
-                if (i.item == item.item)
-                {
-                    inventry[index].count+=item.count;
-                    return;
-                }
+                if (i.item != item.item) continue;
+                OnItemAdd.Invoke(item);
+                i.count += item.count;
+                return;
             }
             inventry.Add(item);
         }
 
         public void PopItem(ItemSO item, int count = 1)
         {
-            int index = 0;
+            PopItem(new ItemStack(item, count));
+        }
+
+        public void PopItem(ItemStack item)
+        {
             foreach (var i in inventry)
             {
-                if (i.item == item)
-                {
-                    inventry[index].count-=count;
-                    return;
-                }
+                if (i.item != item.item) continue;
+                if (i.count < item.count) return;
+                OnItemRemove.Invoke(item);
+                i.count -= item.count;
+                return;
             }
         }
 
