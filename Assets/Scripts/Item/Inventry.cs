@@ -66,7 +66,7 @@ namespace Kyoichi
         }
         public void AddItem(ItemSO item)
         {
-            inventry.Add(new ItemStack(item,1));
+            AddItem(new ItemStack(item,1));
         }
         public void AddItem(ItemStack item)
         {

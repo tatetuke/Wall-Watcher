@@ -22,7 +22,12 @@ public class EditorItemManager : Editor
         EditorGUILayout.LabelField("loaded data view", EditorStyles.centeredGreyMiniLabel);
         foreach (var i in scr.Data)
         {
-            EditorGUILayout.LabelField(i.Key);
+            EditorGUILayout.BeginHorizontal(GUI.skin.box);
+            {
+                EditorGUILayout.LabelField(i.Key);
+                EditorGUILayout.ObjectField(i.Value,typeof(ItemSO));
+            }
+            EditorGUILayout.EndHorizontal();
         }
         //エディタ上でasync/awaitは使えないので無意味
         /*EditorGUILayout.BeginHorizontal(GUI.skin.box);
