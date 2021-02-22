@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access">
+  <Comment CommentText="Conversation">
+    <Position X="20.5" Y="0.75" Height="0.75" Width="1.7" />
+  </Comment>
+  <Comment CommentText="MiniGameScripts">
+    <Position X="2" Y="13.5" Height="0.75" Width="1.7" />
+  </Comment>
+  <Comment CommentText="Audio">
+    <Position X="8.75" Y="7.5" Height="0.75" Width="1.7" />
+  </Comment>
+  <Comment CommentText="TitleScripts">
+    <Position X="8.75" Y="0.5" Height="0.75" Width="1.7" />
+  </Comment>
+  <Comment CommentText="Others">
+    <Position X="20.5" Y="13.75" Height="0.75" Width="1.7" />
+  </Comment>
+  <Comment CommentText="Item">
+    <Position X="10.5" Y="13.5" Height="0.75" Width="1.7" />
+  </Comment>
+  <Comment CommentText="MainMap">
+    <Position X="8.874" Y="4.5" Height="0.75" Width="1.7" />
+  </Comment>
+  <Class Name="AudioMixerManager">
+    <Position X="9.5" Y="8.5" Width="1.75" />
+    <NestedTypes>
+      <Enum Name="AudioMixerManager.FadeState" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Audio\AudioMixerManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AASAAAAAACCAAAACAAAAAAABAAAAAACAIAAACAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Audio\AudioMixerManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BGMManager" BaseTypeListCollapsed="true">
+    <Position X="13.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAKAAAAAAAAAE=</HashCode>
+      <FileName>Assets\Scripts\Audio\BGMManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SEManager" BaseTypeListCollapsed="true">
+    <Position X="12" Y="8.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="SEManager.SEType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Audio\SEManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAACAAAAAAAAAAAEAAAAQAAAAQqAAAAgAAAAE=</HashCode>
+      <FileName>Assets\Scripts\Audio\SEManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ConversationData">
+    <Position X="26" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAEBABAAAwAAAAAAAEAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Conversation\ConversationData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConversationDataManager" BaseTypeListCollapsed="true">
+    <Position X="20.75" Y="2" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BAQCgACAEKKAAAQAAKEAAkAAAEBCAAAAAAAAAAJAJOA=</HashCode>
+      <FileName>Assets\Scripts\Conversation\ConversationDataManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DialogController">
+    <Position X="27.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEIAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Conversation\DialogController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SelectManager">
+    <Position X="29" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAACAIAIgAAAAAAAAAAAAACAAAAAgAgAAgQAAAA=</HashCode>
+      <FileName>Assets\Scripts\Conversation\SelectManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RPGM.Gameplay.Conversations">
+    <Position X="28.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAQAAAAAAAAAAAAAAAAABAAABAACIAAAAAAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\Conversation\ConversationPiece.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RPGM.Gameplay.NPCController">
+    <Position X="23.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAACAACIAAAAAAAkAAAAAAEAAgAAAgAAgAAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\Conversation\NPCController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Kyoichi.ItemStack">
+    <Position X="15" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAABAQAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Item\Inventry.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ItemSO" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Kyoichi.Inventry">
+    <Position X="10.75" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgCgAAIAAAAAAUAAAAAAgAEAABAIAAAAAABAGAA=</HashCode>
+      <FileName>Assets\Scripts\Item\Inventry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Kyoichi.ItemManager" BaseTypeListCollapsed="true">
+    <Position X="13" Y="16.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="Kyoichi.ItemManager.LoadState" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Item\ItemManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAgIIAAAABAEAAAIAAAkAAAAAAABAIgAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Item\ItemManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ItemSO">
+    <Position X="17.25" Y="15.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="ItemSO.Rarelity" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Item\ItemSO.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAAAABAAIAAQAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Item\ItemSO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Move_CircleWay_to_Room1">
+    <Position X="9.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\MainMap\MoveEvent\Move_CircleWay_to_Room1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ItemManager">
+    <Position X="4.75" Y="19" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\MiniGameScripts\ItemManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MiniGameManager">
+    <Position X="2.5" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUIAAAAAGACAhgAAAAQAwgsAABAAAQABIAEAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\MiniGameScripts\MiniGameManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MoveMiniGame">
+    <Position X="6.75" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\MiniGameScripts\MoveMiniGame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RuleManager">
+    <Position X="4.75" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\MiniGameScripts\RuleManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ScoreManager">
+    <Position X="4.75" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAUAAAAAAgAAAAAAAAAAAAABQAAAA=</HashCode>
+      <FileName>Assets\Scripts\MiniGameScripts\ScoreManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FadeManager">
+    <Position X="11.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABQQAAAAAAAAAAAAAAAEAAAAAgAAAACAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\TitleScripts\FadeManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TItleUIController">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAQAAAgCCAAAAAAAAAAAAAAAAACAAAAAAAgAAQAAAAA=</HashCode>
+      <FileName>Assets\Scripts\TitleScripts\TItleUIController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnimationModule">
+    <Position X="29" Y="14.75" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="AnimationModule.State" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\AnimationModule.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAQAAQAAACABBAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\AnimationModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conversati">
+    <Position X="24.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Conversati.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameManager_Kyoichi">
+    <Position X="22.75" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GameManager_Kyoichi.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player">
+    <Position X="26.75" Y="14.75" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="Player.State" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Player.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAqABBAAACAgAgAABAAAAAAAAAAIABAAhAAA=</HashCode>
+      <FileName>Assets\Scripts\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerDataLoader" BaseTypeListCollapsed="true">
+    <Position X="21" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAIIAgAAAAAAAAAAAAAACCAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\PlayerDataLoader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Struct Name="RPGM.Gameplay.ConversationOption">
+    <Position X="30.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAACAAAABAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Conversation\ConversationOption.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="IAudio">
+    <Position X="13.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Audio\IAudio.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="RPGM.Gameplay.ConversationType">
+    <Position X="30.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Conversation\ConversationPiece.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Yu Gothic UI" Size="9" />
+</ClassDiagram>
