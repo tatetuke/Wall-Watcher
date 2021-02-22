@@ -38,6 +38,13 @@ MonoBehaviour:
     - BGM
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 0bf9eef57c0510144a4ffb7373853cc5
+    m_Address: Assets/Items
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - item
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b30fe0edd0343434bba495ad1f2e3d60, type: 2}
   m_SchemaSet:
