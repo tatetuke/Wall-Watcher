@@ -8,7 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Kyoichi
 {
-    public class ItemManager : SingletonMonoBehaviour<ItemManager>, ILoadableAsync
+    public class ItemManager : SingletonMonoBehaviour<ItemManager>, ILoadableAsync,ISaveable
     {
         enum LoadState
         {
@@ -27,10 +27,14 @@ namespace Kyoichi
                 return m_data;
             }
         }
+        List<Inventry> inventries = new List<Inventry>();
+        public void AddInventry(Inventry inventry) { inventries.Add(inventry); }
+
         // Start is called before the first frame update
         void Awake()
         {
             SaveLoadManager.Instance.SetLoadable(this);
+            SaveLoadManager.Instance.SetSaveable(this);
             if (m_state == LoadState.loaded)//エディタ上でロードしたとき
             {
                 Addressables.Release(m_handle);
@@ -60,6 +64,16 @@ namespace Kyoichi
             }
             m_state = LoadState.loaded;
         }
+
+        public void Save()
+        {
+            for (int i=0;i<inventries.Count;)
+            {
+                inventries[i].SaveToFile();
+                inventries.RemoveAt(i);
+            }
+        }
+
         void OnDisable()
         {
             Addressables.Release(m_handle);
@@ -112,5 +126,6 @@ namespace Kyoichi
             }
             return m_data[name];
         }
+
     }
 }
