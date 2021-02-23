@@ -47,6 +47,5 @@ public class TestPlayableBehaviour : PlayableBehaviour
     {
         Vector3 vel = new Vector3(-0.01f, 0, 0);
         Player.transform.position = Player.transform.position + vel;
-        Debug.Log(Player.transform.position.x);
     }
 }
