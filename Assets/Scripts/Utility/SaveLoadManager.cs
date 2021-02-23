@@ -20,6 +20,17 @@ sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
     Queue<ILoadable> m_loadables = new Queue<ILoadable>();
     Queue<ISaveableAsync> m_saveablesAsync = new Queue<ISaveableAsync>();
     Queue<ILoadableAsync> m_loadablesAsync = new Queue<ILoadableAsync>();
+   public UnityEvent OnLoadFinished { get; } = new UnityEvent();
+   public UnityEvent OnSaveFinished { get; } = new UnityEvent();
+    public enum SaveLoadState
+    {
+        notLoaded,
+        loading,
+        finished
+    }
+
+    public SaveLoadState LoadState { get; private set; } = SaveLoadState.notLoaded;
+    public SaveLoadState SaveState { get; private set; } = SaveLoadState.notLoaded;
 
     /// <summary>
     /// GamaManager.Start()でデータがロードされるので、Awake内で行ってください。
@@ -54,6 +65,7 @@ sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
     public async Task Save()
     {
         Debug.Log("Player Data Saving...");
+        SaveState = SaveLoadState.loading;
         while (m_saveables.Count > 0)
         {
             var obj = m_saveables.Peek();
@@ -62,6 +74,8 @@ sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
         }
         await SaveAsync();//非同期でセーブし、すべてのオブジェクトについて完了するまで待つ
         Debug.Log("All Data Saving Finished");
+        SaveState = SaveLoadState.finished;
+        OnSaveFinished.Invoke();
     }
 
     /// <summary>
@@ -73,6 +87,7 @@ sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
     public async Task Load()
     {
         Debug.Log("Player Data Loading...");
+        LoadState = SaveLoadState.loading;
        // GamePropertyManager.Instance.LoadProperty();
         while (m_loadables.Count > 0)
         {
@@ -82,6 +97,8 @@ sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
         }
         await LoadAsync();//非同期でロードし、すべてのオブジェクトについて完了するまで待つ
         Debug.Log("All Data Loading Finished");
+        LoadState = SaveLoadState.finished;
+        OnLoadFinished.Invoke();
     }
 
 
