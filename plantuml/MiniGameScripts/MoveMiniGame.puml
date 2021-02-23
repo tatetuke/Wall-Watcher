@@ -1,0 +1,6 @@
+@startuml
+class MoveMiniGame {
+    Start() : void
+    Update() : void
+}
+@enduml

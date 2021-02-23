@@ -1,0 +1,8 @@
+@startuml
+class ConversationOption <<struct>> {
+    + text : string
+    + audio : AudioClip
+    + targetId : string
+    + enabled : bool
+}
+@enduml

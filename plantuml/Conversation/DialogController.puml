@@ -1,0 +1,7 @@
+@startuml
+class DialogController {
+    + SetText(option:TextMeshProUGUI, newtext:string) : void
+    + Display(option:GameObject) : void
+    + Hide(option:GameObject) : void
+}
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+class ConversationDataManager {
+    - _labelReference : AssetLabelReference
+    TextBox : TextMeshProUGUI
+    dialogController : DialogController
+    selectManager : SelectManager
+    + m_typewriter : TMP_Typewriter
+    + Options : GameObject[]
+    + OptionTexts : TextMeshProUGUI[]
+    - SelectNum : int
+    - CurrentConversation : Conversations = null
+    - CurrentConversationData : ConversationData
+    FileId : string
+    Id : string
+    - CanTalk : bool = false
+    ConversationDataFolderPath : string
+    Files : string[]
+    ConversationDataList : List<string>
+    - Awake() : void
+    - Start() : void
+    m_handle : AsyncOperationHandle<IList<ConversationData>>
+    + m_data : Dictionary<string, ConversationData>
+    + <<async>> Load(cancellationToken:CancellationToken) : Task
+    + GetConversation(ID:string) : ConversationData
+    - Update() : void
+    - IsOptionTalk(conversations:Conversations) : bool
+    - OnTriggerEnter2D(other:Collider2D) : void
+    - OnTriggerExit2D(collision:Collider2D) : void
+}
+ILoadableAsync <|-- ConversationDataManager
+ConversationDataManager o-- ConversationData
+ConversationDataManager o-- SelectManager
+@enduml

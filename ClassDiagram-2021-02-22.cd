@@ -36,7 +36,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="BGMManager" BaseTypeListCollapsed="true">
-    <Position X="13.5" Y="8.5" Width="1.5" />
+    <Position X="13.75" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAKAAAAAAAAAE=</HashCode>
       <FileName>Assets\Scripts\Audio\BGMManager.cs</FileName>
@@ -74,7 +74,7 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="DialogController">
-    <Position X="27.5" Y="5.75" Width="1.5" />
+    <Position X="27.25" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAEIAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Conversation\DialogController.cs</FileName>
@@ -104,12 +104,9 @@
   <Class Name="Kyoichi.ItemStack">
     <Position X="15" Y="17" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAAAAAABAQAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAABAQAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Item\Inventry.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="ItemSO" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="Kyoichi.Inventry">
     <Position X="10.75" Y="14.5" Width="1.5" />
@@ -155,7 +152,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ItemManager">
-    <Position X="4.75" Y="19" Width="1.5" />
+    <Position X="4.75" Y="19.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\MiniGameScripts\ItemManager.cs</FileName>
@@ -176,7 +173,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="RuleManager">
-    <Position X="4.75" Y="17" Width="1.5" />
+    <Position X="4.75" Y="17.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAACAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\MiniGameScripts\RuleManager.cs</FileName>
@@ -261,7 +258,7 @@
     </TypeIdentifier>
   </Struct>
   <Interface Name="IAudio">
-    <Position X="13.5" Y="10.75" Width="1.5" />
+    <Position X="13.75" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Audio\IAudio.cs</FileName>

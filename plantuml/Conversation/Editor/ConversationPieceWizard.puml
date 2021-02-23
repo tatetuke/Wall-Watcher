@@ -1,0 +1,21 @@
+@startuml
+class ConversationPieceWizard {
+    + conversationPiece : Conversations
+    + originalConversationPiece : Conversations
+    + options : ReorderableList
+    conversationScript : ConversationData
+    isUpdate : bool = false
+    targets : string[]
+    + {static} New(data:ConversationData, type_:ConversationType) : void
+    + {static} Edit(conversationScript:ConversationData, conversationPiece:Conversations) : void
+    BuildOptionList() : void
+    OnDrawOptionHeader(rect:Rect) : void
+    OnDrawOption(rect:Rect, index:int, isActive:bool, isFocused:bool) : void
+    - OnAdd(list:ReorderableList) : void
+    OnWizardCreate() : void
+    # <<override>> DrawWizardGUI() : bool
+    DrawNormalGUI() : void
+    DrawEventGUI() : void
+}
+ScriptableWizard <|-- ConversationPieceWizard
+@enduml

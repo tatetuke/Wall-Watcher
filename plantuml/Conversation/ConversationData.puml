@@ -1,0 +1,14 @@
+@startuml
+class ConversationData {
+    + items : List<Conversations>
+    + m_firstConversation : string = ""
+    + GetFirst() : string
+    + ContainsKey(id:string) : bool
+    + Get(id:string) : Conversations
+    + Add(conversation:Conversations) : void
+    + Set(originalConversation:Conversations, newConversation:Conversations) : void
+    + Delete(id:string) : void
+}
+ScriptableObject <|-- ConversationData
+ConversationData o-- Conversations
+@enduml

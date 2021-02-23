@@ -1,0 +1,26 @@
+@startuml
+class Player {
+    - m_WalkSpeed : float = 0
+    - m_WalkForce : float = 0
+    - m_State : State = default
+    - m_ViewObject : GameObject = default
+    - m_Rigidbody2D : Rigidbody2D = default
+    - m_AnimationModule : AnimationModule = default
+    + IsWalking : bool <<get>>
+    Start() : void
+    - FixedUpdate() : void
+    - Move() : void
+    + ChangeState(state:State) : void
+    - UpdateState() : void
+    + PlayFootStepSE() : void
+}
+enum Player.State {
+    FREEZE,
+    IDEL,
+    WALKING,
+    MINIGAME,
+}
+Player +-- Player.State
+Player o-- AnimationModule
+
+@enduml
