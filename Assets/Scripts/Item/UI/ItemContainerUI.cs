@@ -1,21 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Events;
 using TMPro;
 
 public class ItemContainerUI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI itemNameText;
     [SerializeField] TextMeshProUGUI itemCountText;
-    // Start is called before the first frame update
-    void Start()
+    public UnityEvent OnClickItem { get; } = new UnityEvent();
+    private void Awake()
     {
-        
+        var but = GetComponent<Button>();
+        but.onClick.AddListener(OnClickItem.Invoke);
     }
-
-    // Update is called once per frame
-    void Update()
+    public void Initialize(Kyoichi.ItemStack item)
     {
-        
+        itemNameText.text = item.item.item_name;
+        itemCountText.text = item.count.ToString();
     }
 }

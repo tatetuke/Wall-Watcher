@@ -41,14 +41,24 @@ namespace Kyoichi
         {
             get { return inventry; }
         }
+        private void Start()
+        {
+            ItemManager.Instance.AddInventry(this);
+        }
 
         private void OnEnable()
         {
-            LoadFromFile();
-        }
-        private void OnDisable()
-        {
-            SaveToFile();
+            if (SaveLoadManager.Instance.LoadState == SaveLoadManager.SaveLoadState.finished)
+            {
+                LoadFromFile();
+            }
+            else
+            {
+                SaveLoadManager.Instance.OnLoadFinished.AddListener(() =>
+                {
+                    LoadFromFile();
+                });
+            }
         }
 
         public void LoadFromFile()
