@@ -28,11 +28,11 @@ public class SEManager : SingletonMonoBehaviour<SEManager>, IAudio
 
     private void Update()
     {
-        //テスト用
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-            Play("walking_on_floor1");
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-            Play("se_maoudamashii_se_escape");
+        ////テスト用
+        //if (Input.GetKeyDown(KeyCode.UpArrow))
+        //    Play("walking_on_floor1");
+        //if (Input.GetKeyDown(KeyCode.DownArrow))
+        //    Play("se_maoudamashii_se_escape");
     }
 
     public void Stop()

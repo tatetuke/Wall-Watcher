@@ -24,18 +24,16 @@ public class AudioMixerManager : SingletonMonoBehaviour<AudioMixerManager>
     // Start is called before the first frame update
     private void Start()
     {
-        Debug.Log("SE Volumeを5dbにしました");
-        SetVolume("SE", 2);
-        //Test();
+
     }
 
     private void Update()
     {
-        //テスト用
-        if (Input.GetKeyDown(KeyCode.I))
-            FadeIn("Master", 4).Forget();
-        if (Input.GetKeyDown(KeyCode.O))
-            FadeOut("Master", 4).Forget();
+        ////テスト用
+        //if (Input.GetKeyDown(KeyCode.I))
+        //    FadeIn("Master", 4).Forget();
+        //if (Input.GetKeyDown(KeyCode.O))
+        //    FadeOut("Master", 4).Forget();
     }
 
     /// <summary>ボリュームをデシベル単位で指定する</summary>
