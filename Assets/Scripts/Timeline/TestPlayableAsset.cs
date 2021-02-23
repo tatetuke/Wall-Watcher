@@ -13,14 +13,16 @@ public class TestPlayableAsset : PlayableAsset
     //public ExposedReference<GameObject> mPlayer;
 
     
-    public ExposedReference<GameObject> mPlayer;
+    public ExposedReference<GameObject> m_Player;
+
+
 
 
     // Factory method that generates a playable based on this asset
     public override Playable CreatePlayable(PlayableGraph graph, GameObject go)
     {
         TestPlayableBehaviour behaviour = new TestPlayableBehaviour();
-        behaviour.Player = mPlayer.Resolve(graph.GetResolver());
+        behaviour.Player = m_Player.Resolve(graph.GetResolver());
 
         return ScriptPlayable<TestPlayableBehaviour>.Create(graph, behaviour);
 
