@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEditor;
 
-public class InventryUI : MonoBehaviour
+public class InventryUI : UIView
 {
     [SerializeField] GameObject itemContainerUI;
     [Header("Object references")]
@@ -19,18 +19,20 @@ public class InventryUI : MonoBehaviour
     private void Start()
     {
         dropdown.onValueChanged.AddListener(OnSelectRarelity);
+        OnViewShow.AddListener(Initialize);
+        OnViewHide.AddListener(()=> {
+            foreach(Transform child in container)
+            {
+                Destroy(child.gameObject);
+            }
+            itemIcon.sprite = null;
+            itemName.text = "";
+            description.text ="";
+        });
     }
     public void OnSelectRarelity(int value)
     {
 
-    }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Debug.Log("Initialize inventry");
-            Initialize();
-        }
     }
     public void Initialize()
     {
@@ -44,6 +46,7 @@ public class InventryUI : MonoBehaviour
             });
         }
     }
+
     void SelectItem(ItemSO target)
     {
         itemIcon.sprite = target.icon;
