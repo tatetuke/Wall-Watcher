@@ -1,0 +1,24 @@
+@startuml
+class ItemManager {
+    m_state : LoadState
+    - _labelReference : AssetLabelReference
+    m_data : Dictionary<string, ItemSO>
+    + Data : IEnumerable<KeyValuePair<string, ItemSO>> <<get>>
+    Awake() : void
+    m_handle : AsyncOperationHandle<IList<ItemSO>>
+    - _cancellationTokenSource : CancellationTokenSource
+    + <<async>> Load(cancellationToken:CancellationToken) : Task
+    OnDisable() : void
+    + LoadItemFrom(directory:string, filename:string) : List<Kyoichi.ItemStack>
+    + SaveItemTo(directory:string, filename:string, target:IEnumerable<Kyoichi.ItemStack>) : void
+    + GetItem(name:string) : ItemSO
+}
+enum LoadState {
+    notLoaded,
+    loading,
+    loaded,
+}
+ILoadableAsync <|-- ItemManager
+ItemManager +-- LoadState
+ItemManager o-- ItemStack
+@enduml

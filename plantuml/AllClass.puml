@@ -1,0 +1,9 @@
+@startuml
+!include .\\Others.puml
+!include .\\Audio.puml
+!include .\\Conversation.puml
+!include .\\Item.puml
+!include .\\MainMap.puml
+!include .\\MiniGameScripts.puml
+!include .\\TitleScripts.puml
+@enduml

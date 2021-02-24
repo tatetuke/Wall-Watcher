@@ -1,0 +1,23 @@
+@startuml
+class SEManager {
+    - m_AudioSource : AudioSource = default
+    - m_LabelReference : AssetLabelReference
+    - m_AudioClips : List<AudioClip> = default
+    m_handle : AsyncOperationHandle<IList<AudioClip>>
+    + m_AudioClipDictionary : Dictionary<string, AudioClip>
+    - Start() : void
+    - Update() : void
+    + Stop() : void
+    + IsPlaying() : bool
+    + <<async>> Load(audioClipId:string) : UniTask<bool>
+    + <<async>> LoadAll() : UniTask<bool>
+    + Play(type:SEType) : void
+    + Play(SEId:string) : void
+}
+enum SEType {
+    FOOTSTEPS,
+    ESCAPE,
+}
+IAudio <|-- SEManager
+SEManager +-- SEType
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+class ItemSO {
+    + item_name : string
+    + description : string
+    + icon : Sprite
+    + type : Rarelity
+}
+enum Rarelity {
+    N,
+    R,
+    SR,
+    SSR,
+}
+ScriptableObject <|-- ItemSO
+ItemSO +-- Rarelity
+@enduml

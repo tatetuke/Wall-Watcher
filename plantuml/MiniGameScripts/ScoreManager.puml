@@ -1,0 +1,11 @@
+@startuml
+class ScoreManager {
+    Satisfaction : int
+    Mix : int
+    + ScoreManager()
+    + UpdateScore() : void
+    + GetSatisfaction() : char
+    + GetMix() : char
+    + GetEarnReward() : double
+}
+@enduml

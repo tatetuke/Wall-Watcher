@@ -1,0 +1,32 @@
+@startuml
+class ItemStack {
+    + item : ItemSO
+    + count : int = 0
+    + ItemStack(item_:ItemSO, count_:int)
+}
+class Inventry {
+    inventryDirectory : string
+    inventryFilename : string = "&#123;{name}}.csv"
+    FileName : string <<get>>
+    inventry : List<ItemStack>
+    + Data : IEnumerable<ItemStack> <<get>>
+    - OnEnable() : void
+    - OnDisable() : void
+    + LoadFromFile() : void
+    + GetFileData() : List<List<string>>
+    + SaveToFile() : void
+    + AddItem(item:ItemSO) : void
+    + AddItem(item:ItemStack) : void
+    + PopItem(item:ItemSO, count:int) : void
+    + Clear() : void
+    + DeleteItem(item:ItemSO) : void
+    + HasItem(item:ItemSO) : bool
+    + HasItem(item:ItemStack, countEqual:bool) : bool
+    + HasItems(item:IEnumerable<ItemSO>) : bool
+    + HasItems(item:IEnumerable<ItemStack>, countEqual:bool) : bool
+}
+
+Inventry .> ItemManager
+Inventry o-- ItemStack
+ItemStack o-- ItemSO
+@enduml

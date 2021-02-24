@@ -1,0 +1,19 @@
+@startuml
+class NPCController {
+    TextBox : Text
+    + ConversationsList : ConversationData[]
+    - CurrentConversation : Conversations
+    id : string
+    FirstText : string
+    - IsTalk : bool = false
+    - Start() : void
+    - Update() : void
+    - OnTriggerEnter2D(other:Collider2D) : void
+    - OnTriggerExit2D(collision:Collider2D) : void
+    - Texting() : void
+    + OnCollisionEnter2D(collision:Collision2D) : void
+}
+
+NPCController o-- ConversationData
+
+@enduml

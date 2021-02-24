@@ -1,0 +1,7 @@
+@startuml
+class EditorInventry {
+    editorCSVData : List<List<string>>
+    + <<override>> OnInspectorGUI() : void
+}
+Editor <|-- EditorInventry
+@enduml

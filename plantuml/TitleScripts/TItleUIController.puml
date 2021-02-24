@@ -1,0 +1,13 @@
+@startuml
+class TItleUIController {
+    PushAnyKeyAnimator : Animator
+    - m_Select : int = 0
+    - IsSelectChange : bool = true
+    TitleText : Text[]
+    TitleImage : Image[]
+    Update() : void
+    - ChangeColorDown() : void
+    - ChangeColorUp() : void
+}
+TItleUIController ..> FadeManager
+@enduml
