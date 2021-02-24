@@ -6,14 +6,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
-
+using UniRx;
+using Cysharp.Threading.Tasks;
 /// <summary>
 /// オブジェクトのセーブ、ロードを一括で行える管理クラス
 /// </summary>
 sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
 {
+    [SerializeField] bool loadOnStart = false;
     private void Start()
     {
+        if(loadOnStart)
         Load();
     }
     Queue<ISaveable> m_saveables = new Queue<ISaveable>();
@@ -111,6 +114,7 @@ sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
     }
     async Task LoadAsync()
     {
+        //await UniTask.WhenAll(m_loadablesAsync);
         while (m_loadablesAsync.Count > 0)
         {
             var obj = m_loadablesAsync.Peek();
