@@ -12,8 +12,10 @@ public class SEManager : SingletonMonoBehaviour<SEManager>, IAudio
     [Header("almost unused")]
     [SerializeField] private List<AudioClip> m_AudioClips = default;
 
-    AsyncOperationHandle<IList<AudioClip>> m_handle;
+    private AsyncOperationHandle<IList<AudioClip>> m_handle;
     public Dictionary<string, AudioClip> m_AudioClipDictionary = new Dictionary<string, AudioClip>();
+    [SerializeField] private AssetReferenceAudio m_AssetReferenceAudio = default;
+    [SerializeField] private string m_AudioId;
 
     public enum SEType
     {
@@ -46,10 +48,10 @@ public class SEManager : SingletonMonoBehaviour<SEManager>, IAudio
     }
 
     /// <summary>指定したIdのaudioClipをロードして辞書に加える　ロードの可否を返す</summary>
-    public async UniTask<bool> Load(string audioClipId)
+    public async UniTask<bool> Load(string addressableId)
     {
         Debug.Log("try SE load", gameObject);
-        m_handle = Addressables.LoadAssetsAsync<AudioClip>(audioClipId, null);
+        m_handle = Addressables.LoadAssetsAsync<AudioClip>(addressableId, null);
         await m_handle.Task;
         foreach (var res in m_handle.Result)
         {
@@ -111,5 +113,6 @@ public class SEManager : SingletonMonoBehaviour<SEManager>, IAudio
 
         m_AudioSource.PlayOneShot(m_AudioClipDictionary[SEId]);
     }
+
 
 }

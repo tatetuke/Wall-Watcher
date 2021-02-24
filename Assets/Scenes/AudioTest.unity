@@ -649,6 +649,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7556314374819783876, guid: 923ffdee983f54640b71cfd50d736846,
+        type: 3}
+      propertyPath: m_AudioId
+      value: bgm01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556314374819783876, guid: 923ffdee983f54640b71cfd50d736846,
+        type: 3}
+      propertyPath: m_AssetReferenceAudio.m_AssetGUID
+      value: af76e64c1367d594bb941b88c3efc23c
+      objectReference: {fileID: 0}
     - target: {fileID: 7556314375493071528, guid: 923ffdee983f54640b71cfd50d736846,
         type: 3}
       propertyPath: m_RootOrder
