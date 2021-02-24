@@ -1,5 +1,6 @@
 # Wall-Watcher
 
+
 unity-version: 2019.4.19f1
 
 ## メンバー
@@ -10,9 +11,11 @@ unity-version: 2019.4.19f1
 - [kyoichi001](https://github.com/kyoichi001)
 
 ## 必要なアセット
+
 - DoTween
 - Addressable
 - UniRx/UniTask
 - TextMeshPro
 - Cinemachine
 - Timeline
+
