@@ -23,11 +23,11 @@ public class CanvasManager : MonoBehaviour
             i.gameObject.SetActive(false);
         }
 
-        GameManager_Kyoichi.Instance.OnPauseStart.AddListener(() =>
+        Kyoichi.GameManager.Instance.OnPauseStart.AddListener(() =>
         {
             SwitchView(firstViewName);
         });
-        GameManager_Kyoichi.Instance.OnPauseEnd.AddListener(() =>
+        Kyoichi.GameManager.Instance.OnPauseEnd.AddListener(() =>
         {
             OnPushEndButton();
         });
