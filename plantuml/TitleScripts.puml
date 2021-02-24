@@ -1,0 +1,7 @@
+@startuml
+package TitleScripts{
+!include .\\TitleScripts\FadeManager.puml
+!include .\\TitleScripts\SingletonMonoBehaviour.puml
+!include .\\TitleScripts\TItleUIController.puml
+}
+@enduml

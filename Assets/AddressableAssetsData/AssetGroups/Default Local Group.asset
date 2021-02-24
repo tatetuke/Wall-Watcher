@@ -18,10 +18,31 @@ MonoBehaviour:
   m_GUID: 5fc77fb6204949b4d96d3a577cef4aee
   m_SerializeEntries:
   - m_GUID: e17eff43f624a224eaaccb51e5252c4b
-    m_Address: Assets/Data/Event
+    m_Address: Assets/Data/SubQuest
     m_ReadOnly: 0
     m_SerializedLabels:
-    - test
+    - SubQuest
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f0a563c1fc70b244e862c9974a3b1c9f
+    m_Address: Assets/Audio/SE
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SE
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ea1a69f7b7cccb342870f3dde94c5d95
+    m_Address: Assets/Audio/BGM
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BGM
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0bf9eef57c0510144a4ffb7373853cc5
+    m_Address: Assets/Items
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - item
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0

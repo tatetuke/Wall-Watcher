@@ -1,0 +1,6 @@
+@startuml
+class "SingletonMonoBehaviour`1"<T> {
+    - {static} instance : T
+    + {static} Instance : T <<get>>
+}
+@enduml

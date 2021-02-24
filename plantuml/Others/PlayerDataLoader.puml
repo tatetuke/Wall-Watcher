@@ -1,0 +1,13 @@
+@startuml
+class PlayerDataLoader {
+    playerPrefab : GameObject
+    currentPlayer : GameObject
+    filedirectory : string
+    filename : string
+    Awake() : void
+    Load() : void
+    Save() : void
+}
+ISaveable <|-- PlayerDataLoader
+ILoadable <|-- PlayerDataLoader
+@enduml

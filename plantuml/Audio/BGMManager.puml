@@ -1,0 +1,9 @@
+@startuml
+class BGMManager {
+    - m_AudioSource : AudioSource = default
+    - m_LabelReference : AssetLabelReference
+    + Stop() : void
+    + IsPlaying() : bool
+}
+IAudio <|-- BGMManager
+@enduml

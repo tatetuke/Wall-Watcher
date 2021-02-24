@@ -2,23 +2,38 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
-
+using UniRx;
+using Cysharp.Threading.Tasks;
 /// <summary>
 /// オブジェクトのセーブ、ロードを一括で行える管理クラス
 /// </summary>
 sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
 {
+    [SerializeField] bool loadOnStart = false;
     private void Start()
     {
+        if(loadOnStart)
         Load();
     }
     Queue<ISaveable> m_saveables = new Queue<ISaveable>();
     Queue<ILoadable> m_loadables = new Queue<ILoadable>();
     Queue<ISaveableAsync> m_saveablesAsync = new Queue<ISaveableAsync>();
     Queue<ILoadableAsync> m_loadablesAsync = new Queue<ILoadableAsync>();
+   public UnityEvent OnLoadFinished { get; } = new UnityEvent();
+   public UnityEvent OnSaveFinished { get; } = new UnityEvent();
+    public enum SaveLoadState
+    {
+        notLoaded,
+        loading,
+        finished
+    }
+
+    public SaveLoadState LoadState { get; private set; } = SaveLoadState.notLoaded;
+    public SaveLoadState SaveState { get; private set; } = SaveLoadState.notLoaded;
 
     /// <summary>
     /// GamaManager.Start()でデータがロードされるので、Awake内で行ってください。
@@ -53,6 +68,7 @@ sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
     public async Task Save()
     {
         Debug.Log("Player Data Saving...");
+        SaveState = SaveLoadState.loading;
         while (m_saveables.Count > 0)
         {
             var obj = m_saveables.Peek();
@@ -61,6 +77,8 @@ sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
         }
         await SaveAsync();//非同期でセーブし、すべてのオブジェクトについて完了するまで待つ
         Debug.Log("All Data Saving Finished");
+        SaveState = SaveLoadState.finished;
+        OnSaveFinished.Invoke();
     }
 
     /// <summary>
@@ -72,6 +90,7 @@ sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
     public async Task Load()
     {
         Debug.Log("Player Data Loading...");
+        LoadState = SaveLoadState.loading;
        // GamePropertyManager.Instance.LoadProperty();
         while (m_loadables.Count > 0)
         {
@@ -81,14 +100,25 @@ sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
         }
         await LoadAsync();//非同期でロードし、すべてのオブジェクトについて完了するまで待つ
         Debug.Log("All Data Loading Finished");
+        LoadState = SaveLoadState.finished;
+        OnLoadFinished.Invoke();
     }
 
+
+    private CancellationTokenSource loadCancellationTokenSource;
+    private CancellationTokenSource saveCancellationTokenSource;
+    private void Awake()
+    {
+        loadCancellationTokenSource = new CancellationTokenSource();
+        saveCancellationTokenSource = new CancellationTokenSource();
+    }
     async Task LoadAsync()
     {
+        //await UniTask.WhenAll(m_loadablesAsync);
         while (m_loadablesAsync.Count > 0)
         {
             var obj = m_loadablesAsync.Peek();
-            await obj.Load();
+            await obj.Load(loadCancellationTokenSource.Token);
             m_loadablesAsync.Dequeue();
         }
     }
@@ -97,7 +127,7 @@ sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
         while (m_saveablesAsync.Count > 0)
         {
             var obj = m_saveablesAsync.Peek();
-            await obj.Save();
+            await obj.Save(saveCancellationTokenSource.Token);
             m_saveablesAsync.Dequeue();
         }
     }

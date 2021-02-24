@@ -71,6 +71,10 @@ MonoBehaviour:
     m_LabelNames:
     - default
     - test
+    - SE
+    - BGM
+    - SubQuest
+    - item
   m_SchemaTemplates: []
   m_GroupTemplateObjects: []
   m_InitializationObjects: []

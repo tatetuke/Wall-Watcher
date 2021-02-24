@@ -1,0 +1,6 @@
+@startuml
+interface IAudio {
+    Stop() : void
+    IsPlaying() : bool
+}
+@enduml

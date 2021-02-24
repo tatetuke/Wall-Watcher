@@ -1,0 +1,6 @@
+@startuml
+class Move_CircleWay_to_Room1 {
+    OnTriggerStay2D(other:Collider2D) : void
+}
+Move_CircleWay_to_Room1 ..> TitleScripts.FadeManager
+@enduml

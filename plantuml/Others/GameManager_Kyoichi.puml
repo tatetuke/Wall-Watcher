@@ -1,0 +1,6 @@
+@startuml
+class GameManager_Kyoichi {
+    Start() : void
+    - OnApplicationQuit() : void
+}
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+package Conversation{
+!include .\\Conversation\ConversationData.puml
+!include .\\Conversation\ConversationDataManager.puml
+!include .\\Conversation\ConversationOption.puml
+!include .\\Conversation\ConversationPiece.puml
+!include .\\Conversation\DialogController.puml
+!include .\\Conversation\NPCController.puml
+!include .\\Conversation\SelectManager.puml
+}
+@enduml
