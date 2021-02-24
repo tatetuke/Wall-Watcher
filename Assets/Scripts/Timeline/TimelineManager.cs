@@ -35,7 +35,7 @@ public class TimelineManager : MonoBehaviour
         if(IsStarted && playableDirector.state != PlayState.Playing)
         {
             Debug.Log("タイムライン終了");
-            player.ChangeState(Player.State.IDEL);
+            player.ChangeState(Player.State.IDLE);
         }
     }
 }

@@ -12,7 +12,7 @@ public class AnimationModule : MonoBehaviour
 
     public enum State
     {
-        IDEL,//立ち状態
+        IDLE,//立ち状態
         WALKING,//歩き
     }
 
@@ -31,7 +31,7 @@ public class AnimationModule : MonoBehaviour
     public virtual void ChangeState(State state)
     {
         m_State = state;
-        if (m_State == State.IDEL)
+        if (m_State == State.IDLE)
         {
             m_Animator.SetBool("IsWalking", false);
         }
@@ -47,7 +47,7 @@ public class AnimationModule : MonoBehaviour
 
     protected virtual void UpdateState()
     {
-        if (m_State == State.IDEL)
+        if (m_State == State.IDLE)
         {
 
         }

@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     public enum State
     {
         FREEZE,//移動不可能
-        IDEL,//立ち状態
+        IDLE,//立ち状態
         WALKING,//歩き
         MINIGAME,//ミニゲーム
     }
@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ChangeState(State.IDEL);
+        ChangeState(State.IDLE);
         //m_CharacterController = GetComponent<CharacterController>();
     }
 
@@ -83,9 +83,9 @@ public class Player : MonoBehaviour
         {
 
         }
-        else if (m_State == State.IDEL)
+        else if (m_State == State.IDLE)
         {
-            m_AnimationModule.ChangeState(AnimationModule.State.IDEL);
+            m_AnimationModule.ChangeState(AnimationModule.State.IDLE);
         }
         else if (m_State == State.WALKING)
         {
@@ -107,7 +107,7 @@ public class Player : MonoBehaviour
         {
 
         }
-        else if (m_State == State.IDEL)
+        else if (m_State == State.IDLE)
         {
             if (IsWalking)
                 ChangeState(State.WALKING);
@@ -115,7 +115,7 @@ public class Player : MonoBehaviour
         else if (m_State == State.WALKING)
         {
             if (!IsWalking)
-                ChangeState(State.IDEL);
+                ChangeState(State.IDLE);
             Move();
         }
         else if (m_State == State.MINIGAME)
