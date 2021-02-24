@@ -6,7 +6,7 @@ using UnityEngine;
 using RPGM.Gameplay;
 
 [CustomEditor(typeof(ConversationData), true)]
-public class ConversationDataEditor : Editor
+public class AudioClipDataEditor : Editor
 {
     ReorderableList list;
     ConversationData script;
