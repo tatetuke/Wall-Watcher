@@ -1,0 +1,28 @@
+@startuml
+class MiniGameManager {
+    Item : ItemManager
+    Score : ScoreManager
+    Rule : RuleManager
+    + PressAnyKeyText : GameObject
+    + ResultText : GameObject
+    + StartText : GameObject
+    + FinishText : GameObject
+    + FinishTaskButtonCanvas : GameObject
+    + SatisfactionText : Text
+    + MixText : Text
+    + EarnRewardText : Text
+    + FinishTaskButton : Button
+    IsStarted : bool
+    IsFinished : bool
+    Wall : int[,]
+    + Start() : void
+    + Update() : void
+    + ShowStartText() : void
+    + ClearStartText() : void
+    + FinishMiniGame() : void
+    + ShowResult() : void
+}
+MiniGameManager o-- MiniGameScripts.ItemManager
+MiniGameManager o-- ScoreManager
+MiniGameManager o-- RuleManager
+@enduml

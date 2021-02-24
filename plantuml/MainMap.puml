@@ -1,0 +1,5 @@
+@startuml
+package MainMap{
+!include .\\MainMap\MoveEvent\Move_CircleWay_to_Room1.puml
+}
+@enduml

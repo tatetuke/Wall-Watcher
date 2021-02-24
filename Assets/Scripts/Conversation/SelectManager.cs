@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 /// <summary>
 /// セレクト画面におけるセレクトしている番号や
 /// 今選んでいる番号を選ばれていない番号を色でわかりやすくする
@@ -11,11 +11,11 @@ public class SelectManager
 {
     Color SelectedColor;     // 選択されているときの色
     Color NotSelectedColor;  // 選択されていないときの色
-    Text[] Texts;
+    TextMeshProUGUI[] Texts;
     int Size;
 
     // コンストラクタでテキストの配列と使う色を取得
-    public SelectManager(/*選択肢のテキストの配列*/   Text[] texts,
+    public SelectManager(/*選択肢のテキストの配列*/   TextMeshProUGUI[] texts,
                          /*選択されているときの色*/   Color selected_color,
                          /*選択されていないときの色*/ Color not_selected_color)
     {

@@ -1,0 +1,12 @@
+@startuml
+class FadeManager {
+    - blackTexture : Texture2D
+    - fadeAlpha : float = 0
+    - isFading : bool = false
+    + Awake() : void
+    + OnGUI() : void
+    + LoadLevel(scene:string, interval:float) : void
+    - TransScene(scene:string, interval:float) : IEnumerator
+}
+
+@enduml

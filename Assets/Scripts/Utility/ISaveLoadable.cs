@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-
+using System.Threading;
 /// <summary>
 /// SaveLoadManagerでセーブできるようにするインターフェース
 /// </summary>
@@ -23,13 +23,13 @@ public interface ILoadable
 /// </summary>
 public interface ISaveableAsync
 {
-    Task Save();
+    Task Save(CancellationToken token);
 }
 /// <summary>
 /// SaveLoadManagerで非同期にロードできるようにするインターフェース
 /// </summary>
 public interface ILoadableAsync
 {
-    Task Load();
+    Task Load(CancellationToken token);
 }
 

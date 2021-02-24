@@ -1,0 +1,8 @@
+@startuml
+class EditorItemManager {
+    - _CancellationTokenSource : CancellationTokenSource
+    - OnEnable() : void
+    + <<override>> OnInspectorGUI() : void
+}
+Editor <|-- EditorItemManager
+@enduml

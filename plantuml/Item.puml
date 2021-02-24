@@ -1,0 +1,7 @@
+@startuml
+package Item{
+!include .\\Item\Inventry.puml
+!include .\\Item\ItemManager.puml
+!include .\\Item\ItemSO.puml
+}
+@enduml

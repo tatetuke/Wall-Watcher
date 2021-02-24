@@ -1,0 +1,14 @@
+@startuml
+
+class ILoadableAsync{}
+class ScriptableObject{}
+
+package Others{
+!include .\\Others\AnimationModule.puml
+!include .\\Others\Conversati.puml
+!include .\\Others\GameManager_Kyoichi.puml
+!include .\\Others\Player.puml
+!include .\\Others\PlayerDataLoader.puml
+}
+
+@enduml

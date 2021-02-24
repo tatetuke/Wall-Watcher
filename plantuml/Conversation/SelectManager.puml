@@ -1,0 +1,15 @@
+@startuml
+class SelectManager {
+    SelectedColor : Color
+    NotSelectedColor : Color
+    Texts : TextMeshProUGUI[]
+    Size : int
+    + SelectManager(texts:TextMeshProUGUI[], selected_color:Color, not_selected_color:Color)
+    + UpdateLeft(selectnum:int) : void
+    + UpdateRight(selectnum:int) : void
+    + UpdateUp(selectnum:int) : void
+    + UpdateDown(selectnum:int) : void
+    + ChangeColorUp(selectnum:int) : void
+    + ChangeColorDown(selectnum:int) : void
+}
+@enduml
