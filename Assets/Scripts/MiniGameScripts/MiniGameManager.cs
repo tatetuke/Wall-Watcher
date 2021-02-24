@@ -9,7 +9,6 @@ using UnityEngine.UI;
 /// </summary>
 public class MiniGameManager : MonoBehaviour
 {
-    ItemManager Item;
     ScoreManager Score;
     RuleManager Rule;
 
@@ -31,7 +30,6 @@ public class MiniGameManager : MonoBehaviour
 
     public void Start()
     {
-        Item = new ItemManager();
         Score = new ScoreManager();
         // Rule = new RuleManager();
         IsStarted = false;
