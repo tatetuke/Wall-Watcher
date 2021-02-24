@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Warp : MonoBehaviour
 {
@@ -14,9 +15,9 @@ public class Warp : MonoBehaviour
             if (value)
             {
                 AllMapSet.prevMap = fromNum;
-                Debug.Log(fromNum);
                 AllMapSet.currentMap = toNum;
-                FadeManager.Instance.LoadLevel(AllMapSet.warpMap[AllMapSet.prevMap, AllMapSet.currentMap].Item3, 1f);
+                Debug.Log(AllMapSet.warpMap[fromNum, toNum].Item3);
+                FadeManager.Instance.LoadLevel(AllMapSet.warpMap[fromNum, toNum].Item3, 1f);
             }
 
         }
