@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -119,6 +119,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
     private void Update()
     {
+
+        SearchNearNPC.Instance.NearNPC();
+
         // NPCを光らせる処理
         if (CanTalk && /*まだ話しかけていない*/CurrentConversation == null)
         {
@@ -237,6 +240,8 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         {
             CanTalk = true;
         }
+        //タグの変更.SearchNearNPCで使われる.
+        this.tag = "CanConversationNPC";
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -250,5 +255,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             dialogController.Hide(Options[0]);
             dialogController.Hide(Options[1]);
         }
+        //タグの変更.SearchNearNPCで使われる.
+        this.tag = "NPC";
     }
 }
