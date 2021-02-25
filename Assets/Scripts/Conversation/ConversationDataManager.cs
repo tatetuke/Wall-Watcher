@@ -224,6 +224,8 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         {
             CanTalk = true;
         }
+        //タグの変更.SearchNearNPCで使われる.
+        this.tag = "CanConversationNPC";
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -237,5 +239,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             dialogController.Hide(Options[0]);
             dialogController.Hide(Options[1]);
         }
+        //タグの変更.SearchNearNPCで使われる.
+        this.tag = "NPC";
     }
 }
