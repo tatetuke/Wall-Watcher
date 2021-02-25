@@ -1,19 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public static class Define
-{
-    /// <summary>
-    /// NPCとPlayerの距離としてありうる最大の距離。
-    /// </summary>
-    public const float InfDis = 10000;
-}
 
-public class SearchNearNPC : MonoBehaviour
+public class SearchNearNPC : SingletonMonoBehaviour<SearchNearNPC>
 {
-
-    [SerializeField] GameObject PlayerObj;//プレイヤー
-   
+    float InfDis = 10000;// NPCとPlayerの距離としてありうる最大の距離。
+    GameObject PlayerObj;//プレイヤーの宣言と取得
+    private void Start()
+    {
+        if (GameObject.FindGameObjectsWithTag("Player")[0] == null) Debug.LogError("SearchNearNPC.csでプレイヤーが認識できません");
+        PlayerObj= GameObject.FindGameObjectsWithTag("Player")[0];
+    }
+ 
     ///テスト用
     //GameObject tmp;
     //private void Update()
@@ -21,17 +19,15 @@ public class SearchNearNPC : MonoBehaviour
     //    tmp = NearNPC();
     //}
 
-
-    
     /// <summary>
     /// 会話可能なNPCのうち、最短距離のNPCを返す関数
     /// 会話可能なNPCがいない場合はnullを返す
     /// </summary>
     /// <returns></returns>
-    GameObject NearNPC()
+    public GameObject NearNPC()
     {
-        float minDis = Define.InfDis;   //NPCとの最短距離
-        float tmpDis;                   //距離用一時変数
+        float minDis = InfDis;   //NPCとの最短距離
+        float tmpDis;            //距離用一時変数
         GameObject retNearNPC = null; //返り値
 
         //プレイヤーと話せるNPCを全探索

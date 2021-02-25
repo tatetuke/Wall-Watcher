@@ -115,6 +115,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
     private void Update()
     {
+        SearchNearNPC.Instance.NearNPC();
         if (CanTalk)
         {
            
