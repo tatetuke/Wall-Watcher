@@ -19,12 +19,16 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     [SerializeField] private AssetLabelReference _labelReference;
     [SerializeField] TextMeshProUGUI TextBox;
 
+    [SerializeField] GameObject NPCSprite;
+    private Material NPCMaterial;
+    [SerializeField] float LineThickness = 1;
+
     DialogController dialogController;
     SelectManager selectManager;
     public TMP_Typewriter m_typewriter;
     public GameObject[] Options;
     public TextMeshProUGUI[] OptionTexts;
-   // public Text[] OptionTexts;
+    // public Text[] OptionTexts;
     private int SelectNum;
     private Conversations CurrentConversation = null;
     private ConversationData CurrentConversationData;
@@ -45,10 +49,10 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
     private void Start()
     {
+        NPCMaterial = NPCSprite.GetComponent<Renderer>().material;
         SelectNum = 0;
         dialogController = new DialogController();
         selectManager = new SelectManager(OptionTexts, Color.yellow, Color.black);
-
 
         /// <summary>
         /// 指定したフォルダからConversationDataを全て取ってくる
@@ -58,10 +62,10 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         ConversationDataFolderPath = "Assets/Data/" + _labelReference.labelString;
         // フォルダ内のすべてのファイル名を取得する
         Files = System.IO.Directory.GetFiles(@ConversationDataFolderPath, "*");
-        for(int i = 0; i < Files.Length; i++)
+        for (int i = 0; i < Files.Length; i++)
         {
             // 拡張子名部分を取得
-            string extension= System.IO.Path.GetExtension(Files[i]);
+            string extension = System.IO.Path.GetExtension(Files[i]);
             if (extension == ".asset")
             {
                 // 拡張子をのぞいたファイル名部分を取得
@@ -115,9 +119,18 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
     private void Update()
     {
+        // NPCを光らせる処理
+        if (CanTalk && /*まだ話しかけていない*/CurrentConversation == null)
+        {
+            NPCMaterial.SetFloat("_Thick", LineThickness);
+        }
+        else
+        {
+            NPCMaterial.SetFloat("_Thick", 0);
+        }
+
         if (CanTalk)
         {
-           
             // セレクトに関する更新
             if (IsOptionTalk(CurrentConversation))
             {
@@ -165,8 +178,8 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
                 //テキストを一文字一文字出力する。
                 //Play(テキスト本文,一秒間に送る文字数,文字送り終了時に呼び出されるもの)
-                m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete:()=>Debug.Log("完了"));
-              
+                m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete: () => Debug.Log("完了"));
+
 
                 // 番兵だったら会話を終了し、CurrentConversationを初期化
                 if (CurrentConversation.id == "FINISH")
