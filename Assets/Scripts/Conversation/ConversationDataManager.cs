@@ -119,8 +119,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
     private void Update()
     {
-
-        SearchNearNPC.Instance.NearNPC();
+        
 
         // NPCを光らせる処理
         if (CanTalk && /*まだ話しかけていない*/CurrentConversation == null)

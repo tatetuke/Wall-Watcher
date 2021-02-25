@@ -1110,6 +1110,8 @@ MonoBehaviour:
   _labelReference:
     m_LabelString: SubQuest
   TextBox: {fileID: 7380884549144426837}
+  NPCSprite: {fileID: 7380884548104049267}
+  LineThickness: 1
   m_typewriter: {fileID: 5028883841173596663}
   Options:
   - {fileID: 7380884548937734898}
