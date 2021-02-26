@@ -19,9 +19,13 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     [SerializeField] private AssetLabelReference _labelReference;
     [SerializeField] TextMeshProUGUI TextBox;
 
-    [SerializeField] GameObject NPCSprite;
+    [SerializeField] SearchNearNPC searchNearNPC;
     private Material NPCMaterial;
     [SerializeField] float LineThickness = 1;
+    private GameObject TargetNPC;
+    private GameObject TargetNPCImage;
+    private Material TargetNPCMaterial;
+
 
     DialogController dialogController;
     SelectManager selectManager;
@@ -49,7 +53,6 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
     private void Start()
     {
-        NPCMaterial = NPCSprite.GetComponent<Renderer>().material;
         SelectNum = 0;
         dialogController = new DialogController();
         selectManager = new SelectManager(OptionTexts, Color.yellow, Color.black);
@@ -119,17 +122,20 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
     private void Update()
     {
-        
+        if(TargetNPC != null)  // 元々光らせていたものを光らせなくする
+            TargetNPCMaterial.SetFloat("_Thick", 0);
 
-        // NPCを光らせる処理
-        if (CanTalk && /*まだ話しかけていない*/CurrentConversation == null)
+        TargetNPC = searchNearNPC.NearNPC();
+        if (TargetNPC != null)
         {
-            NPCMaterial.SetFloat("_Thick", LineThickness);
+            TargetNPCImage = TargetNPC.transform.FindChild("NPCImage(Sprite)").gameObject;
+            TargetNPCMaterial = TargetNPCImage.GetComponent<Renderer>().material;
         }
+
+        if (TargetNPC != null && /*まだ話しかけていない*/CurrentConversation == null)
+            TargetNPCMaterial.SetFloat("_Thick", LineThickness);  // 光らせる
         else
-        {
-            NPCMaterial.SetFloat("_Thick", 0);
-        }
+            TargetNPCMaterial.SetFloat("_Thick", 0);              // 元に戻す
 
         if (CanTalk)
         {
@@ -137,13 +143,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             if (IsOptionTalk(CurrentConversation))
             {
                 if (Input.GetKeyDown("left"))
-                {
-                    selectManager.UpdateLeft(ref SelectNum);
-                }
+                    selectManager.UpdateLeft(ref SelectNum);   // 左押したときに関する更新
                 if (Input.GetKeyDown("right"))
-                {
-                    selectManager.UpdateRight(ref SelectNum);
-                }
+                    selectManager.UpdateRight(ref SelectNum);  // 右押したときに関する更新
             }
 
             // スペースが押されたら会話を進める
@@ -185,9 +187,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
                 // 番兵だったら会話を終了し、CurrentConversationを初期化
                 if (CurrentConversation.id == "FINISH")
-                {
                     CurrentConversation = null;
-                }
 
                 // 選択肢に関する更新
                 if (IsOptionTalk(CurrentConversation))
@@ -219,10 +219,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             {
                 m_typewriter.Skip();
             }
-
-
         }
-
     }
 
 
