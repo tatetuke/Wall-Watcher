@@ -49,12 +49,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ff25a65e78000443948b2873d096323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_WalkSpeed: 8
   m_WalkForce: 10
   m_State: 0
   m_ViewObject: {fileID: 6626503895902429364}
   m_Rigidbody2D: {fileID: 341799687}
   m_AnimationModule: {fileID: 1975863534}
+  m_Inertia: 0
+  m_InertiaMultiplier: 2
 --- !u!114 &1975863534
 MonoBehaviour:
   m_ObjectHideFlags: 0
