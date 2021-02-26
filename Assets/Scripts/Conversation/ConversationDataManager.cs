@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -19,18 +19,28 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     [SerializeField] private AssetLabelReference _labelReference;
     [SerializeField] TextMeshProUGUI TextBox;
 
+    [SerializeField] SearchNearNPC searchNearNPC;
+    private Material NPCMaterial;
+    [SerializeField] float LineThickness = 1;
+    private GameObject TargetNPC;
+    private GameObject TargetNPCImage;
+    private Material TargetNPCMaterial;
+
+    private GameObject m_Player;
+    private GameObject m_PlayerSprite;
+    private Player PlayerScript;
+
     DialogController dialogController;
     SelectManager selectManager;
     public TMP_Typewriter m_typewriter;
     public GameObject[] Options;
     public TextMeshProUGUI[] OptionTexts;
-   // public Text[] OptionTexts;
+    // public Text[] OptionTexts;
     private int SelectNum;
     private Conversations CurrentConversation = null;
     private ConversationData CurrentConversationData;
     string FileId;
     string Id;
-    private bool CanTalk = false;
 
     string ConversationDataFolderPath;
     string[] Files;
@@ -45,10 +55,12 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
     private void Start()
     {
+        m_Player = GameObject.Find("Player");
+        PlayerScript = m_Player.GetComponent<Player>();
+        m_PlayerSprite = m_Player.transform.FindChild("PlayerSprite").gameObject;
         SelectNum = 0;
         dialogController = new DialogController();
         selectManager = new SelectManager(OptionTexts, Color.yellow, Color.black);
-
 
         /// <summary>
         /// 指定したフォルダからConversationDataを全て取ってくる
@@ -58,10 +70,10 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         ConversationDataFolderPath = "Assets/Data/" + _labelReference.labelString;
         // フォルダ内のすべてのファイル名を取得する
         Files = System.IO.Directory.GetFiles(@ConversationDataFolderPath, "*");
-        for(int i = 0; i < Files.Length; i++)
+        for (int i = 0; i < Files.Length; i++)
         {
             // 拡張子名部分を取得
-            string extension= System.IO.Path.GetExtension(Files[i]);
+            string extension = System.IO.Path.GetExtension(Files[i]);
             if (extension == ".asset")
             {
                 // 拡張子をのぞいたファイル名部分を取得
@@ -69,9 +81,11 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                 ConversationDataList.Add(filename);
             }
         }
-        Debug.Log("ファイル名を出力します");
-        foreach (var output in ConversationDataList) Debug.Log(output);
-        Debug.Log("ファイル名を出力しました");
+
+        // デバッグ用 : 必要なファイルが取り出せているか
+        //Debug.Log("ファイル名を出力します");
+        //foreach (var output in ConversationDataList) Debug.Log(output);
+        //Debug.Log("ファイル名を出力しました");
 
         // TODO : クエストの進行度によって用いるConversationDataを決める
         FileId = ConversationDataList[0];
@@ -115,25 +129,53 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
     private void Update()
     {
-        if (CanTalk)
+        if (TargetNPC != null)  // 対象のNPCがいなかったら、元々光らせていたものを光らせなくする
+            TargetNPCMaterial.SetFloat("_Thick", 0);
+
+        TargetNPC = searchNearNPC.NearNPC();
+        // 対象のNPCがいるなら光らせる表現を更新
+        if (TargetNPC != null)
         {
-           
+            TargetNPCImage = TargetNPC.transform.FindChild("NPCImage(Sprite)").gameObject;
+            TargetNPCMaterial = TargetNPCImage.GetComponent<Renderer>().material;
+        }
+        if (/*対象のNPCがいる*/TargetNPC != null && /*まだ話しかけていない*/CurrentConversation == null)
+            TargetNPCMaterial.SetFloat("_Thick", LineThickness);  // 光らせる
+        else
+            TargetNPCMaterial.SetFloat("_Thick", 0);              // 元に戻す
+
+        if (TargetNPC != null)  // 対象のNPCがいるなら
+        {
             // セレクトに関する更新
             if (IsOptionTalk(CurrentConversation))
             {
                 if (Input.GetKeyDown("left"))
-                {
-                    selectManager.UpdateLeft(ref SelectNum);
-                }
+                    selectManager.UpdateLeft(ref SelectNum);   // 左押したときに関する更新
                 if (Input.GetKeyDown("right"))
-                {
-                    selectManager.UpdateRight(ref SelectNum);
-                }
+                    selectManager.UpdateRight(ref SelectNum);  // 右押したときに関する更新
             }
 
             // スペースが押されたら会話を進める
             if (Input.GetKeyDown("space"))
             {
+                if (/*話しかけたら*/CurrentConversation == null)
+                {
+                    // 会話中はプレイヤーは動けないようにする
+                    PlayerScript.ChangeState(Player.State.IDLE);
+                    PlayerScript.ChangeState(Player.State.FREEZE);
+                    // プレイヤーが対象のNPCの方向に向くようにする
+                    if (m_Player.transform.position.x < TargetNPC.transform.position.x)  // プレイヤー,対象のNPC の順番
+                    {
+                        if (m_PlayerSprite.transform.rotation.y == 0)  // プレイヤーが左向いている
+                            m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 180, 0);
+                    }
+                    else                                                                 // 対象のNPC,プレイヤー の順番
+                    {
+                        if (m_PlayerSprite.transform.rotation.y != 0)  // プレイヤーが右向いている
+                            m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    }
+                }
+
                 // CurrentConversationの更新
                 if (IsOptionTalk(CurrentConversation))
                 {
@@ -165,13 +207,14 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
                 //テキストを一文字一文字出力する。
                 //Play(テキスト本文,一秒間に送る文字数,文字送り終了時に呼び出されるもの)
-                m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete:()=>Debug.Log("完了"));
-              
+                m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete: () => Debug.Log("完了"));
+
 
                 // 番兵だったら会話を終了し、CurrentConversationを初期化
                 if (CurrentConversation.id == "FINISH")
                 {
                     CurrentConversation = null;
+                    PlayerScript.ChangeState(Player.State.IDLE);
                 }
 
                 // 選択肢に関する更新
@@ -204,10 +247,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             {
                 m_typewriter.Skip();
             }
-
-
         }
-
     }
 
 
@@ -222,14 +262,17 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     {
         if (other.gameObject.tag == "Player")
         {
-            CanTalk = true;
+            //タグの変更.SearchNearNPCで使われる.
+            this.tag = "CanConversationNPC";
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            CanTalk = false;
+            //タグの変更.SearchNearNPCで使われる.
+            this.tag = "NPC";
+
             // MEMO : 以下は初期化だが、会話中プレイヤーを操作できないようにすれば要らない
             CurrentConversation = null;
             TextBox.text = "";
