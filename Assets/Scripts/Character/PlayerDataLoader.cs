@@ -13,7 +13,7 @@ public class PlayerDataLoader : MonoBehaviour,ISaveable,ILoadable
     [SerializeField] GameObject playerPrefab;
      GameObject currentPlayer;//現在のプレイヤーを記録する
     [SerializeField] string filedirectory;//セーブデータの存在するディレクトリ
-    [SerializeField] string filename;//セーブデータの名前（拡張子もつけて(.csv推奨)）
+    [SerializeField] string filename;//セーブデータの名前（拡張子もつけて(.csv形式)）
 
     // Start is called before the first frame update
     void Awake()
