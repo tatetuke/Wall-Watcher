@@ -26,6 +26,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     private GameObject TargetNPCImage;
     private Material TargetNPCMaterial;
 
+    private GameObject m_Player;
+    private GameObject m_PlayerSprite;
+    private Player PlayerScript;
 
     DialogController dialogController;
     SelectManager selectManager;
@@ -38,7 +41,6 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     private ConversationData CurrentConversationData;
     string FileId;
     string Id;
-    private bool CanTalk = false;
 
     string ConversationDataFolderPath;
     string[] Files;
@@ -53,6 +55,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
     private void Start()
     {
+        m_Player = GameObject.Find("Player");
+        PlayerScript = m_Player.GetComponent<Player>();
+        m_PlayerSprite = m_Player.transform.FindChild("PlayerSprite").gameObject;
         SelectNum = 0;
         dialogController = new DialogController();
         selectManager = new SelectManager(OptionTexts, Color.yellow, Color.black);
@@ -76,9 +81,11 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                 ConversationDataList.Add(filename);
             }
         }
-        Debug.Log("ファイル名を出力します");
-        foreach (var output in ConversationDataList) Debug.Log(output);
-        Debug.Log("ファイル名を出力しました");
+
+        // デバッグ用 : 必要なファイルが取り出せているか
+        //Debug.Log("ファイル名を出力します");
+        //foreach (var output in ConversationDataList) Debug.Log(output);
+        //Debug.Log("ファイル名を出力しました");
 
         // TODO : クエストの進行度によって用いるConversationDataを決める
         FileId = ConversationDataList[0];
@@ -122,22 +129,22 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
     private void Update()
     {
-        if(TargetNPC != null)  // 元々光らせていたものを光らせなくする
+        if (TargetNPC != null)  // 対象のNPCがいなかったら、元々光らせていたものを光らせなくする
             TargetNPCMaterial.SetFloat("_Thick", 0);
 
         TargetNPC = searchNearNPC.NearNPC();
+        // 対象のNPCがいるなら光らせる表現を更新
         if (TargetNPC != null)
         {
             TargetNPCImage = TargetNPC.transform.FindChild("NPCImage(Sprite)").gameObject;
             TargetNPCMaterial = TargetNPCImage.GetComponent<Renderer>().material;
         }
-
-        if (TargetNPC != null && /*まだ話しかけていない*/CurrentConversation == null)
+        if (/*対象のNPCがいる*/TargetNPC != null && /*まだ話しかけていない*/CurrentConversation == null)
             TargetNPCMaterial.SetFloat("_Thick", LineThickness);  // 光らせる
         else
             TargetNPCMaterial.SetFloat("_Thick", 0);              // 元に戻す
 
-        if (CanTalk)
+        if (TargetNPC != null)  // 対象のNPCがいるなら
         {
             // セレクトに関する更新
             if (IsOptionTalk(CurrentConversation))
@@ -151,6 +158,24 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             // スペースが押されたら会話を進める
             if (Input.GetKeyDown("space"))
             {
+                if (/*話しかけたら*/CurrentConversation == null)
+                {
+                    // 会話中はプレイヤーは動けないようにする
+                    PlayerScript.ChangeState(Player.State.IDLE);
+                    PlayerScript.ChangeState(Player.State.FREEZE);
+                    // プレイヤーが対象のNPCの方向に向くようにする
+                    if (m_Player.transform.position.x < TargetNPC.transform.position.x)  // プレイヤー,対象のNPC の順番
+                    {
+                        if (m_PlayerSprite.transform.rotation.y == 0)  // プレイヤーが左向いている
+                            m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 180, 0);
+                    }
+                    else                                                                 // 対象のNPC,プレイヤー の順番
+                    {
+                        if (m_PlayerSprite.transform.rotation.y != 0)  // プレイヤーが右向いている
+                            m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    }
+                }
+
                 // CurrentConversationの更新
                 if (IsOptionTalk(CurrentConversation))
                 {
@@ -187,7 +212,10 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
                 // 番兵だったら会話を終了し、CurrentConversationを初期化
                 if (CurrentConversation.id == "FINISH")
+                {
                     CurrentConversation = null;
+                    PlayerScript.ChangeState(Player.State.IDLE);
+                }
 
                 // 選択肢に関する更新
                 if (IsOptionTalk(CurrentConversation))
@@ -234,16 +262,17 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     {
         if (other.gameObject.tag == "Player")
         {
-            CanTalk = true;
+            //タグの変更.SearchNearNPCで使われる.
+            this.tag = "CanConversationNPC";
         }
-        //タグの変更.SearchNearNPCで使われる.
-        this.tag = "CanConversationNPC";
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            CanTalk = false;
+            //タグの変更.SearchNearNPCで使われる.
+            this.tag = "NPC";
+
             // MEMO : 以下は初期化だが、会話中プレイヤーを操作できないようにすれば要らない
             CurrentConversation = null;
             TextBox.text = "";
@@ -251,7 +280,5 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             dialogController.Hide(Options[0]);
             dialogController.Hide(Options[1]);
         }
-        //タグの変更.SearchNearNPCで使われる.
-        this.tag = "NPC";
     }
 }
