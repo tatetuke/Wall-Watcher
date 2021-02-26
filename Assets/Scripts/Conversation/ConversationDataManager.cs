@@ -19,7 +19,6 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     [SerializeField] private AssetLabelReference _labelReference;
     [SerializeField] TextMeshProUGUI TextBox;
 
-    [SerializeField] SearchNearNPC searchNearNPC;
     private Material NPCMaterial;
     [SerializeField] float LineThickness = 1;
     private GameObject TargetNPC;
@@ -132,7 +131,8 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         if (TargetNPC != null)  // 対象のNPCがいなかったら、元々光らせていたものを光らせなくする
             TargetNPCMaterial.SetFloat("_Thick", 0);
 
-        TargetNPC = searchNearNPC.NearNPC();
+        TargetNPC = SearchNearNPC.Instance.NearNPC();
+
         // 対象のNPCがいるなら光らせる表現を更新
         if (TargetNPC != null)
         {
@@ -144,7 +144,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         else
             TargetNPCMaterial.SetFloat("_Thick", 0);              // 元に戻す
 
-        if (TargetNPC != null)  // 対象のNPCがいるなら
+        if (TargetNPC == this.gameObject)  // 対象のNPCが自分自身ならば
         {
             // セレクトに関する更新
             if (IsOptionTalk(CurrentConversation))
@@ -273,12 +273,12 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             //タグの変更.SearchNearNPCで使われる.
             this.tag = "NPC";
 
-            // MEMO : 以下は初期化だが、会話中プレイヤーを操作できないようにすれば要らない
-            CurrentConversation = null;
-            TextBox.text = "";
-            selectManager.ChangeColorDown(SelectNum);
-            dialogController.Hide(Options[0]);
-            dialogController.Hide(Options[1]);
+            //// MEMO : 以下は初期化だが、会話中プレイヤーを操作できないようにすれば要らない
+            //CurrentConversation = null;
+            //TextBox.text = "";
+            //selectManager.ChangeColorDown(SelectNum);
+            //dialogController.Hide(Options[0]);
+            //dialogController.Hide(Options[1]);
         }
     }
 }
