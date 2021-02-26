@@ -12,3 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ef7334790f26274aba18c542e6595fa, type: 3}
   m_Name: NewQuest
   m_EditorClassIdentifier: 
+  subQuests:
+  - {fileID: 11400000, guid: b135153b6c6baa24e8ae00a7993f5398, type: 2}
+  - {fileID: 11400000, guid: e08fda7231809e14c9ce9e6a46118866, type: 2}
+  startConditions:
+  - parameterKey: 
+    conditionOperator: 1
+    valueType: 2
+    intValue: 10
+    floatValue: 499
+    stringValue: aaaa
+    boolValue: 0
+  - parameterKey: 
+    conditionOperator: 3
+    valueType: 0
+    intValue: 10
+    floatValue: 499
+    stringValue: aaaa
+    boolValue: 0
+  endConditions:
+  - parameterKey: 
+    conditionOperator: 1
+    valueType: 1
+    intValue: 0
+    floatValue: 0
+    stringValue: 
+    boolValue: 0

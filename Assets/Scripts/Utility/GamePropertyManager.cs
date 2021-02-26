@@ -34,16 +34,23 @@ sealed public class GamePropertyManager : SingletonMonoBehaviour<GamePropertyMan
         }
     }
 
-    Dictionary<string, ParameterInt> intParams = new Dictionary<string, ParameterInt>();
-    Dictionary<string, ParameterFloat> floatParams = new Dictionary<string, ParameterFloat>();
-    Dictionary<string, ParameterBool> boolParams = new Dictionary<string, ParameterBool>();
     Dictionary<string, Property<int>> intProperties = new Dictionary<string, Property<int>>();
     Dictionary<string, Property<float>> floatProperties = new Dictionary<string, Property<float>>();
     Dictionary<string, Property<bool>> boolProperties = new Dictionary<string, Property<bool>>();
+    Dictionary<string, Property<Vector2>> vec2Properties = new Dictionary<string, Property<Vector2>>();
+    Dictionary<string, Property<Vector3>> vec3Properties = new Dictionary<string, Property<Vector3>>();
+    Dictionary<string, Property<string>> stringProperties = new Dictionary<string, Property<string>>();
 
     [Header("Property")]
     [SerializeField] string directory = "Data";
     [SerializeField] string filename="propertydata.csv";
+
+    const string intHeader = "property.int";
+    const string floatHeader = "property.float";
+    const string boolHeader = "property.bool";
+    const string vec2Header = "property.vec2";
+    const string vec3Header = "property.vec3";
+    const string stringHeader = "property.string";
 
     /// <summary>
     /// RegisterParamした後に、そのパラメータをcsvファイルからロードした値で上書きする
@@ -61,23 +68,28 @@ sealed public class GamePropertyManager : SingletonMonoBehaviour<GamePropertyMan
         {
             switch (obj[0])
             {
-                case "param.int":
-                    intParams[obj[1]].Value = int.Parse(obj[2]);
-                    break;
-                case "param.float":
-                    floatParams[obj[1]].Value = float.Parse(obj[2]);
-                    break;
-                case "param.bool":
-                    boolParams[obj[1]].Value = bool.Parse(obj[2]);
-                    break;
-                case "property.int":
+                case intHeader:
                     intProperties[obj[1]].Value = int.Parse(obj[2]);
                     break;
-                case "property.float":
+                case floatHeader:
                     floatProperties[obj[1]].Value = float.Parse(obj[2]);
                     break;
-                case "property.bool":
+                case boolHeader:
                     boolProperties[obj[1]].Value = bool.Parse(obj[2]);
+                    break;
+                case vec2Header:
+                    float x = float.Parse(obj[2]);
+                    float y = float.Parse(obj[3]);
+                    vec2Properties[obj[1]].Value = new Vector2(x, y);
+                    break;
+                case vec3Header:
+                    float x2 = float.Parse(obj[2]);
+                    float y2 = float.Parse(obj[3]);
+                    float z2 = float.Parse(obj[4]);
+                    vec3Properties[obj[1]].Value = new Vector3(x2, y2, z2);
+                    break;
+                case stringHeader:
+                    stringProperties[obj[1]].Value = obj[2];
                     break;
                 default:
                     break;
@@ -89,52 +101,61 @@ sealed public class GamePropertyManager : SingletonMonoBehaviour<GamePropertyMan
     {
         Debug.Log("Save properties", gameObject);
         var list = new List<List<string>>();
-        foreach (var obj in intParams)
-        {
-            var l = new List<string>();
-            l.Add("param.int");
-            l.Add(obj.Key);
-            l.Add(obj.Value.Value.ToString());
-            list.Add(l);
-        }
-        foreach (var obj in floatParams)
-        {
-            var l = new List<string>();
-            l.Add("param.float");
-            l.Add(obj.Key);
-            l.Add(obj.Value.Value.ToString());
-            list.Add(l);
-        }
-        foreach (var obj in boolParams)
-        {
-            var l = new List<string>();
-            l.Add("param.bool");
-            l.Add(obj.Key);
-            l.Add(obj.Value.Value.ToString());
-            list.Add(l);
-        }
         foreach (var obj in intProperties)
         {
-            var l = new List<string>();
-            l.Add("property.int");
-            l.Add(obj.Key);
-            l.Add(obj.Value.Value.ToString());
+            var l = new List<string> {
+                intHeader,
+                obj.Key,
+                obj.Value.Value.ToString()
+            };
             list.Add(l);
         }
         foreach (var obj in floatProperties)
         {
-            var l = new List<string>();
-            l.Add("property.float");
-            l.Add(obj.Key);
-            l.Add(obj.Value.Value.ToString());
+            var l = new List<string> {
+                floatHeader,
+                obj.Key,
+                obj.Value.Value.ToString()
+            };
             list.Add(l);
         }
         foreach (var obj in boolProperties)
         {
-            var l = new List<string>();
-            l.Add("property.bool");
-            l.Add(obj.Key);
-            l.Add(obj.Value.Value.ToString());
+            var l = new List<string> {
+                boolHeader,
+                obj.Key,
+                obj.Value.Value.ToString()
+            };
+            list.Add(l);
+        }
+        foreach (var obj in vec2Properties)
+        {
+            var l = new List<string> {
+                vec2Header,
+                obj.Key,
+                obj.Value.Value.x.ToString(),
+                obj.Value.Value.y.ToString()
+            };
+            list.Add(l);
+        }
+        foreach (var obj in vec3Properties)
+        {
+            var l = new List<string> {
+                vec3Header,
+                obj.Key,
+                obj.Value.Value.x.ToString(),
+                obj.Value.Value.y.ToString(),
+                obj.Value.Value.z.ToString()
+            };
+            list.Add(l);
+        }
+        foreach (var obj in stringProperties)
+        {
+            var l = new List<string> {
+                stringHeader,
+                obj.Key,
+                obj.Value.Value,
+            };
             list.Add(l);
         }
         CSVReader.Write(directory, filename,list);
@@ -191,59 +212,32 @@ sealed public class GamePropertyManager : SingletonMonoBehaviour<GamePropertyMan
         }
         boolProperties.Add(key, new Property<bool>(setter, getter));
     }
-    public void RegisterParam(string key, ParameterInt param)
+    public void RegisterParam(string key, Property<Vector2>.PropertySetter setter, Property<Vector2>.PropertyGetter getter)
     {
-        if (intParams.ContainsKey(key))
+        if (vec2Properties.ContainsKey(key))
         {
             Debug.LogWarning($"key '{key}' already exists");
             return;
         }
-        intParams.Add(key, param);
+        vec2Properties.Add(key, new Property<Vector2>(setter, getter));
     }
-    public void RegisterParam(string key, ParameterFloat param)
+    public void RegisterParam(string key, Property<Vector3>.PropertySetter setter, Property<Vector3>.PropertyGetter getter)
     {
-        if (floatParams.ContainsKey(key))
+        if (vec3Properties.ContainsKey(key))
         {
             Debug.LogWarning($"key '{key}' already exists");
             return;
         }
-        floatParams.Add(key, param);
+        vec3Properties.Add(key, new Property<Vector3>(setter, getter));
     }
-    public void RegisterParam(string key, ParameterBool param)
+    public void RegisterParam(string key, Property<string>.PropertySetter setter, Property<string>.PropertyGetter getter)
     {
-        if (boolParams.ContainsKey(key))
+        if (stringProperties.ContainsKey(key))
         {
             Debug.LogWarning($"key '{key}' already exists");
             return;
         }
-        boolParams.Add(key, param);
-    }
-    public ParameterInt GetInt(string key)
-    {
-        if (!intParams.ContainsKey(key))
-        {
-            Debug.LogError($"key '{key}' does not exists");
-            return null;
-        }
-        return intParams[key];
-    }
-    public ParameterFloat GetFloat(string key)
-    {
-        if (!floatParams.ContainsKey(key))
-        {
-            Debug.LogError($"key '{key}' does not exists");
-            return null;
-        }
-        return floatParams[key];
-    }
-    public ParameterBool GetBool(string key)
-    {
-        if (!boolParams.ContainsKey(key))
-        {
-            Debug.LogError($"key '{key}' does not exists");
-            return null;
-        }
-        return boolParams[key];
+        stringProperties.Add(key, new Property<string>(setter, getter));
     }
     public int GetIntProperty(string key)
     {
@@ -272,31 +266,31 @@ sealed public class GamePropertyManager : SingletonMonoBehaviour<GamePropertyMan
         }
         return boolProperties[key].Value;
     }
-    public void SetIntProperty(string key, int value)
+    public Vector2 GetVec2Property(string key)
     {
-        if (!intProperties.ContainsKey(key))
+        if (!vec2Properties.ContainsKey(key))
         {
             Debug.LogError($"key '{key}' does not exists");
-            return;
+            return Vector2.zero;
         }
-        intProperties[key].Value = value;
+        return vec2Properties[key].Value;
     }
-    public void SetFloatProperty(string key, float value)
+    public Vector3 GetVec3Property(string key)
     {
-        if (!floatProperties.ContainsKey(key))
+        if (!vec3Properties.ContainsKey(key))
         {
             Debug.LogError($"key '{key}' does not exists");
-            return;
+            return Vector3.zero;
         }
-        floatProperties[key].Value = value;
+        return vec3Properties[key].Value;
     }
-    public void SetBoolProperty(string key, bool value)
+    public string GetStringProperty(string key)
     {
-        if (!boolProperties.ContainsKey(key))
+        if (!stringProperties.ContainsKey(key))
         {
             Debug.LogError($"key '{key}' does not exists");
-            return;
+            return null;
         }
-        boolProperties[key].Value = value;
+        return stringProperties[key].Value;
     }
 }

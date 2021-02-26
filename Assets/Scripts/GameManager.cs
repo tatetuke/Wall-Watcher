@@ -25,6 +25,7 @@ namespace Kyoichi
         {
             //データをロードするときはSaveLoadManager.LoadをStartもしくはUpdate内で行ってください。
             //Awakeでは行わないよう
+            GamePropertyManager.Instance.LoadProperty();
             SaveLoadManager.Instance.Load().Wait();
             m_state = GameState.loading;
             SaveLoadManager.Instance.OnLoadFinished.AddListener(() =>
@@ -54,6 +55,7 @@ namespace Kyoichi
         {
             //ゲームを終了したときに自動でセーブされるようになってます
             SaveLoadManager.Instance.Save().Wait();
+            GamePropertyManager.Instance.SaveProperty();
         }
     }
 

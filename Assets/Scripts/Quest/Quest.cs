@@ -5,29 +5,6 @@ using UnityEngine.Events;
 
 public class Quest : MonoBehaviour
 {
-    [System.Serializable]
-    public class QuestCondition
-    {
-        public string dataKey;
-        public string value;
-        public bool MatchCondition()
-        {
-            return false;//SaveLoadManager.Instance.
-        }
-    }
-
-
-    [System.Serializable]
-    public class QuestPhase
-    {
-        public List<QuestCondition> startConditions = new List<QuestCondition>();
-        public List<QuestCondition> finishConditions = new List<QuestCondition>();
-        public UnityEvent OnPhaseStart = new UnityEvent();
-        public UnityEvent OnPhaseFinish = new UnityEvent();
-        public void CheckStart() { }
-        public void CheckFinish() { }
-    }
-
     public enum QuestState
     {
         not_yet,
@@ -35,15 +12,74 @@ public class Quest : MonoBehaviour
         finish,
         error
     }
-    QuestState state = QuestState.not_yet;
-    public List<QuestCondition> startConditions = new List<QuestCondition>();
-    public List<QuestCondition> finishConditions = new List<QuestCondition>();
-
+    QuestState m_state = QuestState.not_yet;
+    [SerializeField] QuestDataSO questData;
+    List<Quest> m_subQuests = new List<Quest>();
     public UnityEvent OnQuestStart = new UnityEvent();
     public UnityEvent OnQuestFinish = new UnityEvent();
-    public void CheckStart() { }
-    public void CheckFinish() { }
-    List<QuestPhase> phases = new List<QuestPhase>();
-    int currentPhase;
+    int m_currentPhase=0;
+    public bool IsCurrentSubQuestFinished()
+    {
+        return false;
+    }
+    public bool IsQuestFinished()
+    {
+        return false;
+    }
+    public bool CheckStart()
+    {
+        foreach(var i in questData.startConditions)
+        {
+            if (GamePropertyManager.Instance.GetBoolProperty(i.parameterKey))
+            {
 
+            }
+        }
+        return false;
+    }
+    public bool CheckFinish()
+    {
+        return false;
+    }
+    public void ForceStart()
+    {
+
+    }
+    private void Start()
+    {
+        foreach (var i in questData.subQuests)
+        {
+            var obj = new GameObject(i.name);
+            var scr = obj.AddComponent<Quest>();
+            scr.questData = i;
+            obj.transform.parent = transform;
+            m_subQuests.Add(scr);
+        }
+    }
+    private void Update()
+    {
+        switch (m_state)
+        {
+            case QuestState.not_yet:
+                if (CheckStart())
+                {
+                    m_state = QuestState.doing;
+                    OnQuestStart.Invoke();
+                }
+                break;
+            case QuestState.doing:
+                if (CheckFinish())
+                {
+                    m_state = QuestState.finish;
+                    OnQuestFinish.Invoke();
+                }
+                break;
+            case QuestState.finish:
+                break;
+            case QuestState.error:
+                break;
+            default:
+                break;
+        }
+    }
 }
