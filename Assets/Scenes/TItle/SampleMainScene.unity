@@ -291,6 +291,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7380884549817367794, guid: 7c1a1d9b4a7695d4d9985293f7f76286,
+        type: 3}
+      propertyPath: searchNearNPC
+      value: 
+      objectReference: {fileID: 1460419319}
     - target: {fileID: 7380884549817367795, guid: 7c1a1d9b4a7695d4d9985293f7f76286,
         type: 3}
       propertyPath: m_Name
@@ -542,6 +547,11 @@ PrefabInstance:
       propertyPath: NPCSprite
       value: 
       objectReference: {fileID: 1931455068}
+    - target: {fileID: 7380884549817367794, guid: 7c1a1d9b4a7695d4d9985293f7f76286,
+        type: 3}
+      propertyPath: searchNearNPC
+      value: 
+      objectReference: {fileID: 1460419319}
     - target: {fileID: 7380884549817367795, guid: 7c1a1d9b4a7695d4d9985293f7f76286,
         type: 3}
       propertyPath: m_Name
