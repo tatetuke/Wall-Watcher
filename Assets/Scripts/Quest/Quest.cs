@@ -3,12 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// クエストクラス
+/// 内部にサブクエストを持つことができる
+/// </summary>
 public class Quest : MonoBehaviour
 {
+    /// <summary>
+    /// クエストの状態
+    /// not_yet→working→
+    /// subQuestRun→subQuestFinish→working→
+    /// subQuestRun→subQuestFinish→working→...subQuestのぶんだけ繰り返し
+    /// →finish
+    /// となる
+    /// </summary>
     public enum QuestState
     {
         not_yet,
-        doing,
+        working,
+        subQuestRun,
+        subQuestFinish,
         finish,
         error
     }
@@ -18,13 +32,9 @@ public class Quest : MonoBehaviour
     public UnityEvent OnQuestStart = new UnityEvent();
     public UnityEvent OnQuestFinish = new UnityEvent();
     int m_currentPhase=0;
-    public bool IsCurrentSubQuestFinished()
-    {
-        return false;
-    }
     public bool IsQuestFinished()
     {
-        return false;
+        return m_state==QuestState.finish;
     }
     public bool CheckStart()
     {
@@ -39,6 +49,13 @@ public class Quest : MonoBehaviour
     }
     public bool CheckFinish()
     {
+        foreach (var i in questData.endConditions)
+        {
+            if (GamePropertyManager.Instance.GetBoolProperty(i.parameterKey))
+            {
+
+            }
+        }
         return false;
     }
     public void ForceStart()
@@ -63,16 +80,36 @@ public class Quest : MonoBehaviour
             case QuestState.not_yet:
                 if (CheckStart())
                 {
-                    m_state = QuestState.doing;
+                    m_state = QuestState.working;
                     OnQuestStart.Invoke();
                 }
                 break;
-            case QuestState.doing:
-                if (CheckFinish())
+            case QuestState.working:
+                if (m_subQuests.Count == 0 )
                 {
-                    m_state = QuestState.finish;
-                    OnQuestFinish.Invoke();
+                    if (CheckFinish())
+                    {
+                        OnQuestFinish.Invoke();
+                        m_state = QuestState.finish;
+                    }
                 }
+                else
+                {
+                    if (m_currentPhase < m_subQuests.Count && m_subQuests[m_currentPhase].CheckStart())
+                    {
+                        m_state = QuestState.subQuestRun;
+                    }
+                }
+                break;
+            case QuestState.subQuestRun:
+                if (m_subQuests[m_currentPhase].IsQuestFinished())
+                {
+                    m_currentPhase++;
+                    m_state = QuestState.subQuestFinish;
+                }
+                break;
+            case QuestState.subQuestFinish:
+                    m_state = QuestState.working;
                 break;
             case QuestState.finish:
                 break;
