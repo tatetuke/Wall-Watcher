@@ -45,12 +45,74 @@ public class QuestConditions
         }
         return null;
     }
-    public bool MeetCondition()
+    public bool MeetCondition(object value)
     {
+        try
+        {
+            switch (valueType)
+            {
+                case ValueType.Int: return MeetCondition((int)value);
+                case ValueType.Float: return MeetCondition((float)value);
+                case ValueType.String: return MeetCondition((string)value);
+                case ValueType.Boolean: return MeetCondition((bool)value);
+            }
+        }
+        catch
+        {
+            Debug.LogError($"Quest condition cast error '{parameterKey}'");
+            return false;
+        }
+        return false;
+    }
+    bool MeetCondition(int value)
+    {
+        switch (conditionOperator)
+        {
+            case Operator.lessThan:return value < intValue;
+            case Operator.lessOrEqual:return value <= intValue;
+            case Operator.equal:return value == intValue;
+            case Operator.notEqual: return value != intValue;
+            case Operator.graterOrEqual: return value >= intValue;
+            case Operator.graterThan:return value > intValue;
+        }
+        return false;
+    }
+    bool MeetCondition(float value)
+    {
+        switch (conditionOperator)
+        {
+            case Operator.lessThan: return value < floatValue;
+            case Operator.lessOrEqual: return value <= floatValue;
+            case Operator.equal: return value == floatValue;
+            case Operator.notEqual: return value != floatValue;
+            case Operator.graterOrEqual: return value >= floatValue;
+            case Operator.graterThan: return value > floatValue;
+        }
         return false;
     }
 
-
+    bool MeetCondition(string value)
+    {
+        switch (conditionOperator)
+        {
+            case Operator.lessThan: return string.Compare(value , stringValue)==-1;
+            case Operator.lessOrEqual: return string.Compare(value, stringValue) != 1;
+            case Operator.equal: return value == stringValue;
+            case Operator.notEqual: return value != stringValue;
+            case Operator.graterOrEqual: return string.Compare(value, stringValue) != -1;
+            case Operator.graterThan: return string.Compare(value, stringValue) == 1;
+        }
+        return false;
+    }
+    bool MeetCondition(bool value)
+    {
+        switch (conditionOperator)
+        {
+            case Operator.equal: return value == boolValue;
+            case Operator.notEqual: return value != boolValue;
+        }
+        return false;
+    }
 }
 
 

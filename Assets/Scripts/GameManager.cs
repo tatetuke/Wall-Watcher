@@ -6,7 +6,7 @@ using UnityEngine.Events;
 namespace Kyoichi
 {
     /// <summary>
-    /// セーブ・ロードをテストするLoadTestシーンのマネージャー
+    /// セーブ・ロードのタイミングを制御
     /// </summary>
     public class GameManager : SingletonMonoBehaviour<GameManager>
     {
@@ -51,9 +51,9 @@ namespace Kyoichi
             }
         }
 
+            //ゲームを終了したときに自動でセーブされるようになってます
         private void OnApplicationQuit()
         {
-            //ゲームを終了したときに自動でセーブされるようになってます
             SaveLoadManager.Instance.Save().Wait();
             GamePropertyManager.Instance.SaveProperty();
         }

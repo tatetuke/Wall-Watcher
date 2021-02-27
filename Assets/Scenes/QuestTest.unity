@@ -266,8 +266,9 @@ GameObject:
   - component: {fileID: 980212066}
   - component: {fileID: 980212065}
   - component: {fileID: 980212064}
+  - component: {fileID: 980212068}
   m_Layer: 0
-  m_Name: GameObject (2)
+  m_Name: GameManagers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -326,6 +327,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &980212068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 980212063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba3034b83ac522646a0155a2483f405f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _labelReference:
+    m_LabelString: item
 --- !u!1 &1982990529
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,8 +351,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1982990531}
   - component: {fileID: 1982990530}
+  - component: {fileID: 1982990532}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -355,12 +371,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ff25a65e78000443948b2873d096323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_WalkSpeed: 0
   m_WalkForce: 0
   m_State: 0
   m_ViewObject: {fileID: 0}
   m_Rigidbody2D: {fileID: 0}
   m_AnimationModule: {fileID: 0}
+  m_Inertia: 0
+  m_InertiaMultiplier: 0
 --- !u!4 &1982990531
 Transform:
   m_ObjectHideFlags: 0
@@ -375,3 +392,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1982990532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1982990529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 855038bb098027e479e3f2f83ccd78fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventryDirectory: Data
+  inventryFilename: '{{name}}.csv'

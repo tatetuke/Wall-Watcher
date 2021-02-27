@@ -40,24 +40,50 @@ public class Quest : MonoBehaviour
     {
         foreach(var i in questData.startConditions)
         {
-            if (GamePropertyManager.Instance.GetBoolProperty(i.parameterKey))
+            switch (i.valueType)
             {
-
+                case QuestConditions.ValueType.Int:
+                    if (!i.MeetCondition(GamePropertyManager.Instance.GetIntProperty(i.parameterKey))) return false;
+                    break;
+                case QuestConditions.ValueType.Float:
+                    if (!i.MeetCondition(GamePropertyManager.Instance.GetFloatProperty(i.parameterKey))) return false;
+                    break;
+                case QuestConditions.ValueType.String:
+                    if (!i.MeetCondition(GamePropertyManager.Instance.GetStringProperty(i.parameterKey))) return false;
+                    break;
+                case QuestConditions.ValueType.Boolean:
+                    if (!i.MeetCondition(GamePropertyManager.Instance.GetBoolProperty(i.parameterKey))) return false;
+                    break;
             }
         }
-        return false;
+        return true;
     }
     public bool CheckFinish()
     {
         foreach (var i in questData.endConditions)
         {
-            if (GamePropertyManager.Instance.GetBoolProperty(i.parameterKey))
+            switch (i.valueType)
             {
-
+                case QuestConditions.ValueType.Int:
+                    if (!i.MeetCondition(GamePropertyManager.Instance.GetIntProperty(i.parameterKey))) return false;
+                    break;
+                case QuestConditions.ValueType.Float:
+                    if (!i.MeetCondition(GamePropertyManager.Instance.GetFloatProperty(i.parameterKey))) return false;
+                    break;
+                case QuestConditions.ValueType.String:
+                    if (!i.MeetCondition(GamePropertyManager.Instance.GetStringProperty(i.parameterKey))) return false;
+                    break;
+                case QuestConditions.ValueType.Boolean:
+                    if (!i.MeetCondition(GamePropertyManager.Instance.GetBoolProperty(i.parameterKey))) return false;
+                    break;
             }
         }
-        return false;
+        return true;
     }
+    /// <summary>
+    /// 強制的にイベントを発生させる
+    /// プレイヤーを所定の場所に移動させ、会話を強制再生
+    /// </summary>
     public void ForceStart()
     {
 

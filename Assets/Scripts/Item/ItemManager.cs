@@ -27,8 +27,8 @@ namespace Kyoichi
                 return m_data;
             }
         }
-        List<Inventry> inventries = new List<Inventry>();
-        public void AddInventry(Inventry inventry) { inventries.Add(inventry); }
+        List<Inventry> m_inventries = new List<Inventry>();
+        public void AddInventry(Inventry inventry) { m_inventries.Add(inventry); }
 
         // Start is called before the first frame update
         void Awake()
@@ -67,10 +67,10 @@ namespace Kyoichi
 
         public void Save()
         {
-            for (int i=0;i<inventries.Count;)
+            for (int i=0;i< m_inventries.Count;)
             {
-                inventries[i].SaveToFile();
-                inventries.RemoveAt(i);
+                m_inventries[i].SaveToFile();
+                m_inventries.RemoveAt(i);
             }
         }
 

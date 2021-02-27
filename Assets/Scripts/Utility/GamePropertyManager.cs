@@ -45,6 +45,7 @@ sealed public class GamePropertyManager : SingletonMonoBehaviour<GamePropertyMan
     [SerializeField] string directory = "Data";
     [SerializeField] string filename="propertydata.csv";
 
+    //変数をファイルに保存するとき、その変数がどの型なのかを記述するヘッダ
     const string intHeader = "property.int";
     const string floatHeader = "property.float";
     const string boolHeader = "property.bool";

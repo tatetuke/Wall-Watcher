@@ -16,25 +16,25 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b135153b6c6baa24e8ae00a7993f5398, type: 2}
   - {fileID: 11400000, guid: e08fda7231809e14c9ce9e6a46118866, type: 2}
   startConditions:
-  - parameterKey: 
-    conditionOperator: 3
+  - parameterKey: money
+    conditionOperator: 0
     valueType: 0
-    intValue: 10
+    intValue: 1000
     floatValue: 499
     stringValue: aaaa
     boolValue: 0
-  - parameterKey: 
-    conditionOperator: 3
+  - parameterKey: chapter
+    conditionOperator: 2
     valueType: 0
-    intValue: 10
+    intValue: 3
     floatValue: 499
     stringValue: aaaa
     boolValue: 0
   endConditions:
-  - parameterKey: 
-    conditionOperator: 1
-    valueType: 1
-    intValue: 0
+  - parameterKey: player.item.somewhere_key
+    conditionOperator: 2
+    valueType: 0
+    intValue: 1
     floatValue: 0
     stringValue: 
-    boolValue: 0
+    boolValue: 1
