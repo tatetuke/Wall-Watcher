@@ -57,7 +57,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     {
         m_Player = GameObject.Find("Player");
         PlayerScript = m_Player.GetComponent<Player>();
-        m_PlayerSprite = m_Player.transform.FindChild("PlayerSprite").gameObject;
+        m_PlayerSprite = m_Player.transform.Find("PlayerSprite").gameObject;
         SelectNum = 0;
         dialogController = new DialogController();
         selectManager = new SelectManager(OptionTexts, Color.yellow, Color.black);
@@ -136,7 +136,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         // 対象のNPCがいるなら光らせる表現を更新
         if (TargetNPC != null)
         {
-            TargetNPCImage = TargetNPC.transform.FindChild("NPCImage(Sprite)").gameObject;
+            TargetNPCImage = TargetNPC.transform.Find("NPCImage(Sprite)").gameObject;
             TargetNPCMaterial = TargetNPCImage.GetComponent<Renderer>().material;
         }
         if (/*対象のNPCがいる*/TargetNPC != null && /*まだ話しかけていない*/CurrentConversation == null)

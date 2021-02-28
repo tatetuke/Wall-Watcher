@@ -19,10 +19,14 @@ public class AudioTable : ScriptableObject
         // return index.ContainsKey(id);
     }
 
-    public AudioPiece Get(string id)
+
+    public AudioPiece GetPiece(string id)
     {
         foreach (var i in items)
+        {
+            //Debug.Log($"{i.id} , {i.reference}");
             if (i.id == id) return i;
+        }
         return null;
     }
 
