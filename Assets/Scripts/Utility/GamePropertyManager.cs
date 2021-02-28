@@ -12,13 +12,10 @@ sealed public class GamePropertyManager : SingletonMonoBehaviour<GamePropertyMan
     [System.Serializable]
     public class Property<T>
     {
-        public delegate void PropertySetter(T value);
         public delegate T PropertyGetter();
-        PropertySetter setter;
         PropertyGetter getter;
-        public Property(PropertySetter setter_, PropertyGetter getter_)
+        public Property( PropertyGetter getter_)
         {
-            setter = setter_;
             getter = getter_;
         }
         public T Value
@@ -26,10 +23,6 @@ sealed public class GamePropertyManager : SingletonMonoBehaviour<GamePropertyMan
             get
             {
                 return getter();
-            }
-            set
-            {
-                setter(value);
             }
         }
     }
@@ -41,127 +34,6 @@ sealed public class GamePropertyManager : SingletonMonoBehaviour<GamePropertyMan
     Dictionary<string, Property<Vector3>> vec3Properties = new Dictionary<string, Property<Vector3>>();
     Dictionary<string, Property<string>> stringProperties = new Dictionary<string, Property<string>>();
 
-    [Header("Property")]
-    [SerializeField] string directory = "Data";
-    [SerializeField] string filename="propertydata.csv";
-
-    //変数をファイルに保存するとき、その変数がどの型なのかを記述するヘッダ
-    const string intHeader = "property.int";
-    const string floatHeader = "property.float";
-    const string boolHeader = "property.bool";
-    const string vec2Header = "property.vec2";
-    const string vec3Header = "property.vec3";
-    const string stringHeader = "property.string";
-
-    /// <summary>
-    /// RegisterParamした後に、そのパラメータをcsvファイルからロードした値で上書きする
-    /// </summary>
-    public void LoadProperty()
-    {
-        Debug.Log("Load properties",gameObject);
-       var list= CSVReader.Read(directory, filename);
-        if (list == null)
-        {
-            Debug.LogWarning("Property file not found", gameObject);
-            return;
-        }
-        foreach (var obj in list)
-        {
-            switch (obj[0])
-            {
-                case intHeader:
-                    intProperties[obj[1]].Value = int.Parse(obj[2]);
-                    break;
-                case floatHeader:
-                    floatProperties[obj[1]].Value = float.Parse(obj[2]);
-                    break;
-                case boolHeader:
-                    boolProperties[obj[1]].Value = bool.Parse(obj[2]);
-                    break;
-                case vec2Header:
-                    float x = float.Parse(obj[2]);
-                    float y = float.Parse(obj[3]);
-                    vec2Properties[obj[1]].Value = new Vector2(x, y);
-                    break;
-                case vec3Header:
-                    float x2 = float.Parse(obj[2]);
-                    float y2 = float.Parse(obj[3]);
-                    float z2 = float.Parse(obj[4]);
-                    vec3Properties[obj[1]].Value = new Vector3(x2, y2, z2);
-                    break;
-                case stringHeader:
-                    stringProperties[obj[1]].Value = obj[2];
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    public void SaveProperty()
-    {
-        Debug.Log("Save properties", gameObject);
-        var list = new List<List<string>>();
-        foreach (var obj in intProperties)
-        {
-            var l = new List<string> {
-                intHeader,
-                obj.Key,
-                obj.Value.Value.ToString()
-            };
-            list.Add(l);
-        }
-        foreach (var obj in floatProperties)
-        {
-            var l = new List<string> {
-                floatHeader,
-                obj.Key,
-                obj.Value.Value.ToString()
-            };
-            list.Add(l);
-        }
-        foreach (var obj in boolProperties)
-        {
-            var l = new List<string> {
-                boolHeader,
-                obj.Key,
-                obj.Value.Value.ToString()
-            };
-            list.Add(l);
-        }
-        foreach (var obj in vec2Properties)
-        {
-            var l = new List<string> {
-                vec2Header,
-                obj.Key,
-                obj.Value.Value.x.ToString(),
-                obj.Value.Value.y.ToString()
-            };
-            list.Add(l);
-        }
-        foreach (var obj in vec3Properties)
-        {
-            var l = new List<string> {
-                vec3Header,
-                obj.Key,
-                obj.Value.Value.x.ToString(),
-                obj.Value.Value.y.ToString(),
-                obj.Value.Value.z.ToString()
-            };
-            list.Add(l);
-        }
-        foreach (var obj in stringProperties)
-        {
-            var l = new List<string> {
-                stringHeader,
-                obj.Key,
-                obj.Value.Value,
-            };
-            list.Add(l);
-        }
-        CSVReader.Write(directory, filename,list);
-    }
-
     /// <summary>
     /// ゲーム内パラメータ(int)を登録
     /// 登録されたパラメータは自動的にセーブされる。
@@ -170,14 +42,14 @@ sealed public class GamePropertyManager : SingletonMonoBehaviour<GamePropertyMan
     /// <param name="key"></param>
     /// <param name="setter"></param>
     /// <param name="getter"></param>
-    public void RegisterParam(string key, Property<int>.PropertySetter setter, Property<int>.PropertyGetter getter)
+    public void RegisterParam(string key,  Property<int>.PropertyGetter getter)
     {
         if (intProperties.ContainsKey(key))
         {
             Debug.LogWarning($"key '{key}' already exists");
             return;
         }
-        intProperties.Add(key, new Property<int>(setter, getter));
+        intProperties.Add(key, new Property<int>( getter));
     }
     /// <summary>
     /// ゲーム内パラメータ(float)を登録
@@ -187,14 +59,14 @@ sealed public class GamePropertyManager : SingletonMonoBehaviour<GamePropertyMan
     /// <param name="key"></param>
     /// <param name="setter"></param>
     /// <param name="getter"></param>
-    public void RegisterParam(string key, Property<float>.PropertySetter setter, Property<float>.PropertyGetter getter)
+    public void RegisterParam(string key, Property<float>.PropertyGetter getter)
     {
         if (floatProperties.ContainsKey(key))
         {
             Debug.LogWarning($"key '{key}' already exists");
             return;
         }
-        floatProperties.Add(key, new Property<float>(setter, getter));
+        floatProperties.Add(key, new Property<float>( getter));
     }
     /// <summary>
     /// ゲーム内パラメータ(bool)を登録
@@ -204,41 +76,41 @@ sealed public class GamePropertyManager : SingletonMonoBehaviour<GamePropertyMan
     /// <param name="key"></param>
     /// <param name="setter"></param>
     /// <param name="getter"></param>
-    public void RegisterParam(string key, Property<bool>.PropertySetter setter, Property<bool>.PropertyGetter getter)
+    public void RegisterParam(string key, Property<bool>.PropertyGetter getter)
     {
         if (boolProperties.ContainsKey(key))
         {
             Debug.LogWarning($"key '{key}' already exists");
             return;
         }
-        boolProperties.Add(key, new Property<bool>(setter, getter));
+        boolProperties.Add(key, new Property<bool>( getter));
     }
-    public void RegisterParam(string key, Property<Vector2>.PropertySetter setter, Property<Vector2>.PropertyGetter getter)
+    public void RegisterParam(string key,Property<Vector2>.PropertyGetter getter)
     {
         if (vec2Properties.ContainsKey(key))
         {
             Debug.LogWarning($"key '{key}' already exists");
             return;
         }
-        vec2Properties.Add(key, new Property<Vector2>(setter, getter));
+        vec2Properties.Add(key, new Property<Vector2>( getter));
     }
-    public void RegisterParam(string key, Property<Vector3>.PropertySetter setter, Property<Vector3>.PropertyGetter getter)
+    public void RegisterParam(string key, Property<Vector3>.PropertyGetter getter)
     {
         if (vec3Properties.ContainsKey(key))
         {
             Debug.LogWarning($"key '{key}' already exists");
             return;
         }
-        vec3Properties.Add(key, new Property<Vector3>(setter, getter));
+        vec3Properties.Add(key, new Property<Vector3>( getter));
     }
-    public void RegisterParam(string key, Property<string>.PropertySetter setter, Property<string>.PropertyGetter getter)
+    public void RegisterParam(string key,  Property<string>.PropertyGetter getter)
     {
         if (stringProperties.ContainsKey(key))
         {
             Debug.LogWarning($"key '{key}' already exists");
             return;
         }
-        stringProperties.Add(key, new Property<string>(setter, getter));
+        stringProperties.Add(key, new Property<string>( getter));
     }
     public int GetIntProperty(string key)
     {
