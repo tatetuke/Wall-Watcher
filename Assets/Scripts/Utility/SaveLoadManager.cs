@@ -17,7 +17,7 @@ sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
     private void Start()
     {
         if (loadOnStart)
-            Load().Wait();
+            Load();
     }
     Queue<ISaveable> m_saveables = new Queue<ISaveable>();
     Queue<ILoadable> m_loadables = new Queue<ILoadable>();
