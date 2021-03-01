@@ -57,7 +57,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     {
         m_Player = GameObject.Find("Player");
         PlayerScript = m_Player.GetComponent<Player>();
-        m_PlayerSprite = m_Player.transform.FindChild("PlayerSprite").gameObject;
+        m_PlayerSprite = m_Player.transform.Find("PlayerSprite").gameObject;
         SelectNum = 0;
         dialogController = new DialogController();
         selectManager = new SelectManager(OptionTexts, Color.yellow, Color.black);
