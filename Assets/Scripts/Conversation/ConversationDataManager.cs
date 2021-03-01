@@ -10,6 +10,7 @@ using RPGM.Gameplay;
 using TMPro;
 using KoganeUnityLib;
 using System.Threading;
+using UnityEngine.Playables;
 /// <summary>
 /// 文章を表示します。
 /// スペースキーが押されたときに文章を送ります。
@@ -28,6 +29,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     private GameObject m_Player;
     private GameObject m_PlayerSprite;
     private Player PlayerScript;
+
+    [SerializeField]
+    private PlayableDirector playableDirector;
 
     DialogController dialogController;
     SelectManager selectManager;
@@ -135,6 +139,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             TargetNPCMaterial.SetFloat("_Thick", 0);
 
         TargetNPC = SearchNearNPC.Instance.NearNPC();
+
+        // TargetNPC != null : 対象がいる
+        // CurrentConversation != null : 会話しはじめてる
 
         // 今回自分が対象のNPCならば光らせる
         if (TargetNPC == this.gameObject)
@@ -292,5 +299,10 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             //dialogController.Hide(Options[0]);
             //dialogController.Hide(Options[1]);
         }
+    }
+
+    public GameObject GetTargetNPC()
+    {
+        return TargetNPC;
     }
 }
