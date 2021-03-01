@@ -19,7 +19,6 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     [SerializeField] private AssetLabelReference _labelReference;
     [SerializeField] TextMeshProUGUI TextBox;
 
-    [SerializeField] SearchNearNPC searchNearNPC;
     private Material NPCMaterial;
     [SerializeField] float LineThickness = 1;
     private GameObject TargetNPC;
@@ -53,6 +52,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         SaveLoadManager.Instance.SetLoadable(this);
     }
 
+    [System.Obsolete]
     private void Start()
     {
         m_Player = GameObject.Find("Player");
@@ -127,24 +127,30 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     //}
 
 
+    [System.Obsolete]
     private void Update()
     {
-        if (TargetNPC != null)  // 対象のNPCがいなかったら、元々光らせていたものを光らせなくする
+        // 前回自分が対象のNPCならば光らせないようにする
+        if (TargetNPC == this.gameObject)
             TargetNPCMaterial.SetFloat("_Thick", 0);
 
-        TargetNPC = searchNearNPC.NearNPC();
-        // 対象のNPCがいるなら光らせる表現を更新
-        if (TargetNPC != null)
-        {
-            TargetNPCImage = TargetNPC.transform.Find("NPCImage(Sprite)").gameObject;
-            TargetNPCMaterial = TargetNPCImage.GetComponent<Renderer>().material;
-        }
-        if (/*対象のNPCがいる*/TargetNPC != null && /*まだ話しかけていない*/CurrentConversation == null)
-            TargetNPCMaterial.SetFloat("_Thick", LineThickness);  // 光らせる
-        else
-            TargetNPCMaterial.SetFloat("_Thick", 0);              // 元に戻す
+        TargetNPC = SearchNearNPC.Instance.NearNPC();
 
-        if (TargetNPC != null)  // 対象のNPCがいるなら
+        // 今回自分が対象のNPCならば光らせる
+        if (TargetNPC == this.gameObject)
+        {
+
+            // 会話中は光らせない
+            if (/*まだ話しかけていない*/CurrentConversation == null)
+            {
+                TargetNPCImage = TargetNPC.transform.FindChild("NPCImage(Sprite)").gameObject;
+                TargetNPCMaterial = TargetNPCImage.GetComponent<Renderer>().material;
+                TargetNPCMaterial.SetFloat("_Thick", LineThickness);  // 光らせる
+            }
+
+        }
+
+        if (TargetNPC == this.gameObject)
         {
             // セレクトに関する更新
             if (IsOptionTalk(CurrentConversation))
@@ -160,19 +166,27 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             {
                 if (/*話しかけたら*/CurrentConversation == null)
                 {
+                    Quaternion quaternion = m_PlayerSprite.transform.rotation;
+                    float m_PlayerSprite_rotation_y = quaternion.eulerAngles.y;
                     // 会話中はプレイヤーは動けないようにする
-                    PlayerScript.ChangeState(Player.State.IDLE);
+                    //PlayerScript.ChangeState(Player.State.IDLE);
                     PlayerScript.ChangeState(Player.State.FREEZE);
+
                     // プレイヤーが対象のNPCの方向に向くようにする
                     if (m_Player.transform.position.x < TargetNPC.transform.position.x)  // プレイヤー,対象のNPC の順番
                     {
-                        if (m_PlayerSprite.transform.rotation.y == 0)  // プレイヤーが左向いている
+                        if (m_PlayerSprite_rotation_y == 0)  // プレイヤーが左向いている
+                        {
                             m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 180, 0);
+                        }
                     }
                     else                                                                 // 対象のNPC,プレイヤー の順番
                     {
-                        if (m_PlayerSprite.transform.rotation.y != 0)  // プレイヤーが右向いている
+                        //Debug.Log(TargetNPC.transform.position.x);
+                        if (m_PlayerSprite_rotation_y != 0)  // プレイヤーが右向いている
+                        {
                             m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        }
                     }
                 }
 
@@ -273,12 +287,12 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             //タグの変更.SearchNearNPCで使われる.
             this.tag = "NPC";
 
-            // MEMO : 以下は初期化だが、会話中プレイヤーを操作できないようにすれば要らない
-            CurrentConversation = null;
-            TextBox.text = "";
-            selectManager.ChangeColorDown(SelectNum);
-            dialogController.Hide(Options[0]);
-            dialogController.Hide(Options[1]);
+            //// MEMO : 以下は初期化だが、会話中プレイヤーを操作できないようにすれば要らない
+            //CurrentConversation = null;
+            //TextBox.text = "";
+            //selectManager.ChangeColorDown(SelectNum);
+            //dialogController.Hide(Options[0]);
+            //dialogController.Hide(Options[1]);
         }
     }
 }
