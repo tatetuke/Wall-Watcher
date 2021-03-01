@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
+/// <summary>
+/// ゲーム内のいろいろな変数を一つのファイルに保存・読み書きするためのクラス
+/// </summary>
 public class PropertyLoader : SingletonMonoBehaviour<PropertyLoader>
 {
     //変数をファイルに保存するとき、その変数がどの型なのかを記述するヘッダ
@@ -52,41 +55,57 @@ public class PropertyLoader : SingletonMonoBehaviour<PropertyLoader>
     {
         return m_properties[key];
     }
-    public int GetInt(string key)
+    public int GetInt(string key,int default_=0)
     {
-        if (m_propertyTypes[key] != intHeader)
+        if (!m_propertyTypes.ContainsKey(key)||m_propertyTypes[key] != intHeader)
         {
-            return 0;
+            return default_;
         }
         return int.Parse(m_properties[key]);
     }
-    public float GetFloat(string key)
+    public float GetFloat(string key,float default_=0f)
     {
-        if (m_propertyTypes[key] != floatHeader)
+        if (!m_propertyTypes.ContainsKey(key) || m_propertyTypes[key] != floatHeader)
         {
-            return 0;
+            return default_;
         }
         return float.Parse(m_properties[key]);
     }
-    public bool GetBool(string key)
+    public bool GetBool(string key,bool default_=false)
     {
-        if (m_propertyTypes[key] != boolHeader)
+        if (!m_propertyTypes.ContainsKey(key) || m_propertyTypes[key] != boolHeader)
         {
-            return false;
+            return default_;
         }
         return bool.Parse(m_properties[key]);
     }
-    public string GetString(string key)
+    public string GetString(string key,string default_="")
     {
-        if (m_propertyTypes[key] != stringHeader)
+        if (!m_propertyTypes.ContainsKey(key) || m_propertyTypes[key] != stringHeader)
         {
-            return "";
+            return default_;
         }
         return m_properties[key];
     }
+    public Vector2 GetVec2(string key,Vector2 default_)
+    {
+        if (!m_propertyTypes.ContainsKey(key) || m_propertyTypes[key] != vec2Header)
+        {
+            return default_;
+        }
+        return GetVec2(key);
+    }
+    public Vector3 GetVec3(string key, Vector3 default_)
+    {
+        if (!m_propertyTypes.ContainsKey(key) || m_propertyTypes[key] != vec3Header)
+        {
+            return default_;
+        }
+        return GetVec3(key);
+    }
     public Vector2 GetVec2(string key)
     {
-        if (m_propertyTypes[key] != vec2Header)
+        if (!m_propertyTypes.ContainsKey(key) || m_propertyTypes[key] != vec2Header)
         {
             return Vector2.zero;
         }
@@ -97,7 +116,7 @@ public class PropertyLoader : SingletonMonoBehaviour<PropertyLoader>
     }
     public Vector3 GetVec3(string key)
     {
-        if (m_propertyTypes[key] != vec3Header)
+        if (!m_propertyTypes.ContainsKey(key) || m_propertyTypes[key] != vec3Header)
         {
             return Vector3.zero;
         }

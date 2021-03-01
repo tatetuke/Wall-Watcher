@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 所持金を管理するクラス
 /// </summary>
-public class MoneyScript : MonoBehaviour
+public class MoneyScript : MonoBehaviour,ILoadable,ISaveable
 {
     [SerializeField] int defaultMoney;//初期値
     [SerializeField] int maxMoney;//お金の最大値
@@ -23,12 +23,20 @@ public class MoneyScript : MonoBehaviour
     }
     private void Awake()
     {
-        Money= PropertyLoader.Instance.GetInt("money");
+        //クエストなどで所持金を参照するためにGamePropertyManagerに登録
         GamePropertyManager.Instance.RegisterParam("money", () => Money);
+        SaveLoadManager.Instance.SetLoadable(this);
+        SaveLoadManager.Instance.SetSaveable(this);
     }
-    private void OnDestroy()
+    public void Load()
     {
-       PropertyLoader.Instance.SetInt("money",Money);
+        //値をセーブファイルからロード
+        Money = PropertyLoader.Instance.GetInt("money", defaultMoney);
+    }
+    public void Save()
+    {
+        //値をファイルに保存するために、ゲームが終わる直前の値を保存
+        PropertyLoader.Instance.SetInt("money", Money);
     }
 
 }

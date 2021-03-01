@@ -43,7 +43,6 @@ namespace Kyoichi
         }
 
         AsyncOperationHandle<IList<ItemSO>> m_handle;
-        private CancellationTokenSource _cancellationTokenSource;
         //ゲーム開始時の部屋を読み込む
         public async Task Load(CancellationToken cancellationToken)
         {
@@ -57,6 +56,7 @@ namespace Kyoichi
             m_state = LoadState.loading;
             m_handle = Addressables.LoadAssetsAsync<ItemSO>(_labelReference, null);
             await m_handle.Task;
+            Debug.Log("<color=#4a19bd>Item loaded</color>");
             foreach (var res in m_handle.Result)
             {
                 Debug.Log($"<color=#4a19bd>item '{res.name}'</color>");

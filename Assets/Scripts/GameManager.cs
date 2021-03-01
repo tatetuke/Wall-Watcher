@@ -25,8 +25,12 @@ namespace Kyoichi
         {
             //データをロードするときはSaveLoadManager.LoadをStartもしくはUpdate内で行ってください。
             //Awakeでは行わないよう
+            Debug.Log("Loading properties");
             PropertyLoader.Instance.LoadProperty();
-            SaveLoadManager.Instance.Load().Wait();
+            Debug.Log("Execte loadable");
+            //SaveLoadManager.Instance.Load().Wait();
+            //Waitするとロードしなくなる（Start内でAddressable.Wait()やろうとするといつまでたっても完了しないっぽい）
+            SaveLoadManager.Instance.Load();
             m_state = GameState.loading;
             SaveLoadManager.Instance.OnLoadFinished.AddListener(() =>
             {
