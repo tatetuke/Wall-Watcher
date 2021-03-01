@@ -29,6 +29,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     private GameObject m_Player;
     private GameObject m_PlayerSprite;
     private Player PlayerScript;
+    private bool IsTalking = false;
 
     [SerializeField]
     private PlayableDirector playableDirector;
@@ -139,7 +140,6 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             TargetNPCMaterial.SetFloat("_Thick", 0);
 
         TargetNPC = SearchNearNPC.Instance.NearNPC();
-        Debug.Log(TargetNPC.name);
 
         // TargetNPC != null : 対象がいる
         // CurrentConversation != null : 会話しはじめてる
@@ -148,7 +148,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         if (TargetNPC != null)
         {
             // 会話中は光らせない
-            if (/*まだ話しかけていない*/CurrentConversation == null)
+            if (!IsTalking)
             {
                 TargetNPCImage = TargetNPC.transform.FindChild("NPCImage(Sprite)").gameObject;
                 TargetNPCMaterial = TargetNPCImage.GetComponent<Renderer>().material;
@@ -168,99 +168,108 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             }
 
             // スペースが押されたら会話を進める
-            if (Input.GetKeyDown("space"))
+            if (Input.GetKeyDown("space")&& playableDirector.state != PlayState.Playing)
             {
-                if (/*話しかけたら*/CurrentConversation == null)
+                if (!IsTalking)
                 {
-                    Quaternion quaternion = m_PlayerSprite.transform.rotation;
-                    float m_PlayerSprite_rotation_y = quaternion.eulerAngles.y;
-                    // 会話中はプレイヤーは動けないようにする
-                    //PlayerScript.ChangeState(Player.State.IDLE);
                     PlayerScript.ChangeState(Player.State.FREEZE);
-
-                    // プレイヤーが対象のNPCの方向に向くようにする
-                    if (m_Player.transform.position.x < TargetNPC.transform.position.x)  // プレイヤー,対象のNPC の順番
-                    {
-                        if (m_PlayerSprite_rotation_y == 0)  // プレイヤーが左向いている
-                        {
-                            m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 180, 0);
-                        }
-                    }
-                    else                                                                 // 対象のNPC,プレイヤー の順番
-                    {
-                        //Debug.Log(TargetNPC.transform.position.x);
-                        if (m_PlayerSprite_rotation_y != 0)  // プレイヤーが右向いている
-                        {
-                            m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 0, 0);
-                        }
-                    }
-                }
-
-                // CurrentConversationの更新
-                if (IsOptionTalk(CurrentConversation))
-                {
-                    // 選ばれた選択肢の色を元に戻す
-                    selectManager.ChangeColorDown(SelectNum);
-                    // ConversationsのConversationOption型リストのtargetIdをIdとして指定
-                    Id = CurrentConversation.options[SelectNum].targetId;
-                    CurrentConversation = CurrentConversationData.Get(Id);
+                    playableDirector.Play();
+                    IsTalking = true;
                 }
                 else
                 {
-                    if (CurrentConversation == null)  // 一番最初だけ例外
+                    // CurrentConversationの更新
+                    if (IsOptionTalk(CurrentConversation))
                     {
-                        // FirstConversationをIdとして指定
-                        CurrentConversationData = GetConversation(FileId);
-                        Id = CurrentConversationData.GetFirst();
+                        // 選ばれた選択肢の色を元に戻す
+                        selectManager.ChangeColorDown(SelectNum);
+                        // ConversationsのConversationOption型リストのtargetIdをIdとして指定
+                        Id = CurrentConversation.options[SelectNum].targetId;
                         CurrentConversation = CurrentConversationData.Get(Id);
                     }
                     else
                     {
-                        // ConversationsのtargetIdをIdとして指定
-                        Id = CurrentConversation.targetID;
-                        CurrentConversation = CurrentConversationData.Get(Id);
+                        if (CurrentConversation == null)  // 一番最初だけ例外
+                        {
+                            // FirstConversationをIdとして指定
+                            CurrentConversationData = GetConversation(FileId);
+                            Id = CurrentConversationData.GetFirst();
+                            CurrentConversation = CurrentConversationData.Get(Id);
+                        }
+                        else
+                        {
+                            // ConversationsのtargetIdをIdとして指定
+                            Id = CurrentConversation.targetID;
+                            CurrentConversation = CurrentConversationData.Get(Id);
+                        }
                     }
-                }
 
-                // 会話の内容の更新
-                TextBox.text = CurrentConversation.text;
+                    // 会話の内容の更新
+                    TextBox.text = CurrentConversation.text;
 
-                //テキストを一文字一文字出力する。
-                //Play(テキスト本文,一秒間に送る文字数,文字送り終了時に呼び出されるもの)
-                m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete: () => Debug.Log("完了"));
+                    //テキストを一文字一文字出力する。
+                    //Play(テキスト本文,一秒間に送る文字数,文字送り終了時に呼び出されるもの)
+                    m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete: () => Debug.Log("完了"));
 
 
-                // 番兵だったら会話を終了し、CurrentConversationを初期化
-                if (CurrentConversation.id == "FINISH")
-                {
-                    CurrentConversation = null;
-                    PlayerScript.ChangeState(Player.State.IDLE);
-                }
-
-                // 選択肢に関する更新
-                if (IsOptionTalk(CurrentConversation))
-                {
-                    // 選択肢を表示する
-                    dialogController.Display(Options[0]);
-                    dialogController.Display(Options[1]);
-                    int itr = 0;
-                    // 選択肢の内容の更新
-                    foreach (var option in CurrentConversation.options)
+                    // 番兵だったら会話を終了し、CurrentConversationを初期化
+                    if (CurrentConversation.id == "FINISH")
                     {
-                        dialogController.SetText(OptionTexts[itr], option.text);
-                        itr++;
+                        CurrentConversation = null;
+                        PlayerScript.ChangeState(Player.State.IDLE);
+                        IsTalking = false;
                     }
 
-                    // 初期化 : 左を選択している状態にする
-                    SelectNum = 0;
-                    selectManager.ChangeColorUp(SelectNum);
+                    // 選択肢に関する更新
+                    if (IsOptionTalk(CurrentConversation))
+                    {
+                        // 選択肢を表示する
+                        dialogController.Display(Options[0]);
+                        dialogController.Display(Options[1]);
+                        int itr = 0;
+                        // 選択肢の内容の更新
+                        foreach (var option in CurrentConversation.options)
+                        {
+                            dialogController.SetText(OptionTexts[itr], option.text);
+                            itr++;
+                        }
+
+                        // 初期化 : 左を選択している状態にする
+                        SelectNum = 0;
+                        selectManager.ChangeColorUp(SelectNum);
+                    }
+                    else
+                    {
+                        // 選択肢を隠す
+                        dialogController.Hide(Options[0]);
+                        dialogController.Hide(Options[1]);
+                    }
                 }
-                else
-                {
-                    // 選択肢を隠す
-                    dialogController.Hide(Options[0]);
-                    dialogController.Hide(Options[1]);
-                }
+                //if (/*話しかけたら*/CurrentConversation == null)
+                //{
+
+                //    //Quaternion quaternion = m_PlayerSprite.transform.rotation;
+                //    //float m_PlayerSprite_rotation_y = quaternion.eulerAngles.y;
+                //    // 会話中はプレイヤーは動けないようにする
+                //    //PlayerScript.ChangeState(Player.State.IDLE);
+
+                //    //// プレイヤーが対象のNPCの方向に向くようにする
+                //    //if (m_Player.transform.position.x < TargetNPC.transform.position.x)  // プレイヤー,対象のNPC の順番
+                //    //{
+                //    //    if (m_PlayerSprite_rotation_y == 0)  // プレイヤーが左向いている
+                //    //    {
+                //    //        m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 180, 0);
+                //    //    }
+                //    //}
+                //    //else                                                                 // 対象のNPC,プレイヤー の順番
+                //    //{
+                //    //    //Debug.Log(TargetNPC.transform.position.x);
+                //    //    if (m_PlayerSprite_rotation_y != 0)  // プレイヤーが右向いている
+                //    //    {
+                //    //        m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                //    //    }
+                //    //}
+                //}
             }
             //下キーが押されたら文字送りをスキップして本文を出力する。
             if (Input.GetKeyDown("down"))
