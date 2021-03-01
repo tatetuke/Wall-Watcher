@@ -6,7 +6,7 @@ using UnityEngine.Events;
 namespace Kyoichi
 {
     /// <summary>
-    /// セーブ・ロードをテストするLoadTestシーンのマネージャー
+    /// セーブ・ロードのタイミングを制御
     /// </summary>
     public class GameManager : SingletonMonoBehaviour<GameManager>
     {
@@ -25,7 +25,12 @@ namespace Kyoichi
         {
             //データをロードするときはSaveLoadManager.LoadをStartもしくはUpdate内で行ってください。
             //Awakeでは行わないよう
-            SaveLoadManager.Instance.Load().Wait();
+            Debug.Log("Loading properties");
+            PropertyLoader.Instance.LoadProperty();
+            Debug.Log("Execte loadable");
+            //SaveLoadManager.Instance.Load().Wait();
+            //Waitするとロードしなくなる（Start内でAddressable.Wait()やろうとするといつまでたっても完了しないっぽい）
+            SaveLoadManager.Instance.Load();
             m_state = GameState.loading;
             SaveLoadManager.Instance.OnLoadFinished.AddListener(() =>
             {
@@ -50,10 +55,11 @@ namespace Kyoichi
             }
         }
 
+            //ゲームを終了したときに自動でセーブされるようになってます
         private void OnApplicationQuit()
         {
-            //ゲームを終了したときに自動でセーブされるようになってます
             SaveLoadManager.Instance.Save().Wait();
+            PropertyLoader.Instance.SaveProperty();
         }
     }
 
