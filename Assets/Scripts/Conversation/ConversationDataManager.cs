@@ -135,16 +135,17 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     private void Update()
     {
         // 前回自分が対象のNPCならば光らせないようにする
-        if (TargetNPC == this.gameObject)
+        if (TargetNPC != null)
             TargetNPCMaterial.SetFloat("_Thick", 0);
 
         TargetNPC = SearchNearNPC.Instance.NearNPC();
+        Debug.Log(TargetNPC.name);
 
         // TargetNPC != null : 対象がいる
         // CurrentConversation != null : 会話しはじめてる
 
         // 今回自分が対象のNPCならば光らせる
-        if (TargetNPC == this.gameObject)
+        if (TargetNPC != null)
         {
             // 会話中は光らせない
             if (/*まだ話しかけていない*/CurrentConversation == null)
@@ -155,7 +156,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             }
         }
 
-        if (TargetNPC == this.gameObject)
+        if (TargetNPC != null)
         {
             // セレクトに関する更新
             if (IsOptionTalk(CurrentConversation))
