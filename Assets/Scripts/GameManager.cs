@@ -36,6 +36,10 @@ namespace Kyoichi
             {
                 m_state = GameState.running;
             });
+            FindObjectOfType<CanvasManager>().OnCloseCanvas.AddListener(()=> {
+                m_state = GameState.running;
+                OnPauseEnd.Invoke();
+            });
         }
 
         private void Update()

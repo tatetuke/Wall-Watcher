@@ -153,7 +153,6 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                 TargetNPCMaterial = TargetNPCImage.GetComponent<Renderer>().material;
                 TargetNPCMaterial.SetFloat("_Thick", LineThickness);  // 光らせる
             }
-
         }
 
         if (TargetNPC != null)

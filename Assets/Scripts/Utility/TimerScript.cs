@@ -11,7 +11,7 @@ public class TimerScript
 
     float m_time = 0f;
     float m_endTime = 0f;
-    bool m_isReversed = false;
+   // bool m_isReversed = false;
     float m_speed = 1f;
     bool m_isRunning = false;
     public void StartTimer(float beginTime, float endTime)
@@ -21,12 +21,12 @@ public class TimerScript
         m_time = beginTime;
         if (beginTime > endTime)
         {
-            m_isReversed = true;
+            //m_isReversed = true;
             m_speed = -1f;
         }
         else
         {
-            m_isReversed = false;
+            //m_isReversed = false;
             m_speed = 1f;
         }
         OnStart.Invoke();
