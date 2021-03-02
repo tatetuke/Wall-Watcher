@@ -850,6 +850,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _labelReference:
     m_LabelString: SubQuest
+  TalkCanavas: {fileID: 793875067661510870}
   TextBox: {fileID: 793875066538871203}
   LineThickness: 1
   playableDirector: {fileID: 793875066186132451}

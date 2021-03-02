@@ -35,7 +35,7 @@ public class SetConversationPositionPlayableBehaviour : PlayableBehaviour
             PlayerSprite.transform.rotation = Quaternion.Euler(0, 180, 0);
 
         // NPCより右にいたら右の定位置に、左にいたら左の定位置に
-        if (startPosition.x < endPosition.x)
+        if (startPosition.x < TargetNPC.transform.position.x)
             endPosition.x = TargetNPC.transform.position.x - Distance;
         else
             endPosition.x = TargetNPC.transform.position.x + Distance;

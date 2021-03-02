@@ -18,6 +18,7 @@ using UnityEngine.Playables;
 public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataManager>, ILoadableAsync
 {
     [SerializeField] private AssetLabelReference _labelReference;
+    [SerializeField] GameObject TalkCanavas;
     [SerializeField] TextMeshProUGUI TextBox;
 
     private Material NPCMaterial;
@@ -30,8 +31,8 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     private GameObject m_PlayerSprite;
     private Player PlayerScript;
     private bool IsTalking = false;
-    private bool IsWaitingFirstTalk = false;
     private bool IsFirstTalk = false;
+    private bool IsWaitingStop = false;
 
     [SerializeField]
     private PlayableDirector playableDirector;
@@ -72,7 +73,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         /// <summary>
         /// 指定したフォルダからConversationDataを全て取ってくる
         /// </summary>
-        List<string> ConversationDataList = new List<string>();
+        ConversationDataList = new List<string>();
         // インスペクターのLabel Referenceで指定されたものを用いてPathを取得
         ConversationDataFolderPath = "Assets/Data/" + _labelReference.labelString;
         // フォルダ内のすべてのファイル名を取得する
@@ -141,7 +142,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         if (TargetNPC != null)
             TargetNPCMaterial.SetFloat("_Thick", 0);
 
-        TargetNPC = SearchNearNPC.Instance.NearNPC();
+        TargetNPC = SearchNearNPC.Instance.GetNearNPC();
 
         // 今回自分が対象のNPCならば光らせる
         if (TargetNPC != null)
@@ -166,25 +167,51 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                     selectManager.UpdateRight(ref SelectNum);  // 右押したときに関する更新
             }
 
-            if (Input.GetKeyDown("space") && !IsTalking)
+            if ((Input.GetKeyDown("space") && !IsTalking) || IsWaitingStop)
             {
-                // タイムラインの再生とプレイヤーの操作を出来なくする
                 PlayerScript.ChangeState(Player.State.FREEZE);
-                playableDirector.Play();
-                IsFirstTalk = true;
+                SearchNearNPC.Instance.GetNearNPC();
+                SearchNearNPC.Instance.IsDecided = true;
                 IsTalking = true;
+                if (PlayerScript.IsWalking)
+                {
+                    IsWaitingStop = true;
+                }
+                else
+                {
+                    float diff = Mathf.Abs(m_Player.transform.position.x - TargetNPC.transform.position.x);
+                    if (diff > 2.0 - 0.5 && diff < 2.0 + 0.5)
+                    {
+                        Quaternion quaternion = m_PlayerSprite.transform.rotation;
+                        float PlayerSprite_rotation_y = quaternion.eulerAngles.y;
+                        // プレイヤーが対象のNPCの方向に向くようにする
+                        if (m_Player.transform.position.x < TargetNPC.transform.position.x)
+                            m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 180, 0);
+                        else
+                            m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    }
+                    else
+                    {
+                        playableDirector.Play();
+                    }
+                    IsFirstTalk = true;
+                    IsWaitingStop = false;
+                }
             }
 
-            if (!IsFirstTalk && Input.GetKeyDown("space"))
+            if (!IsWaitingStop)
             {
-                ProceedTalk();
-            }
+                if (!IsFirstTalk && Input.GetKeyDown("space"))
+                {
+                    ProceedTalk();
+                }
 
-            // タイムライン再生が終わったらスペースを押さなくても1回分の会話は進む
-            if (IsFirstTalk && playableDirector.state != PlayState.Playing)
-            {
-                IsFirstTalk = false;
-                ProceedTalk();
+                // タイムライン再生が終わったらスペースを押さなくても1回分の会話は進む
+                if (IsFirstTalk && playableDirector.state != PlayState.Playing)
+                {
+                    IsFirstTalk = false;
+                    ProceedTalk();
+                }
             }
 
             //下キーが押されたら文字送りをスキップして本文を出力する。
@@ -248,9 +275,16 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             if (CurrentConversation == null)  // 一番最初だけ例外
             {
                 // FirstConversationをIdとして指定
+                int index = TargetNPC.GetComponent<NPCController>().GetConversationIndex();
+                FileId = ConversationDataList[index];
                 CurrentConversationData = GetConversation(FileId);
                 Id = CurrentConversationData.GetFirst();
                 CurrentConversation = CurrentConversationData.Get(Id);
+
+                // 会話の位置の更新
+                Vector3 TalkCanvasPosition;
+                TalkCanvasPosition = TargetNPC.transform.position;
+                TalkCanavas.transform.position = TalkCanvasPosition;
             }
             else
             {
@@ -274,6 +308,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             CurrentConversation = null;
             PlayerScript.ChangeState(Player.State.IDLE);
             IsTalking = false;
+            SearchNearNPC.Instance.IsDecided = false;
         }
 
         // 選択肢に関する更新
