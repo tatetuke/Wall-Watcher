@@ -5,9 +5,8 @@ using UnityEngine.Events;
 
 /// <summary>
 /// クエストクラス
-/// 内部にサブクエストを持つことができる
 /// </summary>
-public class Quest : MonoBehaviour
+public class QuestChecker : MonoBehaviour
 {
     /// <summary>
     /// クエストの状態
@@ -28,7 +27,7 @@ public class Quest : MonoBehaviour
     }
     QuestState m_state = QuestState.not_yet;
     [SerializeField] QuestDataSO questData;
-    List<Quest> m_subQuests = new List<Quest>();
+    List<QuestChecker> m_subQuests = new List<QuestChecker>();
     public UnityEvent OnQuestStart = new UnityEvent();
     public UnityEvent OnQuestFinish = new UnityEvent();
     int m_currentPhase=0;
@@ -93,7 +92,7 @@ public class Quest : MonoBehaviour
         foreach (var i in questData.subQuests)
         {
             var obj = new GameObject(i.name);
-            var scr = obj.AddComponent<Quest>();
+            var scr = obj.AddComponent<QuestChecker>();
             scr.questData = i;
             obj.transform.parent = transform;
             m_subQuests.Add(scr);
