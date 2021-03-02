@@ -18,6 +18,7 @@ using UnityEngine.Playables;
 public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataManager>, ILoadableAsync
 {
     [SerializeField] private AssetLabelReference _labelReference;
+    [SerializeField] GameObject TalkCanavas;
     [SerializeField] TextMeshProUGUI TextBox;
 
     private Material NPCMaterial;
@@ -72,7 +73,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         /// <summary>
         /// 指定したフォルダからConversationDataを全て取ってくる
         /// </summary>
-        List<string> ConversationDataList = new List<string>();
+        ConversationDataList = new List<string>();
         // インスペクターのLabel Referenceで指定されたものを用いてPathを取得
         ConversationDataFolderPath = "Assets/Data/" + _labelReference.labelString;
         // フォルダ内のすべてのファイル名を取得する
@@ -167,8 +168,6 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                     selectManager.UpdateRight(ref SelectNum);  // 右押したときに関する更新
             }
 
-            
-
             if ((Input.GetKeyDown("space") && !IsTalking)||IsWaitingStop)
             {
                 PlayerScript.ChangeState(Player.State.FREEZE);
@@ -187,8 +186,6 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                 }
             }
 
-            Debug.Log("debug");
-
             if (!IsWaitingStop)
             {
                 if (!IsFirstTalk && Input.GetKeyDown("space"))
@@ -203,7 +200,6 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                     ProceedTalk();
                 }
             }
-
 
             //下キーが押されたら文字送りをスキップして本文を出力する。
             if (Input.GetKeyDown("down"))
@@ -266,9 +262,16 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             if (CurrentConversation == null)  // 一番最初だけ例外
             {
                 // FirstConversationをIdとして指定
+                int index = TargetNPC.GetComponent<NPCController>().GetConversationIndex();
+                FileId = ConversationDataList[index];
                 CurrentConversationData = GetConversation(FileId);
                 Id = CurrentConversationData.GetFirst();
                 CurrentConversation = CurrentConversationData.Get(Id);
+
+                // 会話の位置の更新
+                Vector3 TalkCanvasPosition;
+                TalkCanvasPosition = TargetNPC.transform.position;
+                TalkCanavas.transform.position = TalkCanvasPosition;
             }
             else
             {

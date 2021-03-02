@@ -20,4 +20,10 @@ public class NPCController : MonoBehaviour
             this.tag = "NPC";
         }
     }
+
+    public int GetConversationIndex()
+    {
+        int res = Random.value >= 0.5 ? 0 : 1;
+        return res;
+    }
 }
