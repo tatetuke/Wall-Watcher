@@ -73,7 +73,6 @@ public class EditorInventry : Editor
                 scr.SaveToFile();
             }
         }
-        SerializedProperty test;
         EditorGUILayout.EndHorizontal();
     }
 }

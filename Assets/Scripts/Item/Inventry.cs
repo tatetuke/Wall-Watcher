@@ -73,6 +73,10 @@ namespace Kyoichi
         {
             Clear();
             m_inventry = ItemManager.Instance.LoadItemFrom(inventryDirectory, FileName);
+            foreach(var i in m_inventry)
+            {
+                Debug.Log($"Inventry loaded '{i.item.name}':{i.count}");
+            }
         }
         public List<List<string>> GetFileData()
         {
