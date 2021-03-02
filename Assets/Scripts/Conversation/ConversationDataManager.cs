@@ -168,7 +168,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                     selectManager.UpdateRight(ref SelectNum);  // 右押したときに関する更新
             }
 
-            if ((Input.GetKeyDown("space") && !IsTalking)||IsWaitingStop)
+            if ((Input.GetKeyDown("space") && !IsTalking) || IsWaitingStop)
             {
                 PlayerScript.ChangeState(Player.State.FREEZE);
                 SearchNearNPC.Instance.GetNearNPC();
@@ -180,7 +180,21 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                 }
                 else
                 {
-                    playableDirector.Play();
+                    float diff = Mathf.Abs(m_Player.transform.position.x - TargetNPC.transform.position.x);
+                    if (diff > 2.0 - 0.5 && diff < 2.0 + 0.5)
+                    {
+                        Quaternion quaternion = m_PlayerSprite.transform.rotation;
+                        float PlayerSprite_rotation_y = quaternion.eulerAngles.y;
+                        // プレイヤーが対象のNPCの方向に向くようにする
+                        if (m_Player.transform.position.x < TargetNPC.transform.position.x)
+                            m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 180, 0);
+                        else
+                            m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    }
+                    else
+                    {
+                        playableDirector.Play();
+                    }
                     IsFirstTalk = true;
                     IsWaitingStop = false;
                 }
