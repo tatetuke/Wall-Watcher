@@ -6,6 +6,9 @@ public class SearchNearNPC : SingletonMonoBehaviour<SearchNearNPC>
 {
     float InfDis = 10000;// NPCとPlayerの距離としてありうる最大の距離。
     GameObject PlayerObj;//プレイヤーの宣言と取得
+    GameObject NearNPC = null;
+    public bool IsDecided = false;
+
     private void Start()
     {
         if (GameObject.FindGameObjectsWithTag("Player")[0] == null) Debug.LogError("SearchNearNPC.csでプレイヤーが認識できません");
@@ -24,8 +27,10 @@ public class SearchNearNPC : SingletonMonoBehaviour<SearchNearNPC>
     /// 会話可能なNPCがいない場合はnullを返す
     /// </summary>
     /// <returns></returns>
-    public GameObject NearNPC()
+    public GameObject GetNearNPC()
     {
+        if (IsDecided) return NearNPC;
+
         float minDis = InfDis;   //NPCとの最短距離
         float tmpDis;            //距離用一時変数
         GameObject retNearNPC = null; //返り値
@@ -49,7 +54,7 @@ public class SearchNearNPC : SingletonMonoBehaviour<SearchNearNPC>
         }
         if (retNearNPC != null) Debug.Log($"NearNPC is {retNearNPC.name}");
         //最も近いNPCを返す
-        return retNearNPC;
+        return NearNPC = retNearNPC;
     }
             
 }
