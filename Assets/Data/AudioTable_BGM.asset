@@ -10,36 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d606701271771f40bb70248d201c587, type: 3}
-  m_Name: AudioTable
+  m_Name: AudioTable_BGM
   m_EditorClassIdentifier: 
   items:
-  - id: abc123
+  - id: bgm01
     reference:
       m_AssetGUID: 1e2e15cb01c753240a8248a3f534331d
       m_SubObjectName: 
       m_SubObjectType: 
-  - id: abc124
+  - id: bgm02
     reference:
       m_AssetGUID: 37627ee7fcbf3e84a825106da8f9e2db
-      m_SubObjectName: 
-      m_SubObjectType: 
-  - id: abc125
-    reference:
-      m_AssetGUID: 196bbb1df5fb1d948a6b968fa7071a67
-      m_SubObjectName: 
-      m_SubObjectType: 
-  - id: agc1
-    reference:
-      m_AssetGUID: af76e64c1367d594bb941b88c3efc23c
-      m_SubObjectName: 
-      m_SubObjectType: 
-  - id: agc2
-    reference:
-      m_AssetGUID: fa4c9b0b119a77f4c9b7951e380b116c
-      m_SubObjectName: 
-      m_SubObjectType: 
-  - id: agc3
-    reference:
-      m_AssetGUID: 196bbb1df5fb1d948a6b968fa7071a67
       m_SubObjectName: 
       m_SubObjectType: 
