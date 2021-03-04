@@ -21,8 +21,8 @@ public class SetConversationPositionPlayableBehaviour : PlayableBehaviour
 
         startPosition = Player.transform.position;
 
-        Quaternion quaternion = PlayerSprite.transform.rotation;
-        float PlayerSprite_rotation_y = quaternion.eulerAngles.y;
+        //Quaternion quaternion = PlayerSprite.transform.rotation;
+        //float PlayerSprite_rotation_y = quaternion.eulerAngles.y;
 
         // プレイヤーが移動する方向に向くようにする
         if (Player.transform.position.x + Distance < TargetNPC.transform.position.x)

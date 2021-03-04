@@ -30,7 +30,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     private GameObject m_Player;
     private GameObject m_PlayerSprite;
     private Player PlayerScript;
-    private bool IsTalking = false;
+    public bool IsTalking = false;
     private bool IsFirstTalk = false;
     private bool IsWaitingStop = false;
 
@@ -150,7 +150,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             // 会話中は光らせない
             if (!IsTalking)
             {
-                TargetNPCImage = TargetNPC.transform.FindChild("NPCImage(Sprite)").gameObject;
+                //TargetNPCImage = TargetNPC.transform.FindChild("NPCImage(Sprite)").gameObject;
+                //TargetNPCImage = TargetNPC.transform.FindChild("PlayerSprite").gameObject;
+                TargetNPCImage = TargetNPC.transform.GetChild(0).gameObject;
                 TargetNPCMaterial = TargetNPCImage.GetComponent<Renderer>().material;
                 TargetNPCMaterial.SetFloat("_Thick", LineThickness);  // 光らせる
             }
@@ -182,8 +184,8 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                     float diff = Mathf.Abs(m_Player.transform.position.x - TargetNPC.transform.position.x);
                     if (diff > 2.0 - 0.5 && diff < 2.0 + 0.5)
                     {
-                        Quaternion quaternion = m_PlayerSprite.transform.rotation;
-                        float PlayerSprite_rotation_y = quaternion.eulerAngles.y;
+                        //Quaternion quaternion = m_PlayerSprite.transform.rotation;
+                        //float PlayerSprite_rotation_y = quaternion.eulerAngles.y;
                         // プレイヤーが対象のNPCの方向に向くようにする
                         if (m_Player.transform.position.x < TargetNPC.transform.position.x)
                             m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 180, 0);
