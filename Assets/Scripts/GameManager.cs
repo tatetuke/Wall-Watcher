@@ -6,7 +6,7 @@ using UnityEngine.Events;
 namespace Kyoichi
 {
     /// <summary>
-    /// セーブ・ロードをテストするLoadTestシーンのマネージャー
+    /// セーブ・ロードのタイミングを制御
     /// </summary>
     public class GameManager : SingletonMonoBehaviour<GameManager>
     {
@@ -25,11 +25,22 @@ namespace Kyoichi
         {
             //データをロードするときはSaveLoadManager.LoadをStartもしくはUpdate内で行ってください。
             //Awakeでは行わないよう
-            SaveLoadManager.Instance.Load().Wait();
+            Debug.Log("Loading properties");
+            PropertyLoader.Instance.LoadProperty();
+            //SaveLoadManager.Instance.Load().Wait();
+            //Waitするとロードしなくなる（Start内でAddressable.Wait()やろうとするといつまでたっても完了しないっぽい）
+            Debug.Log("Player Data Loading...");
+            SaveLoadManager.Instance.Load();
+            SaveLoadManager.Instance.LoadAsync();
             m_state = GameState.loading;
             SaveLoadManager.Instance.OnLoadFinished.AddListener(() =>
             {
                 m_state = GameState.running;
+            });
+            FindObjectOfType<CanvasManager>().OnCloseCanvas.AddListener(() =>
+            {
+                m_state = GameState.running;
+                OnPauseEnd.Invoke();
             });
         }
 
@@ -50,10 +61,13 @@ namespace Kyoichi
             }
         }
 
+        //ゲームを終了したときに自動でセーブされるようになってます
         private void OnApplicationQuit()
         {
-            //ゲームを終了したときに自動でセーブされるようになってます
-            SaveLoadManager.Instance.Save().Wait();
+            Debug.Log("Player Data Saving...");
+            SaveLoadManager.Instance.Save();
+            SaveLoadManager.Instance.SaveAsync().Wait();
+            PropertyLoader.Instance.SaveProperty();
         }
     }
 

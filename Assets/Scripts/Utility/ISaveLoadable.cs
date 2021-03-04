@@ -23,13 +23,13 @@ public interface ILoadable
 /// </summary>
 public interface ISaveableAsync
 {
-    Task Save(CancellationToken token);
+    Task SaveAsync(CancellationToken token);
 }
 /// <summary>
 /// SaveLoadManagerで非同期にロードできるようにするインターフェース
 /// </summary>
 public interface ILoadableAsync
 {
-    Task Load(CancellationToken token);
+    Task LoadAsync(CancellationToken token);
 }
 
