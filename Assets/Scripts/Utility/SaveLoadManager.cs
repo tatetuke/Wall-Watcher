@@ -16,8 +16,8 @@ sealed public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
     [SerializeField] bool loadOnStart = false;
     private void Start()
     {
-        if(loadOnStart)
-        Load();
+        if (loadOnStart)
+            Load();
     }
     Queue<ISaveable> m_saveables = new Queue<ISaveable>();
     Queue<ILoadable> m_loadables = new Queue<ILoadable>();

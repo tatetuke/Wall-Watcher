@@ -7,7 +7,9 @@ using System.Linq;
 
 namespace Kyoichi
 {
-
+    /// <summary>
+    /// アイテムの塊を扱うクラス（アイテムとその個数）
+    /// </summary>
     [System.Serializable]
     public class ItemStack
     {
@@ -20,11 +22,15 @@ namespace Kyoichi
         }
     }
 
+    /// <summary>
+    /// インベントリ管理クラス
+    /// </summary>
     public class Inventry : MonoBehaviour
     {
 
 
         [SerializeField] string inventryDirectory;
+        [Tooltip("{{name}}とつけるとアタッチされているGameObjectの名前に置換される")]
         [SerializeField] string inventryFilename = "{{name}}.csv";
         string FileName
         {
@@ -36,10 +42,10 @@ namespace Kyoichi
         public class ItemEvent : UnityEvent<ItemStack> { }
         public ItemEvent OnItemAdd { get; } = new ItemEvent();
         public ItemEvent OnItemRemove { get; } = new ItemEvent();
-        List<ItemStack> inventry = new List<ItemStack>();
+        List<ItemStack> m_inventry = new List<ItemStack>();
         public IEnumerable<ItemStack> Data
         {
-            get { return inventry; }
+            get { return m_inventry; }
         }
         private void Start()
         {
@@ -48,12 +54,14 @@ namespace Kyoichi
 
         private void OnEnable()
         {
+            //インベントリが生成されたとき、ItemManagerのロードが終わってたらアイテムをロード
             if (SaveLoadManager.Instance.LoadState == SaveLoadManager.SaveLoadState.finished)
             {
                 LoadFromFile();
             }
             else
             {
+                //ロードが終わってなかったら終わったときに読み込むようにする
                 SaveLoadManager.Instance.OnLoadFinished.AddListener(() =>
                 {
                     LoadFromFile();
@@ -64,12 +72,19 @@ namespace Kyoichi
         public void LoadFromFile()
         {
             Clear();
-            inventry = ItemManager.Instance.LoadItemFrom(inventryDirectory, FileName);
+            m_inventry = ItemManager.Instance.LoadItemFrom(inventryDirectory, FileName);
+            foreach(var i in m_inventry)
+            {
+                Debug.Log($"Inventry loaded '{i.item.name}':{i.count}");
+            }
         }
         public List<List<string>> GetFileData()
         {
             return CSVReader.Read(inventryDirectory, FileName);
         }
+        /// <summary>
+        /// 指定されているファイルに書き込み
+        /// </summary>
         public void SaveToFile()
         {
             ItemManager.Instance.SaveItemTo(inventryDirectory, FileName, Data);
@@ -81,24 +96,29 @@ namespace Kyoichi
         public void AddItem(ItemStack item)
         {
             if (item == null) return;
-            foreach (var i in inventry)
+            foreach (var i in m_inventry)
             {
                 if (i.item != item.item) continue;
                 OnItemAdd.Invoke(item);
                 i.count += item.count;
                 return;
             }
-            inventry.Add(item);
+            m_inventry.Add(item);
         }
-
+        /// <summary>
+        /// アイテムを消費
+        /// </summary>
         public void PopItem(ItemSO item, int count = 1)
         {
             PopItem(new ItemStack(item, count));
         }
 
+        /// <summary>
+        /// アイテムを消費
+        /// </summary>
         public void PopItem(ItemStack item)
         {
-            foreach (var i in inventry)
+            foreach (var i in m_inventry)
             {
                 if (i.item != item.item) continue;
                 if (i.count < item.count) return;
@@ -107,35 +127,51 @@ namespace Kyoichi
                 return;
             }
         }
-
+        /// <summary>
+        /// インベントリ全消去
+        /// </summary>
         public void Clear()
         {
-            inventry.Clear();
+            m_inventry.Clear();
         }
+        /// <summary>
+        /// アイテムを所持数関係なく削除
+        /// </summary>
         public void DeleteItem(ItemSO item)
         {
             int index = 0;
-            foreach (var i in inventry)
+            foreach (var i in m_inventry)
             {
                 if (i.item == item)
                 {
-                    inventry[index].count = 0;
+                    m_inventry[index].count = 0;
                     return;
                 }
             }
         }
+        /// <summary>
+        /// そのアイテムを一つでも持っているか
+        /// </summary>
         public bool HasItem(ItemSO item)
         {
-            return inventry.Any(x => x.item == item && x.count > 0);
+            return m_inventry.Any(x => x.item == item && x.count > 0);
         }
+        /// <summary>
+        /// そのアイテムを指定数以上持っているか
+        /// </summary>
+        /// <param name="countEqual">指定数ピッタリにするか</param>
         public bool HasItem(ItemStack item, bool countEqual = false)
         {
             if (countEqual)
             {
-                return inventry.Any(x => x == item);
+                return m_inventry.Any(x => x == item);
             }
-            return inventry.Any(x => x.item == item.item && x.count >= item.count);
+            return m_inventry.Any(x => x.item == item.item && x.count >= item.count);
         }
+        /// <summary>
+        /// その複数のアイテムを全部もっているか
+        /// </summary>
+        /// <param name="item">指定するアイテムの配列もしくはリスト</param>
         public bool HasItems(IEnumerable<ItemSO> item)
         {
             foreach (var i in item)

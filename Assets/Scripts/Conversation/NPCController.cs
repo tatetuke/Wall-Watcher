@@ -1,149 +1,29 @@
-using RPGM.Core;
-using RPGM.Gameplay;
+Ôªøusing System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-namespace RPGM.Gameplay
+
+public class NPCController : MonoBehaviour
 {
-    /// <summary>
-    /// Main class for implementing NPC game objects.
-    /// </summary>
-    public class NPCController : MonoBehaviour
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        [SerializeField] Text TextBox;
-        public ConversationData[] ConversationsList;
-        private Conversations CurrentConversation;
-        string id;
-        string FirstText;
-        private bool IsTalk=false;
-        private void Start()
+        if (other.gameObject.tag == "Player")
         {
-
-            if (ConversationsList.Length == 0) return ;
-            FirstText = TextBox.text;
-            id =ConversationsList[0].GetFirst();
-            CurrentConversation = ConversationsList[0].Get(id);
+            //„Çø„Ç∞„ÅÆÂ§âÊõ¥.SearchNearNPC„Åß‰Ωø„Çè„Çå„Çã.
+            this.tag = "CanConversationNPC";
         }
-
-
-        //Quest activeQuest = null;
-
-        //Quest[] quests;
-
-        //GameModel model = Schedule.GetModel<GameModel>();
-
-        //void OnEnable()
-        //{
-        //    quests = gameObject.GetComponentsInChildren<Quest>();
-        //}
-
-        private void Update()
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
         {
-            if(IsTalk)Texting();
+            //„Çø„Ç∞„ÅÆÂ§âÊõ¥.SearchNearNPC„Åß‰Ωø„Çè„Çå„Çã.
+            this.tag = "NPC";
         }
+    }
 
-
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (other.gameObject.tag == "Player")
-            {
-                IsTalk = true;
-                Debug.Log("NPCÇ∆ê⁄ãﬂ!");
-
-            }
-            
-        }
-        private void OnTriggerExit2D(Collider2D collision)
-        {
-            if (collision.gameObject.tag == "Player")
-            {
-
-                IsTalk = false;
-                id = ConversationsList[0].GetFirst();
-                CurrentConversation = ConversationsList[0].Get(id);
-                //å≥Ç©ÇÁÉeÉLÉXÉgÉ{ÉbÉNÉXÇ…ì¸óÕÇ≥ÇÍÇƒÇ¢ÇΩï∂éöÇçƒìxï\é¶
-                TextBox.text = FirstText;
-                Debug.Log("NPCÇ∆ó£ÇÍÇΩ!");
-            }
-        }
-
-
-        /// <summary>
-        /// ï∂èÕÇï\é¶ÇµÇ‹Ç∑ÅB
-        /// ÉXÉyÅ[ÉXÉLÅ[Ç™âüÇ≥ÇÍÇΩÇ∆Ç´Ç…ï∂èÕÇëóÇËÇ‹Ç∑ÅB
-        /// </summary>
-        private void Texting()
-        {
-            if (ConversationsList.Length == 0) return;
-            TextBox.text = CurrentConversation.text;
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Debug.Log("ÉXÉyÅ[ÉXÉLÅ[Ç™âüÇ≥ÇÍÇ‹ÇµÇΩ");
-                id = CurrentConversation.targetID;
-                CurrentConversation = ConversationsList[0].Get(id);
-
-            }
-        }
-
-        // private string Texting(Conversations CurrentConversation)
-        //{
-        //    if (Input.GetKeyDown(KeyCode.Space))
-        //    {
-        //        return CurrentConversation.targetID;
-
-        //    }
-        //    return CurrentConversation.id;
-        //}
-        public void OnCollisionEnter2D(Collision2D collision)
-        {
-            //var c = GetConversation();
-            Debug.Log("NPCÇ∆ê⁄ãﬂ!");
-
-
-            //if (c != null)
-            //{
-            //    var ev = Schedule.Add<Events.ShowConversation>();
-            //    ev.conversation = c;
-            //    ev.npc = this;
-            //    ev.gameObject = gameObject;
-            //    ev.conversationItemKey = "";
-            //}
-        }
-
-        //public void CompleteQuest(Quest q)
-        //{
-        //    if (activeQuest != q) throw new System.Exception("Completed quest is not the active quest.");
-        //    foreach (var i in activeQuest.requiredItems)
-        //    {
-        //        model.RemoveInventoryItem(i.item, i.count);
-        //    }
-        //    activeQuest.RewardItemsToPlayer();
-        //    activeQuest.OnFinishQuest();
-        //    activeQuest = null;
-        //}
-
-        //public void StartQuest(Quest q)
-        //{
-        //    if (activeQuest != null) throw new System.Exception("Only one quest should be active.");
-        //    activeQuest = q;
-        //}
-        
-        //ConversationScript GetConversation()
-        //{
-        //    if (activeQuest == null)
-        //        return conversations[0];
-        //    foreach (var q in quests)
-        //    {
-        //        if (q == activeQuest)
-        //        {
-        //            if (q.IsQuestComplete())
-        //            {
-        //                CompleteQuest(q);
-        //                return q.questCompletedConversation;
-        //            }
-        //            return q.questInProgressConversation;
-        //        }
-        //    }
-        //    return null;
-        //}
+    public int GetConversationIndex()
+    {
+        int res = Random.value >= 0.5 ? 0 : 1;
+        return res;
     }
 }

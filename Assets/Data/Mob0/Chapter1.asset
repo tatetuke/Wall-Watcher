@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5891681e936e3e943bf8fba4ac194268, type: 3}
+  m_Name: Chapter1
+  m_EditorClassIdentifier: 
+  items:
+  - type: 0
+    id: 0
+    targetID: 1
+    text: "\u304F\u3041w\u305Bdrftgy\u3075\u3058\u3053lp"
+    audio: {fileID: 0}
+    options: []
+    eventName: 
+  - type: 0
+    id: 1
+    targetID: FINISH
+    text: "(*\xB4\u03C9\uFF40*)"
+    audio: {fileID: 0}
+    options: []
+    eventName: 
+  - type: 0
+    id: FINISH
+    targetID: FINISH
+    text: FINISH
+    audio: {fileID: 0}
+    options: []
+    eventName: 
+  m_firstConversation: 0

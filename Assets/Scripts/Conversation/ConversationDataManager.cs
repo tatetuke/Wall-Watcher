@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -10,6 +10,7 @@ using RPGM.Gameplay;
 using TMPro;
 using KoganeUnityLib;
 using System.Threading;
+using UnityEngine.Playables;
 /// <summary>
 /// 文章を表示します。
 /// スペースキーが押されたときに文章を送ります。
@@ -17,20 +18,36 @@ using System.Threading;
 public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataManager>, ILoadableAsync
 {
     [SerializeField] private AssetLabelReference _labelReference;
+    [SerializeField] GameObject TalkCanavas;
     [SerializeField] TextMeshProUGUI TextBox;
+
+    private Material NPCMaterial;
+    [SerializeField] float LineThickness = 1;
+    private GameObject TargetNPC;
+    private GameObject TargetNPCImage;
+    private Material TargetNPCMaterial;
+
+    private GameObject m_Player;
+    private GameObject m_PlayerSprite;
+    private Player PlayerScript;
+    private bool IsTalking = false;
+    private bool IsFirstTalk = false;
+    private bool IsWaitingStop = false;
+
+    [SerializeField]
+    private PlayableDirector playableDirector;
 
     DialogController dialogController;
     SelectManager selectManager;
     public TMP_Typewriter m_typewriter;
     public GameObject[] Options;
     public TextMeshProUGUI[] OptionTexts;
-   // public Text[] OptionTexts;
+    // public Text[] OptionTexts;
     private int SelectNum;
     private Conversations CurrentConversation = null;
     private ConversationData CurrentConversationData;
     string FileId;
     string Id;
-    private bool CanTalk = false;
 
     string ConversationDataFolderPath;
     string[] Files;
@@ -43,25 +60,28 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         SaveLoadManager.Instance.SetLoadable(this);
     }
 
+    [System.Obsolete]
     private void Start()
     {
+        m_Player = GameObject.Find("Player");
+        PlayerScript = m_Player.GetComponent<Player>();
+        m_PlayerSprite = m_Player.transform.Find("PlayerSprite").gameObject;
         SelectNum = 0;
         dialogController = new DialogController();
         selectManager = new SelectManager(OptionTexts, Color.yellow, Color.black);
 
-
         /// <summary>
         /// 指定したフォルダからConversationDataを全て取ってくる
         /// </summary>
-        List<string> ConversationDataList = new List<string>();
+        ConversationDataList = new List<string>();
         // インスペクターのLabel Referenceで指定されたものを用いてPathを取得
         ConversationDataFolderPath = "Assets/Data/" + _labelReference.labelString;
         // フォルダ内のすべてのファイル名を取得する
         Files = System.IO.Directory.GetFiles(@ConversationDataFolderPath, "*");
-        for(int i = 0; i < Files.Length; i++)
+        for (int i = 0; i < Files.Length; i++)
         {
             // 拡張子名部分を取得
-            string extension= System.IO.Path.GetExtension(Files[i]);
+            string extension = System.IO.Path.GetExtension(Files[i]);
             if (extension == ".asset")
             {
                 // 拡張子をのぞいたファイル名部分を取得
@@ -69,9 +89,11 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                 ConversationDataList.Add(filename);
             }
         }
-        Debug.Log("ファイル名を出力します");
-        foreach (var output in ConversationDataList) Debug.Log(output);
-        Debug.Log("ファイル名を出力しました");
+
+        // デバッグ用 : 必要なファイルが取り出せているか
+        //Debug.Log("ファイル名を出力します");
+        //foreach (var output in ConversationDataList) Debug.Log(output);
+        //Debug.Log("ファイル名を出力しました");
 
         // TODO : クエストの進行度によって用いるConversationDataを決める
         FileId = ConversationDataList[0];
@@ -113,101 +135,91 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     //}
 
 
+    [System.Obsolete]
     private void Update()
     {
-        if (CanTalk)
+        // 前回自分が対象のNPCならば光らせないようにする
+        if (TargetNPC != null)
+            TargetNPCMaterial.SetFloat("_Thick", 0);
+
+        TargetNPC = SearchNearNPC.Instance.GetNearNPC();
+
+        // 今回自分が対象のNPCならば光らせる
+        if (TargetNPC != null)
         {
-           
+            // 会話中は光らせない
+            if (!IsTalking)
+            {
+                TargetNPCImage = TargetNPC.transform.FindChild("NPCImage(Sprite)").gameObject;
+                TargetNPCMaterial = TargetNPCImage.GetComponent<Renderer>().material;
+                TargetNPCMaterial.SetFloat("_Thick", LineThickness);  // 光らせる
+            }
+        }
+
+        if (TargetNPC != null)
+        {
             // セレクトに関する更新
             if (IsOptionTalk(CurrentConversation))
             {
                 if (Input.GetKeyDown("left"))
-                {
-                    selectManager.UpdateLeft(ref SelectNum);
-                }
+                    selectManager.UpdateLeft(ref SelectNum);   // 左押したときに関する更新
                 if (Input.GetKeyDown("right"))
-                {
-                    selectManager.UpdateRight(ref SelectNum);
-                }
+                    selectManager.UpdateRight(ref SelectNum);  // 右押したときに関する更新
             }
 
-            // スペースが押されたら会話を進める
-            if (Input.GetKeyDown("space"))
+            if ((Input.GetKeyDown("space") && !IsTalking) || IsWaitingStop)
             {
-                // CurrentConversationの更新
-                if (IsOptionTalk(CurrentConversation))
+                PlayerScript.ChangeState(Player.State.FREEZE);
+                SearchNearNPC.Instance.GetNearNPC();
+                SearchNearNPC.Instance.IsDecided = true;
+                IsTalking = true;
+                if (PlayerScript.IsWalking)
                 {
-                    // 選ばれた選択肢の色を元に戻す
-                    selectManager.ChangeColorDown(SelectNum);
-                    // ConversationsのConversationOption型リストのtargetIdをIdとして指定
-                    Id = CurrentConversation.options[SelectNum].targetId;
-                    CurrentConversation = CurrentConversationData.Get(Id);
+                    IsWaitingStop = true;
                 }
                 else
                 {
-                    if (CurrentConversation == null)  // 一番最初だけ例外
+                    float diff = Mathf.Abs(m_Player.transform.position.x - TargetNPC.transform.position.x);
+                    if (diff > 2.0 - 0.5 && diff < 2.0 + 0.5)
                     {
-                        // FirstConversationをIdとして指定
-                        CurrentConversationData = GetConversation(FileId);
-                        Id = CurrentConversationData.GetFirst();
-                        CurrentConversation = CurrentConversationData.Get(Id);
+                        Quaternion quaternion = m_PlayerSprite.transform.rotation;
+                        float PlayerSprite_rotation_y = quaternion.eulerAngles.y;
+                        // プレイヤーが対象のNPCの方向に向くようにする
+                        if (m_Player.transform.position.x < TargetNPC.transform.position.x)
+                            m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 180, 0);
+                        else
+                            m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 0, 0);
                     }
                     else
                     {
-                        // ConversationsのtargetIdをIdとして指定
-                        Id = CurrentConversation.targetID;
-                        CurrentConversation = CurrentConversationData.Get(Id);
+                        playableDirector.Play();
                     }
-                }
-
-                // 会話の内容の更新
-                TextBox.text = CurrentConversation.text;
-
-                //テキストを一文字一文字出力する。
-                //Play(テキスト本文,一秒間に送る文字数,文字送り終了時に呼び出されるもの)
-                m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete:()=>Debug.Log("完了"));
-              
-
-                // 番兵だったら会話を終了し、CurrentConversationを初期化
-                if (CurrentConversation.id == "FINISH")
-                {
-                    CurrentConversation = null;
-                }
-
-                // 選択肢に関する更新
-                if (IsOptionTalk(CurrentConversation))
-                {
-                    // 選択肢を表示する
-                    dialogController.Display(Options[0]);
-                    dialogController.Display(Options[1]);
-                    int itr = 0;
-                    // 選択肢の内容の更新
-                    foreach (var option in CurrentConversation.options)
-                    {
-                        dialogController.SetText(OptionTexts[itr], option.text);
-                        itr++;
-                    }
-
-                    // 初期化 : 左を選択している状態にする
-                    SelectNum = 0;
-                    selectManager.ChangeColorUp(SelectNum);
-                }
-                else
-                {
-                    // 選択肢を隠す
-                    dialogController.Hide(Options[0]);
-                    dialogController.Hide(Options[1]);
+                    IsFirstTalk = true;
+                    IsWaitingStop = false;
                 }
             }
+
+            if (!IsWaitingStop)
+            {
+                if (!IsFirstTalk && Input.GetKeyDown("space"))
+                {
+                    ProceedTalk();
+                }
+
+                // タイムライン再生が終わったらスペースを押さなくても1回分の会話は進む
+                if (IsFirstTalk && playableDirector.state != PlayState.Playing)
+                {
+                    IsFirstTalk = false;
+                    ProceedTalk();
+                }
+            }
+
             //下キーが押されたら文字送りをスキップして本文を出力する。
             if (Input.GetKeyDown("down"))
             {
                 m_typewriter.Skip();
             }
-
-
         }
-
     }
 
 
@@ -222,18 +234,104 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     {
         if (other.gameObject.tag == "Player")
         {
-            CanTalk = true;
+            //タグの変更.SearchNearNPCで使われる.
+            this.tag = "CanConversationNPC";
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            CanTalk = false;
-            // MEMO : 以下は初期化だが、会話中プレイヤーを操作できないようにすれば要らない
-            CurrentConversation = null;
-            TextBox.text = "";
+            //タグの変更.SearchNearNPCで使われる.
+            this.tag = "NPC";
+
+            //// MEMO : 以下は初期化だが、会話中プレイヤーを操作できないようにすれば要らない
+            //CurrentConversation = null;
+            //TextBox.text = "";
+            //selectManager.ChangeColorDown(SelectNum);
+            //dialogController.Hide(Options[0]);
+            //dialogController.Hide(Options[1]);
+        }
+    }
+
+    public GameObject GetTargetNPC()
+    {
+        return TargetNPC;
+    }
+
+    private void ProceedTalk()
+    {
+        // CurrentConversationの更新
+        if (IsOptionTalk(CurrentConversation))
+        {
+            // 選ばれた選択肢の色を元に戻す
             selectManager.ChangeColorDown(SelectNum);
+            // ConversationsのConversationOption型リストのtargetIdをIdとして指定
+            Id = CurrentConversation.options[SelectNum].targetId;
+            CurrentConversation = CurrentConversationData.Get(Id);
+        }
+        else
+        {
+            if (CurrentConversation == null)  // 一番最初だけ例外
+            {
+                // FirstConversationをIdとして指定
+                int index = TargetNPC.GetComponent<NPCController>().GetConversationIndex();
+                FileId = ConversationDataList[index];
+                CurrentConversationData = GetConversation(FileId);
+                Id = CurrentConversationData.GetFirst();
+                CurrentConversation = CurrentConversationData.Get(Id);
+
+                // 会話の位置の更新
+                Vector3 TalkCanvasPosition;
+                TalkCanvasPosition = TargetNPC.transform.position;
+                TalkCanavas.transform.position = TalkCanvasPosition;
+            }
+            else
+            {
+                // ConversationsのtargetIdをIdとして指定
+                Id = CurrentConversation.targetID;
+                CurrentConversation = CurrentConversationData.Get(Id);
+            }
+        }
+
+        // 会話の内容の更新
+        TextBox.text = CurrentConversation.text;
+
+        //テキストを一文字一文字出力する。
+        //Play(テキスト本文,一秒間に送る文字数,文字送り終了時に呼び出されるもの)
+        m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete: () => Debug.Log("完了"));
+
+
+        // 番兵だったら会話を終了し、CurrentConversationを初期化
+        if (CurrentConversation.id == "FINISH")
+        {
+            CurrentConversation = null;
+            PlayerScript.ChangeState(Player.State.IDLE);
+            IsTalking = false;
+            SearchNearNPC.Instance.IsDecided = false;
+        }
+
+        // 選択肢に関する更新
+        if (IsOptionTalk(CurrentConversation))
+        {
+            // 選択肢を表示する
+            dialogController.Display(Options[0]);
+            dialogController.Display(Options[1]);
+            int itr = 0;
+            // 選択肢の内容の更新
+            foreach (var option in CurrentConversation.options)
+            {
+                dialogController.SetText(OptionTexts[itr], option.text);
+                itr++;
+            }
+
+            // 初期化 : 左を選択している状態にする
+            SelectNum = 0;
+            selectManager.ChangeColorUp(SelectNum);
+        }
+        else
+        {
+            // 選択肢を隠す
             dialogController.Hide(Options[0]);
             dialogController.Hide(Options[1]);
         }

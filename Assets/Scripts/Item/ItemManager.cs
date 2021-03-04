@@ -27,8 +27,8 @@ namespace Kyoichi
                 return m_data;
             }
         }
-        List<Inventry> inventries = new List<Inventry>();
-        public void AddInventry(Inventry inventry) { inventries.Add(inventry); }
+        List<Inventry> m_inventries = new List<Inventry>();
+        public void AddInventry(Inventry inventry) { m_inventries.Add(inventry); }
 
         // Start is called before the first frame update
         void Awake()
@@ -43,7 +43,6 @@ namespace Kyoichi
         }
 
         AsyncOperationHandle<IList<ItemSO>> m_handle;
-        private CancellationTokenSource _cancellationTokenSource;
         //ゲーム開始時の部屋を読み込む
         public async Task Load(CancellationToken cancellationToken)
         {
@@ -57,6 +56,7 @@ namespace Kyoichi
             m_state = LoadState.loading;
             m_handle = Addressables.LoadAssetsAsync<ItemSO>(_labelReference, null);
             await m_handle.Task;
+            Debug.Log("<color=#4a19bd>Item loaded</color>");
             foreach (var res in m_handle.Result)
             {
                 Debug.Log($"<color=#4a19bd>item '{res.name}'</color>");
@@ -67,10 +67,10 @@ namespace Kyoichi
 
         public void Save()
         {
-            for (int i=0;i<inventries.Count;)
+            for (int i=0;i< m_inventries.Count;)
             {
-                inventries[i].SaveToFile();
-                inventries.RemoveAt(i);
+                m_inventries[i].SaveToFile();
+                m_inventries.RemoveAt(i);
             }
         }
 
