@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5891681e936e3e943bf8fba4ac194268, type: 3}
-  m_Name: SubQuest1
+  m_Name: Chapter1
   m_EditorClassIdentifier: 
   items:
   - type: 0
@@ -30,7 +30,7 @@ MonoBehaviour:
   - type: 0
     id: FINISH
     targetID: FINISH
-    text: 
+    text: FINISH
     audio: {fileID: 0}
     options: []
     eventName: 

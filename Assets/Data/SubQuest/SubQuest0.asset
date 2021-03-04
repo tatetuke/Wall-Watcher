@@ -134,7 +134,7 @@ MonoBehaviour:
   - type: 0
     id: FINISH
     targetID: FINISH
-    text: "\u4F1A\u8A71\u7D42\u4E86(\u672C\u5F53\u306F\u7A7A\u6587\u5B57\u5217)"
+    text: 
     audio: {fileID: 0}
     options: []
     eventName: 
