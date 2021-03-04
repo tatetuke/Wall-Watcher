@@ -22,6 +22,8 @@ public class SEManager : SingletonMonoBehaviour<SEManager>, IAudio
     private void Start()
     {
         //Load("escape").Forget();
+        Play("aaa");
+        Play("footsteps");
     }
 
     private void Update()
@@ -53,7 +55,7 @@ public class SEManager : SingletonMonoBehaviour<SEManager>, IAudio
         //ロード失敗
         if (audioPiece == null)
         {
-            Debug.LogWarning("The audio isnt found");
+            Debug.LogWarning($"<color=red>The audio </color>'{audioId}' <color=red>is not found</color>");
             return false;
         }
         //ロード済み
@@ -91,7 +93,10 @@ public class SEManager : SingletonMonoBehaviour<SEManager>, IAudio
         m_AudioSource.PlayOneShot(m_AudioClipDictionary[SEId]);
     }
 
+
+
     /// <summary>string型のIdで指定されたaudioClipを再生する</summary>
+    /// <param name="SEId">Assets/Data/AudioTable_SEの中身を参考にすること</param>
     public async void Play(string SEId)
     {
         //ロード済みでない
@@ -100,6 +105,7 @@ public class SEManager : SingletonMonoBehaviour<SEManager>, IAudio
             bool loadResult = await Load(SEId);
             if (loadResult == false)
                 return;
+            
         }
 
         m_AudioSource.PlayOneShot(m_AudioClipDictionary[SEId]);
