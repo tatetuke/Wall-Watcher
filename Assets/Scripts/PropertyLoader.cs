@@ -11,14 +11,13 @@ public class PropertyLoader : SingletonMonoBehaviour<PropertyLoader>
     //変数をファイルに保存するとき、その変数がどの型なのかを記述するヘッダ
     const string intHeader = "property.int";
     const string floatHeader = "property.float";
+    const string floatListHeader = "property.floatList";
     const string boolHeader = "property.bool";
-    const string vec2Header = "property.vec2";
-    const string vec3Header = "property.vec3";
     const string stringHeader = "property.string";
     [Header("Property")]
     [SerializeField] string directory = "Data";
     [SerializeField] string filename = "propertydata.csv";
-    Dictionary<string, string> m_properties = new Dictionary<string, string>();
+    Dictionary<string, List<string>> m_properties = new Dictionary<string, List<string>>();
     Dictionary<string, string> m_propertyTypes = new Dictionary<string, string>();
     /// <summary>
     /// RegisterParamした後に、そのパラメータをcsvファイルからロードした値で上書きする
@@ -36,10 +35,10 @@ public class PropertyLoader : SingletonMonoBehaviour<PropertyLoader>
         {
             string typeID = obj[0];
             string key = obj[1];
-            StringBuilder sb = new StringBuilder(obj[2]);
-            for (int i = 3; i < obj.Count; i++) sb.Append(obj[i]);
+            List<string> value = new List<string>();
+            for (int i = 2; i < obj.Count; i++) value.Add(obj[i]);
             m_propertyTypes.Add(key, typeID);
-            m_properties.Add(key, sb.ToString());
+            m_properties.Add(key, value);
         }
     }
 
@@ -51,7 +50,7 @@ public class PropertyLoader : SingletonMonoBehaviour<PropertyLoader>
         CSVReader.Write(directory, filename, list);
     }
 
-    public string Get(string key)
+    public List<string> Get(string key)
     {
         return m_properties[key];
     }
@@ -61,7 +60,7 @@ public class PropertyLoader : SingletonMonoBehaviour<PropertyLoader>
         {
             return default_;
         }
-        return int.Parse(m_properties[key]);
+        return int.Parse(m_properties[key][0]);
     }
     public float GetFloat(string key,float default_=0f)
     {
@@ -69,7 +68,7 @@ public class PropertyLoader : SingletonMonoBehaviour<PropertyLoader>
         {
             return default_;
         }
-        return float.Parse(m_properties[key]);
+        return float.Parse(m_properties[key][0]);
     }
     public bool GetBool(string key,bool default_=false)
     {
@@ -77,7 +76,7 @@ public class PropertyLoader : SingletonMonoBehaviour<PropertyLoader>
         {
             return default_;
         }
-        return bool.Parse(m_properties[key]);
+        return bool.Parse(m_properties[key][0]);
     }
     public string GetString(string key,string default_="")
     {
@@ -85,11 +84,11 @@ public class PropertyLoader : SingletonMonoBehaviour<PropertyLoader>
         {
             return default_;
         }
-        return m_properties[key];
+        return m_properties[key][0];
     }
     public Vector2 GetVec2(string key,Vector2 default_)
     {
-        if (!m_propertyTypes.ContainsKey(key) || m_propertyTypes[key] != vec2Header)
+        if (!m_propertyTypes.ContainsKey(key) || m_propertyTypes[key] != floatListHeader)
         {
             return default_;
         }
@@ -97,7 +96,7 @@ public class PropertyLoader : SingletonMonoBehaviour<PropertyLoader>
     }
     public Vector3 GetVec3(string key, Vector3 default_)
     {
-        if (!m_propertyTypes.ContainsKey(key) || m_propertyTypes[key] != vec3Header)
+        if (!m_propertyTypes.ContainsKey(key) || m_propertyTypes[key] != floatListHeader)
         {
             return default_;
         }
@@ -105,25 +104,23 @@ public class PropertyLoader : SingletonMonoBehaviour<PropertyLoader>
     }
     public Vector2 GetVec2(string key)
     {
-        if (!m_propertyTypes.ContainsKey(key) || m_propertyTypes[key] != vec2Header)
+        if (!m_propertyTypes.ContainsKey(key) || m_propertyTypes[key] != floatListHeader)
         {
             return Vector2.zero;
         }
-        var lis = m_properties[key].Split(',');
-        float x = float.Parse(lis[0]);
-        float y = float.Parse(lis[1]);
+        float x = float.Parse(m_properties[key][0]);
+        float y = float.Parse(m_properties[key][1]);
         return new Vector2(x, y);
     }
     public Vector3 GetVec3(string key)
     {
-        if (!m_propertyTypes.ContainsKey(key) || m_propertyTypes[key] != vec3Header)
+        if (!m_propertyTypes.ContainsKey(key) || m_propertyTypes[key] != floatListHeader)
         {
             return Vector3.zero;
         }
-        var lis = m_properties[key].Split(',');
-        float x = float.Parse(lis[0]);
-        float y = float.Parse(lis[1]);
-        float z = float.Parse(lis[2]);
+        float x = float.Parse(m_properties[key][0]);
+        float y = float.Parse(m_properties[key][1]);
+        float z = float.Parse(m_properties[key][2]);
         return new Vector3(x, y, z);
     }
     public void SetInt(string key, int value)
@@ -132,7 +129,7 @@ public class PropertyLoader : SingletonMonoBehaviour<PropertyLoader>
         {
             return;
         }
-        m_properties[key] = value.ToString();
+        m_properties[key][0] = value.ToString();
     }
     public void SetFloat(string key, float value)
     {
@@ -140,7 +137,7 @@ public class PropertyLoader : SingletonMonoBehaviour<PropertyLoader>
         {
             return;
         }
-        m_properties[key] = value.ToString();
+        m_properties[key][0] = value.ToString();
     }
     public void SetBool(string key, bool value)
     {
@@ -148,7 +145,7 @@ public class PropertyLoader : SingletonMonoBehaviour<PropertyLoader>
         {
             return;
         }
-        m_properties[key] = value.ToString();
+        m_properties[key][0] = value.ToString();
     }
     public void SetString(string key, string value)
     {
@@ -156,27 +153,59 @@ public class PropertyLoader : SingletonMonoBehaviour<PropertyLoader>
         {
             return;
         }
-        m_properties[key] = value;
+        m_properties[key][0] = value;
     }
     public void SetVec2(string key, Vector2 value)
     {
-        if (m_propertyTypes[key] != vec2Header)
-        {
-            return;
-        }
-        StringBuilder sb = new StringBuilder(value.x.ToString());
-        sb.Append(value.y.ToString());
-        m_properties[key] = sb.ToString();
+        SetFloatList(key, value.x, value.y);
     }
     public void SetVec3(string key, Vector3 value)
     {
-        if (m_propertyTypes[key] != vec3Header)
+        SetFloatList(key, value.x, value.y, value.z);
+    }
+
+    public void SetFloatList(string key, IEnumerable<float> values) {
+        if (m_propertyTypes[key] != floatListHeader)
         {
             return;
         }
-        StringBuilder sb = new StringBuilder(value.x.ToString());
-        sb.Append(value.y.ToString());
-        sb.Append(value.z.ToString());
-        m_properties[key] = sb.ToString();
+        var list = m_properties[key];
+        int count = 0;
+        foreach(var i in values)
+        {
+            if (count < list.Count)
+            {
+                list[count] = i.ToString();
+                count++;
+            }
+            else
+            {
+                list.Add(i.ToString());
+            }
+        }
     }
+
+    public void SetFloatList(string key, params float[] args)
+    {
+        if (m_propertyTypes[key] != floatListHeader)
+        {
+            return;
+        }
+        var list = m_properties[key];
+        int count = 0;
+        foreach (var i in args)
+        {
+            if (count < list.Count)
+            {
+                list[count] = i.ToString();
+                count++;
+            }
+            else
+            {
+                list.Add(i.ToString());
+            }
+        }
+    }
+
+
 }
