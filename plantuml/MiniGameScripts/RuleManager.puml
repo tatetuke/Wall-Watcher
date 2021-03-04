@@ -1,0 +1,7 @@
+@startuml
+class RuleManager {
+    + IsNeedRule() : bool
+    Start() : void
+    Update() : void
+}
+@enduml

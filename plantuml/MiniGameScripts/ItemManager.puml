@@ -1,0 +1,5 @@
+@startuml
+class MiniGameScripts.ItemManager {
+    Items : int[]
+}
+@enduml

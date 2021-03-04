@@ -1,0 +1,10 @@
+@startuml
+package Audio{
+!include .\\Audio\AudioMixerManager.puml
+!include .\\Audio\BGMManager.puml
+!include .\\Audio\IAudio.puml
+!include .\\Audio\SEManager.puml
+}
+
+
+@enduml

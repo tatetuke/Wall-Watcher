@@ -1,0 +1,15 @@
+@startuml
+class ConversationDataEditor {
+    list : ReorderableList
+    script : ConversationData
+    OnEnable() : void
+    OnSelect(list:ReorderableList) : void
+    OnReorder(list:ReorderableList) : void
+    OnDrawHeader(rect:Rect) : void
+    OnUndoRedo() : void
+    OnRemove(list:ReorderableList) : void
+    OnDrawElement(rect:Rect, index:int, isActive:bool, isFocused:bool) : void
+    + <<override>> OnInspectorGUI() : void
+}
+Editor <|-- ConversationDataEditor
+@enduml

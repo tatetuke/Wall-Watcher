@@ -1,0 +1,19 @@
+@startuml
+class AudioMixerManager {
+    m_AudioMixer : AudioMixer = default
+    m_FadeState : FadeState
+    - Start() : void
+    - Update() : void
+    + SetVolume(GroupName:string, volumeDb:float) : void
+    + <<async>> FadeIn(GroupName:string, fadeTime:float) : UniTask
+    + <<async>> FadeOut(GroupName:string, fadeTime:float) : UniTask
+    - ConvertVolume2dB(volume:float) : float
+    - <<async>> Test() : void
+}
+enum FadeState {
+    NONE,
+    FADEIN,
+    FADEOUT,
+}
+AudioMixerManager +-- FadeState
+@enduml

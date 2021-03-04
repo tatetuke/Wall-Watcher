@@ -1,0 +1,15 @@
+@startuml
+class AnimationModule {
+    - m_State : State = default
+    - m_Animator : Animator = default
+    - Start() : void
+    - Update() : void
+    + <<virtual>> ChangeState(state:State) : void
+    # <<virtual>> UpdateState() : void
+}
+enum AnimationModule.State {
+    IDEL,
+    WALKING,
+}
+AnimationModule +-- AnimationModule.State
+@enduml

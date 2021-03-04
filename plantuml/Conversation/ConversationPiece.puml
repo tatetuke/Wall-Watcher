@@ -1,0 +1,17 @@
+@startuml
+enum ConversationType {
+    normal,
+    events,
+}
+class Conversations {
+    + type : ConversationType
+    + id : string
+    + targetID : string
+    + text : string
+    + audio : AudioClip
+    + options : List<ConversationOption>
+    + eventName : string
+}
+Conversations o-- ConversationOption
+Conversations o-- ConversationType
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+package MiniGameScripts{
+!include .\\MiniGameScripts\ItemManager.puml
+!include .\\MiniGameScripts\MiniGameManager.puml
+!include .\\MiniGameScripts\MoveMiniGame.puml
+!include .\\MiniGameScripts\RuleManager.puml
+!include .\\MiniGameScripts\ScoreManager.puml
+}
+@enduml
