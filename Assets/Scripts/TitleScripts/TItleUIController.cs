@@ -10,48 +10,83 @@ public class TItleUIController : MonoBehaviour
     private bool IsSelectChange=true;
     [SerializeField] Text[] TitleText;
     [SerializeField] Image[] TitleImage;
+    enum TitleState
+    {
+        PushAnyKey,
+        GameTitleSlideMovie,
+        GameTitle,
+        NewGame,
+        LoadGame,
+        Config
 
+    }
+    [SerializeField]private TitleState TState;
+
+    private void Start()
+    {
+        TState = TitleState.PushAnyKey;
+    }
 
     void Update()
     {
-        if (Input.anyKey)
+        switch (TState)
         {
-            Debug.Log("何らかのキーが押されました");
-            PushAnyKeyAnimator.SetBool("IsPushAnyKey", true);
-            PushAnyKeyAnimator.SetBool("IsPushAnyKey", true);
-            
-        }
+            case TitleState.PushAnyKey://何かボタンを押してくださいの状態
 
-        if (PushAnyKeyAnimator.GetCurrentAnimatorStateInfo(0).IsName("SelectState"))
-        {
-            Debug.Log("選択フェーズ");
-            if (Input.GetKeyDown(KeyCode.Space) && m_Select == 0)
+            if (Input.anyKey)
             {
-                Debug.Log("PlayNewGame");
+                //何かキーが押されたらゲームタイトルを表示させるアニメーションを出す。
+                Debug.Log("何らかのキーが押されました");
+                PushAnyKeyAnimator.SetBool("IsPushAnyKey", true);
+                TState = TitleState.GameTitleSlideMovie;
+            }
+            break;
+
+            case TitleState.GameTitleSlideMovie://タイトルの選択画面に移る間のアニメーションの状態
+
+                if (PushAnyKeyAnimator.GetCurrentAnimatorStateInfo(0).IsName("SelectState"))
+                {
+                    TState = TitleState.GameTitle;
+                }
+            break;
+
+            case TitleState.GameTitle://タイトルの選択画面の状態
+                Debug.Log("選択フェーズ");
+
+                //選択肢を選ぶ。
+                SelectTitle();
+                //選択肢の決定
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    if (m_Select == 0)//NewGameに状態遷移する。
+                    {
+                        Debug.Log("PlayNewGame");
+                        TState = TitleState.NewGame;
+                    }
+                    if (m_Select == 1)//LoadGameに状態遷移する。
+                    {
+                        TState = TitleState.LoadGame;
+                    }
+                    if (m_Select == 2)//Configに状態遷移する。
+                    {
+                        TState = TitleState.Config;
+                    }
+                }
+                break;
+
+            case TitleState.NewGame://NewGameが選択された状態
+
                 FadeManager.Instance.LoadLevel("MainMap3_CircleWay", 1.5f);
-            }
+                break;
 
-            if (Input.GetKeyDown("down"))
-            {
-             
-                    ChangeColorDown();
-                    m_Select++;
-                    m_Select %= TitleText.Length;
-                    ChangeColorUp();
-                
-    
-            }
-            else if (Input.GetKeyDown("up"))
-            {
+            case TitleState.LoadGame://LoadGameが選択された状態
 
-                ChangeColorDown();
-                m_Select += TitleText.Length;
-                m_Select--;
-                m_Select %= TitleText.Length;
-                ChangeColorUp();
+                break;
 
-            }
+            case TitleState.Config://Configが選択された状態
 
+                break;
+           
         }
     }
 
@@ -77,4 +112,32 @@ public class TItleUIController : MonoBehaviour
         //元画像のまま
         TitleImage[m_Select].color = new Color32(255, 255, 255, 255);
     }
+    /// <summary>
+    /// タイトルを選択するときに選択肢の色を変化させる関数。
+    /// </summary>
+    private void SelectTitle()
+    {
+        
+        if (Input.GetKeyDown("down"))
+        {
+
+            ChangeColorDown();
+            m_Select++;
+            m_Select %= TitleText.Length;
+            ChangeColorUp();
+
+
+        }
+        else if (Input.GetKeyDown("up"))
+        {
+
+            ChangeColorDown();
+            m_Select += TitleText.Length;
+            m_Select--;
+            m_Select %= TitleText.Length;
+            ChangeColorUp();
+        }
+
+    }
+
 }
