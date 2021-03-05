@@ -7,7 +7,6 @@ public class TItleUIController : MonoBehaviour
     [SerializeField]
     Animator PushAnyKeyAnimator;
     private int m_Select=0;//選択中のタイトルを表す変数.
-    private bool IsSelectChange=true;
     [SerializeField] Text[] TitleText;
     [SerializeField] Image[] TitleImage;
     enum TitleState
@@ -27,7 +26,6 @@ public class TItleUIController : MonoBehaviour
         TState = TitleState.PushAnyKey;
     }
 
-    private bool moveSceneToMainMap3 = false;
     void Update()
     {
         switch (TState)
@@ -44,7 +42,7 @@ public class TItleUIController : MonoBehaviour
             break;
 
             case TitleState.GameTitleSlideMovie://タイトルの選択画面に移る間のアニメーションの状態
-
+                //ムービーが終わったらタイトル選択の状態へ遷移
                 if (PushAnyKeyAnimator.GetCurrentAnimatorStateInfo(0).IsName("SelectState"))
                 {
                     TState = TitleState.GameTitle;
@@ -63,7 +61,6 @@ public class TItleUIController : MonoBehaviour
                     {
                         Debug.Log("PlayNewGame");
                         TState = TitleState.NewGame;
-                        moveSceneToMainMap3 = true;
                     }
                     if (m_Select == 1)//LoadGameに状態遷移する。
                     {
@@ -78,10 +75,8 @@ public class TItleUIController : MonoBehaviour
 
             case TitleState.NewGame://NewGameが選択された状態
 
-
                 FadeManager.Instance.LoadLevel("MainMap3_CircleWay", 1.5f);
                 TState = TitleState.End;
-
                 break;
 
             case TitleState.LoadGame://LoadGameが選択された状態
