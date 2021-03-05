@@ -12,9 +12,10 @@ using DG.Tweening;
 /// </summary>
 public class AudioMixerManager : SingletonMonoBehaviour<AudioMixerManager>
 {
-    [SerializeField] AudioMixer m_AudioMixer = default;
-    [SerializeField] FadeState m_FadeState = FadeState.NONE;
-
+    [SerializeField] private AudioMixer m_AudioMixer = default;
+    [SerializeField] private FadeState m_FadeState = FadeState.NONE;
+    [SerializeField] private Dictionary<string, float> m_AudioVolumes = new Dictionary<string, float>();
+    
     public enum FadeState
     {
         NONE,
@@ -25,7 +26,8 @@ public class AudioMixerManager : SingletonMonoBehaviour<AudioMixerManager>
     // Start is called before the first frame update
     private void Start()
     {
-
+        //if (!m_AudioVolumes.ContainsKey("Master"))
+            
     }
 
     private void Update()
@@ -113,10 +115,9 @@ public class AudioMixerManager : SingletonMonoBehaviour<AudioMixerManager>
     {
         return Mathf.Clamp(20f * Mathf.Log10(Mathf.Clamp(volume, 0f, 1f)), -80f, 0f);
         //return -80 + volume * 80; //線形
-        
     }
 
-    private async void Test()
+    private void Test()
     {
         //await FadeIn("SE", 4);
         //await FadeOut("Master", 4);
