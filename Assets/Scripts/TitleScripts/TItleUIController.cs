@@ -17,8 +17,8 @@ public class TItleUIController : MonoBehaviour
         GameTitle,
         NewGame,
         LoadGame,
-        Config
-
+        Config,
+        End
     }
     [SerializeField]private TitleState TState;
 
@@ -77,6 +77,7 @@ public class TItleUIController : MonoBehaviour
             case TitleState.NewGame://NewGameが選択された状態
 
                 FadeManager.Instance.LoadLevel("MainMap3_CircleWay", 1.5f);
+                TState = TitleState.End;
                 break;
 
             case TitleState.LoadGame://LoadGameが選択された状態
