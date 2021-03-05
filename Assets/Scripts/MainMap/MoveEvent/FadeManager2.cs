@@ -19,14 +19,8 @@ public class FadeManager2 : SingletonMonoBehaviour<FadeManager2>
             Destroy(this);
             return;
         }
-
-        //DontDestroyOnLoad(this.gameObject);
-
         //ここで黒テクスチャ作る
         this.blackTexture = new Texture2D(32, 32, TextureFormat.RGB24, false);
-        this.blackTexture.ReadPixels(new Rect(0, 0, 32, 32), 0, 0, false);
-        this.blackTexture.SetPixel(0, 0, Color.white);
-        this.blackTexture.Apply();
     }
 
     public void OnGUI()
