@@ -27,6 +27,7 @@ public class TItleUIController : MonoBehaviour
         TState = TitleState.PushAnyKey;
     }
 
+    private bool moveSceneToMainMap3 = false;
     void Update()
     {
         switch (TState)
@@ -62,6 +63,7 @@ public class TItleUIController : MonoBehaviour
                     {
                         Debug.Log("PlayNewGame");
                         TState = TitleState.NewGame;
+                        moveSceneToMainMap3 = true;
                     }
                     if (m_Select == 1)//LoadGameに状態遷移する。
                     {
@@ -76,7 +78,11 @@ public class TItleUIController : MonoBehaviour
 
             case TitleState.NewGame://NewGameが選択された状態
 
-                FadeManager.Instance.LoadLevel("MainMap3_CircleWay", 1.5f);
+                if (moveSceneToMainMap3)
+                {
+                    moveSceneToMainMap3 = false;
+                    FadeManager.Instance.LoadLevel("MainMap3_CircleWay", 1.5f);
+                }
                 break;
 
             case TitleState.LoadGame://LoadGameが選択された状態
