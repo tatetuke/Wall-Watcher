@@ -1,11 +1,11 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// プレイヤーの移動・見た目周りを管理するクラス
 /// </summary>
-public class Player : MonoBehaviour
+public class Mob : MonoBehaviour
 {
     [SerializeField]
     private float m_WalkForce = 0;
@@ -22,6 +22,11 @@ public class Player : MonoBehaviour
     private float m_Inertia; // 慣性 0なら止まる
     [SerializeField]
     private float m_InertiaMultiplier;
+
+    private GameObject m_Player;
+
+    private int Count = -1;
+    private int Sign = 1;
 
     public enum State
     {
@@ -40,6 +45,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         ChangeState(State.IDLE);
+
+        m_Player = GameObject.Find("Player");
     }
 
     // Update is called once per frame
@@ -49,6 +56,29 @@ public class Player : MonoBehaviour
             ChangeState(State.FREEZE);
         if (Input.GetKeyDown(KeyCode.Y))
             ChangeState(State.IDLE);
+
+        GameObject targetNPC = ConversationDataManager.Instance.GetTargetNPC();
+        if (ConversationDataManager.Instance.IsTalking && targetNPC==this.gameObject)
+        {
+            ChangeState(State.FREEZE);
+            Stop();
+
+            // プレイヤーが対象のNPCの方向に向くようにする
+            if (m_Player.transform.position.x < this.transform.position.x)
+            {
+                m_ViewObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+            else
+            {
+                m_ViewObject.transform.rotation = Quaternion.Euler(0, 180, 0);
+            }
+        }
+        else
+        {
+            Count++;
+            Count %= 60;
+            if (Count == 0) Sign *= -1;
+        }
         UpdateState();
     }
 
@@ -74,7 +104,7 @@ public class Player : MonoBehaviour
         //float moveX = Input.GetAxisRaw("Horizontal") * m_Inertia * m_WalkForce;
         float moveX = m_Inertia * m_WalkForce;
         float moveForceMultiplier = 10;
-        Vector3 vel = new Vector3(moveForceMultiplier *( moveX - m_Rigidbody2D.velocity.x), 0, 0);
+        Vector3 vel = new Vector3(moveForceMultiplier * (moveX - m_Rigidbody2D.velocity.x), 0, 0);
         m_Rigidbody2D.AddForce(vel);
 
         //移動する向きに見た目を回転
@@ -117,14 +147,14 @@ public class Player : MonoBehaviour
         }
     }
 
-    
+
 
     private void UpdateState()
     {
         Move();
         if (m_State == State.FREEZE)
         {
-            UpdateInertia(0);//慣性を減衰させる
+            //UpdateInertia(0);//慣性を減衰させる
 
             if (IsWalking)
                 m_AnimationModule.ChangeState(AnimationModule.State.WALKING);
@@ -133,14 +163,14 @@ public class Player : MonoBehaviour
         }
         else if (m_State == State.IDLE)
         {
-            UpdateInertia(Input.GetAxisRaw("Horizontal"));
+            UpdateInertia();
 
             if (IsWalking)
                 ChangeState(State.WALKING);
         }
         else if (m_State == State.WALKING)
         {
-            UpdateInertia(Input.GetAxisRaw("Horizontal"));
+            UpdateInertia();
 
             if (!IsWalking)
                 ChangeState(State.IDLE);
@@ -164,31 +194,33 @@ public class Player : MonoBehaviour
     /// -1~1の値を受け取り慣性を更新する
     /// </summary>
     /// <param name="inputValue">-1~1の値</param>
-    private void UpdateInertia(float inputValue)
+    private void UpdateInertia()
     {
-        float delta = (inputValue >= 0 ? Time.deltaTime : -Time.deltaTime) * m_InertiaMultiplier;
-        
+        Debug.Log("UpdateInertia");
+        //float delta = (inputValue >= 0 ? Time.deltaTime : -Time.deltaTime) * m_InertiaMultiplier;
+        float delta = Sign * Time.deltaTime * m_InertiaMultiplier;
+
         //入力がある場合
-        if (inputValue != 0)
-        {
+        //if (inputValue != 0)
+        //{
             //現在の方向と入力の方向が一緒なら
             if (m_Inertia * delta >= 0)
             {
                 m_Inertia = Mathf.Clamp(m_Inertia + delta, -1, 1);
-            }
-            else
+        }
+        else
             {
                 m_Inertia = Mathf.Clamp(delta, -1, 1); ;
-            }
-            return;
         }
+        return;
+        //}
 
-        //入力が無い場合
-        //減衰させる
-        if (m_Inertia >= 0)
-            m_Inertia = Mathf.Clamp(m_Inertia - Time.deltaTime * m_InertiaMultiplier, 0, 1);
-        else
-            m_Inertia = Mathf.Clamp(m_Inertia + Time.deltaTime * m_InertiaMultiplier, -1, 0);
+        ////入力が無い場合
+        ////減衰させる
+        //if (m_Inertia >= 0)
+        //    m_Inertia = Mathf.Clamp(m_Inertia - Time.deltaTime * m_InertiaMultiplier, 0, 1);
+        //else
+        //    m_Inertia = Mathf.Clamp(m_Inertia + Time.deltaTime * m_InertiaMultiplier, -1, 0);
 
     }
 }

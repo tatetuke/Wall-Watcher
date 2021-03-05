@@ -27,16 +27,18 @@ namespace Kyoichi
             //Awakeでは行わないよう
             Debug.Log("Loading properties");
             PropertyLoader.Instance.LoadProperty();
-            Debug.Log("Execte loadable");
             //SaveLoadManager.Instance.Load().Wait();
             //Waitするとロードしなくなる（Start内でAddressable.Wait()やろうとするといつまでたっても完了しないっぽい）
+            Debug.Log("Player Data Loading...");
             SaveLoadManager.Instance.Load();
+            SaveLoadManager.Instance.LoadAsync();
             m_state = GameState.loading;
             SaveLoadManager.Instance.OnLoadFinished.AddListener(() =>
             {
                 m_state = GameState.running;
             });
-            FindObjectOfType<CanvasManager>().OnCloseCanvas.AddListener(()=> {
+            FindObjectOfType<CanvasManager>().OnCloseCanvas.AddListener(() =>
+            {
                 m_state = GameState.running;
                 OnPauseEnd.Invoke();
             });
@@ -59,10 +61,12 @@ namespace Kyoichi
             }
         }
 
-            //ゲームを終了したときに自動でセーブされるようになってます
+        //ゲームを終了したときに自動でセーブされるようになってます
         private void OnApplicationQuit()
         {
-            SaveLoadManager.Instance.Save().Wait();
+            Debug.Log("Player Data Saving...");
+            SaveLoadManager.Instance.Save();
+            SaveLoadManager.Instance.SaveAsync().Wait();
             PropertyLoader.Instance.SaveProperty();
         }
     }

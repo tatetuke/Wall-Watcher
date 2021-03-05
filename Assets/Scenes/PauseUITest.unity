@@ -2096,10 +2096,12 @@ MonoBehaviour:
   questListContainer: {fileID: 1603099565}
   questPrefab: {fileID: 7437580326470700888, guid: 645212b641fc69a46b519871216e3fab,
     type: 3}
+  descriptionWindow: {fileID: 1237316802}
   descriptionContainer: {fileID: 1764281990}
   descriptionPrefab: {fileID: 336766323281635847, guid: 97d2fe7f82156f449a591e9476379379,
     type: 3}
   descriptionCloseButton: {fileID: 556793390}
+  target: {fileID: 1367607709}
 --- !u!1 &368318104
 GameObject:
   m_ObjectHideFlags: 0
@@ -6626,6 +6628,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1367607708}
   - component: {fileID: 1367607707}
+  - component: {fileID: 1367607709}
   m_Layer: 0
   m_Name: InventryTest
   m_TagString: Untagged
@@ -6661,6 +6664,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1367607709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1367607706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e0728af88c98484cb01bbe368ab1b4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1377213171
 GameObject:
   m_ObjectHideFlags: 0
@@ -8825,6 +8840,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1764281990}
+  - component: {fileID: 1764281992}
   - component: {fileID: 1764281991}
   m_Layer: 5
   m_Name: DescriptionConteiner
@@ -8848,11 +8864,11 @@ RectTransform:
   m_Father: {fileID: 1237316802}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -32.91}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &1764281991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8878,6 +8894,20 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!114 &1764281992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764281989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 1
 --- !u!1 &1766819012
 GameObject:
   m_ObjectHideFlags: 0
@@ -9893,7 +9923,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Quests
+          m_StringArgument: Quest
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &2140457411

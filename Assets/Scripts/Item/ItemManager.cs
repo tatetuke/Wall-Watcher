@@ -44,7 +44,7 @@ namespace Kyoichi
 
         AsyncOperationHandle<IList<ItemSO>> m_handle;
         //ゲーム開始時の部屋を読み込む
-        public async Task Load(CancellationToken cancellationToken)
+        public async Task LoadAsync(CancellationToken cancellationToken)
         {
             if (m_state != LoadState.notLoaded)
             {
