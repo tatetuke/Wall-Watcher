@@ -5,36 +5,35 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Cysharp.Threading.Tasks;
 
+/// <summary>
+/// 効果音の再生・停止などを行う
+/// 同時に再生されるSEは3つ以上になり、
+/// 音源を複数持つためそれらの管理も行う(予定）
+/// </summary>
 public class SEManager : SingletonMonoBehaviour<SEManager>, IAudio
 {
-    [SerializeField] private AudioSource m_AudioSource = default;
-    [SerializeField] private AssetLabelReference m_LabelReference;
-    [Header("almost unused")]
-    [SerializeField] private List<AudioClip> m_AudioClips = default;
+    [SerializeField] private AudioSource m_AudioSource;
+    [SerializeField] private AudioTable m_AudioTable;
 
     private AsyncOperationHandle<IList<AudioClip>> m_handle;
     public Dictionary<string, AudioClip> m_AudioClipDictionary = new Dictionary<string, AudioClip>();
-    [SerializeField] private AssetReferenceAudio m_AssetReferenceAudio = default;
-    [SerializeField] private string m_AudioId;
 
-    public enum SEType
-    {
-        FOOTSTEPS,
-        ESCAPE,
-    }
 
     private void Start()
     {
-        LoadAll().Forget();
+        //Load("escape").Forget();
+        Play("aaa");
+        Play("footsteps");
     }
 
     private void Update()
     {
         ////テスト用
-        //if (Input.GetKeyDown(KeyCode.UpArrow))
-        //    Play("walking_on_floor1");
-        //if (Input.GetKeyDown(KeyCode.DownArrow))
-        //    Play("se_maoudamashii_se_escape");
+        //if (Input.GetKeyDown(KeyCode.F))
+        //    Play("escape");
+        //if (Input.GetKeyDown(KeyCode.G))
+        //    Play("footsteps");
+
     }
 
     public void Stop()
@@ -48,71 +47,78 @@ public class SEManager : SingletonMonoBehaviour<SEManager>, IAudio
     }
 
     /// <summary>指定したIdのaudioClipをロードして辞書に加える　ロードの可否を返す</summary>
-    public async UniTask<bool> Load(string addressableId)
+    public async UniTask<bool> Load(string audioId)
     {
         Debug.Log("try SE load", gameObject);
-        m_handle = Addressables.LoadAssetsAsync<AudioClip>(addressableId, null);
+
+        var audioPiece = m_AudioTable.GetPiece(audioId);
+        //ロード失敗
+        if (audioPiece == null)
+        {
+            Debug.LogWarning($"<color=red>The audio </color>'{audioId}' <color=red>is not found</color>");
+            return false;
+        }
+        //ロード済み
+        if (m_AudioClipDictionary.ContainsKey(audioPiece.id))
+        {
+            //Debug.Log("Already loaded");
+            return true;
+        }
+
+        m_handle = Addressables.LoadAssetsAsync<AudioClip>(audioPiece.reference, null);
         await m_handle.Task;
+        //一つのみのはず
         foreach (var res in m_handle.Result)
         {
-            m_AudioClipDictionary.Add(res.name, res);
-            Debug.Log($"Load SE: '{res.name}'");
+            m_AudioClipDictionary.Add(audioPiece.id, res);
+            Debug.Log($"Load SE(id, file): '{audioPiece.id}', '{res.name}'");
+            Debug.Log($"Loaded audio: {m_AudioClipDictionary.Count}");
         }
         bool result = (m_handle.Result.Count == 0) ? false : true;
         Addressables.Release(m_handle);
-
-        return result;
-    }
-    /// <summary>Addressablesに含まれるSEラベルのaudioClipをすべてロードして辞書に加える　ロードの可否を返す</summary>
-    public async UniTask<bool> LoadAll()
-    {
-        Debug.Log("try SE load", gameObject);
-        m_handle = Addressables.LoadAssetsAsync<AudioClip>(m_LabelReference, null);
-        await m_handle.Task;
-        foreach (var res in m_handle.Result)
-        {
-            m_AudioClipDictionary.Add(res.name, res);
-            Debug.Log($"Load SE: '{res.name}'");
-        }
-        bool result = (m_handle.Result.Count == 0) ? false : true;
-        Addressables.Release(m_handle);
-
         return result;
     }
 
-    /// <summary>enum型で指定されたaudioClipを再生する</summary>
-    public void Play(SEType type)
+    /// <summary>string型のIdで指定されたaudioClipを再生する 再生完了などが検知できる</summary>
+    public async UniTask PlayTask(string SEId)
     {
-        Debug.Log(type + "is playing");
-        if ((int)type >= m_AudioClips.Count)
-            return;
-
-        //AudioClip selected = m_AudioClips[(int)type]; //インスペクター上で指定したaudioClipで指定する方法
-
-        //AddressableでロードしたaudioClipを指定する方法
-        AudioClip selected = null;
-        switch (type)
-        {
-            case SEType.FOOTSTEPS:
-                selected = m_AudioClipDictionary["walking_on_floor1_edit3"];
-                break;
-            case SEType.ESCAPE:
-                selected = m_AudioClipDictionary["se_maoudamashii_se_escape"];
-                break;
-            default:
-                break;
-        }
-        m_AudioSource.PlayOneShot(selected);
-    }
-
-    /// <summary>string型のIdで指定されたaudioClipを再生する</summary>
-    public void Play(string SEId)
-    {
+        //ロード済みでない
         if (!m_AudioClipDictionary.ContainsKey(SEId))
-            return;
+        {
+            bool loadResult = await Load(SEId);
+            if (loadResult == false)
+                return;
+        }
 
         m_AudioSource.PlayOneShot(m_AudioClipDictionary[SEId]);
     }
 
+
+
+    /// <summary>string型のIdで指定されたaudioClipを再生する</summary>
+    /// <param name="SEId">Assets/Data/AudioTable_SEの中身を参考にすること</param>
+    public async void Play(string SEId)
+    {
+        //ロード済みでない
+        if (!m_AudioClipDictionary.ContainsKey(SEId))
+        {
+            bool loadResult = await Load(SEId);
+            if (loadResult == false)
+                return;
+            
+        }
+
+        m_AudioSource.PlayOneShot(m_AudioClipDictionary[SEId]);
+    }
+
+    public void Play(AssetReferenceAudio assetReferenceAudio)
+    {
+        
+    }
+
+    public void ClearDictionary()
+    {
+        m_AudioClipDictionary.Clear();
+    }
 
 }

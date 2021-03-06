@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 
 /// <summary>
 /// 全体ボリューム、個別ボリューム、音のフェードイン・アウトを管理する
@@ -30,10 +31,10 @@ public class AudioMixerManager : SingletonMonoBehaviour<AudioMixerManager>
     private void Update()
     {
         ////テスト用
-        //if (Input.GetKeyDown(KeyCode.I))
-        //    FadeIn("Master", 4).Forget();
-        //if (Input.GetKeyDown(KeyCode.O))
-        //    FadeOut("Master", 4).Forget();
+        if (Input.GetKeyDown(KeyCode.I))
+            DoFadeIn("Master", 16);
+        if (Input.GetKeyDown(KeyCode.O))
+            DoFadeOut("Master", 16);
     }
 
     /// <summary>ボリュームをデシベル単位で指定する</summary>
@@ -44,11 +45,25 @@ public class AudioMixerManager : SingletonMonoBehaviour<AudioMixerManager>
         m_AudioMixer.SetFloat(GroupName, volumeDb);
     }
 
-
-
     /// <summary>フェードイン</summary>
-    /// <param name="GroupName">Master or BGM or SE</param>
-    public async UniTask FadeIn(string GroupName, float fadeTime)
+    /// <param name="groupName">Master or BGM or SE</param>
+    /// <returns></returns>
+    public DG.Tweening.Core.TweenerCore<float, float,DG.Tweening.Plugins.Options.FloatOptions> DoFadeIn(string groupName, float fadeTime)
+    {
+        return m_AudioMixer.DOSetFloat(groupName, ConvertVolume2dB(1), fadeTime);
+    }
+
+    /// <summary>フェードアウト</summary>
+    /// <param name="groupName">Master or BGM or SE</param>
+    /// <returns></returns>
+    public DG.Tweening.Core.TweenerCore<float, float, DG.Tweening.Plugins.Options.FloatOptions> DoFadeOut(string groupName, float fadeTime)
+    {
+        return m_AudioMixer.DOSetFloat(groupName, ConvertVolume2dB(0), fadeTime);
+    }
+
+    /// <summary>フェードイン Taskの方</summary>
+    /// <param name="groupName">Master or BGM or SE</param>
+    private async UniTask FadeIn(string groupName, float fadeTime)
     {
         float elapsedTime = 0;
         //既に開始していたら
@@ -59,7 +74,7 @@ public class AudioMixerManager : SingletonMonoBehaviour<AudioMixerManager>
         {
             //0~1からデシベルへ変換する
             float volume = ConvertVolume2dB(elapsedTime / fadeTime);
-            SetVolume(GroupName, volume);
+            SetVolume(groupName, volume);
 
             await UniTask.DelayFrame(1);
             elapsedTime += Time.deltaTime;
@@ -70,8 +85,8 @@ public class AudioMixerManager : SingletonMonoBehaviour<AudioMixerManager>
     }
 
     /// <summary>フェードアウト</summary>
-    /// <param name="GroupName">Master or BGM or SE</param>
-    public async UniTask FadeOut(string GroupName, float fadeTime)
+    /// <param name="groupName">Master or BGM or SE</param>
+    private async UniTask FadeOut(string groupName, float fadeTime)
     {
         float elapsedTime = 0;
         //既に開始していたら
@@ -82,7 +97,7 @@ public class AudioMixerManager : SingletonMonoBehaviour<AudioMixerManager>
         {
             //0~1からデシベルへ変換する
             float volume = ConvertVolume2dB(1 - elapsedTime / fadeTime);
-            SetVolume(GroupName, volume);
+            SetVolume(groupName, volume);
 
             await UniTask.DelayFrame(1);
             elapsedTime += Time.deltaTime;
@@ -97,12 +112,17 @@ public class AudioMixerManager : SingletonMonoBehaviour<AudioMixerManager>
     private float ConvertVolume2dB(float volume)
     {
         return Mathf.Clamp(20f * Mathf.Log10(Mathf.Clamp(volume, 0f, 1f)), -80f, 0f);
+        //return -80 + volume * 80; //線形
+        
     }
 
     private async void Test()
     {
-        await FadeIn("SE", 4);
-        await FadeOut("Master", 4);
-        await FadeIn("Master", 4);
+        //await FadeIn("SE", 4);
+        //await FadeOut("Master", 4);
+        //await FadeIn("Master", 4);
+        DoFadeIn("SE", 4);
+        DoFadeOut("Master", 4);
+        DoFadeIn("Master", 4);
     }
 }
