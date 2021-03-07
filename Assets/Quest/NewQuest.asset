@@ -17,24 +17,24 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e08fda7231809e14c9ce9e6a46118866, type: 2}
   startConditions:
   - parameterKey: money
-    conditionOperator: 0
+    conditionOperator: 4
     valueType: 0
     intValue: 1000
-    floatValue: 499
-    stringValue: aaaa
-    boolValue: 0
-  - parameterKey: chapter
-    conditionOperator: 2
-    valueType: 0
-    intValue: 3
-    floatValue: 499
-    stringValue: aaaa
-    boolValue: 0
-  endConditions:
-  - parameterKey: player.item.somewhere_key
-    conditionOperator: 2
-    valueType: 0
-    intValue: 1
     floatValue: 0
     stringValue: 
-    boolValue: 1
+    boolValue: 0
+  endConditions:
+  - parameterKey: inventry.hoge
+    conditionOperator: 4
+    valueType: 0
+    intValue: 3
+    floatValue: 0
+    stringValue: 
+    boolValue: 0
+  - parameterKey: inventry.fuga
+    conditionOperator: 4
+    valueType: 0
+    intValue: 2
+    floatValue: 0
+    stringValue: 
+    boolValue: 0
