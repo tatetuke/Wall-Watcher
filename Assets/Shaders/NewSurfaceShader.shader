@@ -10,6 +10,8 @@
 
 
         SubShader{
+        Cull Off
+
         Tags{
         "Queue" = "Transparent"
         "IgnoreProjector" = "True"
