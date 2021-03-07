@@ -14,7 +14,13 @@ public class QuestHolder : MonoBehaviour
     /// </summary>
     List<QuestDataSO> m_quests = new List<QuestDataSO>();
     public IEnumerable<QuestDataSO> Data { get => m_quests; }
-
+    private void Start()
+    {
+        OnQuestAdd.AddListener(() => {
+            EffectGenerator.Instance.Generate("quest");
+        
+        });
+    }
     public void AddQuest(QuestDataSO quest)
     {
         m_quests.Add(quest);

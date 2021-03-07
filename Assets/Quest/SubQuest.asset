@@ -15,4 +15,18 @@ MonoBehaviour:
   subQuests:
   - {fileID: 11400000, guid: 78f3e88142b710044a20359b6d9b638e, type: 2}
   startConditions: []
-  endConditions: []
+  endConditions:
+  - parameterKey: 
+    conditionOperator: 0
+    valueType: 0
+    intValue: 0
+    floatValue: 0
+    stringValue: 
+    boolValue: 0
+  - parameterKey: 
+    conditionOperator: 0
+    valueType: 0
+    intValue: 0
+    floatValue: 0
+    stringValue: 
+    boolValue: 0
