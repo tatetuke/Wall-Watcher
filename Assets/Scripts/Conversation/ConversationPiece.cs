@@ -26,7 +26,7 @@ namespace RPGM.Gameplay
         //public TalkData.FaceType talkFace;
         //テクストを表示するときに出る効果音
         public AudioClip audio;
-        //public Quest quest;
+        public QuestDataSO quest;
         //選択肢
         public List<ConversationOption> options;
 
