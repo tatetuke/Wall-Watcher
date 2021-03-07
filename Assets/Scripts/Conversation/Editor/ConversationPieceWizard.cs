@@ -165,7 +165,7 @@ namespace RPGM.Gameplay
             EditorGUILayout.PrefixLabel("Audio");
             conversationPiece.audio = (AudioClip)EditorGUILayout.ObjectField(conversationPiece.audio, typeof(AudioClip), false);
             EditorGUILayout.PrefixLabel("Quest (Optional)");
-            //conversationPiece.quest = (Quest)EditorGUILayout.ObjectField(conversationPiece.quest, typeof(Quest), true);
+            conversationPiece.quest = (QuestDataSO)EditorGUILayout.ObjectField(conversationPiece.quest, typeof(QuestDataSO), true);
 
             if (conversationScript.items.Count > 0)
             {
