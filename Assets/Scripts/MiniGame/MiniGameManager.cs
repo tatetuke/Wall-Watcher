@@ -28,6 +28,9 @@ public class MiniGameManager : MonoBehaviour
     bool IsStarted;
     bool IsFinished;
 
+    public GameObject prefab;
+    bool IsInputing = false;
+
     // 壁の状態
     int[,] Wall;
 
@@ -41,6 +44,16 @@ public class MiniGameManager : MonoBehaviour
 
     public void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            IsInputing = true;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            IsInputing = false;
+        }
+
         //if (IsStarted == false && Input.GetKeyDown(KeyCode.Space))
         //{
         //    IsStarted = true;
@@ -60,7 +73,13 @@ public class MiniGameManager : MonoBehaviour
         {
             WallController wallController = gameObject.GetComponent<WallController>();
             wallController.CountUp();
-            ChangeColor(gameObject, wallController.GetClickNum());
+            if (wallController.ColorNum >= 120) wallController.ColorNum -= 3;
+
+            //ChangeColor(gameObject);
+            byte num = wallController.ColorNum;
+            //gameObject.GetComponent<Renderer>().material.color = new Color(num, num, num, 1);
+            //gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+            gameObject.GetComponent<SpriteRenderer>().color = new Color32(num, num, num, 255);
         }
     }
 
@@ -69,7 +88,8 @@ public class MiniGameManager : MonoBehaviour
     {
         GameObject result = null;
         // 左クリックされた場所のオブジェクトを取得
-        if (Input.GetMouseButtonDown(0))
+        //if (Input.GetMouseButtonDown(0))
+        if(IsInputing)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit = new RaycastHit();
@@ -81,18 +101,32 @@ public class MiniGameManager : MonoBehaviour
         return result;
     }
 
-    private void ChangeColor(GameObject gameObject,int ClickNum)
+    public void OnClick()
     {
-        Color nextColor;
-        //Color randomColor = new Color(Random.value, Random.value, Random.value, 1.0f);
-        //gameObject.GetComponent<Renderer>().material.color = randomColor;
-
-        if (ClickNum == 1) nextColor = Color.green;
-        else if (ClickNum == 2) nextColor = Color.cyan;
-        else nextColor = Color.gray;
-
-        gameObject.GetComponent<Renderer>().material.color = nextColor;
+        GameObject[] g = GameObject.FindGameObjectsWithTag("NPC");
+        foreach(var a in g)
+        {
+            a.GetComponent<SpriteRenderer>().color = Color.gray;
+        }
+        //g.GetComponent<SpriteRenderer>().color = Color.gray;
     }
+
+    //private void ChangeColor(GameObject gameObject)
+    //{
+        
+
+    //    Color nowColor = gameObject.GetComponent<Renderer>().material.color;
+    //    Color nextColor = nowColor;
+    //    //Color randomColor = new Color(Random.value, Random.value, Random.value, 1.0f);
+    //    //gameObject.GetComponent<Renderer>().material.color = randomColor;
+
+
+    //    if (ClickNum == 1) nextColor = Color.green;
+    //    else if (ClickNum == 2) nextColor = Color.cyan;
+    //    else nextColor = Color.white;
+
+    //    gameObject.GetComponent<Renderer>().material.color = nextColor;
+    //}
 
     //public void ShowStartText()
     //{

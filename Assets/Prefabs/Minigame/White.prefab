@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 766668217680224082}
   m_Layer: 0
   m_Name: White
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a28ae3f847fcdde4994733e888bfe642, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e97ff936ebf03f14b84ff449f94a0644, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -108,3 +108,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8416146cbcddcfe48aab0cd16deae9dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ColorNum: 0

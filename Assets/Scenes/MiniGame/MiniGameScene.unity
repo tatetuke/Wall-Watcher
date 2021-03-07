@@ -684,7 +684,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &246139254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1685,16 +1685,16 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_MinSize: 0
+    m_MaxSize: 50
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: "\u4F5C\u696D\u7D42\u4E86"
 --- !u!222 &672077437
@@ -2293,8 +2293,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 200, y: -130}
-  m_SizeDelta: {x: 80, y: 30}
+  m_AnchoredPosition: {x: 600, y: -300}
+  m_SizeDelta: {x: 240, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &863655858
 MonoBehaviour:
@@ -2340,7 +2340,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1135580260}
-        m_MethodName: FinishMiniGame
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2974,6 +2974,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Brown: {fileID: 2100000, guid: d8a15d29270c3124e8718b06b2bd7934, type: 2}
   Green: {fileID: 2100000, guid: 7c397670f3a932048a531c610e61edf2, type: 2}
+  prefab: {fileID: 4821893278818329407, guid: 1cf3bd4c9f468d246a7c29b037c4d6e7, type: 3}
 --- !u!4 &1135580261
 Transform:
   m_ObjectHideFlags: 0
@@ -3369,6 +3370,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1893865693}
     m_Modifications:
+    - target: {fileID: 4821893278818329394, guid: 1cf3bd4c9f468d246a7c29b037c4d6e7,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4821893278818329394, guid: 1cf3bd4c9f468d246a7c29b037c4d6e7,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4821893278818329394, guid: 1cf3bd4c9f468d246a7c29b037c4d6e7,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4821893278818329404, guid: 1cf3bd4c9f468d246a7c29b037c4d6e7,
         type: 3}
       propertyPath: m_RootOrder
