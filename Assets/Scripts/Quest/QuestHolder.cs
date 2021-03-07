@@ -8,11 +8,13 @@ using UnityEngine.Events;
 /// </summary>
 public class QuestHolder : MonoBehaviour
 {
+    [SerializeField,ReadOnly]
     /// <summary>
     /// 請け負った、または完了したクエスト
     /// </summary>
     List<QuestDataSO> m_quests = new List<QuestDataSO>();
     public IEnumerable<QuestDataSO> Data { get => m_quests; }
+
     public void AddQuest(QuestDataSO quest)
     {
         m_quests.Add(quest);
