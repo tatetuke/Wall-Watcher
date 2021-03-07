@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: NPCMaterial
-  m_Shader: {fileID: 4800000, guid: 7474c8beef6e4ba48abdb834001a40be, type: 3}
+  m_Shader: {fileID: 4800000, guid: 2950792d82a61cf44b0737bf61043678, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -71,7 +71,9 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _Stroke: 0.1
     - _Thick: 0
+    - _Threth: 0.1
     - _UVSec: 0
     - _Width: 200
     - _ZWrite: 1
@@ -79,3 +81,4 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _LineColor: {r: 0.98564017, g: 1, b: 0, a: 1}
+    - _StrokeColor: {r: 1, g: 1, b: 1, a: 1}
