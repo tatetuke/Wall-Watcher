@@ -7,23 +7,20 @@ public class QuestUIView : UIView
 {
     [SerializeField] Transform questListContainer;
     [SerializeField] GameObject questPrefab;
+    [Header("クエストの詳細表示")]
     [SerializeField] Transform descriptionWindow;
     [SerializeField] Transform descriptionContainer;
     [SerializeField] GameObject descriptionPrefab;
     [SerializeField] Button descriptionCloseButton;
-    [SerializeField] QuestHolder target;
+    [Header("debug")]
+    [SerializeField,ReadOnly] QuestHolder target;
 
     public void OnQuestClicked()
     {
         Instantiate(descriptionPrefab, descriptionContainer);
     }
-    private void Start()
+    private void Awake()
     {
-        descriptionCloseButton.onClick.AddListener(() =>
-        {
-            descriptionWindow.gameObject.SetActive(false);
-        });
-
         OnViewShow.AddListener(Initialize);
         OnViewHide.AddListener(() =>
         {
@@ -32,14 +29,26 @@ public class QuestUIView : UIView
                 Destroy(child.gameObject);
             }
         });
+    }
+    private void Start()
+    {
+        descriptionCloseButton.onClick.AddListener(() =>
+        {
+            descriptionWindow.gameObject.SetActive(false);
+        });
+
         descriptionWindow.gameObject.SetActive(false);
     }
 
     public void Initialize()
     {
-        foreach(var i in target.Data)
+        target = m_parentManager.GetTarget().GetComponent<QuestHolder>();
+        foreach (var i in target.Data)
         {
-            Instantiate(questPrefab, questListContainer);
+            var scr=Instantiate(questPrefab, questListContainer).GetComponent<QuestContainerUI>();
+            scr.SetOnClicked(()=> { 
+            
+            });
         }
     }
 }
