@@ -17,6 +17,7 @@ namespace Kyoichi
             running,
             pause
         }
+        [SerializeField,ReadOnly]
         GameState m_state = GameState.nothing;
         public UnityEvent OnPauseStart { get; } = new UnityEvent();
         public UnityEvent OnPauseEnd { get; } = new UnityEvent();

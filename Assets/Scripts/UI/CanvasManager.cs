@@ -11,10 +11,18 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] string firstViewName;
     Stack<string> m_viewHistory = new Stack<string>();
     public UnityEvent OnCloseCanvas { get; } = new UnityEvent();
+
+    [SerializeField,ReadOnly] Player m_targetPlaeyer;
+    public Player GetTarget() => m_targetPlaeyer; 
+
     private void Awake()
     {
         m_views.AddRange(GetComponentsInChildren<UIView>(true));
-        foreach (var i in m_views) i.backButton.onClick.AddListener(Back);
+        foreach (var i in m_views)
+        {
+            i.backButton.onClick.AddListener(Back);
+            i.SetManager(this);
+        }
     }
 
     private void Start()
@@ -32,6 +40,7 @@ public class CanvasManager : MonoBehaviour
         {
             OnPushEndButton();
         });
+        m_targetPlaeyer = FindObjectOfType<Player>();
     }
     public UIView GetView(string viewName)
     {

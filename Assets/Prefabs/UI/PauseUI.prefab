@@ -3757,7 +3757,7 @@ GameObject:
   - component: {fileID: 3833655953494615913}
   - component: {fileID: 3833655953494615914}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: PauseUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6809,7 +6809,7 @@ MonoBehaviour:
   OnViewHide:
     m_PersistentCalls:
       m_Calls: []
-  itemContainerUI: {fileID: 4373537636168385465, guid: 9adaae285d3841c45b79105b74de15ad,
+  itemContainerUI: {fileID: 4373537636168385465, guid: 166df7e32b79d9e4c92c38531a1dd8b4,
     type: 3}
   container: {fileID: 3833655953398318544}
   dropdown: {fileID: 3833655954215115582}
