@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 855038bb098027e479e3f2f83ccd78fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventryDirectory: 
+  inventryDirectory: Data
   inventryFilename: '{{name}}.csv'
 --- !u!114 &-4840107769075401783
 MonoBehaviour:

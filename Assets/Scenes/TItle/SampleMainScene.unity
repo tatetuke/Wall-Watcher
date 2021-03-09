@@ -935,6 +935,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4db682fb36b8f6f42bccb14ff9ad978c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_conversations: []
 --- !u!1 &1570853015
 GameObject:
   m_ObjectHideFlags: 0
@@ -1296,6 +1297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4db682fb36b8f6f42bccb14ff9ad978c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_conversations: []
 --- !u!114 &1973221252
 MonoBehaviour:
   m_ObjectHideFlags: 0
