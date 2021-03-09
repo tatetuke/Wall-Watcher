@@ -232,30 +232,6 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         return conversations.options.Count != 0;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            //タグの変更.SearchNearNPCで使われる.
-            this.tag = "CanConversationNPC";
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            //タグの変更.SearchNearNPCで使われる.
-            this.tag = "NPC";
-
-            //// MEMO : 以下は初期化だが、会話中プレイヤーを操作できないようにすれば要らない
-            //CurrentConversation = null;
-            //TextBox.text = "";
-            //selectManager.ChangeColorDown(SelectNum);
-            //dialogController.Hide(Options[0]);
-            //dialogController.Hide(Options[1]);
-        }
-    }
-
     public GameObject GetTargetNPC()
     {
         return TargetNPC;
