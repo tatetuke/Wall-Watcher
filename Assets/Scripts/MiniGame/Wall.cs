@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class Wall : MonoBehaviour
 {
-    const int CRACKED = 0;
-    const int NORMAL = 1;
-    const int PAINTED = 2;
+    public enum WallState
+    {
+        CRACKED,
+        DRY,
+        PAINTED,
+    }
+
 
     public Sprite[] Sprites;
 
 
-    private int State;
+    private WallState ThisState;
 
     private int ClickNum;
     public byte ColorNum;
@@ -21,9 +25,9 @@ public class Wall : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (Random.value <= 0.1f) State = CRACKED;
-        else State = NORMAL;
-        this.gameObject.GetComponent<SpriteRenderer>().sprite = Sprites[State];
+        if (Random.value <= 0.1f) ThisState = WallState.CRACKED;
+        else ThisState = WallState.DRY;
+        this.gameObject.GetComponent<SpriteRenderer>().sprite = Sprites[(int)ThisState];
 
         ClickNum = 0;
         ColorNum = 255;
@@ -35,31 +39,21 @@ public class Wall : MonoBehaviour
 
     }
 
-    public int GetState()
+    public WallState GetState()
     {
-        return State;
+        return ThisState;
+    }
+
+    public void ChangeState(WallState wallState)
+    {
+        ThisState = wallState;
     }
 
 
-
-    public void ChangeSprite(int num)
+    public void ChangeSprite(WallState wallState)
     {
-        if (State == CRACKED)
-        {
-            if (num > 0) return;
-            State = NORMAL;
-        }
-        else if (State == NORMAL)
-        {
-            if (num < 0) return;
-            State = PAINTED;
-        }
-        else if (State == PAINTED)
-        {
-            return;
-        }
-
-        this.gameObject.GetComponent<SpriteRenderer>().sprite = Sprites[State];
+        ChangeState(wallState);
+        this.gameObject.GetComponent<SpriteRenderer>().sprite = Sprites[(int)wallState];
     }
 
     public int GetClickNum()
@@ -70,10 +64,5 @@ public class Wall : MonoBehaviour
     public void CountUp()
     {
         ClickNum++;
-    }
-
-    public void Change()
-    {
-        this.GetComponent<SpriteRenderer>().color = Color.gray;
     }
 }

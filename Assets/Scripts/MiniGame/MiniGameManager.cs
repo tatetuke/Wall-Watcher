@@ -103,12 +103,14 @@ public class MiniGameManager : MonoBehaviour
 
     public void OnClick()
     {
-        GameObject[] g = GameObject.FindGameObjectsWithTag("NPC");
-        foreach(var a in g)
-        {
-            a.GetComponent<SpriteRenderer>().color = Color.gray;
-        }
-        //g.GetComponent<SpriteRenderer>().color = Color.gray;
+        SceneManager.LoadScene("Paint");
+
+        //GameObject[] g = GameObject.FindGameObjectsWithTag("NPC");
+        //foreach(var a in g)
+        //{
+        //    a.GetComponent<SpriteRenderer>().color = Color.gray;
+        //}
+        ////g.GetComponent<SpriteRenderer>().color = Color.gray;
     }
 
     //private void ChangeColor(GameObject gameObject)

@@ -10,8 +10,6 @@ using UnityEngine.UI;
 public class Manager : MonoBehaviour
 {
     // 壁の状態
-    int[,] Wall;
-    int Num = 0;
     GameObject Item;
 
     public GameObject Item1, Item2;
@@ -24,45 +22,67 @@ public class Manager : MonoBehaviour
 
     public void Update()
     {
-        Num = 0;
-        
+
         GameObject target;
         target = GetClickObject();
-        if (target != null) Debug.Log(target.name);
 
-        if (target == null) return;
-        else if (target.name == "Green")
+        if (target != null)
         {
-            Instantiate(Item1);
-            Item = GameObject.Find("Item1(Clone)").gameObject;
-        }
-        else if (target.name == "Blue")
-        {
-            Item = GameObject.Find("Item1(Clone)");
-            if (Item != null) Destroy(Item);
+            if (target.name == "Green")
+            {
+                if (Item == null)
+                {
+                    Instantiate(Item1);
+                    Item = GameObject.Find("Item1(Clone)");
+                }
+                else if (Item.name != "Item1(Clone)")
+                {
+                    Destroy(Item);
+                    Instantiate(Item1);
+                    Item = GameObject.Find("Item1(Clone)");
+                }
+            }
+            else if (target.name == "Blue")
+            {
+                if (Item == null)
+                {
+                    Instantiate(Item1);
+                    Item = GameObject.Find("Item2(Clone)");
+                }
+                else if (Item.name != "Item2(Clone)")
+                {
+                    Destroy(Item);
+                    Instantiate(Item2);
+                    Item = GameObject.Find("Item2(Clone)");
+                }
+            }
+            else if (target.name == "White")
+            {
+                if (Item != null) Destroy(Item);
+            }
+            else
+            {
+                Wall wall;
+                wall = target.GetComponent<Wall>();
 
-            Item = GameObject.Find("Item2(Clone)");
-            if (Item == null) Instantiate(Item1);
-            Item = GameObject.Find("Item2(Clone)");
-        }
-        else if (target.name == "White")
-        {
-            Item = GameObject.Find("Item1(Clone)");
-            if (Item != null) Destroy(Item);
-            Item = GameObject.Find("Item2(Clone)");
-            if (Item != null) Destroy(Item);
-            Item = null;
-        }
-        else
-        {
-            Wall wall;
-            wall = target.GetComponent<Wall>();
-            wall.ChangeSprite(Num);
+                if (Item != null)
+                {
+                    if (Item.name == "Item1(Clone)")
+                    {
+                        if (wall.GetState() == Wall.WallState.DRY)
+                            wall.ChangeSprite(Wall.WallState.PAINTED);
+                    }
+                    else if (Item.name == "Item2(Clone)")
+                    {
+                        if (wall.GetState() == Wall.WallState.CRACKED)
+                            wall.ChangeSprite(Wall.WallState.DRY);
+                    }
+                }
+            }
         }
 
         if (Item != null)
         {
-            Debug.Log("更新");
             Vector3 touchScreenPosition = Input.mousePosition;
 
             touchScreenPosition.x = Mathf.Clamp(touchScreenPosition.x, 0.0f, Screen.width);
@@ -78,24 +98,13 @@ public class Manager : MonoBehaviour
         }
     }
 
-    
+
 
     private GameObject GetClickObject()
     {
         GameObject result = null;
         if (Input.GetMouseButtonDown(0))
         {
-            Num = +1;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit = new RaycastHit();
-            if (Physics.Raycast(ray, out hit))
-            {
-                result = hit.collider.gameObject;
-            }
-        }
-        else if (Input.GetMouseButtonDown(1))
-        {
-            Num = -1;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit = new RaycastHit();
             if (Physics.Raycast(ray, out hit))
