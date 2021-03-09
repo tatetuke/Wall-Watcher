@@ -4,7 +4,13 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
-public class CanvasManager : MonoBehaviour
+
+public interface IUIManager
+{
+    Player GetTarget();
+}
+
+public class CanvasManager : MonoBehaviour, IUIManager
 {
     [ReadOnly]
     [SerializeField]List<UIView> m_views = new List<UIView>();
@@ -38,18 +44,24 @@ public class CanvasManager : MonoBehaviour
         });
         Kyoichi.GameManager.Instance.OnPauseEnd.AddListener(() =>
         {
-            OnPushEndButton();
+            m_viewHistory.Clear();
+            foreach (var i in m_views)
+            {
+                i.gameObject.SetActive(false);
+            }
+            OnCloseCanvas.Invoke();//キャンバスを閉じる
         });
+        //シーン内のプレイヤーを取得
         m_targetPlaeyer = FindObjectOfType<Player>();
     }
-    public UIView GetView(string viewName)
+    UIView GetView(string viewName)
     {
         foreach (var i in m_views)
             if (i.name == viewName)
                 return i;
         return null;
     }
-    public void SwitchView(string viewName)
+    void SwitchView(string viewName)
     {
         Debug.Log($"switch to '{viewName}'");
         if (m_viewHistory.Count == 0)
@@ -72,16 +84,15 @@ public class CanvasManager : MonoBehaviour
         HideView(GetView(beforeActive));
         m_viewHistory.Push(viewName);
     }
-    public void Back()
+    void Back()
     {
         Debug.Log("back");
         //もしviewを移動させてない状態でbackを押した場合、viewを非表示にし終了
         if (m_viewHistory.Count == 1)
         {
-            OnPushEndButton();
-            string view = m_viewHistory.Peek();
             m_viewHistory.Pop();
-            HideView(GetView(view));
+            foreach (var i in m_views)
+                i.gameObject.SetActive(false);
             OnCloseCanvas.Invoke();//キャンバスを閉じる
             return;
         }
@@ -90,16 +101,6 @@ public class CanvasManager : MonoBehaviour
         m_viewHistory.Pop();
         string nextActive = m_viewHistory.Peek();
         ShowView(GetView(nextActive));
-    }
-    /// <summary>
-    /// ゲームを終了するボタンが押されたとき
-    /// </summary>
-    public void OnPushEndButton()
-    {
-        foreach (var i in m_views)
-        {
-            i.gameObject.SetActive(false);
-        }
     }
     void ShowView(UIView view)
     {

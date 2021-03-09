@@ -130,9 +130,9 @@ public class AudioClipDataEditor : Editor
     public override void OnInspectorGUI()
     {
 
-        EditorGUILayout.PrefixLabel("Left Talker");
+       // EditorGUILayout.PrefixLabel("Left Talker");
         //script.m_left = (TalkerData)EditorGUILayout.ObjectField(script.m_left, typeof(TalkerData), false);
-        EditorGUILayout.PrefixLabel("Right Talker");
+       // EditorGUILayout.PrefixLabel("Right Talker");
         //script.m_right = (TalkerData)EditorGUILayout.ObjectField(script.m_right, typeof(TalkerData), false);
         GUI.enabled = false;
         EditorGUILayout.TextField("FirstConversation", script.m_firstConversation);

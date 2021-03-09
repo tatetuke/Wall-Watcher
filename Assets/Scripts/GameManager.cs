@@ -21,23 +21,29 @@ namespace Kyoichi
         GameState m_state = GameState.nothing;
         public UnityEvent OnPauseStart { get; } = new UnityEvent();
         public UnityEvent OnPauseEnd { get; } = new UnityEvent();
+
+        private void Awake()
+        {
+            
+        }
+
         // Start is called before the first frame update
         void Start()
         {
             //データをロードするときはSaveLoadManager.LoadをStartもしくはUpdate内で行ってください。
             //Awakeでは行わないよう
+            m_state = GameState.loading;
             Debug.Log("Loading properties");
             PropertyLoader.Instance.LoadProperty();
             //SaveLoadManager.Instance.Load().Wait();
             //Waitするとロードしなくなる（Start内でAddressable.Wait()やろうとするといつまでたっても完了しないっぽい）
             Debug.Log("Player Data Loading...");
-            SaveLoadManager.Instance.Load();
-            SaveLoadManager.Instance.LoadAsync();
-            m_state = GameState.loading;
             SaveLoadManager.Instance.OnLoadFinished.AddListener(() =>
             {
                 m_state = GameState.running;
             });
+            SaveLoadManager.Instance.Load();
+            SaveLoadManager.Instance.LoadAsync();
             FindObjectOfType<CanvasManager>().OnCloseCanvas.AddListener(() =>
             {
                 m_state = GameState.running;
