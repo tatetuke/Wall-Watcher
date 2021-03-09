@@ -15,9 +15,11 @@ using UnityEngine.Playables;
 /// 文章を表示します。
 /// スペースキーが押されたときに文章を送ります。
 /// </summary>
-public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataManager>, ILoadableAsync
+public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataManager>/*,ILoadableAsync*/
 {
-    [SerializeField] private AssetLabelReference _labelReference;
+    //comeが編集********************************************************************:
+    //[SerializeField] private AssetLabelReference _labelReference;
+    //********************************************************************comeが編集
     [SerializeField] GameObject TalkCanavas;
     [SerializeField] TextMeshProUGUI TextBox;
 
@@ -49,17 +51,22 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     string FileId;
     string Id;
 
-    string ConversationDataFolderPath;
-    string[] Files;
-    List<string> ConversationDataList;
+
+    //comeが編集****************************************************************************************************
+   // string ConversationDataFolderPath;
+   // string[] Files;
+   // List<string> ConversationDataList;
+   //**************************************************************************************************************:comeが編集
 
 
-    private void Awake()
-    {
-        //base.Awake();
-        SaveLoadManager.Instance.SetLoadable(this);
-    }
 
+    //comeが編集****************************************************************
+    //private void Awake()
+    //{
+    //    //base.Awake();
+    //    SaveLoadManager.Instance.SetLoadable(this);
+    //}
+    //********************************************************comeが編集
     [System.Obsolete]
     private void Start()
     {
@@ -70,58 +77,66 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         dialogController = new DialogController();
         selectManager = new SelectManager(OptionTexts, Color.yellow, Color.black);
 
+        //comeが編集**************************************************************************************
         /// <summary>
         /// 指定したフォルダからConversationDataを全て取ってくる
         /// </summary>
-        ConversationDataList = new List<string>();
-        // インスペクターのLabel Referenceで指定されたものを用いてPathを取得
-        ConversationDataFolderPath = "Assets/Data/" + _labelReference.labelString;
-        // フォルダ内のすべてのファイル名を取得する
-        Files = System.IO.Directory.GetFiles(@ConversationDataFolderPath, "*");
-        for (int i = 0; i < Files.Length; i++)
-        {
-            // 拡張子名部分を取得
-            string extension = System.IO.Path.GetExtension(Files[i]);
-            if (extension == ".asset")
-            {
-                // 拡張子をのぞいたファイル名部分を取得
-                string filename = System.IO.Path.GetFileNameWithoutExtension(Files[i]);
-                ConversationDataList.Add(filename);
-            }
-        }
+        //ConversationDataList = new List<string>();
+        //// インスペクターのLabel Referenceで指定されたものを用いてPathを取得
+        //ConversationDataFolderPath = "Assets/Data/" + _labelReference.labelString;
+        //// フォルダ内のすべてのファイル名を取得する
+        //Files = System.IO.Directory.GetFiles(@ConversationDataFolderPath, "*");
+        //for (int i = 0; i < Files.Length; i++)
+        //{
+        //    // 拡張子名部分を取得
+        //    string extension = System.IO.Path.GetExtension(Files[i]);
+        //    if (extension == ".asset")
+        //    {
+        //        // 拡張子をのぞいたファイル名部分を取得
+        //        string filename = System.IO.Path.GetFileNameWithoutExtension(Files[i]);
+        //        ConversationDataList.Add(filename);
+        //    }
+        //}
 
-        // デバッグ用 : 必要なファイルが取り出せているか
-        //Debug.Log("ファイル名を出力します");
-        //foreach (var output in ConversationDataList) Debug.Log(output);
-        //Debug.Log("ファイル名を出力しました");
+        //// デバッグ用 : 必要なファイルが取り出せているか
+        ////Debug.Log("ファイル名を出力します");
+        ////foreach (var output in ConversationDataList) Debug.Log(output);
+        ////Debug.Log("ファイル名を出力しました");
 
-        // TODO : クエストの進行度によって用いるConversationDataを決める
-        FileId = ConversationDataList[0];
+        //// TODO : クエストの進行度によって用いるConversationDataを決める
+        //FileId = ConversationDataList[0];
+        //**************************************************************************************comeが編集
     }
 
-    AsyncOperationHandle<IList<ConversationData>> m_handle;
-    public Dictionary<string, ConversationData> m_data = new Dictionary<string, ConversationData>();
 
-    public async Task LoadAsync(CancellationToken cancellationToken)
-    {
-        Debug.Log("try conversation load", gameObject);
-        //ゲーム内アイテムデータを読み込む
-        m_handle = Addressables.LoadAssetsAsync<ConversationData>(_labelReference, null);
-        await m_handle.Task;
-        foreach (var res in m_handle.Result)
-        {
-            m_data.Add(res.name, res);
-            Debug.Log($"Load Conversation: '{res.name}'");
-        }
-        Addressables.Release(m_handle);
-        return;
-    }
+    //comeが編集**************************************************************************************
+    //AsyncOperationHandle<IList<ConversationData>> m_handle;
+    //public Dictionary<string, ConversationData> m_data = new Dictionary<string, ConversationData>();
 
-    public ConversationData GetConversation(string ID)
-    {
-        if (!m_data.ContainsKey(ID)) return null;
-        return m_data[ID];
-    }
+    //public async Task LoadAsync(CancellationToken cancellationToken)
+    //{
+    //    Debug.Log("try conversation load", gameObject);
+    //    //ゲーム内アイテムデータを読み込む
+    //    m_handle = Addressables.LoadAssetsAsync<ConversationData>(_labelReference, null);
+    //    await m_handle.Task;
+    //    foreach (var res in m_handle.Result)
+    //    {
+    //        m_data.Add(res.name, res);
+    //        Debug.Log($"Load Conversation: '{res.name}'");
+    //    }
+    //    Addressables.Release(m_handle);
+    //    return;
+    //}
+    //**************************************************************************************comeが編集
+
+
+    //comeが編集**************************************************************************************
+    //public ConversationData GetConversation(string ID)
+    //{
+    //    if (!m_data.ContainsKey(ID)) return null;
+    //    return m_data[ID];
+    //}
+    //**************************************************************************************comeが編集
 
     //Quest activeQuest = null;
 
@@ -246,7 +261,10 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             selectManager.ChangeColorDown(SelectNum);
             // ConversationsのConversationOption型リストのtargetIdをIdとして指定
             Id = CurrentConversation.options[SelectNum].targetId;
+
+         
             CurrentConversation = CurrentConversationData.Get(Id);
+          
         }
         else
         {
@@ -254,8 +272,15 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             {
                 // FirstConversationをIdとして指定
                 int index = TargetNPC.GetComponent<NPCController>().GetConversationIndex();
-                FileId = ConversationDataList[index];
-                CurrentConversationData = GetConversation(FileId);
+
+                //comeが編集***************************************************************************************************************
+                //FileId = ConversationDataList[index];
+                //CurrentConversationData = GetConversation(FileId);
+
+                FileId = TargetNPC.GetComponent<NPCController>().ConversationDataList[index];
+                CurrentConversationData = TargetNPC.GetComponent<NPCController>().GetConversation(FileId);
+                //*****************************************************************************************************************comeが編集
+
                 Id = CurrentConversationData.GetFirst();
                 CurrentConversation = CurrentConversationData.Get(Id);
 
