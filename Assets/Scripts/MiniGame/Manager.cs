@@ -46,7 +46,7 @@ public class Manager : MonoBehaviour
             {
                 if (Item == null)
                 {
-                    Instantiate(Item1);
+                    Instantiate(Item2);
                     Item = GameObject.Find("Item2(Clone)");
                 }
                 else if (Item.name != "Item2(Clone)")

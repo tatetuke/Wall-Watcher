@@ -11,6 +11,7 @@ public class MiniGameManager : MonoBehaviour
 {
     ScoreManager Score;
     RuleManager Rule;
+    public float MaxRGB = 80;
 
     public Material Brown;
     public Material Green;
@@ -73,7 +74,7 @@ public class MiniGameManager : MonoBehaviour
         {
             WallController wallController = gameObject.GetComponent<WallController>();
             wallController.CountUp();
-            if (wallController.ColorNum >= 120) wallController.ColorNum -= 3;
+            if (wallController.ColorNum >= MaxRGB) wallController.ColorNum -= 3;
 
             //ChangeColor(gameObject);
             byte num = wallController.ColorNum;
