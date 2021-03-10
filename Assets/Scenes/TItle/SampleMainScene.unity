@@ -186,6 +186,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 741067873460146567, guid: 7c1a1d9b4a7695d4d9985293f7f76286,
+        type: 3}
+      propertyPath: _labelReference.m_LabelString
+      value: SubQuest
+      objectReference: {fileID: 0}
     - target: {fileID: 7380884548104049267, guid: 7c1a1d9b4a7695d4d9985293f7f76286,
         type: 3}
       propertyPath: m_IsActive
@@ -463,6 +468,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 741067873460146567, guid: 7c1a1d9b4a7695d4d9985293f7f76286,
+        type: 3}
+      propertyPath: _labelReference.m_LabelString
+      value: SubQuest
+      objectReference: {fileID: 0}
     - target: {fileID: 7380884548104049265, guid: 7c1a1d9b4a7695d4d9985293f7f76286,
         type: 3}
       propertyPath: m_Color.b
@@ -935,7 +945,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4db682fb36b8f6f42bccb14ff9ad978c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_conversations: []
+  _labelReference:
+    m_LabelString: SubQuest
+  CurrentConversationData: {fileID: 0}
+  FileId: 
+  ConversationDataList: []
 --- !u!1 &1570853015
 GameObject:
   m_ObjectHideFlags: 0
@@ -1297,7 +1311,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4db682fb36b8f6f42bccb14ff9ad978c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_conversations: []
+  _labelReference:
+    m_LabelString: SubQuest
+  CurrentConversationData: {fileID: 0}
+  FileId: 
+  ConversationDataList: []
 --- !u!114 &1973221252
 MonoBehaviour:
   m_ObjectHideFlags: 0
