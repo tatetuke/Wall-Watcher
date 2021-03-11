@@ -20,7 +20,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     //comeが編集********************************************************************:
     //[SerializeField] private AssetLabelReference _labelReference;
     //********************************************************************comeが編集
-    [SerializeField] GameObject TalkCanavas;
+    [SerializeField] GameObject TalkCanvas;
     [SerializeField] TextMeshProUGUI TextBox;
 
     private Material NPCMaterial;
@@ -45,7 +45,6 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     public GameObject[] Options;
     public TextMeshProUGUI[] OptionTexts;
     // public Text[] OptionTexts;
-    private int SelectNum;
     private Conversations CurrentConversation = null;
     private ConversationData CurrentConversationData;
     string FileId;
@@ -73,9 +72,8 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         m_Player = GameObject.Find("Player");
         PlayerScript = m_Player.GetComponent<Player>();
         m_PlayerSprite = m_Player.transform.Find("PlayerSprite").gameObject;
-        SelectNum = 0;
         dialogController = new DialogController();
-        selectManager = new SelectManager(OptionTexts, Color.yellow, Color.black);
+        selectManager = new SelectManager(OptionTexts, Color.yellow, Color.white);
 
         //comeが編集**************************************************************************************
         /// <summary>
@@ -179,9 +177,11 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             if (IsOptionTalk(CurrentConversation))
             {
                 if (Input.GetKeyDown("left"))
-                    selectManager.UpdateLeft(ref SelectNum);   // 左押したときに関する更新
+                    selectManager.UpdateLeft();   // 左押したときに関する更新
                 if (Input.GetKeyDown("right"))
-                    selectManager.UpdateRight(ref SelectNum);  // 右押したときに関する更新
+                    selectManager.UpdateRight();  // 右押したときに関する更新
+
+                Debug.Log(selectManager.GetSelectNum());
             }
 
             if ((Input.GetKeyDown("space") && !IsTalking) || IsWaitingStop)
@@ -258,9 +258,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         if (IsOptionTalk(CurrentConversation))
         {
             // 選ばれた選択肢の色を元に戻す
-            selectManager.ChangeColorDown(SelectNum);
+            selectManager.ChangeColorDown(selectManager.GetSelectNum());
             // ConversationsのConversationOption型リストのtargetIdをIdとして指定
-            Id = CurrentConversation.options[SelectNum].targetId;
+            Id = CurrentConversation.options[selectManager.GetSelectNum()].targetId;
 
          
             CurrentConversation = CurrentConversationData.Get(Id);
@@ -287,7 +287,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                 // 会話の位置の更新
                 Vector3 TalkCanvasPosition;
                 TalkCanvasPosition = TargetNPC.transform.position;
-                TalkCanavas.transform.position = TalkCanvasPosition;
+                TalkCanvas.transform.position = TalkCanvasPosition;
             }
             else
             {
@@ -329,8 +329,8 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             }
 
             // 初期化 : 左を選択している状態にする
-            SelectNum = 0;
-            selectManager.ChangeColorUp(SelectNum);
+            selectManager.ChangeSelectNum(0);  
+            selectManager.ChangeColorUp(selectManager.GetSelectNum());
         }
         else
         {
