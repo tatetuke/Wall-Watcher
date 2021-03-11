@@ -17,6 +17,15 @@ using UnityEngine.Playables;
 /// </summary>
 public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataManager>/*,ILoadableAsync*/
 {
+    enum State
+    {
+        Normal,
+        TryStop,
+        SettingPosition,
+        Talking,
+    }
+    State m_State = State.Normal;
+
     //comeが編集********************************************************************:
     //[SerializeField] private AssetLabelReference _labelReference;
     //********************************************************************comeが編集
@@ -52,10 +61,10 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
 
     //comeが編集****************************************************************************************************
-   // string ConversationDataFolderPath;
-   // string[] Files;
-   // List<string> ConversationDataList;
-   //**************************************************************************************************************:comeが編集
+    // string ConversationDataFolderPath;
+    // string[] Files;
+    // List<string> ConversationDataList;
+    //**************************************************************************************************************:comeが編集
 
 
 
@@ -151,27 +160,16 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     [System.Obsolete]
     private void Update()
     {
-        // 前回自分が対象のNPCならば光らせないようにする
-        if (TargetNPC != null)
-            TargetNPCMaterial.SetFloat("_Thick", 0);
+        // 状態の更新
+        UpdateState();
 
-        TargetNPC = SearchNearNPC.Instance.GetNearNPC();
-
-        // 今回自分が対象のNPCならば光らせる
-        if (TargetNPC != null)
-        {
-            // 会話中は光らせない
-            if (!IsTalking)
-            {
-                //TargetNPCImage = TargetNPC.transform.FindChild("NPCImage(Sprite)").gameObject;
-                //TargetNPCImage = TargetNPC.transform.FindChild("PlayerSprite").gameObject;
-                TargetNPCImage = TargetNPC.transform.GetChild(0).gameObject;
-                TargetNPCMaterial = TargetNPCImage.GetComponent<Renderer>().material;
-                TargetNPCMaterial.SetFloat("_Thick", LineThickness);  // 光らせる
-            }
-        }
-
-        if (TargetNPC != null)
+        if (m_State == State.Normal)
+            UpdateGlowImage();
+        else if (m_State == State.TryStop)
+            return;
+        else if (m_State == State.SettingPosition)
+            return;
+        else if (m_State == State.Talking)
         {
             // セレクトに関する更新
             if (IsOptionTalk(CurrentConversation))
@@ -180,63 +178,83 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                     selectManager.UpdateLeft();   // 左押したときに関する更新
                 if (Input.GetKeyDown("right"))
                     selectManager.UpdateRight();  // 右押したときに関する更新
-
-                Debug.Log(selectManager.GetSelectNum());
             }
 
-            if ((Input.GetKeyDown("space") && !IsTalking) || IsWaitingStop)
+            if (CurrentConversation == null)
+                ProceedTalk();
+            else
             {
-                PlayerScript.ChangeState(Player.State.FREEZE);
-                SearchNearNPC.Instance.GetNearNPC();
-                SearchNearNPC.Instance.IsDecided = true;
-                IsTalking = true;
-                if (PlayerScript.IsWalking)
-                {
-                    IsWaitingStop = true;
-                }
-                else
-                {
-                    float diff = Mathf.Abs(m_Player.transform.position.x - TargetNPC.transform.position.x);
-                    if (diff > 2.0 - 0.5 && diff < 2.0 + 0.5)
-                    {
-                        //Quaternion quaternion = m_PlayerSprite.transform.rotation;
-                        //float PlayerSprite_rotation_y = quaternion.eulerAngles.y;
-                        // プレイヤーが対象のNPCの方向に向くようにする
-                        if (m_Player.transform.position.x < TargetNPC.transform.position.x)
-                            m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 180, 0);
-                        else
-                            m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    }
-                    else
-                    {
-                        playableDirector.Play();
-                    }
-                    IsFirstTalk = true;
-                    IsWaitingStop = false;
-                }
-            }
-
-            if (!IsWaitingStop)
-            {
-                if (!IsFirstTalk && Input.GetKeyDown("space"))
-                {
+                if (Input.GetKeyDown("space"))
                     ProceedTalk();
-                }
-
-                // タイムライン再生が終わったらスペースを押さなくても1回分の会話は進む
-                if (IsFirstTalk && playableDirector.state != PlayState.Playing)
-                {
-                    IsFirstTalk = false;
-                    ProceedTalk();
-                }
             }
 
-            //下キーが押されたら文字送りをスキップして本文を出力する。
-            if (Input.GetKeyDown("down"))
-            {
-                m_typewriter.Skip();
-            }
         }
+
+
+        //if (TargetNPC != null)
+        //{
+        //    // セレクトに関する更新
+        //    if (IsOptionTalk(CurrentConversation))
+        //    {
+        //        if (Input.GetKeyDown("left"))
+        //            selectManager.UpdateLeft();   // 左押したときに関する更新
+        //        if (Input.GetKeyDown("right"))
+        //            selectManager.UpdateRight();  // 右押したときに関する更新
+        //    }
+
+        //    if ((Input.GetKeyDown("space") && !IsTalking) || IsWaitingStop)
+        //    {
+        //        PlayerScript.ChangeState(Player.State.FREEZE);
+        //        SearchNearNPC.Instance.GetNearNPC();
+        //        SearchNearNPC.Instance.IsDecided = true;
+        //        IsTalking = true;
+        //        if (PlayerScript.IsWalking)
+        //        {
+        //            IsWaitingStop = true;
+        //        }
+        //        else
+        //        {
+        //            float diff = Mathf.Abs(m_Player.transform.position.x - TargetNPC.transform.position.x);
+        //            if (diff > 2.0 - 0.5 && diff < 2.0 + 0.5)
+        //            {
+        //                //Quaternion quaternion = m_PlayerSprite.transform.rotation;
+        //                //float PlayerSprite_rotation_y = quaternion.eulerAngles.y;
+        //                // プレイヤーが対象のNPCの方向に向くようにする
+        //                if (m_Player.transform.position.x < TargetNPC.transform.position.x)
+        //                    m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 180, 0);
+        //                else
+        //                    m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+        //            }
+        //            else
+        //            {
+        //                playableDirector.Play();
+        //            }
+        //            IsFirstTalk = true;
+        //            IsWaitingStop = false;
+        //        }
+        //    }
+
+        //    if (!IsWaitingStop)
+        //    {
+        //        if (!IsFirstTalk && Input.GetKeyDown("space"))
+        //        {
+        //            ProceedTalk();
+        //        }
+
+        //        // タイムライン再生が終わったらスペースを押さなくても1回分の会話は進む
+        //        if (IsFirstTalk && playableDirector.state != PlayState.Playing)
+        //        {
+        //            IsFirstTalk = false;
+        //            ProceedTalk();
+        //        }
+        //    }
+
+        //    //下キーが押されたら文字送りをスキップして本文を出力する。
+        //    if (Input.GetKeyDown("down"))
+        //    {
+        //        m_typewriter.Skip();
+        //    }
+        //}
     }
 
 
@@ -262,9 +280,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             // ConversationsのConversationOption型リストのtargetIdをIdとして指定
             Id = CurrentConversation.options[selectManager.GetSelectNum()].targetId;
 
-         
+
             CurrentConversation = CurrentConversationData.Get(Id);
-          
+
         }
         else
         {
@@ -310,8 +328,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         {
             CurrentConversation = null;
             PlayerScript.ChangeState(Player.State.IDLE);
-            IsTalking = false;
-            SearchNearNPC.Instance.IsDecided = false;
+            //IsTalking = false;
         }
 
         // 選択肢に関する更新
@@ -329,7 +346,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             }
 
             // 初期化 : 左を選択している状態にする
-            selectManager.ChangeSelectNum(0);  
+            selectManager.ChangeSelectNum(0);
             selectManager.ChangeColorUp(selectManager.GetSelectNum());
         }
         else
@@ -338,5 +355,112 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             dialogController.Hide(Options[0]);
             dialogController.Hide(Options[1]);
         }
+    }
+
+    void UpdateState()
+    {
+        if (m_State == State.Normal)
+        {
+            if (Input.GetKeyDown("space"))
+            {
+                PlayerScript.ChangeState(Player.State.FREEZE);
+                TargetNPC = SearchNearNPC.Instance.GetNearNPC();
+                SetGlowLine(TargetNPC, 0);
+
+                if (PlayerScript.IsWalking)
+                    ChangeState(State.TryStop);
+                else
+                {
+                    if (IsClosePosition(m_Player, TargetNPC))
+                        ChangeState(State.Talking);
+                    else
+                        ChangeState(State.SettingPosition);
+                }
+            }
+        }
+        else if (m_State == State.TryStop)
+        {
+            if (!PlayerScript.IsWalking)
+            {
+                if (IsClosePosition(m_Player, TargetNPC))
+                    ChangeState(State.Talking);
+                else
+                    ChangeState(State.SettingPosition);
+            }
+        }
+        else if (m_State == State.SettingPosition)
+        {
+            if (playableDirector.state != PlayState.Playing)
+                ChangeState(State.Talking);
+        }
+        else if (m_State == State.Talking)
+        {
+            if (CurrentConversation == null)
+            {
+                PlayerScript.ChangeState(Player.State.IDLE);
+                ChangeState(State.Normal);
+            }
+        }
+    }
+
+    void ChangeState(State state)
+    {
+        m_State = state;
+        if (state == State.SettingPosition)
+            playableDirector.Play();
+        else if (state == State.Talking)
+            LookNPC();
+    }
+
+    void UpdateGlowImage()
+    {
+        // 前回自分が対象のNPCならば光らせないようにする
+        if (TargetNPC != null)
+            SetGlowLine(TargetNPC, 0);
+            //TargetNPCMaterial.SetFloat("_Thick", 0);
+
+        TargetNPC = SearchNearNPC.Instance.GetNearNPC();
+
+        // 今回自分が対象のNPCならば光らせる
+        if (TargetNPC != null)
+        {
+            SetGlowLine(TargetNPC, LineThickness);
+
+            //TargetNPCImage = TargetNPC.transform.GetChild(0).gameObject;
+            //TargetNPCMaterial = TargetNPCImage.GetComponent<Renderer>().material;
+            //TargetNPCMaterial.SetFloat("_Thick", LineThickness);  // 光らせる
+
+            //// 会話中は光らせない
+            //if (!IsTalking)
+            //{
+            //    //TargetNPCImage = TargetNPC.transform.FindChild("NPCImage(Sprite)").gameObject;
+            //    //TargetNPCImage = TargetNPC.transform.FindChild("PlayerSprite").gameObject;
+            //    TargetNPCImage = TargetNPC.transform.GetChild(0).gameObject;
+            //    TargetNPCMaterial = TargetNPCImage.GetComponent<Renderer>().material;
+            //    TargetNPCMaterial.SetFloat("_Thick", LineThickness);  // 光らせる
+            //}
+        }
+    }
+
+    void SetGlowLine(GameObject gameObject,float num)
+    {
+        if (gameObject == null) return;
+        GameObject image = gameObject.transform.GetChild(0).gameObject;
+        Material material= image.GetComponent<Renderer>().material;
+        material.SetFloat("_Thick", num);  // 光らせる
+    }
+
+    bool IsClosePosition(GameObject gameObjectA, GameObject gameObjectB)
+    {
+        float diff = Mathf.Abs(gameObjectA.transform.position.x - gameObjectB.transform.position.x);
+        return (diff > 2.0 - 0.5 && diff < 2.0 + 0.5);
+    }
+
+    void LookNPC()
+    {
+        if (m_Player.transform.position.x < TargetNPC.transform.position.x)
+            m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 180, 0);
+        else
+            m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 }
