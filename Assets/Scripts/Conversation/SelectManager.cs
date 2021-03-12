@@ -9,10 +9,11 @@ using TMPro;
 /// </summary>
 public class SelectManager
 {
-    Color SelectedColor;     // 選択されているときの色
-    Color NotSelectedColor;  // 選択されていないときの色
-    TextMeshProUGUI[] Texts;
-    int Size;
+    private Color SelectedColor;     // 選択されているときの色
+    private Color NotSelectedColor;  // 選択されていないときの色
+    private TextMeshProUGUI[] Texts;
+    private int Size;
+    private int SelectNum;
 
     // コンストラクタでテキストの配列と使う色を取得
     public SelectManager(/*選択肢のテキストの配列*/   TextMeshProUGUI[] texts,
@@ -23,6 +24,7 @@ public class SelectManager
         Size = texts.Length;
         SelectedColor = selected_color;
         NotSelectedColor = not_selected_color;
+        SelectNum = 0;
     }
 
 
@@ -33,50 +35,59 @@ public class SelectManager
     /// ->選択番号を更新
     /// ->その選択番号を濃くする
     /// </summary>
-    public void UpdateLeft(ref int selectnum)
+    public void UpdateLeft()
     {
-        ChangeColorDown(selectnum);
-        selectnum += Size;
-        selectnum--;
-        selectnum %= Size;
-        ChangeColorUp(selectnum);
+        int preSelectNum = SelectNum;
+        int nextSelectNum = SelectNum = (SelectNum + Size - 1) % Size;
+        ChangeColorDown(preSelectNum);
+        ChangeColorUp(nextSelectNum);
     }
 
-    public void UpdateRight(ref int selectnum)
+    public void UpdateRight()
     {
-        ChangeColorDown(selectnum);
-        selectnum++;
-        selectnum %= Size;
-        ChangeColorUp(selectnum);
+        int preSelectNum = SelectNum;
+        int nextSelectNum = SelectNum = (SelectNum + 1) % Size;
+        ChangeColorDown(preSelectNum);
+        ChangeColorUp(nextSelectNum);
     }
 
-    public void UpdateUp(ref int selectnum)
+    public void UpdateUp()
     {
-        ChangeColorDown(selectnum);
-        selectnum += Size;
-        selectnum--;
-        selectnum %= Size;
-        ChangeColorUp(selectnum);
+        int preSelectNum = SelectNum;
+        int nextSelectNum = SelectNum = (SelectNum + Size - 1) % Size;
+        ChangeColorDown(preSelectNum);
+        ChangeColorUp(nextSelectNum);
     }
 
-    public void UpdateDown(ref int selectnum)
+    public void UpdateDown()
     {
-        ChangeColorDown(selectnum);
-        selectnum++;
-        selectnum %= Size;
-        ChangeColorUp(selectnum);
+        int preSelectNum = SelectNum;
+        int nextSelectNum = SelectNum = (SelectNum + 1) % Size;
+        ChangeColorDown(preSelectNum);
+        ChangeColorUp(nextSelectNum);
     }
 
 
     /// 選択されている番号は濃くする
-    public void ChangeColorUp(int selectnum)
+    public void ChangeColorUp(int num)
     {
-        Texts[selectnum].color = SelectedColor;
+        Texts[num].color = SelectedColor;
     }
 
     /// 選択されていない番号は薄くする
-    public void ChangeColorDown(int selectnum)
+    public void ChangeColorDown(int num)
     {
-        Texts[selectnum].color = NotSelectedColor;
+        Texts[num].color = NotSelectedColor;
+    }
+
+
+    public void ChangeSelectNum(int num)
+    {
+        SelectNum = num;
+    }
+
+    public int GetSelectNum()
+    {
+        return SelectNum;
     }
 }
