@@ -351,11 +351,13 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     /// </summary>
     private void AddQuest()
     {
-      
+
         if (CurrentConversation == null || CurrentConversation.quest == null) return;
-        //クエストの追加
-        m_QuestHolder.AddQuest(CurrentConversation.quest);
-        Debug.Log("クエスト追加");
+      
+            //クエストの追加
+            m_QuestHolder.AddQuest(CurrentConversation.quest);
+            Debug.Log("クエスト追加");
+        
     }
 
 }

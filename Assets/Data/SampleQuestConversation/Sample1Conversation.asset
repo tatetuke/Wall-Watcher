@@ -43,11 +43,7 @@ MonoBehaviour:
     text: "\u3042\u308A\u304C\u3068\u3046!"
     audio: {fileID: 0}
     quest: {fileID: 11400000, guid: 0204c8fd7a696f743a070d13ef7792d5, type: 2}
-    options:
-    - text: 
-      audio: {fileID: 0}
-      targetId: 0
-      enabled: 0
+    options: []
     eventName: 
   - type: 0
     id: 3
