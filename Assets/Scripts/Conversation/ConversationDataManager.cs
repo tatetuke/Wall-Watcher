@@ -58,7 +58,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     private ConversationData CurrentConversationData;
     string FileId;
     string Id;
-
+    
+    
+    private QuestHolder m_QuestHolder;//クエストを追加するときに使う。
 
     //comeが編集****************************************************************************************************
     // string ConversationDataFolderPath;
@@ -80,8 +82,10 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     {
         m_Player = GameObject.Find("Player");
         PlayerScript = m_Player.GetComponent<Player>();
+        m_QuestHolder = m_Player.GetComponent<QuestHolder>();
         m_PlayerSprite = m_Player.transform.Find("PlayerSprite").gameObject;
         dialogController = new DialogController();
+
         selectManager = new SelectManager(OptionTexts, Color.yellow, Color.white);
 
         //comeが編集**************************************************************************************
@@ -278,7 +282,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             // 選ばれた選択肢の色を元に戻す
             selectManager.ChangeColorDown(selectManager.GetSelectNum());
             // ConversationsのConversationOption型リストのtargetIdをIdとして指定
+
             Id = CurrentConversation.options[selectManager.GetSelectNum()].targetId;
+
 
 
             CurrentConversation = CurrentConversationData.Get(Id);
@@ -314,6 +320,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                 CurrentConversation = CurrentConversationData.Get(Id);
             }
         }
+      
 
         // 会話の内容の更新
         TextBox.text = CurrentConversation.text;
@@ -321,7 +328,8 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         //テキストを一文字一文字出力する。
         //Play(テキスト本文,一秒間に送る文字数,文字送り終了時に呼び出されるもの)
         m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete: () => Debug.Log("完了"));
-
+        //クエストがあればクエストを追加する。
+        AddQuest();
 
         // 番兵だったら会話を終了し、CurrentConversationを初期化
         if (CurrentConversation.id == "FINISH")
@@ -330,7 +338,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             PlayerScript.ChangeState(Player.State.IDLE);
             //IsTalking = false;
         }
-
+     
         // 選択肢に関する更新
         if (IsOptionTalk(CurrentConversation))
         {
@@ -355,7 +363,25 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             dialogController.Hide(Options[0]);
             dialogController.Hide(Options[1]);
         }
+
+       
     }
+
+
+    /// <summary>
+    /// CurrenConversation.questがnullでない場合クエストを追加する関数
+    /// </summary>
+    private void AddQuest()
+    {
+
+        if (CurrentConversation == null || CurrentConversation.quest == null) return;
+      
+            //クエストの追加
+            m_QuestHolder.AddQuest(CurrentConversation.quest);
+            Debug.Log("クエスト追加");
+        
+    }
+
 
     void UpdateState()
     {
@@ -463,4 +489,5 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         else
             m_PlayerSprite.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
+
 }
