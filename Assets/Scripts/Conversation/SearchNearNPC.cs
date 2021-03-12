@@ -7,7 +7,6 @@ public class SearchNearNPC : SingletonMonoBehaviour<SearchNearNPC>
     float InfDis = 10000;// NPCとPlayerの距離としてありうる最大の距離。
     GameObject PlayerObj;//プレイヤーの宣言と取得
     GameObject NearNPC = null;
-    public bool IsDecided = false;
 
     private void Start()
     {
@@ -29,8 +28,6 @@ public class SearchNearNPC : SingletonMonoBehaviour<SearchNearNPC>
     /// <returns></returns>
     public GameObject GetNearNPC()
     {
-        if (IsDecided) return NearNPC;
-
         float minDis = InfDis;   //NPCとの最短距離
         float tmpDis;            //距離用一時変数
         GameObject retNearNPC = null; //返り値

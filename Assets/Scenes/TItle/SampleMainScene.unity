@@ -334,6 +334,12 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 7380884549817367794, guid: 7c1a1d9b4a7695d4d9985293f7f76286, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7c1a1d9b4a7695d4d9985293f7f76286, type: 3}
+--- !u!1 &184191503 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 793875067661510870, guid: a5543017307d57f46a69026dc2789bf2,
+    type: 3}
+  m_PrefabInstance: {fileID: 793875066001040868}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &227190097
 GameObject:
   m_ObjectHideFlags: 0
@@ -981,7 +987,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6103783f868f0144b95098aa779f5fb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsDecided: 0
 --- !u!4 &1460419320
 Transform:
   m_ObjectHideFlags: 0
@@ -1786,6 +1791,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 793875067341548393, guid: a5543017307d57f46a69026dc2789bf2,
+        type: 3}
+      propertyPath: TalkCanvas
+      value: 
+      objectReference: {fileID: 184191503}
     - target: {fileID: 793875067341548399, guid: a5543017307d57f46a69026dc2789bf2,
         type: 3}
       propertyPath: m_Name
