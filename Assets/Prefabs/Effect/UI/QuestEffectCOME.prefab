@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 245, y: 889.1}
-  m_SizeDelta: {x: 592.57324, y: 343.56018}
+  m_AnchoredPosition: {x: 306.8, y: 977}
+  m_SizeDelta: {x: 567.3164, y: 266.64148}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1737209757353869457
 CanvasRenderer:
@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.8235294}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -66,7 +66,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: b2fd8f8012b50fe4cbec3958be35b231, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -108,8 +108,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 249.66, y: 899.2}
-  m_SizeDelta: {x: 334.11047, y: 213.93921}
+  m_AnchoredPosition: {x: 344, y: 963}
+  m_SizeDelta: {x: 430.54578, y: 213.93921}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4579127693289300067
 CanvasRenderer:
@@ -151,7 +151,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Quest Added
+  m_Text: "\nQuest Added\n\u304A\u4F7F\u3044\u30AF\u30A8\u30B9\u30C8"
 --- !u!1 &7494141542988873903
 GameObject:
   m_ObjectHideFlags: 0
