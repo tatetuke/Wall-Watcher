@@ -18,6 +18,7 @@ public class QuestHolder : MonoBehaviour
     {
         OnQuestAdd.AddListener(() => {
             EffectGenerator.Instance.Generate("quest");
+
         
         });
     }

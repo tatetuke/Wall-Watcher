@@ -45,6 +45,13 @@ MonoBehaviour:
     - item
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 836431660e2a3e345b997723a45d11b8
+    m_Address: Assets/Data/SampleQuestConversation
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SampleQuestConversation
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b30fe0edd0343434bba495ad1f2e3d60, type: 2}
   m_SchemaSet:
