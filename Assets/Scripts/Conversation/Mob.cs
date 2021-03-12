@@ -52,25 +52,27 @@ public class Mob : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-            ChangeState(State.FREEZE);
-        if (Input.GetKeyDown(KeyCode.Y))
-            ChangeState(State.IDLE);
-
         GameObject targetNPC = ConversationDataManager.Instance.GetTargetNPC();
-        if (ConversationDataManager.Instance.IsTalking && targetNPC==this.gameObject)
+        if(ConversationDataManager.Instance.GetState() != ConversationDataManager.State.Normal)
         {
-            ChangeState(State.FREEZE);
-            Stop();
+            if (ConversationDataManager.Instance.IsFirstTalk())
+            {
+                ChangeState(State.FREEZE);
+                Stop();
 
-            // プレイヤーが対象のNPCの方向に向くようにする
-            if (m_Player.transform.position.x < this.transform.position.x)
-            {
-                m_ViewObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+                // プレイヤーが対象のNPCの方向に向くようにする
+                if (m_Player.transform.position.x < this.transform.position.x)
+                {
+                    m_ViewObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+                }
+                else
+                {
+                    m_ViewObject.transform.rotation = Quaternion.Euler(0, 180, 0);
+                }
             }
-            else
+            else if (ConversationDataManager.Instance.IsFinishTalk())
             {
-                m_ViewObject.transform.rotation = Quaternion.Euler(0, 180, 0);
+                ChangeState(State.IDLE);
             }
         }
         else
