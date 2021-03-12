@@ -53,30 +53,20 @@ public class Mob : MonoBehaviour
     private void FixedUpdate()
     {
         GameObject targetNPC = ConversationDataManager.Instance.GetTargetNPC();
-        if(ConversationDataManager.Instance.GetState() != ConversationDataManager.State.Normal)
-        {
-            if (ConversationDataManager.Instance.IsFirstTalk())
-            {
-                ChangeState(State.FREEZE);
-                Stop();
 
-                // プレイヤーが対象のNPCの方向に向くようにする
-                if (m_Player.transform.position.x < this.transform.position.x)
-                {
-                    m_ViewObject.transform.rotation = Quaternion.Euler(0, 0, 0);
-                }
-                else
-                {
-                    m_ViewObject.transform.rotation = Quaternion.Euler(0, 180, 0);
-                }
-            }
-            else if (ConversationDataManager.Instance.IsFinishTalk())
-            {
-                ChangeState(State.IDLE);
-            }
+        if (ConversationDataManager.Instance.GetState() != ConversationDataManager.State.Normal)
+        {
+            // プレイヤーが対象のNPCの方向に向くようにする
+            if (m_Player.transform.position.x < this.transform.position.x)
+                m_ViewObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+            else
+                m_ViewObject.transform.rotation = Quaternion.Euler(0, 180, 0);
+            this.ChangeState(State.FREEZE);
+            Stop();
         }
         else
         {
+            ChangeState(State.IDLE);
             Count++;
             Count %= 60;
             if (Count == 0) Sign *= -1;
@@ -205,14 +195,14 @@ public class Mob : MonoBehaviour
         //入力がある場合
         //if (inputValue != 0)
         //{
-            //現在の方向と入力の方向が一緒なら
-            if (m_Inertia * delta >= 0)
-            {
-                m_Inertia = Mathf.Clamp(m_Inertia + delta, -1, 1);
+        //現在の方向と入力の方向が一緒なら
+        if (m_Inertia * delta >= 0)
+        {
+            m_Inertia = Mathf.Clamp(m_Inertia + delta, -1, 1);
         }
         else
-            {
-                m_Inertia = Mathf.Clamp(delta, -1, 1); ;
+        {
+            m_Inertia = Mathf.Clamp(delta, -1, 1); ;
         }
         return;
         //}
