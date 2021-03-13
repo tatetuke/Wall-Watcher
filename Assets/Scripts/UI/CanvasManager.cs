@@ -12,6 +12,8 @@ public interface IUIManager
 
 public class CanvasManager : MonoBehaviour, IUIManager
 {
+    [Tooltip("ポーズしたときにいつも表示されるview（ポーズしてないときは表示されない）")]
+    [SerializeField] UIView allwaysShowView;
     [ReadOnly]
     [SerializeField]List<UIView> m_views = new List<UIView>();
     [SerializeField] string firstViewName;
@@ -26,6 +28,7 @@ public class CanvasManager : MonoBehaviour, IUIManager
         m_views.AddRange(GetComponentsInChildren<UIView>(true));
         foreach (var i in m_views)
         {
+            if (i == null||i.backButton==null) continue;
             i.backButton.onClick.AddListener(Back);
             i.SetManager(this);
         }
@@ -33,6 +36,7 @@ public class CanvasManager : MonoBehaviour, IUIManager
 
     private void Start()
     {
+        allwaysShowView.gameObject.SetActive(false);
         foreach (var i in m_views)
         {
             i.gameObject.SetActive(false);
@@ -41,6 +45,7 @@ public class CanvasManager : MonoBehaviour, IUIManager
         Kyoichi.GameManager.Instance.OnPauseStart.AddListener(() =>
         {
             SwitchView(firstViewName);
+            allwaysShowView.gameObject.SetActive(true);
         });
         Kyoichi.GameManager.Instance.OnPauseEnd.AddListener(() =>
         {
@@ -50,6 +55,7 @@ public class CanvasManager : MonoBehaviour, IUIManager
                 i.gameObject.SetActive(false);
             }
             OnCloseCanvas.Invoke();//キャンバスを閉じる
+            allwaysShowView.gameObject.SetActive(false);
         });
         //シーン内のプレイヤーを取得
         m_targetPlaeyer = FindObjectOfType<Player>();
@@ -61,7 +67,7 @@ public class CanvasManager : MonoBehaviour, IUIManager
                 return i;
         return null;
     }
-    void SwitchView(string viewName)
+    public void SwitchView(string viewName)
     {
         Debug.Log($"switch to '{viewName}'");
         if (m_viewHistory.Count == 0)

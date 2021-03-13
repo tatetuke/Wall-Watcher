@@ -30,6 +30,7 @@ namespace Kyoichi
         public UnityEvent OnLoadFinished { get; }=new UnityEvent();
         public UnityEvent OnGameSave { get; }= new UnityEvent();
         public UnityEvent OnSaveFinished { get; } = new UnityEvent();
+
         public bool IsLoadFinished { get; private set; } = false;
         public bool IsSaveFinished { get; private set; } = false;
 
@@ -38,6 +39,7 @@ namespace Kyoichi
 
         private void Awake()
         {
+
             loadCancellationTokenSource = new CancellationTokenSource();
             saveCancellationTokenSource = new CancellationTokenSource();
         }
