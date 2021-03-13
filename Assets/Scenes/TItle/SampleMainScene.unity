@@ -1029,7 +1029,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1570794053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1042,7 +1042,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8844e07b0c080df468a5e818d07c1f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_WalkForce: 5
+  m_WalkForce: 2
+  m_Cycle: 60
   m_State: 0
   m_ViewObject: {fileID: 1992109857}
   m_Rigidbody2D: {fileID: 1570794054}
@@ -1151,6 +1152,7 @@ MonoBehaviour:
   CurrentConversationData: {fileID: 0}
   FileId: 
   ConversationDataList: []
+  IsTalkNPC: 1
 --- !u!1 &1570853015
 GameObject:
   m_ObjectHideFlags: 0
@@ -1592,7 +1594,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1973221251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1610,6 +1612,7 @@ MonoBehaviour:
   CurrentConversationData: {fileID: 0}
   FileId: 
   ConversationDataList: []
+  IsTalkNPC: 0
 --- !u!114 &1973221252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1622,7 +1625,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8844e07b0c080df468a5e818d07c1f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_WalkForce: 5
+  m_WalkForce: 2
+  m_Cycle: 120
   m_State: 0
   m_ViewObject: {fileID: 1570853015}
   m_Rigidbody2D: {fileID: 1973221253}
