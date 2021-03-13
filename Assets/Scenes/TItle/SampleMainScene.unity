@@ -1043,6 +1043,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_WalkForce: 2
+  m_Cycle: 60
   m_State: 0
   m_ViewObject: {fileID: 1992109857}
   m_Rigidbody2D: {fileID: 1570794054}
@@ -1151,6 +1152,7 @@ MonoBehaviour:
   CurrentConversationData: {fileID: 0}
   FileId: 
   ConversationDataList: []
+  IsTalkNPC: 1
 --- !u!1 &1570853015
 GameObject:
   m_ObjectHideFlags: 0
@@ -1610,6 +1612,7 @@ MonoBehaviour:
   CurrentConversationData: {fileID: 0}
   FileId: 
   ConversationDataList: []
+  IsTalkNPC: 0
 --- !u!114 &1973221252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1623,6 +1626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_WalkForce: 2
+  m_Cycle: 120
   m_State: 0
   m_ViewObject: {fileID: 1570853015}
   m_Rigidbody2D: {fileID: 1973221253}

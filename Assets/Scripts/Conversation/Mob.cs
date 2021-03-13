@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// プレイヤーの移動・見た目周りを管理するクラス
+/// モブの移動・見た目周りを管理するクラス
 /// </summary>
 public class Mob : MonoBehaviour
 {
     [SerializeField]
     private float m_WalkForce = 0;
+    [SerializeField]
+    private int m_Cycle = 60;
     [SerializeField]
     private State m_State = default;
     [SerializeField]
@@ -68,7 +70,7 @@ public class Mob : MonoBehaviour
         {
             ChangeState(State.IDLE);
             Count++;
-            Count %= 60;
+            Count %= m_Cycle;
             if (Count == 0) Sign *= -1;
         }
         UpdateState();
