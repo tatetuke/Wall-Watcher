@@ -42,6 +42,11 @@ public class InventryUI : UIView
     public void Initialize()
     {
         target = m_parentManager.GetTarget().GetComponent<Kyoichi.Inventry>();
+        if (target == null)
+        {
+            Debug.Log("target not found");
+            return;
+        }
         foreach (var i in target.Data)
         {
             var obj = Instantiate(itemContainerUI, container).GetComponent<ItemContainerUI>();

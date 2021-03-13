@@ -30,7 +30,8 @@ public class NPCController : MonoBehaviour, ILoadableAsync
     private void Awake()
     {
         //base.Awake();
-        SaveLoadManager.Instance.SetLoadable(this);
+        //SaveLoadManager.Instance.SetLoadable(this);
+        Kyoichi.GameManager.Instance.AddLoadableAsync(this);
     }
 
 
