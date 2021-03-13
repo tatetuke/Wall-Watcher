@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,12 +21,49 @@ namespace Kyoichi
         }
         [SerializeField,ReadOnly]
         GameState m_state = GameState.nothing;
+        List<ISaveableAsync> m_saveablesAsync = new List<ISaveableAsync>();
+        List<ILoadableAsync> m_loadablesAsync = new List<ILoadableAsync>();
+
         public UnityEvent OnPauseStart { get; } = new UnityEvent();
         public UnityEvent OnPauseEnd { get; } = new UnityEvent();
+        public UnityEvent OnGameLoad { get; }=new UnityEvent();
+        public UnityEvent OnLoadFinished { get; }=new UnityEvent();
+        public UnityEvent OnGameSave { get; }= new UnityEvent();
+        public UnityEvent OnSaveFinished { get; } = new UnityEvent();
+        public bool IsLoadFinished { get; private set; } = false;
+        public bool IsSaveFinished { get; private set; } = false;
+
+        public void AddLoadableAsync(ILoadableAsync obj) => m_loadablesAsync.Add(obj);
+        public void AddSaveableAsync(ISaveableAsync obj) => m_saveablesAsync.Add(obj);
 
         private void Awake()
         {
-            
+            loadCancellationTokenSource = new CancellationTokenSource();
+            saveCancellationTokenSource = new CancellationTokenSource();
+        }
+
+        private CancellationTokenSource loadCancellationTokenSource;
+        private CancellationTokenSource saveCancellationTokenSource;
+
+        async Task LoadAsync()
+        {
+            foreach(var i in m_loadablesAsync)
+            {
+                await i.LoadAsync(loadCancellationTokenSource.Token);
+            }
+            //非同期でロードし、すべてのオブジェクトについて完了するまで待つ
+            Debug.Log("All Data Loading Finished");
+            OnLoadFinished.Invoke();
+        }
+        async Task SaveAsync()
+        {
+            foreach (var i in m_saveablesAsync)
+            {
+                await i.SaveAsync(saveCancellationTokenSource.Token);
+            }
+            //非同期でロードし、すべてのオブジェクトについて完了するまで待つ
+            Debug.Log("All Data Save Finished");
+            OnSaveFinished.Invoke();
         }
 
         // Start is called before the first frame update
@@ -38,12 +77,19 @@ namespace Kyoichi
             //SaveLoadManager.Instance.Load().Wait();
             //Waitするとロードしなくなる（Start内でAddressable.Wait()やろうとするといつまでたっても完了しないっぽい）
             Debug.Log("Player Data Loading...");
-            SaveLoadManager.Instance.OnLoadFinished.AddListener(() =>
+            IsLoadFinished = false;
+            IsSaveFinished = false;
+            OnLoadFinished.AddListener(() =>
             {
                 m_state = GameState.running;
+                IsLoadFinished = true;
             });
-            SaveLoadManager.Instance.Load();
-            SaveLoadManager.Instance.LoadAsync();
+            OnSaveFinished.AddListener(() =>
+            {
+                IsSaveFinished = true;
+            });
+            OnGameLoad.Invoke();
+            LoadAsync();
             FindObjectOfType<CanvasManager>().OnCloseCanvas.AddListener(() =>
             {
                 m_state = GameState.running;
@@ -72,8 +118,8 @@ namespace Kyoichi
         private void OnApplicationQuit()
         {
             Debug.Log("Player Data Saving...");
-            SaveLoadManager.Instance.Save();
-            SaveLoadManager.Instance.SaveAsync().Wait();
+            OnGameSave.Invoke();
+            SaveAsync().Wait();
             PropertyLoader.Instance.SaveProperty();
         }
     }
