@@ -7,7 +7,7 @@ using UnityEngine.UI;
 /// <summary>
 /// ミニゲームの内容自体を管理する
 /// </summary>
-public class Manager : MonoBehaviour
+public class PaintManager : MonoBehaviour
 {
     // 壁の状態
     GameObject Item;
@@ -62,20 +62,20 @@ public class Manager : MonoBehaviour
             }
             else
             {
-                Wall wall;
-                wall = target.GetComponent<Wall>();
+                Paint_Wall wall;
+                wall = target.GetComponent<Paint_Wall>();
 
                 if (Item != null)
                 {
                     if (Item.name == "Item1(Clone)")
                     {
-                        if (wall.GetState() == Wall.WallState.DRY)
-                            wall.ChangeSprite(Wall.WallState.PAINTED);
+                        if (wall.GetState() == Paint_Wall.WallState.DRY)
+                            wall.ChangeSprite(Paint_Wall.WallState.PAINTED);
                     }
                     else if (Item.name == "Item2(Clone)")
                     {
-                        if (wall.GetState() == Wall.WallState.CRACKED)
-                            wall.ChangeSprite(Wall.WallState.DRY);
+                        if (wall.GetState() == Paint_Wall.WallState.CRACKED)
+                            wall.ChangeSprite(Paint_Wall.WallState.DRY);
                     }
                 }
             }
