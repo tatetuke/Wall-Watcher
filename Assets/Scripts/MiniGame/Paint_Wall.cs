@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wall : MonoBehaviour
+public class Paint_Wall : MonoBehaviour
 {
     public enum WallState
     {

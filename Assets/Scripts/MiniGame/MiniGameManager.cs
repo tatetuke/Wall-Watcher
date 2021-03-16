@@ -1,165 +1,77 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
-/// <summary>
-/// ミニゲームの内容自体を管理する
-/// </summary>
 public class MiniGameManager : MonoBehaviour
 {
+    public enum State
+    {
+        Mix,
+        Paint,
+        Result
+    }
+    State m_State = State.Mix;
+
     ScoreManager Score;
-    RuleManager Rule;
-    public float MaxRGB = 80;
+    [SerializeField] GameObject Mix;
+    [SerializeField] GameObject Paint;
+    [SerializeField] private PlayableDirector playableDirector;
+    [SerializeField] public Button FinishTaskButton;
+    [SerializeField] PaintManager paintManager;
 
-    public Material Brown;
-    public Material Green;
+    TextMeshProUGUI MixValue;
+    TextMeshProUGUI SatisfactionValue;
+    TextMeshProUGUI EarnRewardValue;
 
-    //public GameObject PressAnyKeyText;
-    //public GameObject ResultText;
-    //public GameObject StartText;
-    //public GameObject FinishText;
-    //public GameObject FinishTaskButtonCanvas;
-    //public Text SatisfactionText;
-    //public Text MixText;
-    //public Text EarnRewardText;
-    //public Button FinishTaskButton;
+    int Diff;
+    int MaxRGB;
 
-    bool IsStarted;
-    bool IsFinished;
-
-    public GameObject prefab;
-    bool IsInputing = false;
-
-    // 壁の状態
-    int[,] Wall;
-
-    public void Start()
+    // Start is called before the first frame update
+    void Start()
     {
         Score = new ScoreManager();
-        // Rule = new RuleManager();
-        IsStarted = false;
-        IsFinished = false;
+        Diff = 0;
+        GameObject mixValueGameObject = GameObject.Find("ResultCanvas");
+        MixValue = mixValueGameObject.transform.Find("MixValue").GetComponent<TextMeshProUGUI>();
+        SatisfactionValue = mixValueGameObject.transform.Find("SatisfactionValue").GetComponent<TextMeshProUGUI>();
+        EarnRewardValue = mixValueGameObject.transform.Find("EarnRewardValue").GetComponent<TextMeshProUGUI>();
     }
 
-    public void Update()
+    // Update is called once per frame
+    void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            IsInputing = true;
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            IsInputing = false;
-        }
-
-        //if (IsStarted == false && Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    IsStarted = true;
-        //    PressAnyKeyText.SetActive(false);
-        //    ShowStartText();
-        //    Invoke("ClearStartText", 2);
-        //}
-
-        //if (IsFinished)
-        //{
-        //    // ボタン押したらメインシーン戻るなど。。。
-        //}
-        //Score.UpdateScore();
-
-        GameObject gameObject = getClickObject();
-        if (gameObject != null)
-        {
-            WallController wallController = gameObject.GetComponent<WallController>();
-            wallController.CountUp();
-            if (wallController.ColorNum >= MaxRGB) wallController.ColorNum -= 3;
-
-            //ChangeColor(gameObject);
-            byte num = wallController.ColorNum;
-            //gameObject.GetComponent<Renderer>().material.color = new Color(num, num, num, 1);
-            //gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
-            gameObject.GetComponent<SpriteRenderer>().color = new Color32(num, num, num, 255);
-        }
-    }
-
-
-    private GameObject getClickObject()
-    {
-        GameObject result = null;
-        // 左クリックされた場所のオブジェクトを取得
-        //if (Input.GetMouseButtonDown(0))
-        if(IsInputing)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit = new RaycastHit();
-            if (Physics.Raycast(ray, out hit))
-            {
-                result = hit.collider.gameObject;
-            }
-        }
-        return result;
+        
     }
 
     public void OnClick()
     {
-        SceneManager.LoadScene("Paint");
-
-        //GameObject[] g = GameObject.FindGameObjectsWithTag("NPC");
-        //foreach(var a in g)
-        //{
-        //    a.GetComponent<SpriteRenderer>().color = Color.gray;
-        //}
-        ////g.GetComponent<SpriteRenderer>().color = Color.gray;
+        if (m_State == State.Mix)
+        {
+            Score.UpdateMix();
+            MixValue.text = Score.GetMix().ToString();
+            Mix.SetActive(false);
+            Paint.SetActive(true);
+            m_State = State.Paint;
+        }
+        else if (m_State == State.Paint)
+        {
+            if (paintManager.GetState() == PaintManager.State.White)
+            {
+                Score.UpdateSatisfaction();
+                SatisfactionValue.text = Score.GetSatisfaction().ToString();
+                EarnRewardValue.text = Score.GetEarnReward().ToString();
+                playableDirector.Play();
+                FinishTaskButton.interactable = false;
+                m_State = State.Result;
+            }
+        }
     }
 
-    //private void ChangeColor(GameObject gameObject)
-    //{
-        
-
-    //    Color nowColor = gameObject.GetComponent<Renderer>().material.color;
-    //    Color nextColor = nowColor;
-    //    //Color randomColor = new Color(Random.value, Random.value, Random.value, 1.0f);
-    //    //gameObject.GetComponent<Renderer>().material.color = randomColor;
-
-
-    //    if (ClickNum == 1) nextColor = Color.green;
-    //    else if (ClickNum == 2) nextColor = Color.cyan;
-    //    else nextColor = Color.white;
-
-    //    gameObject.GetComponent<Renderer>().material.color = nextColor;
-    //}
-
-    //public void ShowStartText()
-    //{
-    //    StartText.SetActive(true);
-    //}
-
-    //public void ClearStartText()
-    //{
-    //    StartText.SetActive(false);
-    //    FinishTaskButtonCanvas.SetActive(true);
-    //}
-
-
-    //// 作業終了ボタンが押されたらミニゲーム終了
-    //public void FinishMiniGame()
-    //{
-    //    FinishTaskButton.interactable = false;
-    //    FinishText.SetActive(true);
-    //    Invoke("ShowResult", 2);
-    //}
-
-    //public void ShowResult()
-    //{
-    //    IsFinished = true;
-    //    FinishText.SetActive(false);
-    //    ResultText.SetActive(true);
-    //    // スコアを書き加える
-    //    SatisfactionText.text += "    " + Score.GetSatisfaction();
-    //    MixText.text += "    " + Score.GetMix();
-    //    string specified = Score.GetEarnReward().ToString("F4");
-    //    EarnRewardText.text += "      " + specified;
-    //}
+    public State GetState()
+    {
+        return m_State;
+    }
 }
