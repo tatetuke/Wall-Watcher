@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class Mix_Wall : MonoBehaviour
 {
-    private int ClickNum;
     public byte ColorNum;
 
     // Start is called before the first frame update
     void Start()
     {
-        ClickNum = 0;
         ColorNum = 255;
     }
 
@@ -18,20 +16,5 @@ public class Mix_Wall : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public int GetClickNum() 
-    { 
-        return ClickNum; 
-    }
-
-    public void CountUp()
-    {
-        ClickNum++;
-    }
-
-    public void Change()
-    {
-        this.GetComponent<SpriteRenderer>().color = Color.gray;
     }
 }

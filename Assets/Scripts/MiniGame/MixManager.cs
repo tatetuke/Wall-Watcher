@@ -11,7 +11,7 @@ public class MixManager : MonoBehaviour
 {
     ScoreManager Score;
     RuleManager Rule;
-    public float MaxRGB = 80;
+    public int MaxRGB = 78;
 
     //public GameObject PressAnyKeyText;
     //public GameObject ResultText;
@@ -38,6 +38,7 @@ public class MixManager : MonoBehaviour
         // Rule = new RuleManager();
         IsStarted = false;
         IsFinished = false;
+        MaxRGB = Score.GetMaxRGB();
     }
 
     public void Update()
@@ -46,8 +47,7 @@ public class MixManager : MonoBehaviour
         {
             IsInputing = true;
         }
-
-        if (Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonUp(0))
         {
             IsInputing = false;
         }
@@ -70,13 +70,8 @@ public class MixManager : MonoBehaviour
         if (gameObject != null)
         {
             Mix_Wall mix_Wall = gameObject.GetComponent<Mix_Wall>();
-            mix_Wall.CountUp();
             if (mix_Wall.ColorNum >= MaxRGB) mix_Wall.ColorNum -= 3;
-
-            //ChangeColor(gameObject);
             byte num = mix_Wall.ColorNum;
-            //gameObject.GetComponent<Renderer>().material.color = new Color(num, num, num, 1);
-            //gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
             gameObject.GetComponent<SpriteRenderer>().color = new Color32(num, num, num, 255);
         }
     }
