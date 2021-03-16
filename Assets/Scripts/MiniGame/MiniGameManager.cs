@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 
 public class MiniGameManager : MonoBehaviour
 {
-    enum State
+    public enum State
     {
         Mix,
         Paint,
@@ -19,10 +20,11 @@ public class MiniGameManager : MonoBehaviour
     [SerializeField] GameObject Paint;
     [SerializeField] private PlayableDirector playableDirector;
     [SerializeField] public Button FinishTaskButton;
+    [SerializeField] PaintManager paintManager;
 
-    Text MixValue;
-    Text SatisfactionValue;
-    Text EarnRewardValue;
+    TextMeshProUGUI MixValue;
+    TextMeshProUGUI SatisfactionValue;
+    TextMeshProUGUI EarnRewardValue;
 
     int Diff;
     int MaxRGB;
@@ -33,9 +35,9 @@ public class MiniGameManager : MonoBehaviour
         Score = new ScoreManager();
         Diff = 0;
         GameObject mixValueGameObject = GameObject.Find("ResultCanvas");
-        MixValue = mixValueGameObject.transform.Find("MixValue").GetComponent<Text>();
-        SatisfactionValue = mixValueGameObject.transform.Find("SatisfactionValue").GetComponent<Text>();
-        EarnRewardValue = mixValueGameObject.transform.Find("EarnRewardValue").GetComponent<Text>();
+        MixValue = mixValueGameObject.transform.Find("MixValue").GetComponent<TextMeshProUGUI>();
+        SatisfactionValue = mixValueGameObject.transform.Find("SatisfactionValue").GetComponent<TextMeshProUGUI>();
+        EarnRewardValue = mixValueGameObject.transform.Find("EarnRewardValue").GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
@@ -56,11 +58,20 @@ public class MiniGameManager : MonoBehaviour
         }
         else if (m_State == State.Paint)
         {
-            Score.UpdateSatisfaction();
-            SatisfactionValue.text = Score.GetSatisfaction().ToString();
-            EarnRewardValue.text = Score.GetEarnReward().ToString();
-            playableDirector.Play();
-            FinishTaskButton.interactable = false;
+            if (paintManager.GetState() == PaintManager.State.White)
+            {
+                Score.UpdateSatisfaction();
+                SatisfactionValue.text = Score.GetSatisfaction().ToString();
+                EarnRewardValue.text = Score.GetEarnReward().ToString();
+                playableDirector.Play();
+                FinishTaskButton.interactable = false;
+                m_State = State.Result;
+            }
         }
+    }
+
+    public State GetState()
+    {
+        return m_State;
     }
 }

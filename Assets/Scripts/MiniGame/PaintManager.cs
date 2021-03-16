@@ -9,10 +9,23 @@ using UnityEngine.UI;
 /// </summary>
 public class PaintManager : MonoBehaviour
 {
+    public enum State
+    {
+        Green,
+        Blue,
+        White
+    }
+    State m_State = State.White;
+
+    public State GetState()
+    {
+        return m_State;
+    }
+
     // 壁の状態
     GameObject Item;
-
     public GameObject Item1, Item2;
+    [SerializeField] MiniGameManager miniGameManager;
 
     public void Start()
     {
@@ -26,7 +39,7 @@ public class PaintManager : MonoBehaviour
         GameObject target;
         target = GetClickObject();
 
-        if (target != null)
+        if (target != null && miniGameManager.GetState() != MiniGameManager.State.Result)
         {
             if (target.name == "Green")
             {
@@ -41,6 +54,7 @@ public class PaintManager : MonoBehaviour
                     Instantiate(Item1);
                     Item = GameObject.Find("Item1(Clone)");
                 }
+                m_State = State.Green;
             }
             else if (target.name == "Blue")
             {
@@ -55,10 +69,12 @@ public class PaintManager : MonoBehaviour
                     Instantiate(Item2);
                     Item = GameObject.Find("Item2(Clone)");
                 }
+                m_State = State.Blue;
             }
             else if (target.name == "White")
             {
                 if (Item != null) Destroy(Item);
+                m_State = State.White;
             }
             else
             {
