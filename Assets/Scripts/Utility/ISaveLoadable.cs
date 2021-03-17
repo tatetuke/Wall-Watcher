@@ -4,21 +4,6 @@ using System.Threading.Tasks;
 using UnityEngine;
 using System.Threading;
 /// <summary>
-/// SaveLoadManagerでセーブできるようにするインターフェース
-/// </summary>
-public interface ISaveable
-{
-    void Save();
-}
-/// <summary>
-/// SaveLoadManagerでロードできるようにするインターフェース
-/// </summary>
-public interface ILoadable
-{
-    void Load();
-}
-
-/// <summary>
 /// SaveLoadManagerで非同期にセーブできるようにするインターフェース
 /// </summary>
 public interface ISaveableAsync

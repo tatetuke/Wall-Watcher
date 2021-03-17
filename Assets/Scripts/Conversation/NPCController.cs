@@ -11,6 +11,10 @@ using TMPro;
 using KoganeUnityLib;
 using System.Threading;
 using UnityEngine.Playables;
+/// <summary>
+/// 当たり判定と会話データの取得を管理します。
+/// 喋らないNPCであればIs Talk NPCのチェックを外してください。
+/// </summary>
 public class NPCController : MonoBehaviour, ILoadableAsync
 {
     //追加したコード********************************************************************************************************************
@@ -21,17 +25,19 @@ public class NPCController : MonoBehaviour, ILoadableAsync
     [HideInInspector] string[] Files;
     [HideInInspector] public List<string> ConversationDataList;
 
+    [SerializeField] private bool IsTalkNPC = true;
+
     private void Awake()
     {
         //base.Awake();
-        SaveLoadManager.Instance.SetLoadable(this);
+        //SaveLoadManager.Instance.SetLoadable(this);
+        Kyoichi.GameManager.Instance.AddLoadableAsync(this);
     }
 
 
     [System.Obsolete]
     private void Start()
     {
-       
         /// <summary>
         /// 指定したフォルダからConversationDataを全て取ってくる
         /// </summary>
@@ -91,18 +97,24 @@ public class NPCController : MonoBehaviour, ILoadableAsync
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player")
+        if (IsTalkNPC)
         {
-            //タグの変更.SearchNearNPCで使われる.
-            this.tag = "CanConversationNPC";
+            if (other.gameObject.tag == "Player")
+            {
+                //タグの変更.SearchNearNPCで使われる.
+                this.tag = "CanConversationNPC";
+            }
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (IsTalkNPC)
         {
-            //タグの変更.SearchNearNPCで使われる.
-            this.tag = "NPC";
+            if (collision.gameObject.tag == "Player")
+            {
+                //タグの変更.SearchNearNPCで使われる.
+                this.tag = "NPC";
+            }
         }
     }
 
