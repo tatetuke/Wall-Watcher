@@ -4759,6 +4759,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1385014893}
     m_Modifications:
+    - target: {fileID: -5006777221951522320, guid: 56c02b76afd041f4b9add14f791cc6c5,
+        type: 3}
+      propertyPath: m_Mass
+      value: 0.48999998
+      objectReference: {fileID: 0}
     - target: {fileID: 4278433714016271368, guid: 56c02b76afd041f4b9add14f791cc6c5,
         type: 3}
       propertyPath: m_RootOrder
@@ -8782,6 +8787,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 934895801}
     m_Modifications:
+    - target: {fileID: -5006777221951522320, guid: 56c02b76afd041f4b9add14f791cc6c5,
+        type: 3}
+      propertyPath: m_Mass
+      value: 0.48999998
+      objectReference: {fileID: 0}
     - target: {fileID: 4278433714016271368, guid: 56c02b76afd041f4b9add14f791cc6c5,
         type: 3}
       propertyPath: m_RootOrder
@@ -12722,6 +12732,7 @@ MonoBehaviour:
   Item1: {fileID: 2723333615881287083, guid: 5c3d84e19f9a8c84c8eec88ab83aa49d, type: 3}
   Item2: {fileID: 4278433714016271374, guid: 56c02b76afd041f4b9add14f791cc6c5, type: 3}
   miniGameManager: {fileID: 1324339568}
+  ButtonDown: 0
 --- !u!4 &1944854822 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7381382945379622582, guid: 686aad448e4c641489b5dc4890457a46,
