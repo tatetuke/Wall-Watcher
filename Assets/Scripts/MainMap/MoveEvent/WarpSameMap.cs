@@ -14,8 +14,8 @@ public class WarpSameMap : MonoBehaviour
         down,
         invaid
     }
-    public MOVE_KEY move_key; 
-
+    public MOVE_KEY move_key;
+    private bool move = true;
     private void OnTriggerStay2D(Collider2D other)
     {
         if(other.gameObject.tag == "Player")
@@ -24,10 +24,14 @@ public class WarpSameMap : MonoBehaviour
             bool value = Input.GetKey(key_string);
             if (value)
             {
-                GameObject player = GameObject.Find("Player");
-                float newx = AllMapSet.warpSameMapPosition[num, (index + 1) % 2].Item1;
-                float newy = AllMapSet.warpSameMapPosition[num, (index + 1) % 2].Item2;
-                FadeManager2.Instance.LoadLevel2(1.2f, player, newx, newy);
+                if (move)
+                {
+                    move = false;
+                    GameObject player = GameObject.Find("Player");
+                    float newx = AllMapSet.warpSameMapPosition[num, (index + 1) % 2].Item1;
+                    float newy = AllMapSet.warpSameMapPosition[num, (index + 1) % 2].Item2;
+                    FadeManager2.Instance.LoadLevel2(1.2f, player, newx, newy);
+                }
             }
         }        
     }
