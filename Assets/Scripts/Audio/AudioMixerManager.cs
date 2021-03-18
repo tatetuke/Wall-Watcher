@@ -30,8 +30,6 @@ public class AudioMixerManager : SingletonMonoBehaviour<AudioMixerManager>
         FADEOUT,
     }
 
-    public float a=0;
-
     // Start is called before the first frame update
     private void Awake()
     {
