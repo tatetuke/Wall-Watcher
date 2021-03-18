@@ -12,23 +12,28 @@ public class InventryUI : UIView
     [SerializeField] RectTransform container;
     //[SerializeField] TMP_Dropdown dropdown;
     [SerializeField] Dropdown dropdown;
-    [SerializeField] Kyoichi.Inventry target;
     [SerializeField] Image itemIcon;
     [SerializeField] TextMeshProUGUI itemName;
     [SerializeField] TextMeshProUGUI description;
-    private void Start()
+    [Header("debug")]
+    [SerializeField, ReadOnly] Kyoichi.Inventry target;
+    private void Awake()
     {
-        dropdown.onValueChanged.AddListener(OnSelectRarelity);
         OnViewShow.AddListener(Initialize);
-        OnViewHide.AddListener(()=> {
-            foreach(Transform child in container)
+        OnViewHide.AddListener(() => {
+            foreach (Transform child in container)
             {
                 Destroy(child.gameObject);
             }
             itemIcon.sprite = null;
             itemName.text = "";
-            description.text ="";
+            description.text = "";
         });
+    }
+    private void Start()
+    {
+        dropdown.onValueChanged.AddListener(OnSelectRarelity);
+
     }
     public void OnSelectRarelity(int value)
     {
@@ -36,7 +41,13 @@ public class InventryUI : UIView
     }
     public void Initialize()
     {
-        foreach(var i in target.Data)
+        target = m_parentManager.GetTarget().GetComponent<Kyoichi.Inventry>();
+        if (target == null)
+        {
+            Debug.Log("target not found");
+            return;
+        }
+        foreach (var i in target.Data)
         {
             var obj = Instantiate(itemContainerUI, container).GetComponent<ItemContainerUI>();
             obj.Initialize(i);

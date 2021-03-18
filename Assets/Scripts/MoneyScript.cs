@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 所持金を管理するクラス
 /// </summary>
-public class MoneyScript : MonoBehaviour,ILoadable,ISaveable
+public class MoneyScript : MonoBehaviour
 {
     [SerializeField] int defaultMoney;//初期値
     [SerializeField] int maxMoney;//お金の最大値
@@ -25,8 +25,8 @@ public class MoneyScript : MonoBehaviour,ILoadable,ISaveable
     {
         //クエストなどで所持金を参照するためにGamePropertyManagerに登録
         GamePropertyManager.Instance.RegisterParam("money", () => Money);
-        SaveLoadManager.Instance.SetLoadable(this);
-        SaveLoadManager.Instance.SetSaveable(this);
+        Kyoichi.GameManager.Instance.OnGameLoad.AddListener(Load);
+        Kyoichi.GameManager.Instance.OnGameSave.AddListener(Save);
     }
     public void Load()
     {

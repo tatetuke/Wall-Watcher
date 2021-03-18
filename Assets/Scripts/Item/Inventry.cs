@@ -55,14 +55,14 @@ namespace Kyoichi
         private void OnEnable()
         {
             //インベントリが生成されたとき、ItemManagerのロードが終わってたらアイテムをロード
-            if (SaveLoadManager.Instance.LoadState == SaveLoadManager.SaveLoadState.finished)
+            if (Kyoichi.GameManager.Instance.IsLoadFinished)
             {
                 LoadFromFile();
             }
             else
             {
                 //ロードが終わってなかったら終わったときに読み込むようにする
-                SaveLoadManager.Instance.OnLoadFinished.AddListener(() =>
+                Kyoichi.GameManager.Instance.OnLoadFinished.AddListener(() =>
                 {
                     LoadFromFile();
                 });

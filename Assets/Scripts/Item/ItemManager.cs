@@ -8,7 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Kyoichi
 {
-    public class ItemManager : SingletonMonoBehaviour<ItemManager>, ILoadableAsync,ISaveable
+    public class ItemManager : SingletonMonoBehaviour<ItemManager>, ILoadableAsync
     {
         enum LoadState
         {
@@ -33,8 +33,8 @@ namespace Kyoichi
         // Start is called before the first frame update
         void Awake()
         {
-            SaveLoadManager.Instance.SetLoadable(this);
-            SaveLoadManager.Instance.SetSaveable(this);
+            Kyoichi.GameManager.Instance.AddLoadableAsync(this);
+            Kyoichi.GameManager.Instance.OnGameSave.AddListener(Save);
             if (m_state == LoadState.loaded)//エディタ上でロードしたとき
             {
                 Addressables.Release(m_handle);

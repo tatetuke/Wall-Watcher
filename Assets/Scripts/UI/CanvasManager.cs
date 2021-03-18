@@ -4,21 +4,39 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
-public class CanvasManager : MonoBehaviour
+
+public interface IUIManager
 {
+    Player GetTarget();
+}
+
+public class CanvasManager : MonoBehaviour, IUIManager
+{
+    [Tooltip("ポーズしたときにいつも表示されるview（ポーズしてないときは表示されない）")]
+    [SerializeField] UIView allwaysShowView;
     [ReadOnly]
     [SerializeField]List<UIView> m_views = new List<UIView>();
     [SerializeField] string firstViewName;
     Stack<string> m_viewHistory = new Stack<string>();
     public UnityEvent OnCloseCanvas { get; } = new UnityEvent();
+
+    [SerializeField,ReadOnly] Player m_targetPlaeyer;
+    public Player GetTarget() => m_targetPlaeyer; 
+
     private void Awake()
     {
         m_views.AddRange(GetComponentsInChildren<UIView>(true));
-        foreach (var i in m_views) i.backButton.onClick.AddListener(Back);
+        foreach (var i in m_views)
+        {
+            if (i == null||i.backButton==null) continue;
+            i.backButton.onClick.AddListener(Back);
+            i.SetManager(this);
+        }
     }
 
     private void Start()
     {
+        allwaysShowView.gameObject.SetActive(false);
         foreach (var i in m_views)
         {
             i.gameObject.SetActive(false);
@@ -27,13 +45,22 @@ public class CanvasManager : MonoBehaviour
         Kyoichi.GameManager.Instance.OnPauseStart.AddListener(() =>
         {
             SwitchView(firstViewName);
+            allwaysShowView.gameObject.SetActive(true);
         });
         Kyoichi.GameManager.Instance.OnPauseEnd.AddListener(() =>
         {
-            OnPushEndButton();
+            m_viewHistory.Clear();
+            foreach (var i in m_views)
+            {
+                i.gameObject.SetActive(false);
+            }
+            OnCloseCanvas.Invoke();//キャンバスを閉じる
+            allwaysShowView.gameObject.SetActive(false);
         });
+        //シーン内のプレイヤーを取得
+        m_targetPlaeyer = FindObjectOfType<Player>();
     }
-    public UIView GetView(string viewName)
+    UIView GetView(string viewName)
     {
         foreach (var i in m_views)
             if (i.name == viewName)
@@ -63,16 +90,15 @@ public class CanvasManager : MonoBehaviour
         HideView(GetView(beforeActive));
         m_viewHistory.Push(viewName);
     }
-    public void Back()
+    void Back()
     {
         Debug.Log("back");
         //もしviewを移動させてない状態でbackを押した場合、viewを非表示にし終了
         if (m_viewHistory.Count == 1)
         {
-            OnPushEndButton();
-            string view = m_viewHistory.Peek();
             m_viewHistory.Pop();
-            HideView(GetView(view));
+            foreach (var i in m_views)
+                i.gameObject.SetActive(false);
             OnCloseCanvas.Invoke();//キャンバスを閉じる
             return;
         }
@@ -81,16 +107,6 @@ public class CanvasManager : MonoBehaviour
         m_viewHistory.Pop();
         string nextActive = m_viewHistory.Peek();
         ShowView(GetView(nextActive));
-    }
-    /// <summary>
-    /// ゲームを終了するボタンが押されたとき
-    /// </summary>
-    public void OnPushEndButton()
-    {
-        foreach (var i in m_views)
-        {
-            i.gameObject.SetActive(false);
-        }
     }
     void ShowView(UIView view)
     {
