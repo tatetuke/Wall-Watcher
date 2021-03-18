@@ -35,7 +35,7 @@ public class ScoreManager
         foreach (var gameObject in gameObjects)
         {
             Mix_Wall mix_Wall = gameObject.GetComponent<Mix_Wall>();
-            mixDiff += Mathf.Abs(mix_Wall.ColorNum - MaxRGB);
+            mixDiff += Mathf.Abs(mix_Wall.ColorNum - 120);
         }
         if (mixDiff <= 500) Mix = 'A';
         else if (mixDiff <= 2000) Mix = 'B';

@@ -17,6 +17,7 @@ public class Warp : MonoBehaviour
         invaid
     }
     public MOVE_KEY move_key;
+    private bool move = true;
 
     void OnTriggerStay2D(Collider2D other)
     {
@@ -26,10 +27,14 @@ public class Warp : MonoBehaviour
             bool value = Input.GetKey(key_string);
             if (value)
             {
-                AllMapSet.prevMap = fromNum;
-                AllMapSet.currentMap = toNum;
-                Debug.Log(AllMapSet.warpMap[fromNum, toNum].Item3);
-                FadeManager.Instance.LoadLevel(AllMapSet.warpMap[fromNum, toNum].Item3, 1f);
+                if (move)
+                {
+                    move = false;
+                    AllMapSet.prevMap = fromNum;
+                    AllMapSet.currentMap = toNum;
+                    //Debug.Log(AllMapSet.warpMap[fromNum, toNum].Item3);
+                    FadeManager.Instance.LoadLevel(AllMapSet.warpMap[fromNum, toNum].Item3, 1f);
+                }
             }
 
         }

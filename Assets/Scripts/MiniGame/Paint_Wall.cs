@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Paint_Wall : MonoBehaviour
 {
+    public bool IsVer2 = true;
+
     public enum WallState
     {
         CRACKED,
@@ -21,7 +23,6 @@ public class Paint_Wall : MonoBehaviour
     public byte ColorNum;
 
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +38,26 @@ public class Paint_Wall : MonoBehaviour
     void Update()
     {
 
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (IsVer2)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (collision.name == "Item1(Clone)")
+                {
+                    if (ThisState == WallState.DRY)
+                        ChangeSprite(WallState.PAINTED);
+                }
+                else if (collision.name == "Item2(Clone)")
+                {
+                    if (ThisState == WallState.CRACKED)
+                        ChangeSprite(WallState.DRY);
+                }
+            }
+        }
     }
 
     public WallState GetState()

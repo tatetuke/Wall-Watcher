@@ -9,6 +9,8 @@ using UnityEngine.UI;
 /// </summary>
 public class PaintManager : MonoBehaviour
 {
+    public bool IsVer2 = true;
+
     public enum State
     {
         Green,
@@ -33,9 +35,9 @@ public class PaintManager : MonoBehaviour
     }
 
 
+
     public void Update()
     {
-
         GameObject target;
         target = GetClickObject();
 
@@ -78,20 +80,23 @@ public class PaintManager : MonoBehaviour
             }
             else
             {
-                Paint_Wall wall;
-                wall = target.GetComponent<Paint_Wall>();
-
-                if (Item != null)
+                if (!IsVer2)
                 {
-                    if (Item.name == "Item1(Clone)")
+                    Paint_Wall wall;
+                    wall = target.GetComponent<Paint_Wall>();
+
+                    if (Item != null)
                     {
-                        if (wall.GetState() == Paint_Wall.WallState.DRY)
-                            wall.ChangeSprite(Paint_Wall.WallState.PAINTED);
-                    }
-                    else if (Item.name == "Item2(Clone)")
-                    {
-                        if (wall.GetState() == Paint_Wall.WallState.CRACKED)
-                            wall.ChangeSprite(Paint_Wall.WallState.DRY);
+                        if (Item.name == "Item1(Clone)")
+                        {
+                            if (wall.GetState() == Paint_Wall.WallState.DRY)
+                                wall.ChangeSprite(Paint_Wall.WallState.PAINTED);
+                        }
+                        else if (Item.name == "Item2(Clone)")
+                        {
+                            if (wall.GetState() == Paint_Wall.WallState.CRACKED)
+                                wall.ChangeSprite(Paint_Wall.WallState.DRY);
+                        }
                     }
                 }
             }
