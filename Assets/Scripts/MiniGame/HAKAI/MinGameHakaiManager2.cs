@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinGameHakaiGameManager : MonoBehaviour
+public class MinGameHakaiManager2 : MonoBehaviour
 {
     public const int m_size = 7;
     GameObject[,] Wall = new GameObject[m_size, m_size];
 
-    int[] dx = new int[9] { -1,0,1,-1,0,1,-1,0,1};
-    int[] dy = new int[9] { -1,-1,-1,0,0,0,1,1,1};
+    int[] dx = new int[9] { -1, 0, 1, -1, 0, 1, -1, 0, 1 };
+    int[] dy = new int[9] { -1, -1, -1, 0, 0, 0, 1, 1, 1 };
 
+    private string PolutedLevel1;
+    private string PolutedLevel2;
 
-    public string PollutedLevel1;
-    public string PollutedLevel2;
-    public string PollutedLevel3;
-    public Sprite[] WallSprite;
+    public Sprite []WallSprite=new Sprite[2];
+
     enum Game_State
     {
         Playing,
@@ -28,7 +28,7 @@ public class MinGameHakaiGameManager : MonoBehaviour
     {
         State = Game_State.PreStart;
         WallInit();
- 
+        GetSpriteName();
     }
     private void Update()
     {
@@ -85,25 +85,6 @@ public class MinGameHakaiGameManager : MonoBehaviour
 
 
     }
-    /// <summary>
-    /// 周りの壁が
-    /// </summary>
-    private bool CanDigAround(int raw, int column)
-    {
-
-        for(int i = 0; i < 9; i++)
-        {
-            int nraw = raw + dy[i];
-            int ncolumn = column + dx[i];
-            if (nraw < 0 || nraw >= m_size || ncolumn < 0 || ncolumn >= m_size) continue;
-            //ほりたい壁が汚染された壁だった時
-            if (Wall[nraw, ncolumn].GetComponent<SpriteRenderer>().sprite.name== PollutedLevel3) return false;
-               
-        }
-        return true;
-
-    }
-
 
     /// <summary>
     /// クリックしたオブジェクトを取得
@@ -127,56 +108,67 @@ public class MinGameHakaiGameManager : MonoBehaviour
         if (clickedGameObject == null) return;
         Debug.Log(clickedGameObject);
 
-        int raw=0, column=0;
-     
-         for (int i = 0; i < m_size; i++)
-         {
+        int raw = 0, column = 0;
+
+        for (int i = 0; i < m_size; i++)
+        {
             for (int j = 0; j < m_size; j++)
             {
                 if (clickedGameObject == Wall[i, j])
                 {
                     raw = i;
                     column = j;
-                  
+
                 }
             }
-         }
-        if(CanDigAround(raw, column))
-        {
-
-            for (int i = 0; i < 9; i++)
-            {
-                int nraw = raw + dy[i];
-                int ncolumn = column + dx[i];
-                if (nraw < 0 || nraw >= m_size || ncolumn < 0 || ncolumn >= m_size) continue;
-
-                ChangeSprite(Wall[nraw, ncolumn]);
-            }
-
-        }
-        else
-        {
-
-            Debug.Log("掘れません");
         }
 
+        for (int i = 0; i < 9; i++)
+        {
+            int nraw = raw + dy[i];
+            int ncolumn = column + dx[i];
+            if (nraw < 0 || nraw >= m_size || ncolumn < 0 || ncolumn >= m_size) continue;
+
+            ChangeSprite(Wall[nraw, ncolumn]);
+        }
     }
-    private void ChangeSprite( GameObject m_Wall)
+
+    
+    private void ChangeSprite(GameObject m_Wall)
     {
-        string wallName = m_Wall.GetComponent<SpriteRenderer>().sprite.name;
-        if (wallName == PollutedLevel1)
-        {
+        string spriteName = m_Wall.GetComponent<SpriteRenderer>().sprite.name;
+        if (spriteName == PolutedLevel1) {
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[1];
-        }
-        else if (wallName == PollutedLevel2)
+           }
+        else if(spriteName==PolutedLevel2)
         {
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[0];
+            
         }
-        else if (wallName == PollutedLevel3)
-        {
-            m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[2];
-        }
+        
 
     }
 
+    private void GetSpriteName()
+    {
+        PolutedLevel1=WallSprite[0].name;
+        PolutedLevel2=WallSprite[1].name;
+
+
+    }
+
+
+    /// <summary>
+    /// アクティブなら非アクティブに。
+    /// 非アクティブならアクティブ状態にする。
+    /// </summary>
+    /// <param name="m_Wall">壁面のオブジェクト</param>
+    //private void ChangeActiveCollider(GameObject m_Wall)
+    //{
+    //    m_Wall.GetComponent<BoxCollider2D>().
+    //        SetActive(!m_Wall.activeSelf);
+
+    //}
+   
 }
+
