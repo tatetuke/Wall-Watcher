@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Material
-  m_Shader: {fileID: -6465566751694194690, guid: 09357f5a32d4aa74399d8e31789c3cde,
+  m_Name: GlowTest
+  m_Shader: {fileID: -6465566751694194690, guid: 8a26499671d1d294ab0795dd132b148b,
     type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
@@ -39,7 +39,8 @@ Material:
     m_Floats:
     - _EnableExternalAlpha: 0
     m_Colors:
-    - Color_FF6E6515: {r: 1.9999998, g: 1.9999998, b: 1.9999998, a: 1}
+    - Color_9DA464EC: {r: 7.999999, g: 7.999999, b: 7.999999, a: 1}
+    - Color_C8CF1546: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
