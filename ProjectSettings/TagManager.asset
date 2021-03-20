@@ -6,6 +6,8 @@ TagManager:
   tags:
   - NPC
   - CanConversationNPC
+  - Wall1
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -28,7 +30,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - PostProcessing
   - 
   - 
   - 

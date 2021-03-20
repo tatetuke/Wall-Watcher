@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4087562944980545334
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4087562944980545336}
+  - component: {fileID: 4087562944980545337}
+  m_Layer: 0
+  m_Name: MinGameHAKAIGameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4087562944980545336
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4087562944980545334}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.12301854, y: -1.1539117, z: -10.851968}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4087562944980545337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4087562944980545334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bf77d80ec47a6a489163b0fd6b9c48e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PollutedLevel1: tuchi01_01
+  PollutedLevel2: Wall
+  PollutedLevel3: Green
+  WallSprite:
+  - {fileID: 21300000, guid: e97ff936ebf03f14b84ff449f94a0644, type: 3}
+  - {fileID: 21300000, guid: 8d4084d69cccbc74e9376ddd087a9196, type: 3}
+  - {fileID: 21300000, guid: bd5512491a4483742b2f1a0563b405c7, type: 3}
