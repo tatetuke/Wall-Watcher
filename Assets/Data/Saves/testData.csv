@@ -4,3 +4,5 @@ chapterNum,0
 playerPos,0,0,0
 roomName,MainMap3_CircleWay
 money,0
+inventryItem,donut,3
+inventryItem,book,11

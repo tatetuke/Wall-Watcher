@@ -45,6 +45,8 @@ public class SaveDataReader : SingletonMonoBehaviour<SaveDataReader>
         }
     }
 
+    public int GetFileCount() { return m_fileNames.Count; }
+
     public SaveDataHeader GetFileHeader(int count)
     {
         if (count >= m_fileNames.Count)
