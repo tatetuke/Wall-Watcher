@@ -27,18 +27,6 @@ namespace Kyoichi
     /// </summary>
     public class Inventry : MonoBehaviour
     {
-
-
-        [SerializeField] string inventryDirectory;
-        [Tooltip("{{name}}とつけるとアタッチされているGameObjectの名前に置換される")]
-        [SerializeField] string inventryFilename = "{{name}}.csv";
-        string FileName
-        {
-            get
-            {
-                return inventryFilename.Replace("{{name}}", gameObject.name);
-            }
-        }
         public class ItemEvent : UnityEvent<ItemStack> { }
         public ItemEvent OnItemAdd { get; } = new ItemEvent();
         public ItemEvent OnItemRemove { get; } = new ItemEvent();
@@ -72,22 +60,11 @@ namespace Kyoichi
         public void LoadFromFile()
         {
             Clear();
-            m_inventry = ItemManager.Instance.LoadItemFrom(inventryDirectory, FileName);
+           // m_inventry = ItemManager.Instance.LoadItemFrom(inventryDirectory, FileName);
             foreach(var i in m_inventry)
             {
                 Debug.Log($"Inventry loaded '{i.item.name}':{i.count}");
             }
-        }
-        public List<List<string>> GetFileData()
-        {
-            return CSVReader.Read(inventryDirectory, FileName);
-        }
-        /// <summary>
-        /// 指定されているファイルに書き込み
-        /// </summary>
-        public void SaveToFile()
-        {
-            ItemManager.Instance.SaveItemTo(inventryDirectory, FileName, Data);
         }
         public void AddItem(ItemSO item)
         {

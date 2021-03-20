@@ -22,7 +22,7 @@ public class SaveData
     public Vector3 playerPosition;
     public string roomName;
     public int money;
-
+    public List<Kyoichi.ItemStack> inventry = new List<Kyoichi.ItemStack>();
 }
 
 /// <summary>
@@ -99,13 +99,17 @@ public class SaveDataReader : SingletonMonoBehaviour<SaveDataReader>
                     float x = float.Parse(i[1]);
                     float y = float.Parse(i[2]);
                     float z = float.Parse(i[3]);
-                    dat.playerPosition = new Vector3(x,y,z);
+                    dat.playerPosition = new Vector3(x, y, z);
                     break;
                 case "roomName":
                     dat.roomName = i[1];
                     break;
                 case "money":
                     dat.money = int.Parse(i[1]);
+                    break;
+                case "inventryItem":
+                    var item = Kyoichi.ItemManager.Instance.GetItem(i[1]);
+                    dat.inventry.Add(new Kyoichi.ItemStack(item, int.Parse(i[2])));
                     break;
             }
         }
