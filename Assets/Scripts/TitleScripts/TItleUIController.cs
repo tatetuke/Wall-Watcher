@@ -1,51 +1,65 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class TItleUIController : MonoBehaviour
 {
-    [SerializeField]
-    Animator PushAnyKeyAnimator;
-    private int m_Select=0;//選択中のタイトルを表す変数.
-    [SerializeField] Text[] TitleText;
-    [SerializeField] Image[] TitleImage;
+    [Header("Object references")]
+    [SerializeField] Animator PushAnyKeyAnimator;
+    [SerializeField] Transform optionsParent;//選択肢を保持する親
+    [Header("Options")]
+    [SerializeField] string loadGameSceneName = "FileSelect";//LOAD GAME押したときに飛ぶシーン名
+    [SerializeField] string newGameSceneName = "MainMap3_CircleWay";//NEW GAME押したときに飛ぶシーン名
+    [SerializeField] KeyCode enterKey=KeyCode.Space;//選択肢を決定するキー
+    [Header("Debug")]
+    [SerializeField,ReadOnly] int m_Select=0;//選択中のタイトルを表す変数.
+    //選択しのリスト
+    List<TitleOptionContainer> m_options = new List<TitleOptionContainer>();
     enum TitleState
     {
         PushAnyKey,
         GameTitleSlideMovie,
         GameTitle,
-        NewGame,
-        LoadGame,
         Config,
-        End
     }
-    [SerializeField]private TitleState TState;
+    [SerializeField,ReadOnly]private TitleState m_State;
 
-    private void Start()
+    private void Awake()
     {
-        TState = TitleState.PushAnyKey;
+        foreach(Transform child in optionsParent)
+        {
+            m_options.Add(child.GetComponent<TitleOptionContainer>());
+        }
+        m_State = TitleState.PushAnyKey;
     }
 
     void Update()
     {
-        switch (TState)
+        switch (m_State)
         {
             case TitleState.PushAnyKey://何かボタンを押してくださいの状態
-
-            if (Input.anyKey)
-            {
-                //何かキーが押されたらゲームタイトルを表示させるアニメーションを出す。
-                Debug.Log("何らかのキーが押されました");
-                PushAnyKeyAnimator.SetBool("IsPushAnyKey", true);
-                TState = TitleState.GameTitleSlideMovie;
-            }
+                if (Input.anyKey)
+                {
+                    //何かキーが押されたらゲームタイトルを表示させるアニメーションを出す。
+                    Debug.Log("何らかのキーが押されました");
+                    PushAnyKeyAnimator.SetBool("IsPushAnyKey", true);
+                    m_State = TitleState.GameTitleSlideMovie;
+                    if (!SaveDataReader.Instance.ExistsSaveFiles())
+                    {
+                        //セーブデータが存在しない場合LoadGamesを選べないようにする
+                        m_options[0].enableFlag = false;
+                    }
+                }
             break;
 
             case TitleState.GameTitleSlideMovie://タイトルの選択画面に移る間のアニメーションの状態
                 //ムービーが終わったらタイトル選択の状態へ遷移
                 if (PushAnyKeyAnimator.GetCurrentAnimatorStateInfo(0).IsName("SelectState"))
                 {
-                    TState = TitleState.GameTitle;
+                    m_State = TitleState.GameTitle;
+                    //選択肢のうち最初のやつが選択された状態にする
+                    m_options[0].SetActive();
                 }
             break;
 
@@ -55,34 +69,11 @@ public class TItleUIController : MonoBehaviour
                 //選択肢を選ぶ。
                 SelectTitle();
                 //選択肢の決定
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(enterKey))
                 {
-                    if (m_Select == 0)//NewGameに状態遷移する。
-                    {
-                        Debug.Log("PlayNewGame");
-                        TState = TitleState.NewGame;
-                    }
-                    if (m_Select == 1)//LoadGameに状態遷移する。
-                    {
-                        TState = TitleState.LoadGame;
-                    }
-                    if (m_Select == 2)//Configに状態遷移する。
-                    {
-                        TState = TitleState.Config;
-                    }
+                    OnSelectOption();
                 }
                 break;
-
-            case TitleState.NewGame://NewGameが選択された状態
-
-                FadeManager.Instance.LoadLevel("MainMap3_CircleWay", 1.5f);
-                TState = TitleState.End;
-                break;
-
-            case TitleState.LoadGame://LoadGameが選択された状態
-
-                break;
-
             case TitleState.Config://Configが選択された状態
 
                 break;
@@ -90,28 +81,32 @@ public class TItleUIController : MonoBehaviour
         }
     }
 
-
-
-    /// <summary>
-    /// タイトル画面の選択肢において、テキストとスプライトの色を薄くする関数
-    /// </summary>
-    private void ChangeColorDown()
+    void OnSelectOption()
     {
-        //黒
-        TitleText[m_Select].color = new Color32(0, 0, 0, 100);
-        //無色透明
-        TitleImage[m_Select].color = new Color32(255, 255, 255, 0);
+        //選択できない場合終了
+        if (!m_options[m_Select].enableFlag) return;
+        switch (m_Select)
+        {
+            case 0:
+                SceneManager.LoadScene(loadGameSceneName);
+                break;
+            case 1:
+                Debug.Log("PlayNewGame");
+                FadeManager.Instance.LoadLevel(newGameSceneName, 1.5f);
+                break;
+            case 2:
+                m_State = TitleState.Config;
+                break;
+            case 3://ゲームを終了する
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+#elif UNITY_STANDALONE
+      UnityEngine.Application.Quit();
+#endif
+                break;
+        }
     }
-    /// <summary>
-    /// タイトル画面の選択肢において、テキストとスプライトの色を濃くする関数
-    /// </summary>
-    private void ChangeColorUp()
-    {
-        //黒
-        TitleText[m_Select].color = new Color32(0, 0, 0, 255);
-        //元画像のまま
-        TitleImage[m_Select].color = new Color32(255, 255, 255, 255);
-    }
+
     /// <summary>
     /// タイトルを選択するときに選択肢の色を変化させる関数。
     /// </summary>
@@ -120,22 +115,18 @@ public class TItleUIController : MonoBehaviour
         
         if (Input.GetKeyDown("down"))
         {
-
-            ChangeColorDown();
+            m_options[m_Select].SetInactive();
             m_Select++;
-            m_Select %= TitleText.Length;
-            ChangeColorUp();
-
-
+            m_Select %= m_options.Count;
+            m_options[m_Select].SetActive();
         }
         else if (Input.GetKeyDown("up"))
         {
-
-            ChangeColorDown();
-            m_Select += TitleText.Length;
+            m_options[m_Select].SetInactive();
+            m_Select += m_options.Count;
             m_Select--;
-            m_Select %= TitleText.Length;
-            ChangeColorUp();
+            m_Select %= m_options.Count;
+            m_options[m_Select].SetActive();
         }
 
     }
