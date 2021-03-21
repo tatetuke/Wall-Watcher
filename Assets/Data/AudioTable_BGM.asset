@@ -23,3 +23,18 @@ MonoBehaviour:
       m_AssetGUID: 37627ee7fcbf3e84a825106da8f9e2db
       m_SubObjectName: 
       m_SubObjectType: 
+  - id: 07_living_area
+    reference:
+      m_AssetGUID: a353338321c1a474293b54b25d65d4e3
+      m_SubObjectName: 
+      m_SubObjectType: 
+  - id: 10_neighbor
+    reference:
+      m_AssetGUID: a7e463df0f9ba1d49b3dd85e864ed944
+      m_SubObjectName: 
+      m_SubObjectType: 
+  - id: 11_company
+    reference:
+      m_AssetGUID: 44b057e263cd4634195e427af17549a8
+      m_SubObjectName: 
+      m_SubObjectType: 

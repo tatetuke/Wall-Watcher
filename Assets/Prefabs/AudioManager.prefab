@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 7556314375493071528}
   - component: {fileID: 7556314375493071527}
   m_Layer: 0
-  m_Name: AudioSources
+  m_Name: AudioManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -269,6 +269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AudioMixer: {fileID: 24100000, guid: d7e2631ab6510a84ea141a305d5fd44c, type: 2}
   m_FadeState: 0
+  m_Volumes: []
 --- !u!1 &7556314375802754022
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,7 +312,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -2941220628544021424, guid: d7e2631ab6510a84ea141a305d5fd44c,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 37627ee7fcbf3e84a825106da8f9e2db, type: 3}
+  m_audioClip: {fileID: 8300000, guid: a353338321c1a474293b54b25d65d4e3, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.25
   m_Pitch: 1
