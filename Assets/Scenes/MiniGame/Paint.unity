@@ -265,6 +265,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd081f58f5825814c86eb928e1660619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ParamSize: 20
+  ConditionCanClick: 8
 --- !u!4 &2144912234
 Transform:
   m_ObjectHideFlags: 0
@@ -345,6 +347,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: WallCollection
+      objectReference: {fileID: 0}
+    - target: {fileID: 4018162911776755848, guid: ea7a025723e125e43b54188d3fa9d9a2,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4018162911776755849, guid: ea7a025723e125e43b54188d3fa9d9a2,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4018162911776755849, guid: ea7a025723e125e43b54188d3fa9d9a2,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4018162911776755849, guid: ea7a025723e125e43b54188d3fa9d9a2,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4018162911776755849, guid: ea7a025723e125e43b54188d3fa9d9a2,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea7a025723e125e43b54188d3fa9d9a2, type: 3}
