@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// 自作シーンの音量調節UI用
-/// </summary>
 public class AudioSettingUIView : UIView
 {
     [SerializeField] private GameObject audioSettingUIObject;
