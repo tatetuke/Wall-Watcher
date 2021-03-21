@@ -69,7 +69,7 @@ namespace Kyoichi
         {
             for (int i=0;i< m_inventries.Count;)
             {
-                m_inventries[i].SaveToFile();
+             //   m_inventries[i].SaveToFile();
                 m_inventries.RemoveAt(i);
             }
         }
