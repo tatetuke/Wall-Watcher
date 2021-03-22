@@ -92,11 +92,6 @@ namespace Kyoichi
             });
             OnGameLoad.Invoke();
             LoadAsync();
-            FindObjectOfType<CanvasManager>().OnCloseCanvas.AddListener(() =>
-            {
-                m_state = GameState.running;
-                OnPauseEnd.Invoke();
-            });
         }
 
         private void Update()
@@ -110,8 +105,7 @@ namespace Kyoichi
                 }
                 else if (m_state == GameState.pause)
                 {
-                    m_state = GameState.running;
-                    OnPauseEnd.Invoke();
+                    PauseEnd();
                 }
             }
         }
@@ -123,6 +117,11 @@ namespace Kyoichi
             OnGameSave.Invoke();
             SaveAsync().Wait();
             PropertyLoader.Instance.SaveProperty();
+        }
+        public void PauseEnd()
+        {
+            m_state = GameState.running;
+            OnPauseEnd.Invoke();
         }
     }
 
