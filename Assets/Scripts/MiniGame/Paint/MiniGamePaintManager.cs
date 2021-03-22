@@ -1,32 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-/// <summary>
-/// 中ボタンを押すと、上下左右を変更できるようにする
-/// 左クリックしたら3マス分変化させる
-/// </summary>
+
 public class MiniGamePaintManager : MonoBehaviour
 {
     public int ParamSize = 20;
     public int ConditionCanClick = 8;
     public const int WallLength = 7;
+    private int Cost = 0;
     GameObject[,] Wall = new GameObject[WallLength, WallLength];
-
+    public TextMeshProUGUI m_TextDirection;
+    public TextMeshProUGUI m_TextCost;
+    private string[] Textes = new string[5] { "□", "↑", "→", "↓", "←" };
+    Color Brown = new Color(1, 0.7f, 0, 1);
+    int[] dx = new int[9] { -1, 0, 1, -1, 0, 1, -1, 0, 1 };
+    int[] dy = new int[9] { -1, -1, -1, 0, 0, 0, 1, 1, 1 };
     // MEMO : 誤差が怖いので足し引きでパラメータをいじるのではなく
     //        あらかじめ決められたパラメータに変更するという方針のためのList
     List<float> ParamList = new List<float>();
-
+    private Direction m_Direction = Direction.Square;
     enum Direction
     {
+        Square,
         Up,
         Right,
         Down,
         Left
     }
-
-    int[] dx = new int[9] { -1, 0, 1, -1, 0, 1, -1, 0, 1 };
-    int[] dy = new int[9] { -1, -1, -1, 0, 0, 0, 1, 1, 1 };
 
     void Start()
     {
@@ -34,41 +36,41 @@ public class MiniGamePaintManager : MonoBehaviour
         WallInit();
     }
 
-
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (/*左クリックが押されたら*/Input.GetMouseButtonDown(0))
         {
             int raw, column;
             (raw, column) = GetClickObjectIndex();
-            if (raw >= 0 && column >= 0)
-            {
-                // 壁の厚さを更新する処理を書く
-                for (int i = 0; i < 9; i++)
-                {
-                    int nraw = raw + dy[i];
-                    int ncolumn = column + dx[i];
-                    if (nraw < 0 || nraw >= WallLength || ncolumn < 0 || ncolumn >= WallLength) continue;
-                    if (dx[i] == 0 && dy[i] == 0) ChangeSprite(Wall[nraw, ncolumn], -ConditionCanClick);
-                    else ChangeSprite(Wall[nraw, ncolumn], +1);
-                }
-            }
+            int add, sub;
+            (add, sub) = SetAddSub(m_Direction, raw, column);
+
+            if (CanClick(raw, column, sub))
+                UpdateWall(m_Direction, raw, column, add, sub);
         }
-        else if (Input.GetMouseButtonDown(1))
+        else if (/*右クリックが押されたら*/Input.GetMouseButtonDown(1))
         {
             int raw, column;
             (raw, column) = GetClickObjectIndex();
-            if (raw >= 0 && column >= 0)
-                ChangeSprite(Wall[raw, column], +8);
+             FillSoil(raw, column);
         }
-
-
+        else if (/*中クリックが押されたら*/Input.GetMouseButtonDown(2))
+        {
+            ChangeDirection();
+        }
     }
 
-    /// <summary>
-    /// Wallを初期化する関数。
-    /// タグがWallであるゲームオブジェクトをすべて取得する。
-    /// </summary>
+
+    void ListInit()
+    {
+        float param = 0;
+        for (int i = 0; i < ParamSize; i++)
+        {
+            ParamList.Add(param);
+            param += (float)1 / (ParamSize - 1);
+        }
+    }
+
     private void WallInit()
     {
         int i = 0, j = 0;
@@ -91,64 +93,6 @@ public class MiniGamePaintManager : MonoBehaviour
         }
     }
 
-    void ListInit()
-    {
-        float param = 0;
-        for (int i = 0; i < ParamSize; i++)
-        {
-            ParamList.Add(param);
-            param += (float)1 / (ParamSize - 1);
-        }
-    }
-
-
-    private void ClickProcessing()
-    {
-        int raw, column;
-        (raw, column) = GetClickObjectIndex();
-
-        if (CanDigAround(Wall[raw, column]))
-        {
-            //ChangeSprite(Wall[raw, column]);
-
-            // 壁の厚さを更新する処理を書く
-            for (int i = 0; i < 9; i++)
-            {
-                int nraw = raw + dy[i];
-                int ncolumn = column + dx[i];
-                if (nraw < 0 || nraw >= WallLength || ncolumn < 0 || ncolumn >= WallLength) continue;
-                if (dx[i] == 0 && dy[i] == 0) ChangeSprite(Wall[nraw, ncolumn], -3);
-                else ChangeSprite(Wall[nraw, ncolumn], +1);
-            }
-
-        }
-        else
-        {
-
-            Debug.Log("掘れません");
-        }
-
-    }
-
-    private bool CanDigAround(GameObject gameObject)
-    {
-        SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        float alpha = gameObject.GetComponent<SpriteRenderer>().color.a;
-        int Index = ParamList.IndexOf(alpha);
-        return Index >= ConditionCanClick;
-    }
-
-    private void ChangeSprite(GameObject gameObject, int changeAmount)
-    {
-        SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        float alpha = gameObject.GetComponent<SpriteRenderer>().color.a;
-        int nextIndex = ParamList.IndexOf(alpha) + changeAmount;
-        if (nextIndex < 0) nextIndex = 0;
-        if (nextIndex >= ParamSize) nextIndex = ParamSize - 1;
-        spriteRenderer.color = new Color(1, 1, 1, ParamList[nextIndex]);
-    }
-
-
     private (int, int) GetClickObjectIndex()
     {
         GameObject clickedGameObject;
@@ -160,7 +104,7 @@ public class MiniGamePaintManager : MonoBehaviour
             clickedGameObject = hit2d.transform.gameObject;
         }
         if (clickedGameObject == null) return (-1, -1);
-        int raw = -1, column = -1;
+        int raw = -100, column = -100;
 
         // 今見ている壁の場所を取得
         for (int i = 0; i < WallLength; i++)
@@ -174,6 +118,183 @@ public class MiniGamePaintManager : MonoBehaviour
                 }
             }
         }
+        //Debug.Log($"{raw}, {column}");
         return (raw, column);
+    }
+
+    private (int, int) SetAddSub(Direction direction, int raw, int column)
+    {
+        if (raw < 0 || column < 0) return (-100, -100);
+
+        int add, sub;
+        if (direction == Direction.Square)
+        {
+            if (IsBrown(raw, column))
+            {
+                add = +3; sub = 0;
+            }
+            else
+            {
+                add = +1;
+                if ((raw == 0 && (column == 0 || column == WallLength - 1))  // 角
+                   || ((raw == WallLength - 1) && (column == 0 || column == WallLength - 1)))
+                {
+                    sub = -3;
+                }
+                else if (raw == 0 || raw == WallLength - 1 || column == 0 || column == WallLength - 1)// 端
+                {
+                    sub = -5;
+                }
+                else
+                    sub = -8;
+            }
+        }
+        else
+        {
+            if (IsBrown(raw, column))
+            {
+                add = +4; sub = 0;
+            }
+            else
+            {
+                add = 1; sub = -add * 6;
+            }
+        }
+        return (add, sub);
+    }
+
+    private bool IsBrown(int raw, int column)
+    {
+        SpriteRenderer spriteRenderer = Wall[raw, column].GetComponent<SpriteRenderer>();
+        return spriteRenderer.color == Brown;
+    }
+
+    private bool CanClick(int raw, int column, int sub)
+    {
+        if (raw < 0 || column < 0) return false;
+
+        return IsEnoughCost(raw, column, sub) && !IsOutOfFrame(m_Direction, raw, column);
+    }
+
+    bool IsEnoughCost(int raw, int column, int sub)
+    {
+        float alpha = Wall[raw, column].GetComponent<SpriteRenderer>().color.a;
+        int Index = ParamList.IndexOf(alpha);
+        if (ParamList.IndexOf(alpha) == -1) Debug.Log("見つかりませんでした");
+        bool res = false;
+        res |= (Wall[raw, column].GetComponent<SpriteRenderer>().color == Brown);
+        res |= (Index + sub >= 0);
+        return res;
+    }
+
+    bool IsOutOfFrame(Direction direction, int raw, int column)
+    {
+        if (direction == Direction.Square)
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                if (dx[i] == 0 && dy[i] == 0) continue;
+                int nraw = raw + dy[i];
+                int ncolumn = column + dx[i];
+                if (nraw < 0 || nraw >= WallLength || ncolumn < 0 || ncolumn >= WallLength)
+                    return true;
+            }
+            return false;
+        }
+        else
+        {
+            int draw, dcolumn;
+            (draw, dcolumn) = SetItr(m_Direction);
+            int nraw = raw;
+            int ncolumn = column;
+            for (int i = 0; i < 3; i++)
+            {
+                nraw += draw; ncolumn += dcolumn;
+                if (nraw < 0 || nraw >= WallLength || ncolumn < 0 || ncolumn >= WallLength)
+                    return true;
+            }
+            return false;
+        }
+    }
+
+    private void UpdateWall(Direction direction,int raw, int column,int add, int sub)
+    {
+        if (direction == Direction.Square)
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                int nraw = raw + dy[i];
+                int ncolumn = column + dx[i];
+                if (nraw < 0 || nraw >= WallLength || ncolumn < 0 || ncolumn >= WallLength) continue;
+                if (dx[i] == 0 && dy[i] == 0) ChangeSprite(Wall[nraw, ncolumn], sub);
+                else ChangeSprite(Wall[nraw, ncolumn], add);
+            }
+        }
+        else
+        {
+            int draw, dcolumn;
+            (draw, dcolumn) = SetItr(m_Direction);
+            ChangeSprite(Wall[raw, column], sub);
+            ChangeSprite(Wall[raw + draw, column + dcolumn], 2 * add);
+            ChangeSprite(Wall[raw + 2 * draw, column + 2 * dcolumn], add);
+            ChangeSprite(Wall[raw + 3 * draw, column + 3 * dcolumn], add);
+        }
+    }
+
+    private (int, int) SetItr(Direction direction)
+    {
+        if (direction == Direction.Up)
+            return (0, -1);
+        else if (direction == Direction.Right)
+            return (+1, 0);
+        else if (direction == Direction.Down)
+            return (0, +1);
+        else /*if (direction == Direction.Left)*/
+            return (-1, 0);
+    }
+
+    private void ChangeSprite(GameObject gameObject, int changeAmount)
+    {
+        SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        if (spriteRenderer.color == Brown)
+        {
+            if (changeAmount <= 0)
+            {
+                spriteRenderer.color = new Color(1, 1, 1, 1);
+            }
+        }
+        else
+        {
+            float alpha = gameObject.GetComponent<SpriteRenderer>().color.a;
+            if (ParamList.IndexOf(alpha) == -1) Debug.Log("見つかりませんでした");
+            int nextIndex = ParamList.IndexOf(alpha) + changeAmount;
+            if (nextIndex < 0) nextIndex = 0;
+            if (nextIndex >= ParamSize) nextIndex = ParamSize - 1;
+            spriteRenderer.color = new Color(1, 1, 1, ParamList[nextIndex]);
+        }
+    }
+
+    private void FillSoil(int raw, int column)
+    {
+        if (raw < 0 || column < 0) return;
+        ChangeCost(24);
+        float alpha = gameObject.GetComponent<SpriteRenderer>().color.a;
+        int Index = ParamList.IndexOf(alpha);
+        if (ParamList.IndexOf(alpha) == -1) Debug.Log("見つかりませんでした");
+        ChangeCost(ParamSize - 1 - Index);
+        SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        spriteRenderer.color = Brown;
+    }
+
+    private void ChangeCost(int num)
+    {
+        Cost += num;
+        m_TextCost.text = Cost.ToString();
+    }
+
+    void ChangeDirection()
+    {
+        m_Direction = (Direction)(((int)m_Direction + 1) % 5);
+        m_TextDirection.text = Textes[(int)m_Direction];
     }
 }
