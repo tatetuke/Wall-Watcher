@@ -5,13 +5,13 @@ using UnityEngine;
 public class MinGameHakaiManager2 : MonoBehaviour
 {
     public const int m_size = 7;
-    GameObject[,] Wall = new GameObject[m_size, m_size];
+    [HideInInspector]public GameObject[,] Wall = new GameObject[m_size, m_size];
 
     int[] dx = new int[9] { -1, 0, 1, -1, 0, 1, -1, 0, 1 };
     int[] dy = new int[9] { -1, -1, -1, 0, 0, 0, 1, 1, 1 };
 
     private string PolutedLevel1;
-    private string PolutedLevel2;
+   [HideInInspector] public string PolutedLevel2;
 
     public Sprite []WallSprite=new Sprite[2];
 
