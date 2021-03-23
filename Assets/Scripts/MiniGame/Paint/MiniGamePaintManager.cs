@@ -6,6 +6,10 @@ using TMPro;
 
 public class MiniGamePaintManager : MonoBehaviour
 {
+    public GameObject FrameArrow;
+    public GameObject FrameSquare;
+    private GameObject NowFrame;
+
     public int ParamSize = 20;
     public int ConditionCanClick = 8;
     public const int WallLength = 7;
@@ -30,10 +34,16 @@ public class MiniGamePaintManager : MonoBehaviour
         Left
     }
 
+
     void Start()
     {
         ListInit();
         WallInit();
+        m_TextDirection.text = Textes[(int)m_Direction];
+        if (m_Direction == Direction.Square)
+            NowFrame = FrameSquare;
+        else
+            NowFrame = FrameArrow;
     }
 
     void Update()
@@ -58,7 +68,49 @@ public class MiniGamePaintManager : MonoBehaviour
         {
             ChangeDirection();
         }
+        else
+        {
+            GameObject clickedGameObject;
+            clickedGameObject = null;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit2D hit2d = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction);
+            if (hit2d)
+            {
+                clickedGameObject = hit2d.transform.gameObject;
+            }
+            if (clickedGameObject != null)
+            {
+                int raw, column;
+                (raw, column) = GetClickObjectIndex();
+                int add, sub;
+                (add, sub) = SetAddSub(m_Direction, raw, column);
+
+                if (CanClick(raw, column, sub))
+                {
+                    NowFrame.SetActive(true);
+                    if (m_Direction == Direction.Square)
+                    {
+                        NowFrame.transform.position = Wall[raw, column].transform.position;
+                    }
+                    else
+                    {
+                        int angleZ = 90 * (2 - (int)m_Direction);
+                        Quaternion quaternion = Quaternion.Euler(0, 0, angleZ);
+                        NowFrame.transform.position = Wall[raw, column].transform.position;
+                        NowFrame.transform.rotation = quaternion;
+                    }
+                }
+                else
+                {
+                    NowFrame.SetActive(false);
+                }
+            }
+        }
     }
+
+
+
+
 
 
     void ListInit()
@@ -278,11 +330,11 @@ public class MiniGamePaintManager : MonoBehaviour
     {
         if (raw < 0 || column < 0) return;
         ChangeCost(24);
-        float alpha = gameObject.GetComponent<SpriteRenderer>().color.a;
+        float alpha = Wall[raw, column].GetComponent<SpriteRenderer>().color.a;
         int Index = ParamList.IndexOf(alpha);
         if (ParamList.IndexOf(alpha) == -1) Debug.Log("見つかりませんでした");
         ChangeCost(ParamSize - 1 - Index);
-        SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = Wall[raw, column].GetComponent<SpriteRenderer>();
         spriteRenderer.color = Brown;
     }
 
@@ -294,6 +346,12 @@ public class MiniGamePaintManager : MonoBehaviour
 
     void ChangeDirection()
     {
+        NowFrame.SetActive(false);
+        if (m_Direction == Direction.Square)
+            NowFrame = FrameArrow;
+        else if (m_Direction == Direction.Left)
+            NowFrame = FrameSquare;
+
         m_Direction = (Direction)(((int)m_Direction + 1) % 5);
         m_TextDirection.text = Textes[(int)m_Direction];
     }
