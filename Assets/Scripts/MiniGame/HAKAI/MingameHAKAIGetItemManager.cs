@@ -1,19 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 public class MingameHAKAIGetItemManager : MonoBehaviour
 {
     [SerializeField, ReadOnly] List<GameObject> Item;
     [SerializeField, ReadOnly] GameObject[,] Wall;
     private int WallLength;
     MinGameHakaiManager2 GameManager;
+    private float LineThickness = 1;  // 光らせる際の線の太さ
+
     // Start is called before the first frame update
     void Start()
     {
         GameManager = this.GetComponent<MinGameHakaiManager2>();
         foreach (GameObject m_Item in GameObject.FindGameObjectsWithTag("Item"))
         {
+
             Item.Add(m_Item);
         }
         Wall = GameManager.Wall;
@@ -21,12 +24,7 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
         SetIndexItem();
 
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    //初期化のための関数
     /// <summary>
     ///  Itemの左上が属する壁の行列番号をセットする。
     /// </summary>
@@ -34,7 +32,6 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
     {
         foreach (GameObject v in Item)
         {
-
             (v.GetComponent<MinGameHAKAIItem>().m_TopLeftRaw,
              v.GetComponent<MinGameHAKAIItem>().m_TopLeftColumn) = GetIndex(v);
         }
@@ -58,6 +55,18 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
         }
         return (0, 0);
     }
+    //初期化のための関数
+
+        /// <summary>
+        /// アイテムの情報の更新
+        /// </summary>
+    public void UpdateItemData(){
+        foreach(GameObject m_Item in Item)
+        {
+            CheckGetItem(m_Item);
+            UpdateGlowImage(m_Item);
+        }
+    }
     /// <summary>
     /// アイテムが埋め込まれている壁を全て取り除いたかどうか。
     /// </summary>
@@ -78,5 +87,31 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// アイテムを取得可能ならばスプライトの周りを光らせる
+    /// </summary>
+    /// <param name="m_Item"></param>
+    private void UpdateGlowImage(GameObject m_Item)
+    {
+        MinGameHAKAIItem m_ItemData;
+        m_ItemData = m_Item.GetComponent<MinGameHAKAIItem>();
 
+        // 前回の対象を光らせなくする
+        if (!m_ItemData.CanGetItem)
+            SetGlowLine(this.gameObject, 0);
+        else
+        {
+            SetGlowLine(this.gameObject, LineThickness);
+        }
+
+
+    }
+
+    private void SetGlowLine(GameObject gameObject, float num)
+    {
+        if (gameObject == null) return;
+        GameObject image = gameObject.transform.GetChild(0).gameObject;
+        Material material = image.GetComponent<Renderer>().material;
+        material.SetFloat("_Thick", num);
+    }
 }

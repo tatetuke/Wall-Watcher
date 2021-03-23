@@ -5,8 +5,8 @@ using UnityEngine;
 public class MinGameHAKAIItem : MonoBehaviour
 {
     GameObject KeyWall;
-    [SerializeField]int m_Xsize;
-    [SerializeField]int m_Ysize;
+    public int m_Xsize;
+    public int m_Ysize;
     [HideInInspector] public int m_TopLeftRaw;
     [HideInInspector] public int m_TopLeftColumn;
     public bool CanGetItem;
@@ -26,5 +26,5 @@ public class MinGameHAKAIItem : MonoBehaviour
     {
         
     }
-    
+
 }
