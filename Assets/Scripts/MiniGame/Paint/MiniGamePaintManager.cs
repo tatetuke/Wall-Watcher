@@ -109,10 +109,6 @@ public class MiniGamePaintManager : MonoBehaviour
     }
 
 
-
-
-
-
     void ListInit()
     {
         float param = 0;
@@ -329,6 +325,7 @@ public class MiniGamePaintManager : MonoBehaviour
     private void FillSoil(int raw, int column)
     {
         if (raw < 0 || column < 0) return;
+        if (IsBrown(raw, column)) return;
         ChangeCost(24);
         float alpha = Wall[raw, column].GetComponent<SpriteRenderer>().color.a;
         int Index = ParamList.IndexOf(alpha);
