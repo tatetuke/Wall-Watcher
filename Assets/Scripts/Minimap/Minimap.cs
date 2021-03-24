@@ -7,8 +7,16 @@ using UnityEngine;
 /// </summary>
 public class Minimap : MonoBehaviour
 {
-    [SerializeField]private GameObject scenePlaceInfoParent;
-    private Dictionary<string, ScenePlaceInfo> scenePlaceInfoDictionary;
+    [Header("MainMap上のオブジェクト")]
+    [SerializeField] private GameObject playerObject;
+
+    [Header("Minimap上のオブジェクト")]
+    [SerializeField] private GameObject playerIcon;
+    [SerializeField] private GameObject scenePlaceInfoParent;
+    
+    [SerializeField, ReadOnly] private string currentPlaceName;
+
+    private Dictionary<string, ScenePlaceInfo> scenePlaceInfoDictionary = new Dictionary<string, ScenePlaceInfo>();
 
     private void Awake()
     {
@@ -27,9 +35,24 @@ public class Minimap : MonoBehaviour
         
     }
 
+    float t = 0;
     // Update is called once per frame
     private void Update()
     {
-        
+        currentPlaceName = LocationGetter.Instance.CurrentPlaceName;
+
+        if (!scenePlaceInfoDictionary.ContainsKey(currentPlaceName))
+        {
+            Debug.LogWarning("the sceneName is not found");
+            return;
+        }
+        var scenePlaceInfo = scenePlaceInfoDictionary[currentPlaceName];
+        //t += Time.deltaTime;
+        //playerIcon.transform.position = scenePlaceInfo.GetPlayerPositionOnMinimap(Mathf.Abs(Mathf.Sin(t)));
+
+        //プレイヤーの現在位置からマップ上での進み具合(0~1)を取得
+        float progress = LocationGetter.Instance.GetProgressOnMap(playerObject.transform.position);
+        //Minimap上のアイコンの座標を移動
+        playerIcon.transform.position = scenePlaceInfo.GetPlayerPositionOnMinimap(progress);
     }
 }
