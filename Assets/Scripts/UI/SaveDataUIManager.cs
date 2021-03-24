@@ -1,19 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class FileSelectSceneManager : MonoBehaviour
+public class SaveDataUIManager : UIView
 {
     [SerializeField] GameObject saveDataUIPrefab;
     [SerializeField] Transform dataFileContainer;
-    //[SerializeField] int saveDataCount = 0;
-    [SerializeField] Button backButton;
-    [SerializeField] string backSceneName= "TItleScene";
+    [SerializeField] string backSceneName = "TItleScene";
     List<SaveDataUI> m_saveDatas = new List<SaveDataUI>();
-
-    private void Start()
+    //[SerializeField] int saveDataCount = 0;
+    // Start is called before the first frame update
+    void Start()
     {
         for (int i = 0; i < SaveDataReader.Instance.GetFileCount(); i++)
         {
@@ -24,7 +23,7 @@ public class FileSelectSceneManager : MonoBehaviour
             });
             m_saveDatas.Add(but.GetComponent<SaveDataUI>());
             var item = SaveDataReader.Instance.GetFileHeader(i);
-            if (item==null)
+            if (item == null)
             {
                 m_saveDatas[i].Initialize($"DataFile ???", $"0.0");
             }

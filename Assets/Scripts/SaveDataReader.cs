@@ -18,7 +18,7 @@ public class SaveDataHeader
 /// </summary>
 public class SaveData
 {
-    public SaveDataHeader header;
+    public SaveDataHeader header = new SaveDataHeader();
     public Vector3 playerPosition;
     public string roomName;
     public int money;
