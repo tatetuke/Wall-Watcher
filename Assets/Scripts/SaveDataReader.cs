@@ -89,7 +89,7 @@ public class SaveDataReader : SingletonMonoBehaviour<SaveDataReader>
         var dat = new SaveData();
         dat.header = GetFileHeader(count);
 
-        string filePath = Application.dataPath + "/" + saveDirectoryPath + "/" + m_fileNames[count];
+        string filePath = m_fileNames[count];
         foreach (var line in File.ReadLines(filePath))
         {
             var i = line.Split(',');

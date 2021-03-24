@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SaveDataWriter : MonoBehaviour
+public class SaveDataWriter : SingletonMonoBehaviour<SaveDataWriter>
 {
     [SerializeField] string saveDirectoryPath="Data/Saves";
     List<string> m_fileNames = new List<string>();
@@ -26,7 +26,7 @@ public class SaveDataWriter : MonoBehaviour
     /// <param name="saveFileIndex"></param>
     public void Save(int saveFileIndex)
     {
-        string filePath = Application.dataPath + "/" + saveDirectoryPath + "/" + m_fileNames[saveFileIndex];
+        string filePath =  m_fileNames[saveFileIndex];
         var dat = Convert();
         if (!File.Exists(filePath))
         {
@@ -66,16 +66,41 @@ public class SaveDataWriter : MonoBehaviour
     SaveData Convert()
     {
         var ans = new SaveData();
-        ans.money = FindObjectOfType<MoneyScript>().Money;
+        var moneyScr = FindObjectOfType<MoneyScript>();
+        if (moneyScr == null)
+        {
+            Debug.LogError("money script not found");
+            ans.money = 0;
+        }
+        else
+        {
+            ans.money = moneyScr.Money ;
+        }
         ans.header.chapterCount = 0;
         ans.header.loopCount = 0;
         ans.header.fileName = "???";
         ans.roomName =SceneManager.GetActiveScene().name;
-        ans.playerPosition = FindObjectOfType<Player>().transform.position;
-        var inventry = FindObjectOfType<Kyoichi.Inventry>();
-        foreach(var i in inventry.Data)
+        var playerScr = FindObjectOfType<Player>();
+        if (playerScr==null)
         {
-            ans.inventry.Add(i);
+            Debug.LogError("player script not found");
+            ans.playerPosition = Vector3.zero;
+        }
+        else
+        {
+            ans.playerPosition = playerScr.transform.position;
+        }
+        var inventryScr = FindObjectOfType<Kyoichi.Inventry>();
+        if (inventryScr == null)
+        {
+            Debug.LogError("inventry script not found");
+        }
+        else
+        {
+            foreach (var i in inventryScr.Data)
+            {
+                ans.inventry.Add(i);
+            }
         }
         return ans;
     }

@@ -408,6 +408,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 3620226842749681470}
   chapterNum: {fileID: 7351119912257736532}
+  button: {fileID: 457971642107920854}
+  index: 0
 --- !u!1 &8026416291703062915
 GameObject:
   m_ObjectHideFlags: 0
