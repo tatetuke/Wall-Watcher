@@ -3,19 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-
+/// <summary>
+/// ミニゲームの塗るパートを統括する
+/// クリック時の土・コストの更新や、クリックする前に範囲を指し示す
+/// </summary>
 public class MiniGamePaintManager : MonoBehaviour
 {
-    public GameObject FrameArrow;
-    public GameObject FrameSquare;
+    [SerializeField] GameObject FrameArrow;
+    [SerializeField] GameObject FrameSquare;
     private GameObject NowFrame;
+    [SerializeField] GameObject ParameterCollection;
 
     public int ParamSize = 20;
     public int ConditionCanClick = 8;
     public const int WallLength = 7;
     private int Cost = 0;
     GameObject[,] Wall = new GameObject[WallLength, WallLength];
-    public TextMeshProUGUI m_TextDirection;
+    TextMeshProUGUI[,] ParameterText = new TextMeshProUGUI[WallLength, WallLength];
+    public TextMeshProUGUI m_TextRange;
     public TextMeshProUGUI m_TextCost;
     private string[] Textes = new string[5] { "□", "↑", "→", "↓", "←" };
     Color Brown = new Color(1, 0.7f, 0, 1);
@@ -24,8 +29,9 @@ public class MiniGamePaintManager : MonoBehaviour
     // MEMO : 誤差が怖いので足し引きでパラメータをいじるのではなく
     //        あらかじめ決められたパラメータに変更するという方針のためのList
     List<float> ParamList = new List<float>();
-    private Direction m_Direction = Direction.Square;
-    enum Direction
+    [SerializeField] Range m_Range = Range.Square;
+
+    enum Range
     {
         Square,
         Up,
@@ -39,8 +45,9 @@ public class MiniGamePaintManager : MonoBehaviour
     {
         ListInit();
         WallInit();
-        m_TextDirection.text = Textes[(int)m_Direction];
-        if (m_Direction == Direction.Square)
+        ParameterTextInit();
+        m_TextRange.text = Textes[(int)m_Range];
+        if (m_Range == Range.Square)
             NowFrame = FrameSquare;
         else
             NowFrame = FrameArrow;
@@ -48,63 +55,36 @@ public class MiniGamePaintManager : MonoBehaviour
 
     void Update()
     {
+        UpdateParameters();
         if (/*左クリックが押されたら*/Input.GetMouseButtonDown(0))
         {
             int raw, column;
-            (raw, column) = GetClickObjectIndex();
+            (raw, column) = GetCursorObjectIndex();
             int add, sub;
-            (add, sub) = SetAddSub(m_Direction, raw, column);
-
+            (add, sub) = SetAddSub(m_Range, raw, column);
             if (CanClick(raw, column, sub))
-                UpdateWall(m_Direction, raw, column, add, sub);
+                UpdateWall(m_Range, raw, column, add, sub);
         }
         else if (/*右クリックが押されたら*/Input.GetMouseButtonDown(1))
         {
             int raw, column;
-            (raw, column) = GetClickObjectIndex();
-             FillSoil(raw, column);
+            (raw, column) = GetCursorObjectIndex();
+            FillSoil(raw, column);
         }
         else if (/*中クリックが押されたら*/Input.GetMouseButtonDown(2))
         {
-            ChangeDirection();
+            ChangeRange();
         }
-        else
+        else  // クリックが押されていなかったら
         {
-            GameObject clickedGameObject;
-            clickedGameObject = null;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit2d = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction);
-            if (hit2d)
-            {
-                clickedGameObject = hit2d.transform.gameObject;
-            }
-            if (clickedGameObject != null)
-            {
-                int raw, column;
-                (raw, column) = GetClickObjectIndex();
-                int add, sub;
-                (add, sub) = SetAddSub(m_Direction, raw, column);
-
-                if (CanClick(raw, column, sub))
-                {
-                    NowFrame.SetActive(true);
-                    if (m_Direction == Direction.Square)
-                    {
-                        NowFrame.transform.position = Wall[raw, column].transform.position;
-                    }
-                    else
-                    {
-                        int angleZ = 90 * (2 - (int)m_Direction);
-                        Quaternion quaternion = Quaternion.Euler(0, 0, angleZ);
-                        NowFrame.transform.position = Wall[raw, column].transform.position;
-                        NowFrame.transform.rotation = quaternion;
-                    }
-                }
-                else
-                {
-                    NowFrame.SetActive(false);
-                }
-            }
+            int raw, column;
+            (raw, column) = GetCursorObjectIndex();
+            int sub;
+            (_, sub) = SetAddSub(m_Range, raw, column);
+            if (CanClick(raw, column, sub))
+                DisplayRangeFrame(raw, column);
+            else
+                HideRangeFrame();
         }
     }
 
@@ -124,11 +104,6 @@ public class MiniGamePaintManager : MonoBehaviour
         int i = 0, j = 0;
         foreach (GameObject v in GameObject.FindGameObjectsWithTag("Wall"))
         {
-            if (j >= WallLength)
-            {
-                Debug.LogError("壁の数が多すぎます");
-                break;
-            }
             Wall[i, j] = v;
             SpriteRenderer spriteRenderer = Wall[i, j].GetComponent<SpriteRenderer>();
             spriteRenderer.color = new Color(1, 1, 1, ParamList[Random.Range(0, ParamSize - 1)]);
@@ -141,25 +116,66 @@ public class MiniGamePaintManager : MonoBehaviour
         }
     }
 
-    private (int, int) GetClickObjectIndex()
+    private void ParameterTextInit()
     {
-        GameObject clickedGameObject;
-        clickedGameObject = null;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D hit2d = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction);
-        if (hit2d)
+        ParameterCollection.SetActive(true);
+        int i = 0, j = 0;
+        foreach (GameObject v in GameObject.FindGameObjectsWithTag("WallParameter"))
         {
-            clickedGameObject = hit2d.transform.gameObject;
+            ParameterText[i, j] = v.GetComponent<TextMeshProUGUI>();
+            i++;
+            if (i == WallLength)
+            {
+                i = 0;
+                j++;
+            }
         }
-        if (clickedGameObject == null) return (-1, -1);
-        int raw = -100, column = -100;
+        ParameterCollection.SetActive(false);
+    }
 
-        // 今見ている壁の場所を取得
+    private void UpdateParameters()
+    {
         for (int i = 0; i < WallLength; i++)
         {
             for (int j = 0; j < WallLength; j++)
             {
-                if (clickedGameObject == Wall[i, j])
+                int param;
+                if (IsBrown(i, j))
+                    param = 16 + 24;
+                else
+                {
+                    float alpha = Wall[i, j].GetComponent<SpriteRenderer>().color.a;
+                    param = ParamList.IndexOf(alpha);
+                }
+                ParameterText[i, j].text = param.ToString();
+            }
+        }
+    }
+
+    private GameObject GetCursorObject()
+    {
+        GameObject cursorObject;
+        cursorObject = null;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit2D hit2d = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction);
+        if (hit2d)
+        {
+            cursorObject = hit2d.transform.gameObject;
+        }
+        return cursorObject;
+    }
+
+    // Wallの添え字を返す
+    private (int, int) GetCursorObjectIndex()
+    {
+        GameObject cursorObject = GetCursorObject();
+        if (cursorObject == null) return (-1, -1);
+        int raw = -100, column = -100;
+        for (int i = 0; i < WallLength; i++)
+        {
+            for (int j = 0; j < WallLength; j++)
+            {
+                if (cursorObject == Wall[i, j])
                 {
                     raw = i;
                     column = j;
@@ -169,13 +185,14 @@ public class MiniGamePaintManager : MonoBehaviour
         //Debug.Log($"{raw}, {column}");
         return (raw, column);
     }
-
-    private (int, int) SetAddSub(Direction direction, int raw, int column)
+    
+    // 土の変化量を設定する
+    private (int, int) SetAddSub(Range direction, int raw, int column)
     {
         if (raw < 0 || column < 0) return (-100, -100);
 
         int add, sub;
-        if (direction == Direction.Square)
+        if (direction == Range.Square)
         {
             if (IsBrown(raw, column))
             {
@@ -221,7 +238,7 @@ public class MiniGamePaintManager : MonoBehaviour
     {
         if (raw < 0 || column < 0) return false;
 
-        return IsEnoughCost(raw, column, sub) && !IsOutOfFrame(m_Direction, raw, column);
+        return IsEnoughCost(raw, column, sub) && !IsOutOfFrame(m_Range, raw, column);
     }
 
     bool IsEnoughCost(int raw, int column, int sub)
@@ -235,9 +252,9 @@ public class MiniGamePaintManager : MonoBehaviour
         return res;
     }
 
-    bool IsOutOfFrame(Direction direction, int raw, int column)
+    bool IsOutOfFrame(Range direction, int raw, int column)
     {
-        if (direction == Direction.Square)
+        if (direction == Range.Square)
         {
             for (int i = 0; i < 9; i++)
             {
@@ -252,7 +269,7 @@ public class MiniGamePaintManager : MonoBehaviour
         else
         {
             int draw, dcolumn;
-            (draw, dcolumn) = SetItr(m_Direction);
+            (draw, dcolumn) = SetItr(m_Range);
             int nraw = raw;
             int ncolumn = column;
             for (int i = 0; i < 3; i++)
@@ -265,9 +282,9 @@ public class MiniGamePaintManager : MonoBehaviour
         }
     }
 
-    private void UpdateWall(Direction direction,int raw, int column,int add, int sub)
+    private void UpdateWall(Range direction,int raw, int column,int add, int sub)
     {
-        if (direction == Direction.Square)
+        if (direction == Range.Square)
         {
             for (int i = 0; i < 9; i++)
             {
@@ -281,23 +298,24 @@ public class MiniGamePaintManager : MonoBehaviour
         else
         {
             int draw, dcolumn;
-            (draw, dcolumn) = SetItr(m_Direction);
+            (draw, dcolumn) = SetItr(m_Range);
             ChangeSprite(Wall[raw, column], sub);
-            ChangeSprite(Wall[raw + draw, column + dcolumn], 2 * add);
-            ChangeSprite(Wall[raw + 2 * draw, column + 2 * dcolumn], add);
-            ChangeSprite(Wall[raw + 3 * draw, column + 3 * dcolumn], add);
+            ChangeSprite(Wall[raw + 1 * draw, column + 1 * dcolumn], 3 * add);
+            ChangeSprite(Wall[raw + 2 * draw, column + 2 * dcolumn], 2 * add);
+            ChangeSprite(Wall[raw + 3 * draw, column + 3 * dcolumn], 1 * add);
         }
     }
 
-    private (int, int) SetItr(Direction direction)
+    // 範囲が矢印の時の変化量を設定する
+    private (int, int) SetItr(Range direction)
     {
-        if (direction == Direction.Up)
+        if (direction == Range.Up)
             return (0, -1);
-        else if (direction == Direction.Right)
+        else if (direction == Range.Right)
             return (+1, 0);
-        else if (direction == Direction.Down)
+        else if (direction == Range.Down)
             return (0, +1);
-        else /*if (direction == Direction.Left)*/
+        else /*if (direction == Range.Left)*/
             return (-1, 0);
     }
 
@@ -341,15 +359,45 @@ public class MiniGamePaintManager : MonoBehaviour
         m_TextCost.text = Cost.ToString();
     }
 
-    void ChangeDirection()
+    void ChangeRange()
     {
         NowFrame.SetActive(false);
-        if (m_Direction == Direction.Square)
+        if (m_Range == Range.Square)
             NowFrame = FrameArrow;
-        else if (m_Direction == Direction.Left)
+        else if (m_Range == Range.Left)
             NowFrame = FrameSquare;
 
-        m_Direction = (Direction)(((int)m_Direction + 1) % 5);
-        m_TextDirection.text = Textes[(int)m_Direction];
+        m_Range = (Range)(((int)m_Range + 1) % 5);
+        m_TextRange.text = Textes[(int)m_Range];
+    }
+
+    private void DisplayRangeFrame(int raw, int column)
+    {
+        NowFrame.SetActive(true);
+        if (m_Range == Range.Square)
+        {
+            NowFrame.transform.position = Wall[raw, column].transform.position;
+        }
+        else
+        {
+            int rotationZ = 90 * (2 - (int)m_Range);
+            Quaternion quaternion = Quaternion.Euler(0, 0, rotationZ);
+            NowFrame.transform.position = Wall[raw, column].transform.position;
+            NowFrame.transform.rotation = quaternion;
+        }
+    }
+
+    private void HideRangeFrame()
+    {
+        NowFrame.SetActive(false);
+    }
+
+    // ボタンが押されたらこの関数が実行される
+    public void DisplayParameter()
+    {
+        if (ParameterCollection.activeSelf)
+            ParameterCollection.SetActive(false);
+        else
+            ParameterCollection.SetActive(true);
     }
 }
