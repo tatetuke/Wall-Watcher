@@ -7,13 +7,16 @@ public class SaveUIView : UIView
 {
     [SerializeField] Transform contentParent;
     [SerializeField] GameObject saveFilePrefab;
-    [SerializeField] Button successPopUp; 
+    [SerializeField] Button successPopUp;
+    [SerializeField] YesNoPupUpUI yesNoPopUp;
     List<SaveUI> m_saveDatas = new List<SaveUI>();
+    int m_saveFileIndex = 0;
     //[SerializeField] int saveDataCount = 0;
     // Start is called before the first frame update
     void Start()
     {
             successPopUp.gameObject.SetActive(false);
+        yesNoPopUp.gameObject.SetActive(false);
         for (int i = 0; i < SaveDataReader.Instance.GetFileCount(); i++)
         {
             var scr = Instantiate(saveFilePrefab, contentParent).GetComponent<SaveUI>();
@@ -32,6 +35,16 @@ public class SaveUIView : UIView
         {
             successPopUp.gameObject.SetActive(false);
         });
+        yesNoPopUp.SetNo("いいえ", () =>
+        {
+            yesNoPopUp.gameObject.SetActive(false);
+        });
+        yesNoPopUp.SetYes("はい", () =>
+        {
+            yesNoPopUp.gameObject.SetActive(false);
+            SaveDataWriter.Instance.Save(m_saveFileIndex);
+            successPopUp.gameObject.SetActive(true);
+        });
     }
 
     /// <summary>
@@ -40,7 +53,7 @@ public class SaveUIView : UIView
     /// <param name="index"></param>
     public void OnClickSaveData(int index)
     {
-        SaveDataWriter.Instance.Save(index);
-        successPopUp.gameObject.SetActive(true);
+        yesNoPopUp.gameObject.SetActive(true);
+        m_saveFileIndex = index;
     }
 }
