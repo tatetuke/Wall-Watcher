@@ -9,7 +9,6 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
     private int WallLength;
     MinGameHakaiManager2 GameManager;
     private float LineThickness = 1;  // 光らせる際の線の太さ
-
     // Start is called before the first frame update
     void Start()
     {
@@ -20,9 +19,13 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
             Item.Add(m_Item);
         }
         Wall = GameManager.Wall;
-        WallLength = GameManager.Wall.Length;
-        SetIndexItem();
+        WallLength = 7;
 
+    }
+    private void Update()
+    {
+
+        //SetIndexItem();
     }
     //初期化のための関数
     /// <summary>
@@ -30,10 +33,11 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
     /// </summary>
     private void SetIndexItem()
     {
-        foreach (GameObject v in Item)
+        foreach (GameObject m_Item in Item)
         {
-            (v.GetComponent<MinGameHAKAIItem>().m_TopLeftRaw,
-             v.GetComponent<MinGameHAKAIItem>().m_TopLeftColumn) = GetIndex(v);
+            MinGameHAKAIItem ItemData = m_Item.GetComponent<MinGameHAKAIItem>();
+            (ItemData.m_TopLeftRaw,
+             ItemData.m_TopLeftColumn) = GetIndex(ItemData.KeyWall);
         }
 
     }
@@ -43,16 +47,17 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
     /// </summary>
     /// <param name="Item"></param>
     /// <returns>行番号、列番号</returns>
-    private (int, int) GetIndex(GameObject Item)
+    private (int, int) GetIndex(GameObject m_ItemWallData)
     {
         for (int i = 0; i < WallLength; i++)
         {
             for (int j = 0; j < WallLength; j++)
             {
-                if (Item != Wall[i, j]) continue;
+                if (m_ItemWallData != Wall[i, j]) continue;
                 return (i, j);
             }
         }
+        Debug.LogError("アイテムに対応する添え字が見つかりませんでした。");
         return (0, 0);
     }
     //初期化のための関数
@@ -72,18 +77,22 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    private bool CheckGetItem(GameObject obj){
-        MinGameHAKAIItem Item;
-        Item = obj.GetComponent<MinGameHAKAIItem>();
-        for(int i = Item.m_TopLeftRaw; i < Item.m_TopLeftRaw + Item.m_Xsize; i++)
+    private void CheckGetItem(GameObject obj){
+        MinGameHAKAIItem m_Item;
+        m_Item = obj.GetComponent<MinGameHAKAIItem>();
+        for(int i = m_Item.m_TopLeftRaw; i < m_Item.m_TopLeftRaw + m_Item.m_Xsize; i++)
         {
-            for(int j = Item.m_TopLeftColumn; j < Item.m_TopLeftColumn + Item.m_Ysize; j++)
+            for(int j = m_Item.m_TopLeftColumn; j < m_Item.m_TopLeftColumn + m_Item.m_Ysize; j++)
             {
-                if (Wall[i, j].GetComponent<SpriteRenderer>().sprite.name != GameManager.PolutedLevel2) return false;
+                if (Wall[i, j].GetComponent<SpriteRenderer>().sprite.name != GameManager.PolutedLevel2)
+                {
+                    m_Item.CanGetItem = false;
+                    return;
+                }
             }
         }
-
-        return true;
+        m_Item.CanGetItem = true;
+        return;
 
     }
 
@@ -98,19 +107,20 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
 
         // 前回の対象を光らせなくする
         if (!m_ItemData.CanGetItem)
-            SetGlowLine(this.gameObject, 0);
+            SetGlowLine(m_Item.gameObject, 0);
         else
         {
-            SetGlowLine(this.gameObject, LineThickness);
+            SetGlowLine(m_Item.gameObject, LineThickness);
+        Debug.Log("線");
         }
 
 
     }
 
-    private void SetGlowLine(GameObject gameObject, float num)
+    private void SetGlowLine(GameObject m_gameObject, float num)
     {
-        if (gameObject == null) return;
-        GameObject image = gameObject.transform.GetChild(0).gameObject;
+        if (m_gameObject == null) return;
+        GameObject image = m_gameObject.transform.GetChild(0).gameObject;
         Material material = image.GetComponent<Renderer>().material;
         material.SetFloat("_Thick", num);
     }

@@ -8,6 +8,7 @@ TagManager:
   - CanConversationNPC
   - Wall
   - PolutedWall
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -18,8 +19,8 @@ TagManager:
   - 
   - 
   - MinGamePolutedWall
+  - Item
   - MinGameWall
-  - 
   - 
   - 
   - 
