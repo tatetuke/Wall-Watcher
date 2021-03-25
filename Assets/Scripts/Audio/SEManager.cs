@@ -22,8 +22,8 @@ public class SEManager : SingletonMonoBehaviour<SEManager>, IAudio
     private void Start()
     {
         //Load("escape").Forget();
-        Play("aaa");
-        Play("footsteps");
+        //Play("aaa");
+        //Play("footsteps");
     }
 
     private void Update()
