@@ -50,7 +50,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 10d7a299181a16f44b41967a4ad26373, type: 2}
+  - {fileID: 2100000, guid: 32ead2b13dabbf4498398adf146ba710, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -182,3 +182,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4db682fb36b8f6f42bccb14ff9ad978c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _labelReference:
+    m_LabelString: 
+  CurrentConversationData: {fileID: 0}
+  FileId: 
+  ConversationDataList: []
+  IsTalkNPC: 1
