@@ -7,16 +7,12 @@ using UnityEngine;
 /// </summary>
 public class Minimap : MonoBehaviour
 {
-    [Header("MainMap上のオブジェクト")]
-    [SerializeField] private GameObject playerObject;
-
-    [Header("Minimap上のオブジェクト")]
     [SerializeField] private GameObject playerIcon;
     [SerializeField] private GameObject scenePlaceInfoParent;
     
     [SerializeField, ReadOnly] private string currentPlaceName;
 
-    private Dictionary<string, ScenePlaceInfo> scenePlaceInfoDictionary = new Dictionary<string, ScenePlaceInfo>();
+    private Dictionary<string, PlaceInfo> scenePlaceInfoDictionary = new Dictionary<string, PlaceInfo>();
 
     private void Awake()
     {
@@ -24,7 +20,7 @@ public class Minimap : MonoBehaviour
         scenePlaceInfoDictionary.Clear();
         foreach(Transform childTransform in scenePlaceInfoParent.transform)
         {
-            var scenePlaceInfo = childTransform.GetComponent<ScenePlaceInfo>();
+            var scenePlaceInfo = childTransform.GetComponent<PlaceInfo>();
             if (scenePlaceInfo != null)
                 scenePlaceInfoDictionary.Add(childTransform.name, scenePlaceInfo);
         }
@@ -51,7 +47,7 @@ public class Minimap : MonoBehaviour
         //playerIcon.transform.position = scenePlaceInfo.GetPlayerPositionOnMinimap(Mathf.Abs(Mathf.Sin(t)));
 
         //プレイヤーの現在位置からマップ上での進み具合(0~1)を取得
-        float progress = LocationGetter.Instance.GetProgressOnMap(playerObject.transform.position);
+        float progress = LocationGetter.Instance.GetProgressOnMap();
         //Minimap上のアイコンの座標を移動
         playerIcon.transform.position = scenePlaceInfo.GetPlayerPositionOnMinimap(progress);
     }
