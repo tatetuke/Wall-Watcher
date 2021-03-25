@@ -8,6 +8,7 @@ TagManager:
   - CanConversationNPC
   - Wall1
   - Wall
+  - WallParameter
   layers:
   - Default
   - TransparentFX

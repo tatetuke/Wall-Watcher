@@ -31,6 +31,9 @@ namespace Kyoichi
         public ItemEvent OnItemAdd { get; } = new ItemEvent();
         public ItemEvent OnItemRemove { get; } = new ItemEvent();
         List<ItemStack> m_inventry = new List<ItemStack>();
+        /// <summary>
+        /// 現在持っているインベントリの中身を取得
+        /// </summary>
         public IEnumerable<ItemStack> Data
         {
             get { return m_inventry; }
