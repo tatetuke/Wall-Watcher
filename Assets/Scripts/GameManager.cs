@@ -12,7 +12,7 @@ namespace Kyoichi
     /// </summary>
     public class GameManager : SingletonMonoBehaviour<GameManager>
     {
-        enum GameState
+        public enum GameState
         {
             nothing,
             loading,
@@ -21,6 +21,7 @@ namespace Kyoichi
         }
         [SerializeField,ReadOnly]
         GameState m_state = GameState.nothing;
+        public GameState State { get => m_state; }
         List<ISaveableAsync> m_saveablesAsync = new List<ISaveableAsync>();
         List<ILoadableAsync> m_loadablesAsync = new List<ILoadableAsync>();
 
@@ -37,6 +38,9 @@ namespace Kyoichi
         public void AddLoadableAsync(ILoadableAsync obj) => m_loadablesAsync.Add(obj);
         public void AddSaveableAsync(ISaveableAsync obj) => m_saveablesAsync.Add(obj);
 
+        private CancellationTokenSource loadCancellationTokenSource;
+        private CancellationTokenSource saveCancellationTokenSource;
+
         private void Awake()
         {
 
@@ -44,29 +48,6 @@ namespace Kyoichi
             saveCancellationTokenSource = new CancellationTokenSource();
         }
 
-        private CancellationTokenSource loadCancellationTokenSource;
-        private CancellationTokenSource saveCancellationTokenSource;
-
-        async Task LoadAsync()
-        {
-            foreach(var i in m_loadablesAsync)
-            {
-                await i.LoadAsync(loadCancellationTokenSource.Token);
-            }
-            //非同期でロードし、すべてのオブジェクトについて完了するまで待つ
-            Debug.Log("All Data Loading Finished");
-            OnLoadFinished.Invoke();
-        }
-        async Task SaveAsync()
-        {
-            foreach (var i in m_saveablesAsync)
-            {
-                await i.SaveAsync(saveCancellationTokenSource.Token);
-            }
-            //非同期でロードし、すべてのオブジェクトについて完了するまで待つ
-            Debug.Log("All Data Save Finished");
-            OnSaveFinished.Invoke();
-        }
 
         // Start is called before the first frame update
         void Start()
@@ -92,6 +73,35 @@ namespace Kyoichi
             });
             OnGameLoad.Invoke();
             LoadAsync();
+            OnPauseStart.AddListener(() =>
+            {
+                FindObjectOfType<Player>().ChangeState(Player.State.FREEZE);
+            });
+            OnPauseEnd.AddListener(() =>
+            {
+                FindObjectOfType<Player>().ChangeState(Player.State.IDLE);
+            });
+        }
+
+        async Task LoadAsync()
+        {
+            foreach (var i in m_loadablesAsync)
+            {
+                await i.LoadAsync(loadCancellationTokenSource.Token);
+            }
+            //非同期でロードし、すべてのオブジェクトについて完了するまで待つ
+            Debug.Log("All Data Loading Finished");
+            OnLoadFinished.Invoke();
+        }
+        async Task SaveAsync()
+        {
+            foreach (var i in m_saveablesAsync)
+            {
+                await i.SaveAsync(saveCancellationTokenSource.Token);
+            }
+            //非同期でロードし、すべてのオブジェクトについて完了するまで待つ
+            Debug.Log("All Data Save Finished");
+            OnSaveFinished.Invoke();
         }
 
         private void Update()
