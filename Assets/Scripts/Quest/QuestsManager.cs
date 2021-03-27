@@ -22,7 +22,13 @@ public class QuestsManager : SingletonMonoBehaviour<QuestsManager>,ILoadableAsyn
         return null;
     }
     AsyncOperationHandle<IList<QuestDataSO>> m_handle;
-
+    void Start()
+    {
+        Kyoichi.GameManager.Instance.OnRoomChanged.AddListener(() =>
+        {
+            LoadCurrentRoomQuests();
+        });
+    }
     public async Task LoadAsync(CancellationToken token)
     {
         m_handle = Addressables.LoadAssetsAsync<QuestDataSO>(_labelReference, null);
@@ -32,5 +38,13 @@ public class QuestsManager : SingletonMonoBehaviour<QuestsManager>,ILoadableAsyn
         {
 
         }
+    }
+
+    /// <summary>
+    /// 現在のマップにあるQuestCheckerをロード
+    /// </summary>
+    void LoadCurrentRoomQuests()
+    {
+       var quests= FindObjectsOfType<QuestHolder>();
     }
 }

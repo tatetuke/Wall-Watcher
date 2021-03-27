@@ -24,6 +24,7 @@ public class CanvasManager : MonoBehaviour, IUIManager
     [SerializeField] Animator animator;
     [SerializeField] string fadeInTrriger="FadeIn";
     [SerializeField] string fadeOutTrriger="FadeOut";
+    [SerializeField] Button saveButton;
     [ReadOnly]
     [SerializeField]List<UIView> m_views = new List<UIView>();
     [SerializeField] string firstViewName;
@@ -64,6 +65,16 @@ public class CanvasManager : MonoBehaviour, IUIManager
         {
             m_state = State.fadeOut;
             animator.SetTrigger(fadeOutTrriger);
+        });
+        //会話中はセーブできないようにする
+        ConversationDataManager.Instance.OnTalkAccepted.AddListener(() =>
+        {
+            saveButton.interactable = false;
+        });
+        //会話が終わったら解除
+        ConversationDataManager.Instance.OnTalkEnd.AddListener(() =>
+        {
+            saveButton.interactable = true;
         });
         //シーン内のプレイヤーを取得
         m_targetPlaeyer = FindObjectOfType<Player>();

@@ -19,9 +19,12 @@ public class QuestHolder : MonoBehaviour
     {
         OnQuestAdd.AddListener(() => {
             EffectGenerator.Instance.Generate("quest");
-
-        
         });
+    }
+    public void Initialize(QuestDataSO quest, QuestChecker.QuestState state, int chapter)
+    {
+        m_quests.Add(quest);
+
     }
     public void AddQuest(QuestDataSO quest)
     {

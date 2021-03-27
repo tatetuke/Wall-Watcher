@@ -44,6 +44,7 @@ public class SaveDataUIManager : UIView
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.LoadScene(m_loadedData.roomName);
     }
+
     /// <summary>
     /// ゲームのシーンがロードされたときに実行される関数
     /// </summary>
@@ -54,23 +55,36 @@ public class SaveDataUIManager : UIView
         SceneManager.sceneLoaded -= OnSceneLoaded;
         Debug.Log("Load scene from saveData");
         var playerScr = FindObjectOfType<Player>();
-        if (playerScr == null)
-        {
-            Debug.LogError("player not found");
-        }
+        if (playerScr == null) Debug.LogError("player not found");
         else
         {
             playerScr.transform.position = m_loadedData.playerPosition;
         }
         var moneyScr = FindObjectOfType<MoneyScript>();
-        if (moneyScr == null)
-        {
-            Debug.LogError("money not found");
-        }
+        if (moneyScr == null) Debug.LogError("money not found");
         else
         {
             moneyScr.Money = m_loadedData.money;
         }
-        // FindObjectOfType<QuestHolder>().
+        var inventryScr = FindObjectOfType<Kyoichi.Inventry>();
+        if (inventryScr == null) Debug.LogError("inventry not found");
+        else
+        {
+            foreach(var i in m_loadedData.inventry)
+            {
+                inventryScr.AddItem(i);
+            }
+        }
+        var questScr = FindObjectOfType<QuestHolder>();
+        if (questScr == null) Debug.LogError("quest not found");
+        else
+        {
+            foreach (var i in m_loadedData.quests)
+            {
+               var data= QuestsManager.Instance.GetQuest(i.questName);
+                questScr.AddQuest(data);
+            }
+        }
+
     }
 }

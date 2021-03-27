@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -49,6 +50,19 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     private string Id;
     
     private QuestHolder m_QuestHolder;  //クエストを追加するときに使う。
+    
+    /// <summary>
+    /// プレイヤーがスペースキーを押し、会話が始められる状態になったとき実行されるイベント
+    /// </summary>
+    public UnityEvent OnTalkAccepted { get; } = new UnityEvent();
+    /// <summary>
+    /// プレイヤーの移動が止まり、会話が始まったとき実行されるイベント
+    /// </summary>
+    public UnityEvent OnTalkStart { get; } = new UnityEvent();
+    /// <summary>
+    /// 会話が終わったとき実行されるイベント
+    /// </summary>
+    public UnityEvent OnTalkEnd { get; } = new UnityEvent();
 
     [System.Obsolete]
     private void Start()
@@ -61,6 +75,10 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         m_selectManager = new SelectManager(OptionTexts, Color.yellow, Color.white);
     }
 
+    public bool IsTalking()
+    {
+        return m_State == State.Talking;
+    }
 
     [System.Obsolete]
     private void Update()
@@ -96,6 +114,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         {
             if (Input.GetKeyDown("space"))
             {
+                OnTalkAccepted.Invoke();
                 PlayerScript.ChangeState(Player.State.FREEZE);
                 TargetNPC = SearchNearNPC.Instance.GetNearNPC();
                 SetGlowLine(TargetNPC, 0);
@@ -105,7 +124,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                 else
                 {
                     if (IsClosePosition(m_Player, TargetNPC))
+                    {
                         ChangeState(State.Talking);
+                    }
                     else
                         ChangeState(State.SettingPosition);
                 }
@@ -133,6 +154,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                 CurrentConversation = null;  // 初期化
                 PlayerScript.ChangeState(Player.State.IDLE);
                 ChangeState(State.Normal);
+                OnTalkEnd.Invoke();
             }
         }
     }
@@ -140,10 +162,22 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     void ChangeState(State state)
     {
         m_State = state;
-        if (state == State.SettingPosition)
-            playableDirector.Play();
-        else if (state == State.Talking)
-            LookNPC();
+        switch (state)
+        {
+            case State.Normal:
+                break;
+            case State.TryStop:
+                break;
+            case State.SettingPosition:
+                playableDirector.Play();
+                break;
+            case State.Talking:
+                OnTalkStart.Invoke();
+                LookNPC();
+                break;
+            default:
+                break;
+        }
     }
 
     private void UpdateSelect(Conversations conversations)

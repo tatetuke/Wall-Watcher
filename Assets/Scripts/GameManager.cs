@@ -21,6 +21,7 @@ namespace Kyoichi
         }
         [SerializeField,ReadOnly]
         GameState m_state = GameState.nothing;
+
         public GameState State { get => m_state; }
         List<ISaveableAsync> m_saveablesAsync = new List<ISaveableAsync>();
         List<ILoadableAsync> m_loadablesAsync = new List<ILoadableAsync>();
@@ -31,6 +32,7 @@ namespace Kyoichi
         public UnityEvent OnLoadFinished { get; }=new UnityEvent();
         public UnityEvent OnGameSave { get; }= new UnityEvent();
         public UnityEvent OnSaveFinished { get; } = new UnityEvent();
+        public UnityEvent OnRoomChanged { get; } = new UnityEvent();
 
         public bool IsLoadFinished { get; private set; } = false;
         public bool IsSaveFinished { get; private set; } = false;
