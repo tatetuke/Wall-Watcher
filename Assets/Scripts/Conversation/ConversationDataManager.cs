@@ -38,8 +38,8 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     private Player PlayerScript;
     private GameObject TargetNPC;
 
-    DialogController dialogController;
-    SelectManager selectManager;
+    DialogController m_dialogController;
+    SelectManager m_selectManager;
 
     private Conversations CurrentConversation = null;
     private ConversationData CurrentConversationData;
@@ -57,8 +57,8 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         m_PlayerSprite = m_Player.transform.Find("PlayerSprite").gameObject;
         PlayerScript = m_Player.GetComponent<Player>();
         m_QuestHolder = m_Player.GetComponent<QuestHolder>();
-        dialogController = new DialogController();
-        selectManager = new SelectManager(OptionTexts, Color.yellow, Color.white);
+        m_dialogController = new DialogController();
+        m_selectManager = new SelectManager(OptionTexts, Color.yellow, Color.white);
     }
 
 
@@ -152,9 +152,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         if (ExistOptions(CurrentConversation))
         {
             if (Input.GetKeyDown("left"))
-                selectManager.UpdateLeft();   // 左押したときに関する更新
+                m_selectManager.UpdateLeft();   // 左押したときに関する更新
             if (Input.GetKeyDown("right"))
-                selectManager.UpdateRight();  // 右押したときに関する更新
+                m_selectManager.UpdateRight();  // 右押したときに関する更新
         }
     }
 
@@ -164,9 +164,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         if (ExistOptions(CurrentConversation))
         {
             // 選ばれた選択肢の色を元に戻す
-            selectManager.ChangeColorDown(selectManager.GetSelectNum());
+            m_selectManager.ChangeColorDown(m_selectManager.GetSelectNum());
             // ConversationsのConversationOption型リストのtargetIdをIdとして指定
-            Id = CurrentConversation.options[selectManager.GetSelectNum()].targetId;
+            Id = CurrentConversation.options[m_selectManager.GetSelectNum()].targetId;
             CurrentConversation = CurrentConversationData.Get(Id);
         }
         else
@@ -207,24 +207,24 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         if (ExistOptions(CurrentConversation))
         {
             // 選択肢を表示する
-            dialogController.Display(Options[0]);
-            dialogController.Display(Options[1]);
+            m_dialogController.Display(Options[0]);
+            m_dialogController.Display(Options[1]);
             int itr = 0;
             // 選択肢の内容の更新
             foreach (var option in CurrentConversation.options)
             {
-                dialogController.SetText(OptionTexts[itr], option.text);
+                m_dialogController.SetText(OptionTexts[itr], option.text);
                 itr++;
             }
             // 初期化 : 左を選択している状態にする
-            selectManager.ChangeSelectNum(0);
-            selectManager.ChangeColorUp(selectManager.GetSelectNum());
+            m_selectManager.ChangeSelectNum(0);
+            m_selectManager.ChangeColorUp(m_selectManager.GetSelectNum());
         }
         else
         {
             // 選択肢を隠す
-            dialogController.Hide(Options[0]);
-            dialogController.Hide(Options[1]);
+            m_dialogController.Hide(Options[0]);
+            m_dialogController.Hide(Options[1]);
         }
     }
 
@@ -257,9 +257,10 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     void SetGlowLine(GameObject gameObject,float num)
     {
         if (gameObject == null) return;
-        GameObject image = gameObject.transform.GetChild(0).gameObject;
-        Material material= image.GetComponent<Renderer>().material;
-        material.SetFloat("_Thick", num);
+        OutLineSetter scr = gameObject.GetComponentInChildren<OutLineSetter>();
+       // Material material= image.GetComponent<Renderer>().material;
+       // material.SetFloat("_Thick", num);
+        scr.SetWidth(num);
     }
 
     public bool IsFirstTalk()
@@ -275,10 +276,8 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
     private bool ExistOptions(Conversations conversations)
     {
-        if (conversations == null)
-            return false;
-        else
-            return conversations.options.Count != 0;
+        if (conversations == null)return false;
+        return conversations.options.Count != 0;
     }
 
     bool IsClosePosition(GameObject gameObjectA, GameObject gameObjectB)

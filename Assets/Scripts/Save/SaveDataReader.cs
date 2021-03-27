@@ -3,27 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-/// <summary>
-/// 最小限の情報
-/// </summary>
-public class SaveDataHeader
-{
-    public string fileName;
-    public int loopCount;//周回数
-    public int chapterCount;
-}
-
-/// <summary>
-/// セーブデータの情報
-/// </summary>
-public class SaveData
-{
-    public SaveDataHeader header = new SaveDataHeader();
-    public Vector3 playerPosition;
-    public string roomName;
-    public int money;
-    public List<Kyoichi.ItemStack> inventry = new List<Kyoichi.ItemStack>();
-}
 
 /// <summary>
 /// プレイヤーのセーブデータを読み込む
@@ -90,6 +69,7 @@ public class SaveDataReader : SingletonMonoBehaviour<SaveDataReader>
         dat.header = GetFileHeader(count);
 
         string filePath = m_fileNames[count];
+        QuestSaveData currentQuest = null;
         foreach (var line in File.ReadLines(filePath))
         {
             var i = line.Split(',');
@@ -110,6 +90,33 @@ public class SaveDataReader : SingletonMonoBehaviour<SaveDataReader>
                 case "inventryItem":
                     var item = Kyoichi.ItemManager.Instance.GetItem(i[1]);
                     dat.inventry.Add(new Kyoichi.ItemStack(item, int.Parse(i[2])));
+                    break;
+                case "questStart":
+                    currentQuest = new QuestSaveData();
+                    currentQuest.questName = i[1];
+                    break;
+                case "questState":
+                    QuestChecker.QuestState state = QuestChecker.QuestState.not_yet;
+                    switch (i[1])
+                    {
+                        case "notyet":
+                            state = QuestChecker.QuestState.not_yet;
+                            break;
+                        case "accepted":
+                            state = QuestChecker.QuestState.working;
+                            break;
+                        case "finished":
+                            state = QuestChecker.QuestState.finish;
+                            break;
+                    }
+                    currentQuest.state = state;
+                    break;
+                case "questChapter":
+                    currentQuest.cuestChapter = int.Parse(i[1]);
+                    break;
+                case "questEnd":
+                    dat.quests.Add(currentQuest);
+                    currentQuest = null;
                     break;
             }
         }

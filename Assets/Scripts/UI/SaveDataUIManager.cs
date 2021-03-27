@@ -21,11 +21,11 @@ public class SaveDataUIManager : UIView
             var item = SaveDataReader.Instance.GetFileHeader(i);
             if (item == null)
             {
-                m_saveDatas[i].Initialize($"DataFile ???", $"0.0",i, OnClickSaveData);
+                m_saveDatas[i].Initialize($"DataFile ???", $"0.0", i, OnClickSaveData);
             }
             else
             {
-                m_saveDatas[i].Initialize($"DataFile {i}", $"{item.loopCount}.{item.chapterCount}",i, OnClickSaveData);
+                m_saveDatas[i].Initialize($"DataFile {i}", $"{item.loopCount}.{item.chapterCount}", i, OnClickSaveData);
             }
         }
         backButton.onClick.AddListener(() =>
@@ -33,14 +33,44 @@ public class SaveDataUIManager : UIView
             SceneManager.LoadScene(backSceneName);
         });
     }
-
+    SaveData m_loadedData;
     /// <summary>
     /// セーブデータのスロットをクリックしたとき、セーブデータ内にあるシーン名をロードする
     /// </summary>
     /// <param name="index"></param>
     public void OnClickSaveData(int index)
     {
-      var data=  SaveDataReader.Instance.GetFileData(index);
-        SceneManager.LoadScene(data.roomName);
+        m_loadedData = SaveDataReader.Instance.GetFileData(index);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.LoadScene(m_loadedData.roomName);
+    }
+    /// <summary>
+    /// ゲームのシーンがロードされたときに実行される関数
+    /// </summary>
+    /// <param name="scene"></param>
+    /// <param name="mode"></param>
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        Debug.Log("Load scene from saveData");
+        var playerScr = FindObjectOfType<Player>();
+        if (playerScr == null)
+        {
+            Debug.LogError("player not found");
+        }
+        else
+        {
+            playerScr.transform.position = m_loadedData.playerPosition;
+        }
+        var moneyScr = FindObjectOfType<MoneyScript>();
+        if (moneyScr == null)
+        {
+            Debug.LogError("money not found");
+        }
+        else
+        {
+            moneyScr.Money = m_loadedData.money;
+        }
+        // FindObjectOfType<QuestHolder>().
     }
 }

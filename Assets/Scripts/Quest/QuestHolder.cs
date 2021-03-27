@@ -6,6 +6,7 @@ using UnityEngine.Events;
 /// <summary>
 /// プレイヤーが請け負ったクエストを管理するクラス
 /// </summary>
+[DisallowMultipleComponent]
 public class QuestHolder : MonoBehaviour
 {
     [SerializeField,ReadOnly]

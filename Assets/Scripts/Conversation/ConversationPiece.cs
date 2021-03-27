@@ -7,8 +7,9 @@ namespace RPGM.Gameplay
 
     public enum ConversationType
     {
-        normal,
-        events
+        normal=0,
+        events=1,
+        subConversation=2,
     }
 
     [System.Serializable]
@@ -29,8 +30,10 @@ namespace RPGM.Gameplay
         public QuestDataSO quest;
         //選択肢
         public List<ConversationOption> options;
-
+        //イベント発行用（使ってない）
         public string eventName;
+        //別の会話へのリンク（使ってない）
+        public Conversations subConversation;
     }
 
 }

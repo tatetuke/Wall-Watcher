@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 341799687}
   - component: {fileID: 7860411102271976780}
   - component: {fileID: -8191951598371343344}
+  - component: {fileID: 7122869463357912293}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -152,8 +153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 855038bb098027e479e3f2f83ccd78fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventryDirectory: 
-  inventryFilename: '{{name}}.csv'
 --- !u!114 &-8191951598371343344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,6 +166,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_quests: []
+--- !u!114 &7122869463357912293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6626503895012448112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa72c274db91de84aa6ad972e0805a97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMoney: 0
+  maxMoney: 0
+  currentMoney: 0
 --- !u!1 &6626503895902429364
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// クエストクラス
+/// クエストのゲーム内での進行を制御するクラス
+/// ゲームの条件をチェックし、条件に満たせばクエスト受注可能になったり、終了したり
+/// クエストを受注できるSceneにおく
 /// </summary>
 public class QuestChecker : MonoBehaviour
 {
@@ -26,11 +28,16 @@ public class QuestChecker : MonoBehaviour
         error
     }
     QuestState m_state = QuestState.not_yet;
-    [SerializeField] QuestDataSO questData;
+    [SerializeField] QuestDataSO questData;//対象となるクエストデータ
     List<QuestChecker> m_subQuests = new List<QuestChecker>();
     public UnityEvent OnQuestStart = new UnityEvent();
     public UnityEvent OnQuestFinish = new UnityEvent();
     int m_currentPhase=0;
+    private void Awake()
+    {
+        m_currentPhase = 0;
+    }
+
     public bool IsQuestFinished()
     {
         return m_state==QuestState.finish;
@@ -39,21 +46,7 @@ public class QuestChecker : MonoBehaviour
     {
         foreach(var i in questData.startConditions)
         {
-            switch (i.valueType)
-            {
-                case QuestConditions.ValueType.Int:
-                    if (!i.MeetCondition(GamePropertyManager.Instance.GetIntProperty(i.parameterKey))) return false;
-                    break;
-                case QuestConditions.ValueType.Float:
-                    if (!i.MeetCondition(GamePropertyManager.Instance.GetFloatProperty(i.parameterKey))) return false;
-                    break;
-                case QuestConditions.ValueType.String:
-                    if (!i.MeetCondition(GamePropertyManager.Instance.GetStringProperty(i.parameterKey))) return false;
-                    break;
-                case QuestConditions.ValueType.Boolean:
-                    if (!i.MeetCondition(GamePropertyManager.Instance.GetBoolProperty(i.parameterKey))) return false;
-                    break;
-            }
+            if (!i.MeetCondition(GetValueFromProperty(i))) return false;
         }
         return true;
     }
@@ -61,24 +54,32 @@ public class QuestChecker : MonoBehaviour
     {
         foreach (var i in questData.endConditions)
         {
-            switch (i.valueType)
-            {
-                case QuestConditions.ValueType.Int:
-                    if (!i.MeetCondition(GamePropertyManager.Instance.GetIntProperty(i.parameterKey))) return false;
-                    break;
-                case QuestConditions.ValueType.Float:
-                    if (!i.MeetCondition(GamePropertyManager.Instance.GetFloatProperty(i.parameterKey))) return false;
-                    break;
-                case QuestConditions.ValueType.String:
-                    if (!i.MeetCondition(GamePropertyManager.Instance.GetStringProperty(i.parameterKey))) return false;
-                    break;
-                case QuestConditions.ValueType.Boolean:
-                    if (!i.MeetCondition(GamePropertyManager.Instance.GetBoolProperty(i.parameterKey))) return false;
-                    break;
-            }
+            if (!i.MeetCondition(GetValueFromProperty(i))) return false;
         }
         return true;
     }
+
+    /// <summary>
+    /// 条件からプロパティに変換
+    /// </summary>
+    /// <param name="condition"></param>
+    /// <returns></returns>
+    object GetValueFromProperty(QuestConditions condition)
+    {
+        switch (condition.valueType)
+        {
+            case QuestConditions.ValueType.Int:
+                return GamePropertyManager.Instance.GetIntProperty(condition.parameterKey);
+            case QuestConditions.ValueType.Float:
+                return GamePropertyManager.Instance.GetFloatProperty(condition.parameterKey);
+            case QuestConditions.ValueType.String:
+                return GamePropertyManager.Instance.GetStringProperty(condition.parameterKey);
+            case QuestConditions.ValueType.Boolean:
+                return GamePropertyManager.Instance.GetBoolProperty(condition.parameterKey);
+        }
+        return null;
+    }
+
     /// <summary>
     /// 強制的にイベントを発生させる
     /// プレイヤーを所定の場所に移動させ、会話を強制再生
@@ -102,14 +103,14 @@ public class QuestChecker : MonoBehaviour
     {
         switch (m_state)
         {
-            case QuestState.not_yet:
+            case QuestState.not_yet://受注できるかチェック
                 if (CheckStart())
                 {
                     m_state = QuestState.working;
                     OnQuestStart.Invoke();
                 }
                 break;
-            case QuestState.working:
+            case QuestState.working://受注している状態。終了できるかチェック
                 if (m_subQuests.Count == 0 )
                 {
                     if (CheckFinish())
