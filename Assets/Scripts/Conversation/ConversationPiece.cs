@@ -21,7 +21,7 @@ namespace RPGM.Gameplay
 
         [Multiline]
         public string text;
-        // public TalkerData talker;
+        public string talker;
         //public TalkData.TalkType talkType;
         //public TalkData.FaceType talkFace;
         //テクストを表示するときに出る効果音

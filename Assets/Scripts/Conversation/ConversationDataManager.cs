@@ -182,7 +182,8 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             if (IsFirstTalk())  // 一番最初だけ例外
             {
                 // FirstConversationをIdとして指定
-                int index = TargetNPC.GetComponent<NPCController>().GetConversationIndex();
+                //int index = TargetNPC.GetComponent<NPCController>().GetConversationIndex();
+                int index = 0;
                 FileId = TargetNPC.GetComponent<NPCController>().ConversationDataList[index];
                 CurrentConversationData = TargetNPC.GetComponent<NPCController>().GetConversation(FileId);
                 Id = CurrentConversationData.GetFirst();

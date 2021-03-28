@@ -29,6 +29,7 @@ namespace RPGM.Gameplay
                 id = "", 
                 text = "", 
                 targetID = "",
+                talker= "",
                 options = new List<ConversationOption>() };
             w.isUpdate = false;
         }
@@ -156,9 +157,10 @@ namespace RPGM.Gameplay
 
         void  DrawNormalGUI()
         {
-            //  EditorGUILayout.PrefixLabel("Talker");
-            //   conversationPiece.talker= (TalkerData)EditorGUILayout.ObjectField(conversationPiece.talker, typeof(TalkerData), false);
-           // conversationPiece.talkType = (TalkData.TalkType)EditorGUILayout.EnumPopup("Talk Type", conversationPiece.talkType);
+            EditorGUILayout.PrefixLabel("Talker");
+            conversationPiece.talker= EditorGUILayout.TextArea(conversationPiece.text);
+            //conversationPiece.talker= (TalkerData)EditorGUILayout.ObjectField(conversationPiece.talker, typeof(TalkerData), false);
+            // conversationPiece.talkType = (TalkData.TalkType)EditorGUILayout.EnumPopup("Talk Type", conversationPiece.talkType);
             //conversationPiece.talkFace = (TalkData.FaceType)EditorGUILayout.EnumPopup("Face Type", conversationPiece.talkFace);
             EditorGUILayout.PrefixLabel("Text");
             conversationPiece.text = EditorGUILayout.TextArea(conversationPiece.text);
