@@ -32,7 +32,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     public TMP_Typewriter m_typewriter;
     public GameObject[] Options;
     public TextMeshProUGUI[] OptionTexts;
-
+    public GameObject[] Borders;
     private GameObject m_Player;
     private GameObject m_PlayerSprite;
     private Player PlayerScript;
@@ -152,9 +152,17 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         if (ExistOptions(CurrentConversation))
         {
             if (Input.GetKeyDown("left"))
+            {
+                dialogController.Hide(Borders[selectManager.GetSelectNum()]);
                 selectManager.UpdateLeft();   // 左押したときに関する更新
+                dialogController.Display(Borders[selectManager.GetSelectNum()]);
+            }
             if (Input.GetKeyDown("right"))
+            {
+                dialogController.Hide(Borders[selectManager.GetSelectNum()]);
                 selectManager.UpdateRight();  // 右押したときに関する更新
+                dialogController.Display(Borders[selectManager.GetSelectNum()]);
+            }
         }
     }
 
@@ -218,13 +226,18 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             }
             // 初期化 : 左を選択している状態にする
             selectManager.ChangeSelectNum(0);
-            selectManager.ChangeColorUp(selectManager.GetSelectNum());
+           // selectManager.ChangeColorUp(selectManager.GetSelectNum());
+            //come
+            dialogController.Display(Borders[selectManager.GetSelectNum()]);
         }
         else
         {
             // 選択肢を隠す
             dialogController.Hide(Options[0]);
             dialogController.Hide(Options[1]);
+            //come
+            dialogController.Hide(Borders[0]);
+            dialogController.Hide(Borders[1]);
         }
     }
 
