@@ -2522,7 +2522,7 @@ MonoBehaviour:
   player: {fileID: 1380382813}
   m_typewriter: {fileID: 1466771252}
   m_State: 0
-  conversationData: {fileID: 11400000, guid: 63006776567bb5f42bcd71ee47b21f68, type: 2}
+  conversationData: {fileID: 11400000, guid: 234fde52580ef3c4287cb5372ce8b520, type: 2}
 --- !u!4 &2137549495
 Transform:
   m_ObjectHideFlags: 0

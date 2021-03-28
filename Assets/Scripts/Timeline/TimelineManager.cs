@@ -7,6 +7,8 @@ using UnityEngine.Playables;
 
 public class TimelineManager : MonoBehaviour
 {
+    // MEMO : 会話タイムラインに選択肢の追加
+
     [SerializeField]
     private PlayableDirector playableDirector;
     [SerializeField]
@@ -52,7 +54,7 @@ public class TimelineManager : MonoBehaviour
             {
                 if (Input.GetKeyDown("space"))
                 {
-                    m_typewriter.Play(text: "", speed: 0, onComplete:() => Debug.Log(""));
+                    m_typewriter.Play(text: "", speed: 0);
                     playableDirector.Resume();
                     IsFinishCurrentConversation = false;
                 }

@@ -191,6 +191,16 @@ PrefabInstance:
       propertyPath: _labelReference.m_LabelString
       value: SampleQuestConversation
       objectReference: {fileID: 0}
+    - target: {fileID: 7380884548104049266, guid: 7c1a1d9b4a7695d4d9985293f7f76286,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7380884548104049266, guid: 7c1a1d9b4a7695d4d9985293f7f76286,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7380884548104049267, guid: 7c1a1d9b4a7695d4d9985293f7f76286,
         type: 3}
       propertyPath: m_IsActive
@@ -452,7 +462,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a9b5233ef6a494fa275735e1fbec65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadOnStart: 1
 --- !u!4 &319277167
 Transform:
   m_ObjectHideFlags: 0
