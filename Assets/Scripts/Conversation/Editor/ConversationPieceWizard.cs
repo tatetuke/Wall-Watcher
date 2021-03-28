@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEditor.SceneManagement;
 using RPGM.Gameplay;
 
@@ -158,12 +159,14 @@ namespace RPGM.Gameplay
         void  DrawNormalGUI()
         {
             EditorGUILayout.PrefixLabel("Talker");
-            conversationPiece.talker= EditorGUILayout.TextArea(conversationPiece.text);
+            conversationPiece.talker= EditorGUILayout.TextArea(conversationPiece.talker);
             //conversationPiece.talker= (TalkerData)EditorGUILayout.ObjectField(conversationPiece.talker, typeof(TalkerData), false);
             // conversationPiece.talkType = (TalkData.TalkType)EditorGUILayout.EnumPopup("Talk Type", conversationPiece.talkType);
             //conversationPiece.talkFace = (TalkData.FaceType)EditorGUILayout.EnumPopup("Face Type", conversationPiece.talkFace);
             EditorGUILayout.PrefixLabel("Text");
             conversationPiece.text = EditorGUILayout.TextArea(conversationPiece.text);
+            EditorGUILayout.PrefixLabel("Timeline");
+            conversationPiece.playableDirector = (PlayableDirector)EditorGUILayout.ObjectField(conversationPiece.playableDirector, typeof(PlayableDirector), false);
             EditorGUILayout.PrefixLabel("Audio");
             conversationPiece.audio = (AudioClip)EditorGUILayout.ObjectField(conversationPiece.audio, typeof(AudioClip), false);
             EditorGUILayout.PrefixLabel("Quest (Optional)");

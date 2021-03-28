@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using RPGM.Gameplay;
 using UnityEngine;
+using UnityEngine.Playables;
 
 namespace RPGM.Gameplay
 {
@@ -24,6 +25,7 @@ namespace RPGM.Gameplay
         public string talker;
         //public TalkData.TalkType talkType;
         //public TalkData.FaceType talkFace;
+        public PlayableDirector playableDirector;
         //テクストを表示するときに出る効果音
         public AudioClip audio;
         public QuestDataSO quest;

@@ -17,6 +17,7 @@ MonoBehaviour:
     id: 0
     targetID: 1
     text: "\u3053\u3093\u306B\u3061\u306F"
+    talker: "\u3053\u3093\u306B\u3061\u306F"
     audio: {fileID: 0}
     quest: {fileID: 0}
     options: []
@@ -25,6 +26,7 @@ MonoBehaviour:
     id: 1
     targetID: 2
     text: "\u304A\u3064\u304B\u3044\u983C\u3093\u3067\u3044\u3044\u3067\u3059\u304B\uFF1F"
+    talker: 
     audio: {fileID: 0}
     quest: {fileID: 0}
     options:
@@ -41,6 +43,7 @@ MonoBehaviour:
     id: 2
     targetID: FINISH
     text: "\u3042\u308A\u304C\u3068\u3046!"
+    talker: 
     audio: {fileID: 0}
     quest: {fileID: 11400000, guid: 0204c8fd7a696f743a070d13ef7792d5, type: 2}
     options: []
@@ -49,6 +52,7 @@ MonoBehaviour:
     id: 3
     targetID: FINISH
     text: "\u305D\u308C\u306F\u6B8B\u5FF5"
+    talker: 
     audio: {fileID: 0}
     quest: {fileID: 0}
     options: []
@@ -57,6 +61,7 @@ MonoBehaviour:
     id: FINISH
     targetID: FINISH
     text: 
+    talker: 
     audio: {fileID: 0}
     quest: {fileID: 0}
     options: []
