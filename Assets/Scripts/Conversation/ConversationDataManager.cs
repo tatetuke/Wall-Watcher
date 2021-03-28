@@ -92,43 +92,19 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
             // 選択肢を出すアニメーションが終わったら
 
-            if (ExistOptions(CurrentConversation))
-            {
-                if (OptionAnimator.GetCurrentAnimatorStateInfo(0).IsName("CompleteBorderAnimation"))
-                {
-                    SetBorder(CurrentConversation);
-                    if (Input.GetKeyDown("space"))
-                    {
-                        ProceedTalk();
-                    }
-                    //OptionAnimator.SetBool("IsPlayAnimation", false);
-                }
-            }
-            else
-            {
-                if (IsFirstTalk())
-                    ProceedTalk();
-                else
-                {
-                    if (Input.GetKeyDown("space"))
-                        ProceedTalk();
-                }
-
-                //下キーが押されたら文字送りをスキップして本文を出力する。
-                if (Input.GetKeyDown("down"))
-                    m_typewriter.Skip();
-            }
-
-            //if (OptionAnimator.GetCurrentAnimatorStateInfo(0).IsName("CompleteBorderAnimation"))
+            //if (ExistOptions(CurrentConversation))
             //{
-            //    SetBorder(CurrentConversation);
-            //    if (Input.GetKeyDown("space"))
+            //    if (OptionAnimator.GetCurrentAnimatorStateInfo(0).IsName("CompleteBorderAnimation"))
             //    {
-            //        ProceedTalk();
+            //        SetBorder(CurrentConversation);
+            //        if (Input.GetKeyDown("space"))
+            //        {
+            //            ProceedTalk();
+            //        }
+            //        OptionAnimator.SetBool("IsPlayAnimation", false);
             //    }
-            //    OptionAnimator.SetBool("IsPlayAnimation", false);
             //}
-            //if (IsCompleteAnimation)
+            //else
             //{
             //    if (IsFirstTalk())
             //        ProceedTalk();
@@ -142,6 +118,33 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             //    if (Input.GetKeyDown("down"))
             //        m_typewriter.Skip();
             //}
+
+            //アニメーションが終了したら
+            if (OptionAnimator.GetCurrentAnimatorStateInfo(0).IsName("CompleteBorderAnimation"))
+            {
+                //会話の遷移を行えるようにする。
+                IsCompleteAnimation = true;
+                //繰り返しアニメーションがされないようにする。
+                OptionAnimator.SetBool("IsPlayAnimation", false);
+            }
+
+            //アニメーションが終了していたら会話ができる。
+            if (IsCompleteAnimation)
+            {
+
+                SetBorder(CurrentConversation);
+                if (IsFirstTalk())
+                    ProceedTalk();
+                else
+                {
+                    if (Input.GetKeyDown("space"))
+                        ProceedTalk();
+                }
+
+                //下キーが押されたら文字送りをスキップして本文を出力する。
+                if (Input.GetKeyDown("down"))
+                    m_typewriter.Skip();
+            }
         }
     }
 
@@ -231,7 +234,8 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
         //テキストを一文字一文字出力する。
         //Play(テキスト本文,一秒間に送る文字数,文字送り終了時に呼び出されるもの)
-        m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete: () => SetBoolOptionAnimation(CurrentConversation));
+       // m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete: () => SetBoolOptionAnimation(CurrentConversation));
+        m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete: () => IsCompleteAnimation=true);
 
         //クエストがあればクエストを追加する。
         AddQuest();
@@ -252,8 +256,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             // 初期化 : 左を選択している状態にする
             selectManager.ChangeSelectNum(0);
             // selectManager.ChangeColorUp(selectManager.GetSelectNum());
-            //  IsCompleteAnimation = false;
-            // OptionAnimator.SetBool("IsPlayAnimation", true);
+            //アニメーションのトリガ―を発動する。アニメーション中は会話ができない。
+              IsCompleteAnimation = false;
+              OptionAnimator.SetBool("IsPlayAnimation", true);
 
             //come
             dialogController.Display(Borders[selectManager.GetSelectNum()]);
