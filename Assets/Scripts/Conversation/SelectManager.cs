@@ -16,7 +16,7 @@ public class SelectManager
     private int SelectNum;
 
     //come
-    private GameObject[] Borders;
+    //private GameObject[] Borders;
 
 
 
