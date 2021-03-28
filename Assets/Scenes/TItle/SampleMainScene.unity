@@ -273,6 +273,16 @@ PrefabInstance:
       propertyPath: _labelReference.m_LabelString
       value: SampleQuestConversation
       objectReference: {fileID: 0}
+    - target: {fileID: 7380884548104049266, guid: 7c1a1d9b4a7695d4d9985293f7f76286,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7380884548104049266, guid: 7c1a1d9b4a7695d4d9985293f7f76286,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7380884548104049267, guid: 7c1a1d9b4a7695d4d9985293f7f76286,
         type: 3}
       propertyPath: m_IsActive

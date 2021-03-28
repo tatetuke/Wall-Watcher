@@ -45,7 +45,7 @@ public class TestPlayableBehaviour : PlayableBehaviour
     // アニメーションの各フレームごとに呼び出される
     public override void PrepareFrame(Playable playable, FrameData info)
     {
-        Vector3 vel = new Vector3(-0.01f, 0, 0);
-        Player.transform.position = Player.transform.position + vel;
+        if (Input.GetKeyDown("space")) { 
+        }
     }
 }

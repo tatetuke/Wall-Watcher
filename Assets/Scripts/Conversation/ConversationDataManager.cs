@@ -44,6 +44,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     private Conversations CurrentConversation = null;
     private ConversationData CurrentConversationData;
 
+    Color Red = Color.red;
     private float LineThickness = 1;  // 光らせる際の線の太さ
     private string FileId;
     private string Id;
@@ -98,7 +99,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             {
                 PlayerScript.ChangeState(Player.State.FREEZE);
                 TargetNPC = SearchNearNPC.Instance.GetNearNPC();
-                SetGlowLine(TargetNPC, 0);
+                SetGlowLine(TargetNPC, Red);
 
                 if (PlayerScript.IsWalking)
                     ChangeState(State.TryStop);
@@ -254,26 +255,28 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         Debug.Log("クエスト追加");
     }
 
+
     void UpdateGlowImage()
     {
         // 前回の対象を光らせなくする
         if (TargetNPC != null)
-            SetGlowLine(TargetNPC, 0);
+            SetGlowLine(TargetNPC, Red);
 
         // TargetNPCの更新
         TargetNPC = SearchNearNPC.Instance.GetNearNPC();
 
         // 今回の対象を光らせる
         if (TargetNPC != null)
-            SetGlowLine(TargetNPC, LineThickness);
+            SetGlowLine(TargetNPC, Red);
     }
 
-    void SetGlowLine(GameObject gameObject,float num)
+    void SetGlowLine(GameObject gameObject,Color color)
     {
         if (gameObject == null) return;
         GameObject image = gameObject.transform.GetChild(0).gameObject;
         Material material= image.GetComponent<Renderer>().material;
-        material.SetFloat("_Thick", num);
+        material.SetColor("Color_7C7012AB", color);
+        //material.SetFloat("_Thick", num);
     }
 
     public bool IsFirstTalk()
