@@ -16,15 +16,25 @@ MonoBehaviour:
   - type: 0
     id: 0
     targetID: 1
-    text: ...
+    text: qawsedrftgyhuji
+    talker: qawsedrftgyhuji
     audio: {fileID: 0}
     quest: {fileID: 0}
-    options: []
+    options:
+    - text: 1
+      audio: {fileID: 0}
+      targetId: 1
+      enabled: 0
+    - text: 2
+      audio: {fileID: 0}
+      targetId: 2
+      enabled: 0
     eventName: 
   - type: 0
     id: 1
     targetID: 2
     text: "\u3069\u3053\u304B\u306B\u884C\u3063\u3061\u3083\u3063\u305F...\u3002"
+    talker: "\u3069\u3053\u304B\u306B\u884C\u3063\u3061\u3083\u3063\u305F...\u3002"
     audio: {fileID: 0}
     quest: {fileID: 0}
     options: []
@@ -33,6 +43,7 @@ MonoBehaviour:
     id: 2
     targetID: 3
     text: "\uFF11"
+    talker: "\uFF11"
     audio: {fileID: 0}
     quest: {fileID: 0}
     options: []
@@ -41,6 +52,7 @@ MonoBehaviour:
     id: 3
     targetID: 4
     text: 3
+    talker: 3
     audio: {fileID: 0}
     quest: {fileID: 0}
     options:
@@ -57,6 +69,7 @@ MonoBehaviour:
     id: 4
     targetID: 5
     text: 4
+    talker: 
     audio: {fileID: 0}
     quest: {fileID: 0}
     options:
@@ -73,6 +86,7 @@ MonoBehaviour:
     id: 5
     targetID: 6
     text: 5
+    talker: 
     audio: {fileID: 0}
     quest: {fileID: 0}
     options:
@@ -89,6 +103,7 @@ MonoBehaviour:
     id: 6
     targetID: 9
     text: 6
+    talker: 
     audio: {fileID: 0}
     quest: {fileID: 0}
     options: []
@@ -97,6 +112,7 @@ MonoBehaviour:
     id: 7
     targetID: 8
     text: 7
+    talker: 
     audio: {fileID: 0}
     quest: {fileID: 0}
     options: []
@@ -105,6 +121,7 @@ MonoBehaviour:
     id: 8
     targetID: 9
     text: 8
+    talker: 
     audio: {fileID: 0}
     quest: {fileID: 0}
     options:
@@ -121,6 +138,7 @@ MonoBehaviour:
     id: 9
     targetID: FINISH
     text: 9
+    talker: 
     audio: {fileID: 0}
     quest: {fileID: 0}
     options: []
@@ -129,6 +147,7 @@ MonoBehaviour:
     id: FINISH
     targetID: FINISH
     text: 
+    talker: 
     audio: {fileID: 0}
     quest: {fileID: 0}
     options: []
