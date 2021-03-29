@@ -35,6 +35,19 @@ public class MixMachineManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown("space"))
+        {
+            if (IsInCollider())
+            {
+                FadeManager.Instance.LoadLevel("Mix", 1f);
+                Debug.Log("MiniGamePaintシーンに遷移!");
+            }
+        }
+    }
+
+    private bool IsInCollider()
+    {
+        Material material = this.GetComponent<Renderer>().material;
+        return material.GetColor("Color_7C7012AB") == Color.red;
     }
 }
