@@ -36,6 +36,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MiniGame/Paint.unity
     guid: 99da0b77c38e5ce41b7a87591f9996cd
   - enabled: 1
+    path: Assets/Scenes/MiniGame/Mix.unity
+    guid: 31239b5264ccf084bbaf2466533b2595
+  - enabled: 1
     path: Assets/Scenes/TItle/FileSelect.unity
     guid: 567fba5ea90a20042812442e3f48fc7c
   m_configObjects:
