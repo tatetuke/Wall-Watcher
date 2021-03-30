@@ -32,12 +32,12 @@ public class MoneyScript : MonoBehaviour
     public void Load()
     {
         //値をセーブファイルからロード
-        Money = PropertyLoader.Instance.GetInt("money", defaultMoney);
+       // Money = PropertyLoader.Instance.GetInt("money", defaultMoney);
     }
     public void Save()
     {
         //値をファイルに保存するために、ゲームが終わる直前の値を保存
-        PropertyLoader.Instance.SetInt("money", Money);
+      //  PropertyLoader.Instance.SetInt("money", Money);
     }
 
 }

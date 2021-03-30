@@ -12,6 +12,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 public class QuestsManager : SingletonMonoBehaviour<QuestsManager>,ILoadableAsync
 {
     [SerializeField] private AssetLabelReference _labelReference;
+    [SerializeField,ReadOnly] List<QuestDataSO> m_quests = new List<QuestDataSO>();
     /// <summary>
     /// クエストの名前からQuestDataSOを返す
     /// </summary>
@@ -19,15 +20,22 @@ public class QuestsManager : SingletonMonoBehaviour<QuestsManager>,ILoadableAsyn
     /// <returns></returns>
     public QuestDataSO GetQuest(string questName)
     {
+        foreach(var i in m_quests)
+        {
+            if (i.name == questName) return i;
+        }
+            Debug.LogWarning($"'{questName}' not found");
         return null;
     }
+
     AsyncOperationHandle<IList<QuestDataSO>> m_handle;
-    void Start()
+    void Awake()
     {
-        Kyoichi.GameManager.Instance.OnRoomChanged.AddListener(() =>
-        {
-            LoadCurrentRoomQuests();
-        });
+        Kyoichi.GameManager.Instance.AddLoadableAsync(this);
+    }
+    void OnDisable()
+    {
+        Addressables.Release(m_handle);
     }
     public async Task LoadAsync(CancellationToken token)
     {
@@ -36,15 +44,8 @@ public class QuestsManager : SingletonMonoBehaviour<QuestsManager>,ILoadableAsyn
         Debug.Log("<color=#4a19bd>Quest loading</color>");
         foreach (var res in m_handle.Result)
         {
-
+            m_quests.Add(res);
         }
     }
 
-    /// <summary>
-    /// 現在のマップにあるQuestCheckerをロード
-    /// </summary>
-    void LoadCurrentRoomQuests()
-    {
-       var quests= FindObjectsOfType<QuestHolder>();
-    }
 }

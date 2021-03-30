@@ -105,11 +105,7 @@ public class SaveDataWriter : SingletonMonoBehaviour<SaveDataWriter>
         var questScr = FindObjectOfType<QuestHolder>();
         foreach(var i in questScr.Data)
         {
-            var dat = new QuestSaveData();
-            dat.cuestChapter = i.chapter;
-            dat.questName = i.quest.name;
-            dat.state = i.state;
-            ans.quests.Add(dat);
+            ans.quests.Add(i.GetData());
         }
 
         return ans;

@@ -82,6 +82,11 @@ public class SaveDataUIManager : UIView
             foreach (var i in m_loadedData.quests)
             {
                var data= QuestsManager.Instance.GetQuest(i.questName);
+                if (data == null)
+                {
+                    Debug.LogWarning("data is null");
+                    continue;
+                }
                 questScr.Initialize(data,i.state,i.cuestChapter);
             }
         }

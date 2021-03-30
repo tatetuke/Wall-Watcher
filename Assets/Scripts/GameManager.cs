@@ -45,9 +45,9 @@ namespace Kyoichi
 
         private void Awake()
         {
-
             loadCancellationTokenSource = new CancellationTokenSource();
             saveCancellationTokenSource = new CancellationTokenSource();
+            DontDestroyOnLoad(gameObject);
         }
 
 

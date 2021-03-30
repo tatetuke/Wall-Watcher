@@ -9,20 +9,12 @@ using UnityEngine.Events;
 [DisallowMultipleComponent]
 public class QuestHolder : MonoBehaviour
 {
-    public class QuestData
-    {
-        public QuestDataSO quest;
-        public QuestChecker.QuestState state;
-        public int chapter;
-    }
-
-
     /// <summary>
     /// 請け負った、または完了したクエスト
     /// </summary>
-    [SerializeField,ReadOnly] List<QuestData> m_quests = new List<QuestData>();
+    [SerializeField,ReadOnly] List<QuestChecker> m_quests = new List<QuestChecker>();
 
-    public IEnumerable<QuestData> Data { get => m_quests; }
+    public IEnumerable<QuestChecker> Data { get => m_quests; }
     private void Awake()
     {
         OnQuestAdd.AddListener(() => {
@@ -31,16 +23,24 @@ public class QuestHolder : MonoBehaviour
     }
     public void Initialize(QuestDataSO quest_, QuestChecker.QuestState state_, int chapter_)
     {
-        m_quests.Add(new QuestData { quest = quest_, state = state_, chapter = chapter_ });
+        var obj = new GameObject(quest_.name);
+        var scr = obj.AddComponent<QuestChecker>();
+        scr.Initialize(quest_, state_, chapter_);
+        scr.gameObject.transform.parent = transform.parent;
+        m_quests.Add(scr);
     }
 
     /// <summary>
-    /// クエストを請け負う
+    /// クエストを受注する
     /// </summary>
     /// <param name="quest"></param>
     public void AddQuest(QuestDataSO quest_)
     {
-        m_quests.Add(new QuestData { quest = quest_, state = QuestChecker.QuestState.not_yet, chapter = 0 });
+        var obj = new GameObject(quest_.name);
+        var scr = obj.AddComponent<QuestChecker>();
+        scr.Initialize(quest_, QuestChecker.QuestState.working, 0);
+        scr.gameObject.transform.parent = transform.parent;
+        m_quests.Add(scr);
         OnQuestAdd.Invoke();
     }
     /// <summary>
