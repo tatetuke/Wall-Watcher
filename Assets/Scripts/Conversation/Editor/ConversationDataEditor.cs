@@ -8,24 +8,24 @@ using RPGM.Gameplay;
 [CustomEditor(typeof(ConversationData), true)]
 public class AudioClipDataEditor : Editor
 {
-    ReorderableList list;
-    ConversationData script;
+    ReorderableList m_list;
+    ConversationData m_script;
 
     void OnEnable()
     {
-        script = target as ConversationData;
+        m_script = target as ConversationData;
         // list = new ReorderableList(serializedObject, serializedObject.FindProperty("items"), true, true, true, true);
-        list = new ReorderableList(script.items, typeof(Conversations), true, true, true, true);
-        list.drawElementCallback = OnDrawElement;
+        m_list = new ReorderableList(m_script.items, typeof(Conversations), true, true, true, true);
+        m_list.drawElementCallback = OnDrawElement;
         //list.onAddCallback += OnAdd;
-        list.onRemoveCallback += OnRemove;
-        list.drawHeaderCallback += OnDrawHeader;
-        list.onSelectCallback += OnSelect;
-        list.onReorderCallback += OnReorder;
+        m_list.onRemoveCallback += OnRemove;
+        m_list.drawHeaderCallback += OnDrawHeader;
+        m_list.onSelectCallback += OnSelect;
+        m_list.onReorderCallback += OnReorder;
         Undo.undoRedoPerformed -= OnUndoRedo;
         Undo.undoRedoPerformed += OnUndoRedo;
-        list.elementHeightCallback = index => 30;
-        list.onAddDropdownCallback = (rect, list) =>
+        m_list.elementHeightCallback = index => 30;
+        m_list.onAddDropdownCallback = (rect, list) =>
         {
             var menu = new GenericMenu();
             menu.AddItem(
@@ -33,7 +33,7 @@ public class AudioClipDataEditor : Editor
                 false,
                 () =>
                 {
-                    ConversationPieceWizard.New(script, ConversationType.normal);
+                    ConversationPieceWizard.New(m_script, ConversationType.normal);
                 }
                 );
             menu.AddItem(
@@ -41,7 +41,7 @@ public class AudioClipDataEditor : Editor
                 false,
                 () =>
                 {
-                    ConversationPieceWizard.New(script, ConversationType.events);
+                    ConversationPieceWizard.New(m_script, ConversationType.events);
                 }
                 );
             menu.DropDown(rect);
@@ -57,8 +57,8 @@ public class AudioClipDataEditor : Editor
     void OnDrawHeader(Rect rect)
     {
         GUI.Label(rect, "Conversation Script Items");
-        if (list.list.Count != 0)
-            script.m_firstConversation = ((Conversations)list.list[0]).id;
+        if (m_list.list.Count != 0)
+            m_script.m_firstConversation = ((Conversations)m_list.list[0]).id;
     }
 
     void OnUndoRedo()
@@ -74,13 +74,13 @@ public class AudioClipDataEditor : Editor
     /// <param name="list"></param>
     void OnRemove(ReorderableList list)
     {
-        var item = script.items[list.index];
+        var item = m_script.items[list.index];
         Undo.RecordObject(target, "Remove Item");
-        script.Delete(item.id);
+        m_script.Delete(item.id);
     }
     void OnDrawElement(Rect rect, int index, bool isActive, bool isFocused)
     {
-        var item = (Conversations)list.list[index];
+        var item = (Conversations)m_list.list[index];
         var r = rect;
         switch (item.type)
         {
@@ -114,11 +114,11 @@ public class AudioClipDataEditor : Editor
         r.y -= 1;
         r.height -= 2;
 
-        if (list.index == index)
+        if (m_list.index == index)
         {
             if (GUI.Button(r, "Edit", EditorStyles.miniButton))
             {
-                ConversationPieceWizard.Edit(script, item);
+                ConversationPieceWizard.Edit(m_script, item);
             }
         }
         r = rect;
@@ -135,12 +135,12 @@ public class AudioClipDataEditor : Editor
        // EditorGUILayout.PrefixLabel("Right Talker");
         //script.m_right = (TalkerData)EditorGUILayout.ObjectField(script.m_right, typeof(TalkerData), false);
         GUI.enabled = false;
-        EditorGUILayout.TextField("FirstConversation", script.m_firstConversation);
+        EditorGUILayout.TextField("FirstConversation", m_script.m_firstConversation);
         GUI.enabled = true;
         var questProperty = serializedObject.FindProperty("quest");
         if (questProperty != null)
             EditorGUILayout.PropertyField(questProperty, true);
         serializedObject.ApplyModifiedProperties();
-        list.DoLayoutList();
+        m_list.DoLayoutList();
     }
 }

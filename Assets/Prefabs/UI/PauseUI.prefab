@@ -559,7 +559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1058b7dfed8acf240a1abd10bb37171c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstSelectUI: {fileID: 0}
+  firstSelectUI: {fileID: 4505792850734343324}
   backButton: {fileID: 4505792850734343324}
   OnViewShow:
     m_PersistentCalls:
@@ -5743,8 +5743,8 @@ MonoBehaviour:
   fadeInTrriger: FadeIn
   fadeOutTrriger: FadeOut
   saveButton: {fileID: 3477392987787526109}
-  m_views: []
   firstViewName: Menu
+  m_views: []
   m_state: 0
   m_targetPlaeyer: {fileID: 0}
 --- !u!95 &8263280914576192184
@@ -6562,7 +6562,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Settings
+  m_text: Option
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 01c889695c331444c882bf17391e1db1, type: 2}
   m_sharedMaterial: {fileID: -2133962801536924874, guid: 01c889695c331444c882bf17391e1db1,
@@ -6888,7 +6888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20e13c054314bda42b2ff17f4af1ee8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstSelectUI: {fileID: 0}
+  firstSelectUI: {fileID: 3833655953258568308}
   backButton: {fileID: 9130964108835065495}
   OnViewShow:
     m_PersistentCalls:
@@ -8093,7 +8093,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddfd1a5dc9f642c49acccb5ff1210623, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstSelectUI: {fileID: 0}
+  firstSelectUI: {fileID: 3833655954782429251}
   backButton: {fileID: 3833655954782429251}
   OnViewShow:
     m_PersistentCalls:
@@ -9310,7 +9310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20e13c054314bda42b2ff17f4af1ee8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstSelectUI: {fileID: 0}
+  firstSelectUI: {fileID: 3833655954508826011}
   backButton: {fileID: 3833655954508826011}
   OnViewShow:
     m_PersistentCalls:
@@ -14017,7 +14017,7 @@ PrefabInstance:
     - target: {fileID: 9193996824149418406, guid: 32e96b81810aa42498aa369b777a26fa,
         type: 3}
       propertyPath: m_text
-      value: Settings
+      value: Option
       objectReference: {fileID: 0}
     - target: {fileID: 9193996824149418406, guid: 32e96b81810aa42498aa369b777a26fa,
         type: 3}
@@ -14177,6 +14177,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5378497115142651870}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3833655953258568308 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9193996823059211690, guid: 32e96b81810aa42498aa369b777a26fa,
+    type: 3}
+  m_PrefabInstance: {fileID: 5378497115142651870}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5752659239780866679
 PrefabInstance:
   m_ObjectHideFlags: 0

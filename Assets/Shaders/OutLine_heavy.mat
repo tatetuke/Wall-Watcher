@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OutLine
-  m_Shader: {fileID: -6465566751694194690, guid: 61dde35cda746df49aab1b8067fb8744,
+  m_Name: OutLine_heavy
+  m_Shader: {fileID: -6465566751694194690, guid: ec75b3e1b25062d46b5ca3af4d5adada,
     type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
@@ -25,7 +25,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 5e5a32500d0282744b6a755b2782a21a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9c0d7e81f51e047419de61fe43e11364, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
@@ -37,11 +37,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_C1366B5E: 49.5
+    - Vector1_C1366B5E: 12
     - _EnableExternalAlpha: 0
     m_Colors:
-    - Color_7C7012AB: {r: 1, g: 0.74509805, b: 0, a: 1}
+    - Color_7C7012AB: {r: 1.9999998, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}

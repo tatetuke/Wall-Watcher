@@ -82,7 +82,7 @@ public class SaveDataUIManager : UIView
             foreach (var i in m_loadedData.quests)
             {
                var data= QuestsManager.Instance.GetQuest(i.questName);
-                questScr.AddQuest(data);
+                questScr.Initialize(data,i.state,i.cuestChapter);
             }
         }
 
