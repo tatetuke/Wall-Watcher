@@ -243,15 +243,15 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         {
             if (Input.GetKeyDown("left"))
             {
-                dialogController.Hide(Borders[selectManager.GetSelectNum()]);
-                selectManager.UpdateLeft();   // 左押したときに関する更新
-                dialogController.Display(Borders[selectManager.GetSelectNum()]);
+                m_dialogController.Hide(Borders[m_selectManager.GetSelectNum()]);
+                m_selectManager.UpdateLeft();   // 左押したときに関する更新
+                m_dialogController.Display(Borders[m_selectManager.GetSelectNum()]);
             }
             if (Input.GetKeyDown("right"))
             {
-                dialogController.Hide(Borders[selectManager.GetSelectNum()]);
-                selectManager.UpdateRight();  // 右押したときに関する更新
-                dialogController.Display(Borders[selectManager.GetSelectNum()]);
+                m_dialogController.Hide(Borders[m_selectManager.GetSelectNum()]);
+                m_selectManager.UpdateRight();  // 右押したときに関する更新
+                m_dialogController.Display(Borders[m_selectManager.GetSelectNum()]);
             }
         }
     }
@@ -284,22 +284,22 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                 itr++;
             }
             // 初期化 : 左を選択している状態にする
-            selectManager.ChangeSelectNum(0);
+            m_selectManager.ChangeSelectNum(0);
             // selectManager.ChangeColorUp(selectManager.GetSelectNum());
             //  IsCompleteAnimation = false;
             // OptionAnimator.SetBool("IsPlayAnimation", true);
 
             //come
-            dialogController.Display(Borders[selectManager.GetSelectNum()]);
+            m_dialogController.Display(Borders[m_selectManager.GetSelectNum()]);
         }
         else
         {
             // 選択肢を隠す
-            dialogController.Hide(Options[0]);
-            dialogController.Hide(Options[1]);
+            m_dialogController.Hide(Options[0]);
+            m_dialogController.Hide(Options[1]);
             //come
-            dialogController.Hide(Borders[0]);
-            dialogController.Hide(Borders[1]);
+            m_dialogController.Hide(Borders[0]);
+            m_dialogController.Hide(Borders[1]);
         }
     }
 
@@ -319,9 +319,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         if (ExistOptions(CurrentConversation))
         {
             // 選ばれた選択肢の色を元に戻す
-            selectManager.ChangeColorDown(selectManager.GetSelectNum());
+            m_selectManager.ChangeColorDown(m_selectManager.GetSelectNum());
             // ConversationsのConversationOption型リストのtargetIdをIdとして指定
-            Id = CurrentConversation.options[selectManager.GetSelectNum()].targetId;
+            Id = CurrentConversation.options[m_selectManager.GetSelectNum()].targetId;
             CurrentConversation = CurrentConversationData.Get(Id);
         }
         else
@@ -383,7 +383,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         OutLineSetter scr = gameObject.GetComponentInChildren<OutLineSetter>();
        // Material material= image.GetComponent<Renderer>().material;
        // material.SetFloat("_Thick", num);
-        scr.SetWidth(num);
+        scr.SetWidth(10);
     }
 
     public bool IsFirstTalk()
