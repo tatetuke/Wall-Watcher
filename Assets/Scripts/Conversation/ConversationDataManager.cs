@@ -26,17 +26,21 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     }
     State m_State = State.Normal;
 
+    private bool IsCompleteAnimation;
+
+
     [SerializeField] private GameObject TalkCanvas;
     [SerializeField] private TextMeshProUGUI TextBox;
     [SerializeField] private PlayableDirector playableDirector;
     public TMP_Typewriter m_typewriter;
     public GameObject[] Options;
     public TextMeshProUGUI[] OptionTexts;
-
+    public GameObject[] Borders;
     private GameObject m_Player;
     private GameObject m_PlayerSprite;
     private Player PlayerScript;
     private GameObject TargetNPC;
+    private Animator OptionAnimator;
 
     DialogController dialogController;
     SelectManager selectManager;
@@ -44,15 +48,19 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     private Conversations CurrentConversation = null;
     private ConversationData CurrentConversationData;
 
-    private float LineThickness = 1;  // 光らせる際の線の太さ
+    Color Red = Color.red;
     private string FileId;
     private string Id;
-    
+
+
+
     private QuestHolder m_QuestHolder;  //クエストを追加するときに使う。
 
     [System.Obsolete]
     private void Start()
     {
+        IsCompleteAnimation = true;
+        OptionAnimator = this.transform.GetChild(0).GetChild(0).GetComponent<Animator>();
         m_Player = GameObject.Find("Player");
         m_PlayerSprite = m_Player.transform.Find("PlayerSprite").gameObject;
         PlayerScript = m_Player.GetComponent<Player>();
@@ -75,18 +83,65 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             return;
         else if (m_State == State.Talking)
         {
-            UpdateSelect(CurrentConversation);
-            if (IsFirstTalk())
-                ProceedTalk();
+            // MEMO : 
+            // 文字が全て出力し終わったら、自動的に選択肢を表示させる
+            //IsCompleteAnimationがtrueだったら会話できるようにしたい
+            //IsCompleteAnimationが
+
+            // 文字全て出力 -> 選択肢のアニメーション -> 右左のSetBorder
+
+            // 選択肢を出すアニメーションが終わったら
+
+            if (ExistOptions(CurrentConversation))
+            {
+                if (OptionAnimator.GetCurrentAnimatorStateInfo(0).IsName("CompleteBorderAnimation"))
+                {
+                    SetBorder(CurrentConversation);
+                    if (Input.GetKeyDown("space"))
+                    {
+                        ProceedTalk();
+                    }
+                    //OptionAnimator.SetBool("IsPlayAnimation", false);
+                }
+            }
             else
             {
-                if (Input.GetKeyDown("space"))
+                if (IsFirstTalk())
                     ProceedTalk();
+                else
+                {
+                    if (Input.GetKeyDown("space"))
+                        ProceedTalk();
+                }
+
+                //下キーが押されたら文字送りをスキップして本文を出力する。
+                if (Input.GetKeyDown("down"))
+                    m_typewriter.Skip();
             }
 
-            //下キーが押されたら文字送りをスキップして本文を出力する。
-            if (Input.GetKeyDown("down"))
-                m_typewriter.Skip();
+            //if (OptionAnimator.GetCurrentAnimatorStateInfo(0).IsName("CompleteBorderAnimation"))
+            //{
+            //    SetBorder(CurrentConversation);
+            //    if (Input.GetKeyDown("space"))
+            //    {
+            //        ProceedTalk();
+            //    }
+            //    OptionAnimator.SetBool("IsPlayAnimation", false);
+            //}
+            //if (IsCompleteAnimation)
+            //{
+            //    if (IsFirstTalk())
+            //        ProceedTalk();
+            //    else
+            //    {
+            //        if (Input.GetKeyDown("space"))
+            //            ProceedTalk();
+            //    }
+
+            //    //下キーが押されたら文字送りをスキップして本文を出力する。
+            //    if (Input.GetKeyDown("down"))
+            //        m_typewriter.Skip();
+            //}
         }
     }
 
@@ -98,7 +153,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             {
                 PlayerScript.ChangeState(Player.State.FREEZE);
                 TargetNPC = SearchNearNPC.Instance.GetNearNPC();
-                SetGlowLine(TargetNPC, 0);
+                SetGlowLine(TargetNPC, Color.yellow);
 
                 if (PlayerScript.IsWalking)
                     ChangeState(State.TryStop);
@@ -128,6 +183,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         }
         else if (m_State == State.Talking)
         {
+
             if (IsFinishTalk())
             {
                 CurrentConversation = null;  // 初期化
@@ -146,59 +202,36 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             LookNPC();
     }
 
-    private void UpdateSelect(Conversations conversations)
+    private void SetBorder(Conversations conversations)
     {
         // セレクトに関する更新
         if (ExistOptions(CurrentConversation))
         {
             if (Input.GetKeyDown("left"))
+            {
+                dialogController.Hide(Borders[selectManager.GetSelectNum()]);
                 selectManager.UpdateLeft();   // 左押したときに関する更新
+                dialogController.Display(Borders[selectManager.GetSelectNum()]);
+            }
             if (Input.GetKeyDown("right"))
+            {
+                dialogController.Hide(Borders[selectManager.GetSelectNum()]);
                 selectManager.UpdateRight();  // 右押したときに関する更新
+                dialogController.Display(Borders[selectManager.GetSelectNum()]);
+            }
         }
     }
 
     private void ProceedTalk()
     {
-        // CurrentConversationの更新
-        if (ExistOptions(CurrentConversation))
-        {
-            // 選ばれた選択肢の色を元に戻す
-            selectManager.ChangeColorDown(selectManager.GetSelectNum());
-            // ConversationsのConversationOption型リストのtargetIdをIdとして指定
-            Id = CurrentConversation.options[selectManager.GetSelectNum()].targetId;
-            CurrentConversation = CurrentConversationData.Get(Id);
-        }
-        else
-        {
-            if (IsFirstTalk())  // 一番最初だけ例外
-            {
-                // FirstConversationをIdとして指定
-                int index = TargetNPC.GetComponent<NPCController>().GetConversationIndex();
-                FileId = TargetNPC.GetComponent<NPCController>().ConversationDataList[index];
-                CurrentConversationData = TargetNPC.GetComponent<NPCController>().GetConversation(FileId);
-                Id = CurrentConversationData.GetFirst();
-                CurrentConversation = CurrentConversationData.Get(Id);
-
-                // 会話の位置の更新
-                Vector3 TalkCanvasPosition;
-                TalkCanvasPosition = TargetNPC.transform.position;
-                TalkCanvas.transform.position = TalkCanvasPosition;
-            }
-            else
-            {
-                // ConversationsのtargetIdをIdとして指定
-                Id = CurrentConversation.targetID;
-                CurrentConversation = CurrentConversationData.Get(Id);
-            }
-        }
+        UpdateCurrentConversation();
 
         // 会話の内容の更新
         TextBox.text = CurrentConversation.text;
 
         //テキストを一文字一文字出力する。
         //Play(テキスト本文,一秒間に送る文字数,文字送り終了時に呼び出されるもの)
-        m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete: () => Debug.Log("完了"));
+        m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete: () => SetBoolOptionAnimation(CurrentConversation));
 
         //クエストがあればクエストを追加する。
         AddQuest();
@@ -218,13 +251,68 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             }
             // 初期化 : 左を選択している状態にする
             selectManager.ChangeSelectNum(0);
-            selectManager.ChangeColorUp(selectManager.GetSelectNum());
+            // selectManager.ChangeColorUp(selectManager.GetSelectNum());
+            //  IsCompleteAnimation = false;
+            // OptionAnimator.SetBool("IsPlayAnimation", true);
+
+            //come
+            dialogController.Display(Borders[selectManager.GetSelectNum()]);
         }
         else
         {
             // 選択肢を隠す
             dialogController.Hide(Options[0]);
             dialogController.Hide(Options[1]);
+            //come
+            dialogController.Hide(Borders[0]);
+            dialogController.Hide(Borders[1]);
+        }
+    }
+
+    private void SetBoolOptionAnimation(Conversations conversation)
+    {
+        if (conversation == null) return;
+
+        if (ExistOptions(conversation))
+        {
+            Debug.Log("yes");
+            OptionAnimator.SetBool("IsPlayAnimation", true);
+        }
+    }
+
+    private void UpdateCurrentConversation()
+    {
+        if (ExistOptions(CurrentConversation))
+        {
+            // 選ばれた選択肢の色を元に戻す
+            selectManager.ChangeColorDown(selectManager.GetSelectNum());
+            // ConversationsのConversationOption型リストのtargetIdをIdとして指定
+            Id = CurrentConversation.options[selectManager.GetSelectNum()].targetId;
+            CurrentConversation = CurrentConversationData.Get(Id);
+        }
+        else
+        {
+            if (IsFirstTalk())  // 一番最初だけ例外
+            {
+                // FirstConversationをIdとして指定
+                //int index = TargetNPC.GetComponent<NPCController>().GetConversationIndex();
+                int index = 0;
+                FileId = TargetNPC.GetComponent<NPCController>().ConversationDataList[index];
+                CurrentConversationData = TargetNPC.GetComponent<NPCController>().GetConversation(FileId);
+                Id = CurrentConversationData.GetFirst();
+                CurrentConversation = CurrentConversationData.Get(Id);
+
+                // 会話の位置の更新
+                Vector3 TalkCanvasPosition;
+                TalkCanvasPosition = TargetNPC.transform.position;
+                TalkCanvas.transform.position = TalkCanvasPosition;
+            }
+            else
+            {
+                // ConversationsのtargetIdをIdとして指定
+                Id = CurrentConversation.targetID;
+                CurrentConversation = CurrentConversationData.Get(Id);
+            }
         }
     }
 
@@ -240,26 +328,27 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         Debug.Log("クエスト追加");
     }
 
+
     void UpdateGlowImage()
     {
         // 前回の対象を光らせなくする
         if (TargetNPC != null)
-            SetGlowLine(TargetNPC, 0);
+            SetGlowLine(TargetNPC, Color.blue);
 
         // TargetNPCの更新
         TargetNPC = SearchNearNPC.Instance.GetNearNPC();
 
         // 今回の対象を光らせる
         if (TargetNPC != null)
-            SetGlowLine(TargetNPC, LineThickness);
+            SetGlowLine(TargetNPC, Color.yellow);
     }
 
-    void SetGlowLine(GameObject gameObject,float num)
+    void SetGlowLine(GameObject gameObject, Color color)
     {
         if (gameObject == null) return;
         GameObject image = gameObject.transform.GetChild(0).gameObject;
-        Material material= image.GetComponent<Renderer>().material;
-        material.SetFloat("_Thick", num);
+        Material material = image.GetComponent<Renderer>().material;
+        material.SetColor("Color_7C7012AB", color);
     }
 
     public bool IsFirstTalk()

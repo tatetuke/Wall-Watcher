@@ -73,6 +73,27 @@ namespace KoganeUnityLib
 			;
 		}
 
+		public void Play(string text, float speed)
+		{
+			m_textUI.text = text;
+
+			m_textUI.ForceMeshUpdate();
+
+			m_parsedText = m_textUI.GetParsedText();
+
+			var length = m_parsedText.Length;
+			var duration = 1 / speed * length;
+
+			OnUpdate(0);
+
+			m_tween?.Kill();
+			m_tween = DOTween
+				.To(value => OnUpdate(value), 0, 1, duration)
+				.SetEase(Ease.Linear)
+				.OnComplete(() => OnComplete())
+			;
+		}
+
 		/// <summary>
 		/// 演出をスキップします
 		/// </summary>

@@ -16,6 +16,8 @@ public class WarpSameMap : MonoBehaviour
     }
     public MOVE_KEY move_key;
     private bool move = true;
+    private float generate_time = 0;
+
     private void OnTriggerStay2D(Collider2D other)
     {
         if(other.gameObject.tag == "Player")
@@ -24,9 +26,11 @@ public class WarpSameMap : MonoBehaviour
             bool value = Input.GetKey(key_string);
             if (value)
             {
+                if (!FadeManager2.Instance.isFading) move = true;
                 if (move)
                 {
                     move = false;
+
                     GameObject player = GameObject.Find("Player");
                     float newx = AllMapSet.warpSameMapPosition[num, (index + 1) % 2].Item1;
                     float newy = AllMapSet.warpSameMapPosition[num, (index + 1) % 2].Item2;

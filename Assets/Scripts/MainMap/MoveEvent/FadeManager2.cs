@@ -10,7 +10,7 @@ public class FadeManager2 : SingletonMonoBehaviour<FadeManager2>
     /// <summary>フェード中の透明度</summary>
     private float fadeAlpha = 0;
     /// <summary>フェード中かどうか</summary>
-    private bool isFading = false;
+    public bool isFading = false;
 
     public void Awake()
     {
@@ -44,7 +44,6 @@ public class FadeManager2 : SingletonMonoBehaviour<FadeManager2>
     {
         StartCoroutine(TransScene(interval, obj, x, y));
     }
-
 
     /// <summary>
     /// シーン遷移用コルーチン
