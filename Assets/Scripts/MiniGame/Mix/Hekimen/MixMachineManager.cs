@@ -40,7 +40,7 @@ public class MixMachineManager : MonoBehaviour
             if (IsInCollider())
             {
                 FadeManager.Instance.LoadLevel("Mix", 1f);
-                Debug.Log("MiniGamePaintシーンに遷移!");
+                Debug.Log("MiniGameMixシーンに遷移!");
             }
         }
     }
