@@ -15,6 +15,11 @@ public class SelectManager
     private int Size;
     private int SelectNum;
 
+    //come
+    //private GameObject[] Borders;
+
+
+
     // コンストラクタでテキストの配列と使う色を取得
     public SelectManager(/*選択肢のテキストの配列*/   TextMeshProUGUI[] texts,
                          /*選択されているときの色*/   Color selected_color,
@@ -26,6 +31,20 @@ public class SelectManager
         NotSelectedColor = not_selected_color;
         SelectNum = 0;
     }
+
+    //// コンストラクタでテキストの配列と使う色を取得
+    //public SelectManager(/*選択肢のテキストの配列*/   TextMeshProUGUI[] texts,
+    //                     /*選択肢のテキストの枠線*/   GameObject[] borders,
+    //                     /*選択されているときの色*/   Color selected_color,
+    //                     /*選択されていないときの色*/ Color not_selected_color)
+    //{
+    //    Texts = texts;
+    //    Borders = borders;
+    //    Size = texts.Length;
+    //    SelectedColor = selected_color;
+    //    NotSelectedColor = not_selected_color;
+    //    SelectNum = 0;
+    //}
 
 
     /// <summary>
@@ -39,16 +58,16 @@ public class SelectManager
     {
         int preSelectNum = SelectNum;
         int nextSelectNum = SelectNum = (SelectNum + Size - 1) % Size;
-        ChangeColorDown(preSelectNum);
-        ChangeColorUp(nextSelectNum);
+       // ChangeColorDown(preSelectNum);
+       // ChangeColorUp(nextSelectNum);
     }
 
     public void UpdateRight()
     {
         int preSelectNum = SelectNum;
         int nextSelectNum = SelectNum = (SelectNum + 1) % Size;
-        ChangeColorDown(preSelectNum);
-        ChangeColorUp(nextSelectNum);
+        //ChangeColorDown(preSelectNum);
+        //ChangeColorUp(nextSelectNum);
     }
 
     public void UpdateUp()
