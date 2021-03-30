@@ -9,6 +9,7 @@ TagManager:
   - Wall1
   - Wall
   - WallParameter
+  - MixMachine
   layers:
   - Default
   - TransparentFX
