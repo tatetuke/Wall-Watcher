@@ -58,7 +58,6 @@ namespace Kyoichi
             //Awakeでは行わないよう
             m_state = GameState.loading;
             Debug.Log("Loading properties");
-            PropertyLoader.Instance.LoadProperty();
             //SaveLoadManager.Instance.Load().Wait();
             //Waitするとロードしなくなる（Start内でAddressable.Wait()やろうとするといつまでたっても完了しないっぽい）
             Debug.Log("Player Data Loading...");
@@ -128,7 +127,6 @@ namespace Kyoichi
             Debug.Log("Player Data Saving...");
             OnGameSave.Invoke();
             SaveAsync().Wait();
-            PropertyLoader.Instance.SaveProperty();
         }
         public void PauseEnd()
         {
