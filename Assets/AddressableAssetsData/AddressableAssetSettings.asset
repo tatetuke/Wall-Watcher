@@ -76,6 +76,7 @@ MonoBehaviour:
     - SubQuest
     - item
     - SampleQuestConversation
+    - Quest
   m_SchemaTemplates: []
   m_GroupTemplateObjects: []
   m_InitializationObjects: []
