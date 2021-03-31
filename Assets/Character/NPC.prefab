@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7380884548104049266}
   - component: {fileID: 7380884548104049265}
-  - component: {fileID: 7380884548997076723}
+  - component: {fileID: 1560751463672532045}
   m_Layer: 0
   m_Name: NPCImage(Sprite)
   m_TagString: Untagged
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7380884548997076723
+--- !u!114 &1560751463672532045
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,12 +91,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7380884548104049267}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Script: {fileID: 11500000, guid: 93ea29423ccd2ad4ab1a1ef022c95ffa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 1, g: 0.09962947, b: 0, a: 1}
-  m_EffectDistance: {x: 30, y: 30}
-  m_UseGraphicAlpha: 1
 --- !u!1 &7380884549817367795
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(QuestConditions))]
+[CustomPropertyDrawer(typeof(GameCondition))]
 public class CharacterDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -50,22 +50,22 @@ public class CharacterDrawer : PropertyDrawer
 
             //各プロパティーの GUI を描画
             parameterProperty.stringValue = EditorGUI.TextField(rect1, parameterProperty.stringValue);
-            var j = (QuestConditions.ValueType)EditorGUI.EnumPopup(rect2, (QuestConditions.ValueType)valueTypeProperty.enumValueIndex);
+            var j = (GameCondition.ValueType)EditorGUI.EnumPopup(rect2, (GameCondition.ValueType)valueTypeProperty.enumValueIndex);
             valueTypeProperty.enumValueIndex = (int)j;
             var i =EditorGUI.Popup(rect3,  operatorProperty.enumValueIndex,new string[] { "<","<=","==","!=",">=",">"});
             operatorProperty.enumValueIndex = (int)i;
-            var typeO = (QuestConditions.ValueType)valueTypeProperty.enumValueIndex;
+            var typeO = (GameCondition.ValueType)valueTypeProperty.enumValueIndex;
             switch (typeO)
             {
-                case QuestConditions.ValueType.Int:
+                case GameCondition.ValueType.Int:
                     var intProperty = property.FindPropertyRelative("intValue");
                     intProperty.intValue = EditorGUI.IntField(rect4, intProperty.intValue);
                     break;
-                case QuestConditions.ValueType.Float:
+                case GameCondition.ValueType.Float:
                     var floatProperty = property.FindPropertyRelative("floatValue");
                     floatProperty.floatValue = EditorGUI.FloatField(rect4, floatProperty.floatValue);
                     break;
-                case QuestConditions.ValueType.Boolean:
+                case GameCondition.ValueType.Boolean:
                     var boolProperty = property.FindPropertyRelative("boolValue");
                     boolProperty.boolValue = EditorGUI.Toggle(rect4, boolProperty.boolValue);
                     break;
@@ -77,7 +77,7 @@ public class CharacterDrawer : PropertyDrawer
                     var vec3Property = property.FindPropertyRelative("vec3Value");
                     vec3Property.vector3Value = EditorGUI.Vector3Field(rect4, "value", vec3Property.vector3Value);
                     break;*/
-                case QuestConditions.ValueType.String:
+                case GameCondition.ValueType.String:
                     var stringProperty = property.FindPropertyRelative("stringValue");
                     stringProperty.stringValue = EditorGUI.TextField(rect4, stringProperty.stringValue);
                     break;

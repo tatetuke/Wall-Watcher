@@ -17,9 +17,10 @@
 - [kyoichi001](https://github.com/kyoichi001)
 
 ### 音楽
-- Solfrail[twitter](https://twitter.com/OmFIS_Solfrail)
+- Solfrail [twitter](https://twitter.com/OmFIS_Solfrail)
 - Matsuki
 - さら梅
+- ゆうがお [soundcloud](https://soundcloud.com/yuhgao)
 
 ## 必要なアセット
 

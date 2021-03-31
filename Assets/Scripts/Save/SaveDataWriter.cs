@@ -102,6 +102,12 @@ public class SaveDataWriter : SingletonMonoBehaviour<SaveDataWriter>
                 ans.inventry.Add(i);
             }
         }
+        var questScr = FindObjectOfType<QuestHolder>();
+        foreach(var i in questScr.Data)
+        {
+            ans.quests.Add(i.GetData());
+        }
+
         return ans;
     }
 

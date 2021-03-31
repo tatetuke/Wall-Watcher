@@ -5,35 +5,16 @@ using UnityEngine.Events;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
-public interface IUIManager
-{
-    Player GetTarget();
-}
 
-public class CanvasManager : MonoBehaviour, IUIManager
+public class CanvasManager : MonoBehaviour
 {
-    enum State
-    {
-        idle,
-        fadeIn,
-        active,
-        fadeOut
-    }
     [Tooltip("ポーズしたときにいつも表示されるview（ポーズしてないときは表示されない）")]
     [SerializeField] UIView allwaysShowView;
-    [SerializeField] Animator animator;
-    [SerializeField] string fadeInTrriger="FadeIn";
-    [SerializeField] string fadeOutTrriger="FadeOut";
-    [ReadOnly]
-    [SerializeField]List<UIView> m_views = new List<UIView>();
     [SerializeField] string firstViewName;
     [Header("Debug")]
-    [SerializeField,ReadOnly] State m_state;
+    [SerializeField, ReadOnly] List<UIView> m_views = new List<UIView>();
     Stack<string> m_viewHistory = new Stack<string>();
     public UnityEvent OnCloseCanvas { get; } = new UnityEvent();
-
-    [SerializeField,ReadOnly] Player m_targetPlaeyer;
-    public Player GetTarget() => m_targetPlaeyer; 
 
     private void Awake()
     {
@@ -42,57 +23,15 @@ public class CanvasManager : MonoBehaviour, IUIManager
         {
             if (i == null||i.backButton==null) continue;
             i.backButton.onClick.AddListener(Back);
-            i.SetManager(this);
         }
     }
 
     private void Start()
     {
-        m_state = State.idle;
-        allwaysShowView.gameObject.SetActive(false);
+        if (allwaysShowView != null)
+            allwaysShowView.gameObject.SetActive(false);
         foreach (var i in m_views)
             i.gameObject.SetActive(false);
-       
-        Kyoichi.GameManager.Instance.OnPauseStart.AddListener(() =>
-        {
-            m_state = State.fadeIn;
-            animator.SetTrigger(fadeInTrriger);
-            SwitchView(firstViewName);
-            allwaysShowView.gameObject.SetActive(true);
-        });
-        Kyoichi.GameManager.Instance.OnPauseEnd.AddListener(() =>
-        {
-            m_state = State.fadeOut;
-            animator.SetTrigger(fadeOutTrriger);
-        });
-        //シーン内のプレイヤーを取得
-        m_targetPlaeyer = FindObjectOfType<Player>();
-    }
-
-    /// <summary>
-    /// Animationのトリガー用
-    /// ポーズのフェードインが開始したとき
-    /// </summary>
-   public void OnFadeInFinished()
-    {
-        m_state = State.active;
-    }
-    /// <summary>
-    /// Animationのトリガー用
-    /// ポーズのフェードアウトが終了したときに呼び出される
-    /// </summary>
-    public void OnFadeOutFinished()
-    {
-        //フェードアウトのアニメーションをしている間にもう一度ポーズ画面を開いたとき
-        if (m_state == State.fadeIn) return;
-        m_state = State.idle;
-        foreach (var i in m_views)
-        {
-            i.gameObject.SetActive(false);
-        }
-        allwaysShowView.gameObject.SetActive(false);
-            m_viewHistory.Clear();
-        OnCloseCanvas.Invoke();
     }
 
     UIView GetView(string viewName)

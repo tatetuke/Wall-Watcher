@@ -25,6 +25,7 @@ namespace Kyoichi
     /// <summary>
     /// インベントリ管理クラス
     /// </summary>
+    [DisallowMultipleComponent]
     public class Inventry : MonoBehaviour
     {
         public class ItemEvent : UnityEvent<ItemStack> { }
