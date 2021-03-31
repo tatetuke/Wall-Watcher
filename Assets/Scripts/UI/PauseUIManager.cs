@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
-public class PauseUIManager : CanvasManager, IUIManager
+public class PauseUIManager : CanvasManager
 {
     enum State
     {
@@ -27,9 +27,6 @@ public class PauseUIManager : CanvasManager, IUIManager
     Stack<string> m_viewHistory = new Stack<string>();
     public UnityEvent OnCloseCanvas { get; } = new UnityEvent();
 
-    [SerializeField, ReadOnly] Player m_targetPlaeyer;
-    public Player GetTarget() => m_targetPlaeyer;
-
     private void Awake()
     {
         m_views.AddRange(GetComponentsInChildren<UIView>(true));
@@ -37,7 +34,6 @@ public class PauseUIManager : CanvasManager, IUIManager
         {
             if (i == null || i.backButton == null) continue;
             i.backButton.onClick.AddListener(Back);
-            i.SetManager(this);
         }
     }
 
@@ -70,8 +66,6 @@ public class PauseUIManager : CanvasManager, IUIManager
         {
             saveButton.interactable = true;
         });
-        //シーン内のプレイヤーを取得
-        m_targetPlaeyer = FindObjectOfType<Player>();
     }
 
     /// <summary>

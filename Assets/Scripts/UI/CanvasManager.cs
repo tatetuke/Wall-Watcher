@@ -5,12 +5,8 @@ using UnityEngine.Events;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
-public interface IUIManager
-{
-    Player GetTarget();
-}
 
-public class CanvasManager : MonoBehaviour, IUIManager
+public class CanvasManager : MonoBehaviour
 {
     [Tooltip("ポーズしたときにいつも表示されるview（ポーズしてないときは表示されない）")]
     [SerializeField] UIView allwaysShowView;
@@ -20,9 +16,6 @@ public class CanvasManager : MonoBehaviour, IUIManager
     Stack<string> m_viewHistory = new Stack<string>();
     public UnityEvent OnCloseCanvas { get; } = new UnityEvent();
 
-    [SerializeField,ReadOnly] Player m_targetPlaeyer;
-    public Player GetTarget() => m_targetPlaeyer; 
-
     private void Awake()
     {
         m_views.AddRange(GetComponentsInChildren<UIView>(true));
@@ -30,13 +23,13 @@ public class CanvasManager : MonoBehaviour, IUIManager
         {
             if (i == null||i.backButton==null) continue;
             i.backButton.onClick.AddListener(Back);
-            i.SetManager(this);
         }
     }
 
     private void Start()
     {
-        allwaysShowView.gameObject.SetActive(false);
+        if (allwaysShowView != null)
+            allwaysShowView.gameObject.SetActive(false);
         foreach (var i in m_views)
             i.gameObject.SetActive(false);
     }

@@ -42,7 +42,7 @@ public class QuestUIView : UIView
 
     public void Initialize()
     {
-        target = m_parentManager.GetTarget().GetComponent<QuestHolder>();
+        target = FindObjectOfType<QuestHolder>();
         foreach (var i in target.Data)
         {
             var scr=Instantiate(questPrefab, questListContainer).GetComponent<QuestContainerUI>();

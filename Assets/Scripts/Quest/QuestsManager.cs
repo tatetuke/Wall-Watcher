@@ -24,7 +24,7 @@ public class QuestsManager : SingletonMonoBehaviour<QuestsManager>,ILoadableAsyn
         {
             if (i.name == questName) return i;
         }
-            Debug.LogWarning($"'{questName}' not found");
+            Debug.LogWarning($"'{questName}' not found",gameObject);
         return null;
     }
 
@@ -41,7 +41,7 @@ public class QuestsManager : SingletonMonoBehaviour<QuestsManager>,ILoadableAsyn
     {
         m_handle = Addressables.LoadAssetsAsync<QuestDataSO>(_labelReference, null);
         await m_handle.Task;
-        Debug.Log("<color=#4a19bd>Quest loading</color>");
+        Debug.Log("<color=#4a19bd>Quest loading</color>", gameObject);
         foreach (var res in m_handle.Result)
         {
             m_quests.Add(res);

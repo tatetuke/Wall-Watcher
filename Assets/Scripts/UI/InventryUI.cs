@@ -41,7 +41,7 @@ public class InventryUI : UIView
     }
     public void Initialize()
     {
-        target = m_parentManager.GetTarget().GetComponent<Kyoichi.Inventry>();
+        target = FindObjectOfType<Kyoichi.Inventry>();
         if (target == null)
         {
             Debug.Log("target not found");
