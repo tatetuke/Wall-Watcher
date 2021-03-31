@@ -12,20 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ef7334790f26274aba18c542e6595fa, type: 3}
   m_Name: Otukai
   m_EditorClassIdentifier: 
+  title: "\u304A\u3064\u304B\u3044\u30AF\u30A8\u30B9\u30C8"
+  description: aaaaaa
   subQuests: []
-  startConditions:
-  - parameterKey: 1
-    conditionOperator: 0
-    valueType: 0
-    intValue: 0
-    floatValue: 0
-    stringValue: 
-    boolValue: 0
   endConditions:
-  - parameterKey: 10
-    conditionOperator: 0
-    valueType: 0
-    intValue: 0
-    floatValue: 0
-    stringValue: 
-    boolValue: 0
+  - description: "\u6761\u4EF6\uFF11"
+    conditions:
+    - parameterKey: money
+      conditionOperator: 4
+      valueType: 0
+      intValue: 10000
+      floatValue: 0
+      stringValue: 
+      boolValue: 0
+    - parameterKey: item.donut
+      conditionOperator: 4
+      valueType: 0
+      intValue: 1
+      floatValue: 0
+      stringValue: 
+      boolValue: 0
+  - description: "\u6761\u4EF6\uFF12"
+    conditions: []

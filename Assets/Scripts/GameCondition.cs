@@ -5,6 +5,61 @@ using UnityEngine;
 [System.Serializable]
 public class QuestConditions
 {
+    /// <summary>
+    /// この条件についての説明文(任意)
+    /// </summary>
+    public string description;
+    /// <summary>
+    /// GameConditionのうち、すべて成り立っていればOK
+    /// </summary>
+    public List<GameCondition> conditions;
+    /// <summary>
+    /// conditionsのうち、すべて成り立っていればtrue(AND条件)
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public bool MeetConditions()
+    {
+        foreach(var i in conditions)
+        {
+            if (!i.MeetCondition()) return false;
+        }
+        return true;
+    }
+
+    public void Set(QuestConditions originalConversation, QuestConditions newConversation)
+    {
+        /*if (originalConversation.id != newConversation.id)
+        {
+            foreach (var i in items)
+            {
+                //conversationのidが書き換えられたとき、会話リストにある選択肢も連動してidを書き換える
+                var options = i.options;
+                for (var j = 0; j < options.Count; j++)
+                {
+                    if (options[j].targetId == originalConversation.id)
+                    {
+                        var c = options[j];
+                        c.targetId = newConversation.id;
+                        options[j] = c;
+                    }
+                }
+            }
+        }
+        for (var i = 0; i < items.Count; i++)
+        {
+            if (items[i].id == originalConversation.id)
+            {
+                items[i] = newConversation;
+                break;
+            }
+        }*/
+    }
+}
+
+[System.Serializable]
+public class GameCondition
+{
     public string parameterKey;
     public enum Operator
     {
@@ -32,6 +87,10 @@ public class QuestConditions
     public bool boolValue;
     //public Vector2 vec2Value;
     // public Vector3 vec3Value;
+    /// <summary>
+    /// 比較対象となる値を返す
+    /// </summary>
+    /// <returns></returns>
     public object GetValue()
     {
         switch (valueType)
@@ -45,16 +104,18 @@ public class QuestConditions
         }
         return null;
     }
-    public bool MeetCondition(object value)
+    public bool MeetCondition()
     {
+        var property = GamePropertyManager.Instance;
+
         try
         {
             switch (valueType)
             {
-                case ValueType.Int: return MeetCondition((int)value);
-                case ValueType.Float: return MeetCondition((float)value);
-                case ValueType.String: return MeetCondition((string)value);
-                case ValueType.Boolean: return MeetCondition((bool)value);
+                case ValueType.Int: return MeetCondition(property.GetIntProperty(parameterKey));
+                case ValueType.Float: return MeetCondition(property.GetFloatProperty(parameterKey));
+                case ValueType.String: return MeetCondition(property.GetStringProperty(parameterKey));
+                case ValueType.Boolean: return MeetCondition(property.GetBoolProperty(parameterKey));
             }
         }
         catch

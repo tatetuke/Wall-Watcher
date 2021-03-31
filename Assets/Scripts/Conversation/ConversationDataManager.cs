@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -42,8 +43,8 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     private GameObject TargetNPC;
     private Animator OptionAnimator;
 
-    DialogController dialogController;
-    SelectManager selectManager;
+    DialogController m_dialogController;
+    SelectManager m_selectManager;
 
     private Conversations CurrentConversation = null;
     private ConversationData CurrentConversationData;
@@ -55,6 +56,19 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
 
     private QuestHolder m_QuestHolder;  //クエストを追加するときに使う。
+    
+    /// <summary>
+    /// プレイヤーがスペースキーを押し、会話が始められる状態になったとき実行されるイベント
+    /// </summary>
+    public UnityEvent OnTalkAccepted { get; } = new UnityEvent();
+    /// <summary>
+    /// プレイヤーの移動が止まり、会話が始まったとき実行されるイベント
+    /// </summary>
+    public UnityEvent OnTalkStart { get; } = new UnityEvent();
+    /// <summary>
+    /// 会話が終わったとき実行されるイベント
+    /// </summary>
+    public UnityEvent OnTalkEnd { get; } = new UnityEvent();
 
     [System.Obsolete]
     private void Start()
@@ -65,10 +79,14 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         m_PlayerSprite = m_Player.transform.Find("PlayerSprite").gameObject;
         PlayerScript = m_Player.GetComponent<Player>();
         m_QuestHolder = m_Player.GetComponent<QuestHolder>();
-        dialogController = new DialogController();
-        selectManager = new SelectManager(OptionTexts, Color.yellow, Color.white);
+        m_dialogController = new DialogController();
+        m_selectManager = new SelectManager(OptionTexts, Color.yellow, Color.white);
     }
 
+    public bool IsTalking()
+    {
+        return m_State == State.Talking;
+    }
 
     [System.Obsolete]
     private void Update()
@@ -89,6 +107,14 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
             //IsCompleteAnimationが
 
             // 文字全て出力 -> 選択肢のアニメーション -> 右左のSetBorder
+            //選択肢を選択し終わった後にSelectKeyをfalseにする
+            if (OptionAnimator.GetCurrentAnimatorStateInfo(0).IsName("StartSate"))
+            {
+
+                OptionAnimator.SetBool("SelectKey", false);
+
+            }
+
 
             // 選択肢を出すアニメーションが終わったら
 
@@ -97,11 +123,15 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                 if (OptionAnimator.GetCurrentAnimatorStateInfo(0).IsName("CompleteBorderAnimation"))
                 {
                     SetBorder(CurrentConversation);
+                    //選択されたら.
                     if (Input.GetKeyDown("space"))
                     {
+                        OptionAnimator.SetBool("SelectKey", true);
                         ProceedTalk();
+
                     }
-                    //OptionAnimator.SetBool("IsPlayAnimation", false);
+                    OptionAnimator.SetBool("IsPlayAnimation", false);
+
                 }
             }
             else
@@ -115,21 +145,24 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                 }
 
                 //下キーが押されたら文字送りをスキップして本文を出力する。
-                if (Input.GetKeyDown("down"))
+                if (Input.GetKeyDown("space"))
                     m_typewriter.Skip();
             }
 
+            ////アニメーションが終了したら
             //if (OptionAnimator.GetCurrentAnimatorStateInfo(0).IsName("CompleteBorderAnimation"))
             //{
-            //    SetBorder(CurrentConversation);
-            //    if (Input.GetKeyDown("space"))
-            //    {
-            //        ProceedTalk();
-            //    }
+            //    //会話の遷移を行えるようにする。
+            //    IsCompleteAnimation = true;
+            //    //繰り返しアニメーションがされないようにする。
             //    OptionAnimator.SetBool("IsPlayAnimation", false);
             //}
+
+            ////アニメーションが終了していたら会話ができる。
             //if (IsCompleteAnimation)
             //{
+
+            //    SetBorder(CurrentConversation);
             //    if (IsFirstTalk())
             //        ProceedTalk();
             //    else
@@ -151,6 +184,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         {
             if (Input.GetKeyDown("space"))
             {
+                OnTalkAccepted.Invoke();
                 PlayerScript.ChangeState(Player.State.FREEZE);
                 TargetNPC = SearchNearNPC.Instance.GetNearNPC();
                 SetGlowLine(TargetNPC, Color.yellow);
@@ -160,7 +194,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                 else
                 {
                     if (IsClosePosition(m_Player, TargetNPC))
+                    {
                         ChangeState(State.Talking);
+                    }
                     else
                         ChangeState(State.SettingPosition);
                 }
@@ -189,6 +225,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
                 CurrentConversation = null;  // 初期化
                 PlayerScript.ChangeState(Player.State.IDLE);
                 ChangeState(State.Normal);
+                OnTalkEnd.Invoke();
             }
         }
     }
@@ -196,10 +233,22 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     void ChangeState(State state)
     {
         m_State = state;
-        if (state == State.SettingPosition)
-            playableDirector.Play();
-        else if (state == State.Talking)
-            LookNPC();
+        switch (state)
+        {
+            case State.Normal:
+                break;
+            case State.TryStop:
+                break;
+            case State.SettingPosition:
+                playableDirector.Play();
+                break;
+            case State.Talking:
+                OnTalkStart.Invoke();
+                LookNPC();
+                break;
+            default:
+                break;
+        }
     }
 
     private void SetBorder(Conversations conversations)
@@ -209,15 +258,15 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         {
             if (Input.GetKeyDown("left"))
             {
-                dialogController.Hide(Borders[selectManager.GetSelectNum()]);
-                selectManager.UpdateLeft();   // 左押したときに関する更新
-                dialogController.Display(Borders[selectManager.GetSelectNum()]);
+                m_dialogController.Hide(Borders[m_selectManager.GetSelectNum()]);
+                m_selectManager.UpdateLeft();   // 左押したときに関する更新
+                m_dialogController.Display(Borders[m_selectManager.GetSelectNum()]);
             }
             if (Input.GetKeyDown("right"))
             {
-                dialogController.Hide(Borders[selectManager.GetSelectNum()]);
-                selectManager.UpdateRight();  // 右押したときに関する更新
-                dialogController.Display(Borders[selectManager.GetSelectNum()]);
+                m_dialogController.Hide(Borders[m_selectManager.GetSelectNum()]);
+                m_selectManager.UpdateRight();  // 右押したときに関する更新
+                m_dialogController.Display(Borders[m_selectManager.GetSelectNum()]);
             }
         }
     }
@@ -231,6 +280,7 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
         //テキストを一文字一文字出力する。
         //Play(テキスト本文,一秒間に送る文字数,文字送り終了時に呼び出されるもの)
+       // m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete: () => SetBoolOptionAnimation(CurrentConversation));
         m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete: () => SetBoolOptionAnimation(CurrentConversation));
 
         //クエストがあればクエストを追加する。
@@ -240,32 +290,33 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         if (ExistOptions(CurrentConversation))
         {
             // 選択肢を表示する
-            dialogController.Display(Options[0]);
-            dialogController.Display(Options[1]);
+            m_dialogController.Display(Options[0]);
+            m_dialogController.Display(Options[1]);
             int itr = 0;
             // 選択肢の内容の更新
             foreach (var option in CurrentConversation.options)
             {
-                dialogController.SetText(OptionTexts[itr], option.text);
+                m_dialogController.SetText(OptionTexts[itr], option.text);
                 itr++;
             }
             // 初期化 : 左を選択している状態にする
-            selectManager.ChangeSelectNum(0);
+            m_selectManager.ChangeSelectNum(0);
             // selectManager.ChangeColorUp(selectManager.GetSelectNum());
-            //  IsCompleteAnimation = false;
-            // OptionAnimator.SetBool("IsPlayAnimation", true);
+            //アニメーションのトリガ―を発動する。アニメーション中は会話ができない。
+              //IsCompleteAnimation = false;
+              //OptionAnimator.SetBool("IsPlayAnimation", true);
 
             //come
-            dialogController.Display(Borders[selectManager.GetSelectNum()]);
+            m_dialogController.Display(Borders[m_selectManager.GetSelectNum()]);
         }
         else
         {
             // 選択肢を隠す
-            dialogController.Hide(Options[0]);
-            dialogController.Hide(Options[1]);
+            m_dialogController.Hide(Options[0]);
+            m_dialogController.Hide(Options[1]);
             //come
-            dialogController.Hide(Borders[0]);
-            dialogController.Hide(Borders[1]);
+            m_dialogController.Hide(Borders[0]);
+            m_dialogController.Hide(Borders[1]);
         }
     }
 
@@ -285,9 +336,9 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
         if (ExistOptions(CurrentConversation))
         {
             // 選ばれた選択肢の色を元に戻す
-            selectManager.ChangeColorDown(selectManager.GetSelectNum());
+            m_selectManager.ChangeColorDown(m_selectManager.GetSelectNum());
             // ConversationsのConversationOption型リストのtargetIdをIdとして指定
-            Id = CurrentConversation.options[selectManager.GetSelectNum()].targetId;
+            Id = CurrentConversation.options[m_selectManager.GetSelectNum()].targetId;
             CurrentConversation = CurrentConversationData.Get(Id);
         }
         else
@@ -346,9 +397,10 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
     void SetGlowLine(GameObject gameObject, Color color)
     {
         if (gameObject == null) return;
-        GameObject image = gameObject.transform.GetChild(0).gameObject;
-        Material material = image.GetComponent<Renderer>().material;
-        material.SetColor("Color_7C7012AB", color);
+        OutLineSetter scr = gameObject.GetComponentInChildren<OutLineSetter>();
+       // Material material= image.GetComponent<Renderer>().material;
+       // material.SetFloat("_Thick", num);
+        scr.SetWidth(10);
     }
 
     public bool IsFirstTalk()
@@ -364,10 +416,8 @@ public class ConversationDataManager : SingletonMonoBehaviour<ConversationDataMa
 
     private bool ExistOptions(Conversations conversations)
     {
-        if (conversations == null)
-            return false;
-        else
-            return conversations.options.Count != 0;
+        if (conversations == null)return false;
+        return conversations.options.Count != 0;
     }
 
     bool IsClosePosition(GameObject gameObjectA, GameObject gameObjectB)

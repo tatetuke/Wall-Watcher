@@ -80,6 +80,9 @@ namespace RPGM.Gameplay
             list.list.Add(new ConversationOption() { targetId = "", text = "",/* image = null,*/ enabled = true });
         }
 
+        /// <summary>
+        /// 右下にあるUpdateのボタンを押したときに実行される関数
+        /// </summary>
         void OnWizardCreate()
         {
             if (isUpdate)
