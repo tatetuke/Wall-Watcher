@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MixMachineManager : MonoBehaviour
 {
+    [Header("縁取りの太さ")] [SerializeField] float OutlineWidthInit = 1f;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -29,7 +31,8 @@ public class MixMachineManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Material material = this.GetComponent<Renderer>().material;
+        material.SetFloat("Vector1_C1366B5E", OutlineWidthInit);
     }
 
     // Update is called once per frame

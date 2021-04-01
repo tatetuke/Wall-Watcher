@@ -715,6 +715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14f5f26add4e344418017ac4a59d5dbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OutlineWidthInit: 1.5
 --- !u!1 &484010760
 GameObject:
   m_ObjectHideFlags: 0
@@ -2515,6 +2516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14f5f26add4e344418017ac4a59d5dbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OutlineWidthInit: 1.5
 --- !u!1 &1613458732
 GameObject:
   m_ObjectHideFlags: 0
