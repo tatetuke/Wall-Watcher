@@ -133,6 +133,11 @@ namespace Kyoichi
             m_state = GameState.running;
             OnPauseEnd.Invoke();
         }
+
+        public void OnSceneChanged()
+        {
+
+        }
     }
 
 }
