@@ -112,10 +112,10 @@ public class GameCondition
         {
             switch (valueType)
             {
-                case ValueType.Int: return MeetCondition(property.GetIntProperty(parameterKey));
-                case ValueType.Float: return MeetCondition(property.GetFloatProperty(parameterKey));
-                case ValueType.String: return MeetCondition(property.GetStringProperty(parameterKey));
-                case ValueType.Boolean: return MeetCondition(property.GetBoolProperty(parameterKey));
+                case ValueType.Int: return MeetCondition(property.GetProperty<int>(parameterKey));
+                case ValueType.Float: return MeetCondition(property.GetProperty<float>(parameterKey));
+                case ValueType.String: return MeetCondition(property.GetProperty<string>(parameterKey));
+                case ValueType.Boolean: return MeetCondition(property.GetProperty<bool>(parameterKey));
             }
         }
         catch
