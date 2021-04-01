@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: 5258322693995725205}
   - component: {fileID: -7710550943719101447}
   - component: {fileID: 940893762854735229}
+  - component: {fileID: 2117389247425730039}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -136,6 +137,18 @@ MonoBehaviour:
   defaultMoney: 0
   maxMoney: 0
   currentMoney: 0
+--- !u!114 &2117389247425730039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5258322693995725206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa101bd5573ca884488e62e02e0d3702, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5354925750895954978
 GameObject:
   m_ObjectHideFlags: 0
@@ -147,7 +160,6 @@ GameObject:
   - component: {fileID: 3068450013279717952}
   - component: {fileID: 5957876410252769452}
   - component: {fileID: 7549954755640463883}
-  - component: {fileID: 8591082012947934977}
   m_Layer: 0
   m_Name: Save
   m_TagString: Untagged
@@ -195,20 +207,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   saveDirectoryPath: Data/Saves
---- !u!114 &8591082012947934977
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5354925750895954978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c75e7a2eb0967d94aae22059717843b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  directory: Data
-  filename: propertydata.csv
 --- !u!1 &5483887722724600279
 GameObject:
   m_ObjectHideFlags: 0
