@@ -3632,7 +3632,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1132858817}
   m_Layer: 5
-  m_Name: Tools
+  m_Name: ToolsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3930,7 +3930,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u6D88\u8CBB\u4F53\u529B\uFF1A\u6975\u5C0F"
+  m_Text: "\u6D88\u8CBB\u4F53\u529B\uFF1A\u5C0F"
 --- !u!222 &1191075322
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4479,7 +4479,7 @@ GameObject:
   - component: {fileID: 1317567551}
   - component: {fileID: 1317567550}
   m_Layer: 5
-  m_Name: Tool1
+  m_Name: Tool1Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4546,7 +4546,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1317567551}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4087562945165957256}
+        m_MethodName: PushTool1
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1317567551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4857,7 +4868,7 @@ GameObject:
   - component: {fileID: 1425348436}
   - component: {fileID: 1425348435}
   m_Layer: 5
-  m_Name: Tool3
+  m_Name: Tool3Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4924,7 +4935,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1425348436}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4087562945165957256}
+        m_MethodName: PushTool3
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1425348436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6617,7 +6639,7 @@ GameObject:
   - component: {fileID: 1765326840}
   - component: {fileID: 1765326839}
   m_Layer: 5
-  m_Name: Tool2
+  m_Name: Tool2Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6684,7 +6706,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1765326840}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4087562945165957256}
+        m_MethodName: PushTool2
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1765326840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8305,6 +8338,9 @@ GameObject:
   - component: {fileID: 4087562945165957253}
   - component: {fileID: 4087562945165957255}
   - component: {fileID: 4087562945165957254}
+  - component: {fileID: 4087562945165957259}
+  - component: {fileID: 4087562945165957257}
+  - component: {fileID: 4087562945165957256}
   m_Layer: 0
   m_Name: MinGameHAKAIGameManager
   m_TagString: Untagged
@@ -8353,6 +8389,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 0
   maxLife: 0
+--- !u!114 &4087562945165957256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4087562945165957252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f8037f63f7e89249b9a7d8c421649e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toolDataScript: {fileID: 4087562945165957257}
+  level: {fileID: 770801740}
+  toolName: {fileID: 776356071}
+  discription: {fileID: 935824028}
+  damage: {fileID: 1191075321}
+  hanniImage: {fileID: 1730523713}
+  SelectToolNum: 0
+--- !u!114 &4087562945165957257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4087562945165957252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b95f0060851c43444a91120f43ad814a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tools:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  ToolImages:
+  - {fileID: 21300000, guid: 3e0c721c6a642c3408355b774304a824, type: 3}
+  - {fileID: 21300000, guid: 4d4d50c26a7440f4a9b403619ba06aee, type: 3}
+  - {fileID: 21300000, guid: 94602d06c129b474d943b4a4d72a5f4f, type: 3}
 --- !u!4 &4087562945165957258
 Transform:
   m_ObjectHideFlags: 0
@@ -8367,3 +8442,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4087562945165957259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4087562945165957252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4038779642583c546ae5016812f9bf94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toolName: 
+  discription: 
+  damage: 
+  level: 0
+  HanniImage: {fileID: 0}
+  CanChangeSprite: 010101010101010101
