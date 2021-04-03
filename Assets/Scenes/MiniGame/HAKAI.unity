@@ -2951,7 +2951,7 @@ GameObject:
   m_Component:
   - component: {fileID: 834303945}
   m_Layer: 5
-  m_Name: "Ite\uFF4D"
+  m_Name: Tool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3069,7 +3069,7 @@ GameObject:
   m_Component:
   - component: {fileID: 864536259}
   m_Layer: 5
-  m_Name: ItemTextBox
+  m_Name: ToolTextBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3137,7 +3137,7 @@ GameObject:
   m_Component:
   - component: {fileID: 880177626}
   m_Layer: 5
-  m_Name: UseItem
+  m_Name: UseTool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3632,7 +3632,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1132858817}
   m_Layer: 5
-  m_Name: Items
+  m_Name: Tools
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4226,7 +4226,7 @@ GameObject:
   - component: {fileID: 1260143244}
   - component: {fileID: 1260143243}
   m_Layer: 5
-  m_Name: ItemImage
+  m_Name: ToolImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4479,7 +4479,7 @@ GameObject:
   - component: {fileID: 1317567551}
   - component: {fileID: 1317567550}
   m_Layer: 5
-  m_Name: Item 1
+  m_Name: Tool1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4778,7 +4778,7 @@ GameObject:
   - component: {fileID: 1396838511}
   - component: {fileID: 1396838510}
   m_Layer: 5
-  m_Name: UseItemText
+  m_Name: UseToolText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4857,7 +4857,7 @@ GameObject:
   - component: {fileID: 1425348436}
   - component: {fileID: 1425348435}
   m_Layer: 5
-  m_Name: Item 1 (2)
+  m_Name: Tool3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6617,7 +6617,7 @@ GameObject:
   - component: {fileID: 1765326840}
   - component: {fileID: 1765326839}
   m_Layer: 5
-  m_Name: Item 1 (1)
+  m_Name: Tool2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6926,7 +6926,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1788819369}
   m_Layer: 5
-  m_Name: ItemDiscription
+  m_Name: ToolDiscription
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
