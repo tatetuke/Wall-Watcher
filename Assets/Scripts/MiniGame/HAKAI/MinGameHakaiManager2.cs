@@ -8,7 +8,8 @@ public class MinGameHakaiManager2 : MonoBehaviour
     [HideInInspector]public GameObject[,] Wall = new GameObject[m_size, m_size];
     
     [SerializeField] private UnityEvent UpdateItemData=new UnityEvent(); //アイテムデータのアップデート
-
+    [SerializeField] private MinGameHAKAIStatus gameStatus;
+        
     int[] dx = new int[9] { -1, 0, 1, -1, 0, 1, -1, 0, 1 };
     int[] dy = new int[9] { -1, -1, -1, 0, 0, 0, 1, 1, 1 };
     private string PolutedLevel1;
@@ -111,10 +112,12 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
         int raw = 0, column = 0;
 
+
+
         //対応するタイルの添え字を全探索
         (raw,column)=SearchIndex(clickedGameObject);
-        
-
+        gameStatus.Damage(10);
+        //周りのスプライトの画像を変える。
         for (int i = 0; i < 9; i++)
         {
             int nraw = raw + dy[i];

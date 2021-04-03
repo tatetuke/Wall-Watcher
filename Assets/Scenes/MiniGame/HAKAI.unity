@@ -1529,6 +1529,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  gameStatus: {fileID: 4087562945165957255}
   PolutedLevel2: 
   WallSprite:
   - {fileID: 21300000, guid: e97ff936ebf03f14b84ff449f94a0644, type: 3}
@@ -1867,10 +1868,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 27cd70e733438e74fa852595bfb467e9, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -2329,10 +2330,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 5749816c7b7f88b429ab34b3e2f55c11, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -6332,10 +6333,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: f11b65ebdfed9c14a90b08163314d7d8, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -7005,6 +7006,8 @@ GameObject:
   - component: {fileID: 4087562945165957258}
   - component: {fileID: 497285902}
   - component: {fileID: 4087562945165957253}
+  - component: {fileID: 4087562945165957255}
+  - component: {fileID: 4087562945165957254}
   m_Layer: 0
   m_Name: MinGameHAKAIGameManager
   m_TagString: Untagged
@@ -7025,6 +7028,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Item: []
+--- !u!114 &4087562945165957254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4087562945165957252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c17158570151f4f4d88e30233ed90ae8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GreenGauge: {fileID: 684795276}
+  RedGauge: {fileID: 1943004474}
+--- !u!114 &4087562945165957255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4087562945165957252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41f57e158b063974db03a705fe821233, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  life: 0
+  maxLife: 0
 --- !u!4 &4087562945165957258
 Transform:
   m_ObjectHideFlags: 0
