@@ -39,7 +39,7 @@ namespace KoganeUnityLib
 		/// </summary>
 		private void OnDestroy()
 		{
-			m_tween?.Kill();
+			m_tween.Kill();
 
 			m_tween = null;
 			m_onComplete = null;
@@ -65,7 +65,8 @@ namespace KoganeUnityLib
 
 			OnUpdate( 0 );
 
-			m_tween?.Kill();
+			m_tween.Kill();
+			//m_tween.Kill();
 			m_tween = DOTween
 				.To( value => OnUpdate( value ), 0, 1, duration )
 				.SetEase( Ease.Linear )
@@ -86,7 +87,7 @@ namespace KoganeUnityLib
 
 			OnUpdate(0);
 
-			m_tween?.Kill();
+			m_tween.Kill();
 			m_tween = DOTween
 				.To(value => OnUpdate(value), 0, 1, duration)
 				.SetEase(Ease.Linear)
@@ -100,14 +101,14 @@ namespace KoganeUnityLib
 		/// <param name="withCallbacks">演出完了時に呼び出されるコールバックを実行する場合 true</param>
 		public void Skip( bool withCallbacks = true )
 		{
-			m_tween?.Kill();
+			m_tween.Kill();
 			m_tween = null;
 
 			OnUpdate( 1 );
 
 			if ( !withCallbacks ) return;
 
-			m_onComplete?.Invoke();
+			m_onComplete.Invoke();
 			m_onComplete = null;
 		}
 
@@ -116,7 +117,7 @@ namespace KoganeUnityLib
 		/// </summary>
 		public void Pause()
 		{
-			m_tween?.Pause();
+			m_tween.Pause();
 		}
 
 		/// <summary>
@@ -124,7 +125,7 @@ namespace KoganeUnityLib
 		/// </summary>
 		public void Resume()
 		{
-			m_tween?.Play();
+			m_tween.Play();
 		}
 
 		/// <summary>
@@ -144,7 +145,7 @@ namespace KoganeUnityLib
 		private void OnComplete()
 		{
 			m_tween = null;
-			m_onComplete?.Invoke();
+			m_onComplete.Invoke();
 			m_onComplete = null;
 		}
 	}
