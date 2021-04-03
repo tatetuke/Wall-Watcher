@@ -5,12 +5,19 @@ using UnityEngine.UI;
 
 public class MiniGameMixManager : MonoBehaviour
 {
-    public float ParamSpeed = 0.001f;
+    public float ParamSpeed = 0.003f;
+
+    public float IdealRatio = 2;  // 土/水
 
     [SerializeField] GameObject SoilUpButtonColor;
     [SerializeField] GameObject SoilDownButtonColor;
     [SerializeField] GameObject WaterUpButtonColor;
     [SerializeField] GameObject WaterDownButtonColor;
+
+    [SerializeField] GameObject TripleCircle;
+    [SerializeField] GameObject DoubleCircle;
+    [SerializeField] GameObject SingleCircle;
+    [SerializeField] GameObject Triangle;
 
     [SerializeField] GameObject SoilGaugeGameObject;
     [SerializeField] GameObject WaterGaugeGameObject;
@@ -34,6 +41,38 @@ public class MiniGameMixManager : MonoBehaviour
     {
         GlowButton();
         UpdateGauge();
+        UpdateMark();
+    }
+
+    private void UpdateMark()
+    {
+        HideMark();
+        float ratio = SoilGaugeParam / WaterGaugeParam;
+        Debug.Log(ratio);
+        float relativeError = CalcRelativeError(ratio, IdealRatio);
+        Debug.Log(relativeError);
+        if (relativeError<=0.1f)
+            TripleCircle.SetActive(true);
+        else if (relativeError <= 1.5f)
+            DoubleCircle.SetActive(true);
+        else if (relativeError <= 2.0f)
+            SingleCircle.SetActive(true);
+        else
+            Triangle.SetActive(true);
+    }
+
+    private void HideMark()
+    {
+        TripleCircle.SetActive(false);
+        DoubleCircle.SetActive(false);
+        SingleCircle.SetActive(false);
+        Triangle.SetActive(false);
+    }
+
+    private float CalcRelativeError(float MeasuredValue, float TheoreticalValue)
+    {
+        float relativeError = Mathf.Abs((MeasuredValue - TheoreticalValue) / TheoreticalValue);
+        return relativeError;
     }
 
 
