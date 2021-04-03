@@ -107,16 +107,15 @@ public class MinGameHakaiManager2 : MonoBehaviour
             clickedGameObject = hit2d.transform.gameObject;
         }
         //クリックしたものが壁でなければリターン
-        if (clickedGameObject.tag != "Wall") return;
+        if (clickedGameObject==null||clickedGameObject.tag != "Wall") return;
         Debug.Log(clickedGameObject);
 
-        int raw = 0, column = 0;
-
-
-
-        //対応するタイルの添え字を全探索
-        (raw,column)=SearchIndex(clickedGameObject);
+        //使用した道具に応じて体力を減らす。
         gameStatus.Damage(10);
+
+        int raw = 0, column = 0;
+        //クリックしたタイルのindexを取得。
+        (raw,column)=SearchIndex(clickedGameObject);
         //周りのスプライトの画像を変える。
         for (int i = 0; i < 9; i++)
         {
