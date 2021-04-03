@@ -1,14 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MiniGameMixManager : MonoBehaviour
 {
-    public float ParamSpeed = 0.003f;
-
-    public float IdealRatio = 2;  // 土/水
-
     [SerializeField] GameObject SoilUpButtonColor;
     [SerializeField] GameObject SoilDownButtonColor;
     [SerializeField] GameObject WaterUpButtonColor;
@@ -19,18 +16,24 @@ public class MiniGameMixManager : MonoBehaviour
     [SerializeField] GameObject SingleCircle;
     [SerializeField] GameObject Triangle;
 
+    [SerializeField] TextMeshProUGUI Temperature;
+    [SerializeField] TextMeshProUGUI Humidity;
+    [SerializeField] TextMeshProUGUI HRC;
+
     [SerializeField] GameObject SoilGaugeGameObject;
     [SerializeField] GameObject WaterGaugeGameObject;
     private Image SoilGauge;
     private Image WaterGauge;
 
-
+    private float ParamSpeed = 0.003f;
+    private float IdealRatio = 2;  // 土/水
     private float SoilGaugeParam;
     private float WaterGaugeParam;
 
 
     void Start()
     {
+        UpdateText();
         SoilGauge = SoilGaugeGameObject.GetComponent<Image>();
         WaterGauge = WaterGaugeGameObject.GetComponent<Image>();
         SoilGaugeParam = 0;
@@ -39,6 +42,7 @@ public class MiniGameMixManager : MonoBehaviour
 
     void Update()
     {
+        CalcIdealRatio();
         GlowButton();
         UpdateGauge();
         UpdateMark();
@@ -47,15 +51,20 @@ public class MiniGameMixManager : MonoBehaviour
     private void UpdateMark()
     {
         HideMark();
+        if (WaterGaugeParam == 0)
+        {
+            Triangle.SetActive(true);
+            return;
+        }
         float ratio = SoilGaugeParam / WaterGaugeParam;
         Debug.Log(ratio);
         float relativeError = CalcRelativeError(ratio, IdealRatio);
         Debug.Log(relativeError);
-        if (relativeError<=0.1f)
+        if (relativeError<=0.05f)
             TripleCircle.SetActive(true);
-        else if (relativeError <= 1.5f)
+        else if (relativeError <= 0.1f)
             DoubleCircle.SetActive(true);
-        else if (relativeError <= 2.0f)
+        else if (relativeError <= 0.2f)
             SingleCircle.SetActive(true);
         else
             Triangle.SetActive(true);
@@ -139,6 +148,18 @@ public class MiniGameMixManager : MonoBehaviour
         if (num <= 0) num = 0;
         if (num >= 1) num = 1;
         return num;
+    }
+
+    private void CalcIdealRatio()
+    {
+        IdealRatio = 2;
+    }
+
+    private void UpdateText()
+    {
+        Temperature.text = "10";
+        Humidity.text = "20";
+        HRC.text = "30";
     }
 
     private GameObject GetCursorObject()
