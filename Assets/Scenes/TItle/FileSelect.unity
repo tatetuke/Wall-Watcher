@@ -407,9 +407,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allwaysShowView: {fileID: 0}
-  firstViewName: 
+  firstViewName: SaveDataVIew
   m_views: []
-  m_targetPlaeyer: {fileID: 0}
 --- !u!1 &503991085
 GameObject:
   m_ObjectHideFlags: 0
@@ -1353,6 +1352,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2117389247425730039, guid: 9ef8d4b4d4413294c9d2f4d2edfac45e,
+        type: 3}
+      propertyPath: priority
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 5258322693995725204, guid: 9ef8d4b4d4413294c9d2f4d2edfac45e,
         type: 3}
       propertyPath: m_RootOrder
@@ -1376,7 +1380,7 @@ PrefabInstance:
     - target: {fileID: 5258322693995725206, guid: 9ef8d4b4d4413294c9d2f4d2edfac45e,
         type: 3}
       propertyPath: m_Name
-      value: Managers
+      value: Managers_Strong
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ef8d4b4d4413294c9d2f4d2edfac45e, type: 3}
