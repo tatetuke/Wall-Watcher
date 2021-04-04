@@ -23,6 +23,8 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
     public Sprite []WallSprite=new Sprite[2];//壁の画像
 
+    [SerializeField] private MinGameHakaiItemGetUI ItemGetUI;//UIのアイテム欄を更新する.
+
     enum Game_State
     {
         Playing,
@@ -167,6 +169,9 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
         //取得できるかどうかについてアイテムの情報を更新
         UpdateItemData.Invoke();
+
+        //UIのアイテム情報の更新
+        ItemGetUI.ChangeGetItemUI();
 
     }
 
