@@ -9,93 +9,84 @@ public class TimelineManager : MonoBehaviour
 {
     // MEMO : 会話タイムラインに選択肢の追加
 
-    [SerializeField]
-    private PlayableDirector playableDirector;
-    [SerializeField]
-    private Player player;
+    [SerializeField] private PlayableDirector playableDirector;
+    [SerializeField] private Player player;
+
+    [SerializeField] Animator OptionAnimator;
+
     private bool IsStarted;
     private bool IsEnd;
     public TMP_Typewriter m_typewriter;
 
-    public State m_State = State.Idle;
+    public State m_State = State.Normal;
     public ConversationData conversationData;
     private Conversations CurrentConversation = null;
     private string FileId;
     private string Id;
+    bool IsFinished = false;
 
 
     public enum State
     {
-        Idle,
-        Talk
+        Normal,
+        FirstFrameCurrentConversation,
+        Talking,
+        FinishCurrentConversation
     }
 
-    public void ChangeState(State state)
+    private void ProceedTalk()
     {
-        m_State = state;
+        if (m_State == State.Normal)
+        {
+            IsFinished = false;
+        }
+        else if (m_State == State.FirstFrameCurrentConversation)
+        {
+            if (IsFinished) return;  // タイムラインによって上書きされた時のためにある。もう処理が終わっていたらなにもしない
+            playableDirector.Pause();
+            UpdateCurrentConversation();
+            m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete: () => ChangeState(State.FinishCurrentConversation));
+            ChangeState(State.Talking);
+        }
+        else if (m_State == State.Talking)
+        {
+            OptionAnimator.SetBool("SelectKey", true);
+            //下キーが押されたら文字送りをスキップして本文を出力する。
+            if (Input.GetKeyDown("space"))
+                m_typewriter.Skip();
+        }
+        else if (m_State == State.FinishCurrentConversation)
+        {
+            if (Input.GetKeyDown("space"))
+            {
+                ClearTypewriter();
+                playableDirector.Resume();
+                ChangeState(State.Normal);
+                IsFinished = true;
+            }
+        }
     }
 
-    // Start is called before the first frame update
+
     void Start()
     {
         IsStarted = false;
         IsEnd = false;
     }
 
-    bool IsFirstFrame = true;
-    bool IsFinishCurrentConversation = false;
-
-    // Update is called once per frame
     void Update()
     {
-        if (m_State == State.Talk)
-        {
-            if (IsFinishCurrentConversation)
-            {
-                if (Input.GetKeyDown("space"))
-                {
-                    m_typewriter.Play(text: "", speed: 0);
-                    playableDirector.Resume();
-                    IsFinishCurrentConversation = false;
-                }
-            }
-            else
-            {
-                if (IsFirstFrame)
-                {
-                    playableDirector.Pause();
-                    UpdateCurrentConversation();
-                    m_typewriter.Play(text: CurrentConversation.text, speed: 15, onComplete: () => IsFinishCurrentConversation = true);
-                    IsFirstFrame = false;
-                }
-                else
-                {
-                    //下キーが押されたら文字送りをスキップして本文を出力する。
-                    if (Input.GetKeyDown("space"))
-                    {
-                        m_typewriter.Skip();
-                    }
-                }
-            }
-        }
-        else IsFirstFrame = true;
+        ProceedTalk();
+    }
 
+    private void ClearTypewriter()
+    {
+        m_typewriter.Play(text: "", speed: 0);
+    }
 
-        //// Tキーが押され、再生中でないならば、再生する
-        //if (Input.GetKeyDown(KeyCode.T) && playableDirector.state != PlayState.Playing)
-        //{
-        //    IsStarted = true;
-        //    Debug.Log("タイムラインが再生されました");
-        //    player.ChangeState(Player.State.FREEZE);
-        //    // タイムラインの再生
-        //    playableDirector.Play();
-        //}
-
-        //if(IsStarted && playableDirector.state != PlayState.Playing)
-        //{
-        //    Debug.Log("タイムライン終了");
-        //    player.ChangeState(Player.State.IDLE);
-        //}
+    public void ChangeState(State state)
+    {
+        m_State = state;
     }
 
     void UpdateCurrentConversation()
