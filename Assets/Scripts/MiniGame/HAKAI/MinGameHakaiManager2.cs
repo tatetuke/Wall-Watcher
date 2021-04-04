@@ -5,8 +5,11 @@ using UnityEngine.Events;
 using DG.Tweening;
 public class MinGameHakaiManager2 : MonoBehaviour
 {
-    public const int m_size = 7;//盤面のサイズ
-    [HideInInspector]public GameObject[,] Wall = new GameObject[m_size, m_size];//盤面全体
+    public const int RawSize = 7;//盤面のサイズ
+    public const int ColumnSize = 7;
+    [HideInInspector]public int Rsize=RawSize; 
+    [HideInInspector]public int Csize=ColumnSize; 
+    [HideInInspector]public GameObject[,] Wall = new GameObject[RawSize, ColumnSize];//盤面全体
     int[] dx = new int[9] { -1, 0, 1, -1, 0, 1, -1, 0, 1 };//裏返す壁のIndex
     int[] dy = new int[9] { -1, -1, -1, 0, 0, 0, 1, 1, 1 };//
     private string PolutedLevel1;//壁の画像の名前
@@ -78,14 +81,14 @@ public class MinGameHakaiManager2 : MonoBehaviour
         j = 0;
         foreach (GameObject v in GameObject.FindGameObjectsWithTag("Wall"))
         {
-            if (j >= m_size)
+            if (j >= RawSize)
             {
                 Debug.LogError("壁の数が多すぎます");
                 break;
             }
             Wall[i, j] = v;
             i++;
-            if (i == m_size)
+            if (i == ColumnSize)
             {
                 i = 0;
                 j++;
@@ -117,14 +120,21 @@ public class MinGameHakaiManager2 : MonoBehaviour
         //クリックしたものが壁でなければリターン
         if (clickedGameObject==null||clickedGameObject.tag != "Wall") return;
 
-        ////現在のHPよりくらうダメージが大きい場合ゲージを揺らす
-        //if(gameStatus.life-(int)tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1] < 0)
-        //{
-        //    Debug.Log("この道具を使うには体力が足りません");
-        //    //画面を揺らす。
-        //    iTween.ShakePosition(lifeGage, iTween.Hash("x", 0.3f, "y", 0.3f, "time", 0.5f));
-        //    return;
-        //}
+        //現在のHPよりくらうダメージが大きい場合ゲージを揺らす
+        if (gameStatus.life - (int)tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1] < 0)
+        {
+            Debug.Log("この道具を使うには体力が足りません");
+            //画面を揺らす。
+            // シェイク(一定時間のランダムな動き)
+            var duration = 0.35f;    // 時間
+            var strength = 50f;    // 力
+            var vibrato = 100;    // 揺れ度合い
+            var randomness = 90f;   // 揺れのランダム度合い(0で一定方向のみの揺れになる)
+            var snapping = false; // 値を整数に変換するか
+            var fadeOut = true;  // 揺れが終わりに向かうにつれ段々小さくなっていくか(falseだとピタッと止まる)
+            lifeGage.transform.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut);
+            return;
+        }
 
         Debug.Log(clickedGameObject);
         int raw = 0, column = 0;
@@ -137,7 +147,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
             if (!tool.Tools[toolManager.SelectToolNum].CanChangeSprite[i]) continue;
             int nraw = raw + dy[i];
             int ncolumn = column + dx[i];
-            if (nraw < 0 || nraw >= m_size || ncolumn < 0 || ncolumn >= m_size) continue;
+            if (nraw < 0 || nraw >= RawSize || ncolumn < 0 || ncolumn >= ColumnSize) continue;
 
             ChangeSprite(Wall[nraw, ncolumn]);
         }
@@ -154,7 +164,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     {
 
         // シェイク(一定時間のランダムな動き)
-        var duration = 0.7f;    // 時間
+        var duration = 0.35f;    // 時間
         var strength = 0.5f;    // 力
         var vibrato = 100;    // 揺れ度合い
         var randomness = 90f;   // 揺れのランダム度合い(0で一定方向のみの揺れになる)
@@ -180,9 +190,9 @@ public class MinGameHakaiManager2 : MonoBehaviour
     /// </summary>
     public (int,int) SearchIndex(GameObject obj)
     {
-        for (int i = 0; i < m_size; i++)
+        for (int i = 0; i < RawSize; i++)
         {
-            for (int j = 0; j < m_size; j++)
+            for (int j = 0; j < ColumnSize; j++)
             {
                 if (obj == Wall[i, j])
                 {
@@ -191,7 +201,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
                 }
             }
         }
-        Debug.LogError("SearchIndexがおかしい");
+        Debug.LogError("SearchIndexの添え字が想定を超えている");
         return (0, 0);
     }
 

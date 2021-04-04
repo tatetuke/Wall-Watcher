@@ -28,5 +28,4 @@ public class MinGameHakaiItemGetUI : MonoBehaviour
             t++;
         }
     }
-
 }
