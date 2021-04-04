@@ -4,22 +4,22 @@ using UnityEngine;
 using UnityEngine.Events;
 public class MinGameHakaiManager2 : MonoBehaviour
 {
-    public const int m_size = 7;
-    [HideInInspector]public GameObject[,] Wall = new GameObject[m_size, m_size];
-    
+    public const int m_size = 7;//盤面のサイズ
+    [HideInInspector]public GameObject[,] Wall = new GameObject[m_size, m_size];//盤面全体
+    int[] dx = new int[9] { -1, 0, 1, -1, 0, 1, -1, 0, 1 };//裏返す壁のIndex
+    int[] dy = new int[9] { -1, -1, -1, 0, 0, 0, 1, 1, 1 };//
+    private string PolutedLevel1;//壁の画像の名前
+    public string PolutedLevel2;//
     [SerializeField] private UnityEvent UpdateItemData=new UnityEvent(); //アイテムデータのアップデート
-    [SerializeField] private MinGameHAKAIStatus gameStatus;
-        
-    int[] dx = new int[9] { -1, 0, 1, -1, 0, 1, -1, 0, 1 };
-    int[] dy = new int[9] { -1, -1, -1, 0, 0, 0, 1, 1, 1 };
-    private string PolutedLevel1;
-    public string PolutedLevel2;
+
+    [SerializeField] private MinGameHAKAIStatus gameStatus;//HPやHPを減らす関数を持つクラス
 
     [SerializeField]MinGameHakaiToolDataManager toolManager;
     [SerializeField]MinGameHakaiToolData tool;
 
+    [SerializeField] GameObject shakeObj;//揺らすゲームオブジェクトの選択
 
-    public Sprite []WallSprite=new Sprite[2];
+    public Sprite []WallSprite=new Sprite[2];//壁の画像
 
     enum Game_State
     {
@@ -113,7 +113,6 @@ public class MinGameHakaiManager2 : MonoBehaviour
         //クリックしたものが壁でなければリターン
         if (clickedGameObject==null||clickedGameObject.tag != "Wall") return;
         Debug.Log(clickedGameObject);
-
         //使用した道具に応じて体力を減らす。
         //使用しているツール=tool.Tools[toolManager.SelectToolNum]
         //受けるダメージ=damage[tool.Tools[toolManager.SelectToolNum].level-1]
@@ -137,6 +136,8 @@ public class MinGameHakaiManager2 : MonoBehaviour
         }
         //アイテムの情報を更新
         UpdateItemData.Invoke();
+        //画面を揺らす。
+        iTween.ShakePosition(shakeObj, iTween.Hash("x", 0.3f, "y", 0.3f, "time", 0.5f));
     }
 
 

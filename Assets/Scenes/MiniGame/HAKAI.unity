@@ -1661,6 +1661,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91962808935f26945a1dc82c07138e80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PolutedLevel2: 
   UpdateItemData:
     m_PersistentCalls:
       m_Calls:
@@ -1676,9 +1677,9 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   gameStatus: {fileID: 4087562945165957255}
-  PolutedLevel2: 
   toolManager: {fileID: 4087562945165957256}
   tool: {fileID: 4087562945165957257}
+  shakeObj: {fileID: 540083880}
   WallSprite:
   - {fileID: 21300000, guid: e97ff936ebf03f14b84ff449f94a0644, type: 3}
   - {fileID: 21300000, guid: d315c4882eb82824983d7c5ca3ffc3e4, type: 3}
