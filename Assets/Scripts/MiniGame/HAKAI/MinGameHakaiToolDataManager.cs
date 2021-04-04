@@ -53,7 +53,7 @@ public class MinGameHakaiToolDataManager : MonoBehaviour
         //道具の説明を変更
         discription.text = Tools[SelectToolNum].discription;
         //道具が与えるダメージの表記を変更
-        damage.text = GetDamageLevel(Tools[SelectToolNum].damage[Tools[SelectToolNum].level-1]);
+        damage.text = "消費体力："  +GetDamageLevel(Tools[SelectToolNum].damage[Tools[SelectToolNum].level-1]);
         //道具が削る範囲の説明用画像を変更
          hanniImage.sprite= Tools[SelectToolNum].HanniImage;
     }

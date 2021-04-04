@@ -13,7 +13,11 @@ public class MinGameHakaiManager2 : MonoBehaviour
     int[] dx = new int[9] { -1, 0, 1, -1, 0, 1, -1, 0, 1 };
     int[] dy = new int[9] { -1, -1, -1, 0, 0, 0, 1, 1, 1 };
     private string PolutedLevel1;
-   [HideInInspector] public string PolutedLevel2;
+    public string PolutedLevel2;
+
+    [SerializeField]MinGameHakaiToolDataManager toolManager;
+    [SerializeField]MinGameHakaiToolData tool;
+
 
     public Sprite []WallSprite=new Sprite[2];
 
@@ -111,7 +115,11 @@ public class MinGameHakaiManager2 : MonoBehaviour
         Debug.Log(clickedGameObject);
 
         //使用した道具に応じて体力を減らす。
-        gameStatus.Damage(10);
+        //使用しているツール=tool.Tools[toolManager.SelectToolNum]
+        //受けるダメージ=damage[tool.Tools[toolManager.SelectToolNum].level-1]
+        //ToDo
+        //レベルが0の時の例外処理（多分いらない）
+        gameStatus.Damage(tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level-1]);
 
         int raw = 0, column = 0;
         //クリックしたタイルのindexを取得。
@@ -119,6 +127,8 @@ public class MinGameHakaiManager2 : MonoBehaviour
         //周りのスプライトの画像を変える。
         for (int i = 0; i < 9; i++)
         {
+            //使用している道具の裏返せる範囲で無ければスキップ
+            if (!tool.Tools[toolManager.SelectToolNum].CanChangeSprite[i]) continue;
             int nraw = raw + dy[i];
             int ncolumn = column + dx[i];
             if (nraw < 0 || nraw >= m_size || ncolumn < 0 || ncolumn >= m_size) continue;
