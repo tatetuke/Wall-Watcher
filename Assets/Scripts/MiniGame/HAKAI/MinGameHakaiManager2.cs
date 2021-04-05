@@ -28,6 +28,9 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
     [SerializeField] private MinGameHakaiItemGetUI ItemGetUI;//UIのアイテム欄を更新する.
 
+    //UIがシェイク時にぶれるバグを修正仕様とした跡地
+    //private Vector3 initShakeObj;
+    //private Vector3 initLifeGage;
     enum Game_State
     {
         Playing,
@@ -39,6 +42,8 @@ public class MinGameHakaiManager2 : MonoBehaviour
     Game_State State;
     private void Start()
     {
+        //initShakeObj = shakeObj.transform.position;
+        //initLifeGage = lifeGage.transform.position;
         State = Game_State.PreStart;
         WallInit();
         GetSpriteName();
@@ -124,6 +129,8 @@ public class MinGameHakaiManager2 : MonoBehaviour
         if (gameStatus.life - (int)tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1] < 0)
         {
             Debug.Log("この道具を使うには体力が足りません");
+            //揺らす前に元の位置に初期化
+            //lifeGage.transform.position = initLifeGage;
             //画面を揺らす。
             // シェイク(一定時間のランダムな動き)
             var duration = 0.35f;    // 時間
@@ -162,10 +169,12 @@ public class MinGameHakaiManager2 : MonoBehaviour
     /// </summary>
     private void ReverseSprite()
     {
-
+        //揺らす前に位置を初期化
+        //shakeObj.transform.position = initShakeObj;
         // シェイク(一定時間のランダムな動き)
         var duration = 0.35f;    // 時間
-        var strength = 0.5f;    // 力
+        var strength = 0.3f;    // 力
+        strength *= (float)tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1]/10;
         var vibrato = 100;    // 揺れ度合い
         var randomness = 90f;   // 揺れのランダム度合い(0で一定方向のみの揺れになる)
         var snapping = false; // 値を整数に変換するか
