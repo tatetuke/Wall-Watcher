@@ -136,7 +136,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
             return;
         }
 
-        Debug.Log(clickedGameObject);
+        Debug.Log(clickedGameObject.name);
         int raw = 0, column = 0;
         //クリックしたタイルのindexを取得。
         (raw, column) = SearchIndex(clickedGameObject);
