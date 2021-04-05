@@ -8889,7 +8889,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   life: 0
-  maxLife: 0
+  maxLife: 1000
 --- !u!114 &4087562945165957256
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
     public int itemcount=4;
     public GameObject[,] Wall = new GameObject[Rsize, Csize];
     public List<GameObject> Items;
-    public List<MinGameHAKAIItem> ItemData;
+    [HideInInspector]public List<MinGameHAKAIItem> ItemData;
     /// <summary>
     /// 確率の低い順に並べる必要があります。
     /// </summary>

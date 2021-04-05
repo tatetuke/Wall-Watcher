@@ -42,11 +42,13 @@ public class MinGameHakaiManager2 : MonoBehaviour
     Game_State State;
     private void Start()
     {
-        //initShakeObj = shakeObj.transform.position;
-        //initLifeGage = lifeGage.transform.position;
         State = Game_State.PreStart;
         WallInit();
         GetSpriteName();
+        //取得できるかどうかについてアイテムの情報を更新
+        UpdateItemData.Invoke();
+        //UIのアイテム情報の更新
+        ItemGetUI.ChangeGetItemUI();
     }
     private void Update()
     {
@@ -125,21 +127,10 @@ public class MinGameHakaiManager2 : MonoBehaviour
         //クリックしたものが壁でなければリターン
         if (clickedGameObject==null||clickedGameObject.tag != "Wall") return;
 
-        //現在のHPよりくらうダメージが大きい場合ゲージを揺らす
+        //現在のHPよりくらうダメージが大きい場合ゲージを揺らしてreturn 
         if (gameStatus.life - (int)tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1] < 0)
         {
-            Debug.Log("この道具を使うには体力が足りません");
-            //揺らす前に元の位置に初期化
-            //lifeGage.transform.position = initLifeGage;
-            //画面を揺らす。
-            // シェイク(一定時間のランダムな動き)
-            var duration = 0.35f;    // 時間
-            var strength = 50f;    // 力
-            var vibrato = 100;    // 揺れ度合い
-            var randomness = 90f;   // 揺れのランダム度合い(0で一定方向のみの揺れになる)
-            var snapping = false; // 値を整数に変換するか
-            var fadeOut = true;  // 揺れが終わりに向かうにつれ段々小さくなっていくか(falseだとピタッと止まる)
-            lifeGage.transform.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut);
+            AttackErrorEffect();
             return;
         }
 
@@ -158,16 +149,41 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
             ChangeSprite(Wall[nraw, ncolumn]);
         }
+        //道具を使用できないときのエフェクトを出す。
+        ReverseSpriteEffect();
+        //使用した道具に応じて体力を減らす
+        //ToDo
+        //レベルが0の時の例外処理（多分いらない）
+        gameStatus.Damage(tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1]);
 
-        ReverseSprite();
+        //取得できるかどうかについてアイテムの情報を更新
+        UpdateItemData.Invoke();
+
+        //UIのアイテム情報の更新
+        ItemGetUI.ChangeGetItemUI();
     }
 
-
+    //道具を使用できないときのエフェクト
+    private void AttackErrorEffect()
+    {
+        Debug.Log("この道具を使うには体力が足りません");
+        //揺らす前に元の位置に初期化
+        //lifeGage.transform.position = initLifeGage;
+        //画面を揺らす。
+        // シェイク(一定時間のランダムな動き)
+        var duration = 0.35f;    // 時間
+        var strength = 50f;    // 力
+        var vibrato = 100;    // 揺れ度合い
+        var randomness = 90f;   // 揺れのランダム度合い(0で一定方向のみの揺れになる)
+        var snapping = false; // 値を整数に変換するか
+        var fadeOut = true;  // 揺れが終わりに向かうにつれ段々小さくなっていくか(falseだとピタッと止まる)
+        lifeGage.transform.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut);
+    }
 
     /// <summary>
-    /// 盤面を反転させるときの処理
+    /// 盤面を反転させるときのエフェクト
     /// </summary>
-    private void ReverseSprite()
+    private void ReverseSpriteEffect()
     {
         //揺らす前に位置を初期化
         //shakeObj.transform.position = initShakeObj;
@@ -180,18 +196,6 @@ public class MinGameHakaiManager2 : MonoBehaviour
         var snapping = false; // 値を整数に変換するか
         var fadeOut = true;  // 揺れが終わりに向かうにつれ段々小さくなっていくか(falseだとピタッと止まる)
         shakeObj.transform.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut);
-        
-        //使用した道具に応じて体力を減らす
-        //ToDo
-        //レベルが0の時の例外処理（多分いらない）
-        gameStatus.Damage(tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1]);
-
-        //取得できるかどうかについてアイテムの情報を更新
-        UpdateItemData.Invoke();
-
-        //UIのアイテム情報の更新
-        ItemGetUI.ChangeGetItemUI();
-
     }
 
     /// <summary>
@@ -226,7 +230,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
         string spriteName = m_Wall.GetComponent<SpriteRenderer>().sprite.name;
         if (spriteName == PolutedLevel1) {
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[1];
-           }
+        }
         else if(spriteName==PolutedLevel2)
         {
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[0];
