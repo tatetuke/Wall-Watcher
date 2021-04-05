@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
 [CreateAssetMenu(fileName = "New Condition", menuName = "ScriptableObject/Condition")]
 public class QuestConditions: ScriptableObject
 {

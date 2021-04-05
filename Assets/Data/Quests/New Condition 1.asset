@@ -9,8 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: New Condition
+  m_Script: {fileID: 11500000, guid: e80a7f8fd42f3c14aaf009afb6bbdfde, type: 3}
+  m_Name: New Condition 1
   m_EditorClassIdentifier: Assembly-CSharp::QuestConditions
   description: 
-  conditions: []
+  conditions:
+  - parameterKey: 
+    conditionOperator: 0
+    valueType: 0
+    intValue: 0
+    floatValue: 0
+    stringValue: 
+    boolValue: 0
