@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class QuestConditions
+[CreateAssetMenu(fileName = "New Condition", menuName = "ScriptableObject/Condition")]
+public class QuestConditions: ScriptableObject
 {
     /// <summary>
     /// この条件についての説明文(任意)
