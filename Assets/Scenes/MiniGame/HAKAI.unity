@@ -1751,6 +1751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91962808935f26945a1dc82c07138e80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameType: 2
   Rsize: 7
   Csize: 7
   PolutedLevel2: 
@@ -8492,6 +8493,7 @@ MonoBehaviour:
   - {fileID: 457790015}
   - {fileID: 5874434121240224871, guid: 6f9b8a8ef9f26a848b995c5b0d3626e4, type: 3}
   - {fileID: 1709595407}
+  gameManager: {fileID: 497285902}
 --- !u!1 &2123849268
 GameObject:
   m_ObjectHideFlags: 0

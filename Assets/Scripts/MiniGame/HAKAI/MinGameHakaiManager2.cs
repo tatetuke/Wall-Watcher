@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using DG.Tweening;
 public class MinGameHakaiManager2 : MonoBehaviour
 {
+    public int gameType = 1;
     public const int RawSize = 7;//盤面のサイズ
     public const int ColumnSize = 7;
     [HideInInspector]public int Rsize=RawSize; 
@@ -147,10 +148,16 @@ public class MinGameHakaiManager2 : MonoBehaviour
             int nraw = raw + dy[i];
             int ncolumn = column + dx[i];
             if (nraw < 0 || nraw >= RawSize || ncolumn < 0 || ncolumn >= ColumnSize) continue;
+            if (gameType == 1)
+            {
+                ChangeSprite1(Wall[nraw, ncolumn]);
+            }else if (gameType == 2)
+            {
+                ChangeSprite2(Wall[nraw, ncolumn]);
 
-            ChangeSprite(Wall[nraw, ncolumn]);
+            }
         }
-        //道具を使用できないときのエフェクトを出す。
+        //道具を使用した時のエフェクトを出す。
         ReverseSpriteEffect();
         //使用した道具に応じて体力を減らす
         //ToDo
@@ -219,14 +226,30 @@ public class MinGameHakaiManager2 : MonoBehaviour
         return (0, 0);
     }
 
+    /// <summary>
+    /// スプライトの変更
+    /// </summary>
+    /// <param name="m_Wall"></param>
+    private void ChangeSprite1(GameObject m_Wall)
+    {
+        string spriteName = m_Wall.GetComponent<SpriteRenderer>().sprite.name;
+        if (spriteName == PolutedLevel1)
+        {
+            m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[2];
+        }
+        else if (spriteName == PolutedLevel2)
+        {
+            m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[0];
 
+        }
 
+    }
 
     /// <summary>
     /// スプライトの変更
     /// </summary>
     /// <param name="m_Wall"></param>
-    private void ChangeSprite(GameObject m_Wall)
+    private void ChangeSprite2(GameObject m_Wall)
     {
         string spriteName = m_Wall.GetComponent<SpriteRenderer>().sprite.name;
         if (spriteName == PolutedLevel1) {
@@ -250,9 +273,9 @@ public class MinGameHakaiManager2 : MonoBehaviour
     /// </summary>
     private void GetSpriteName()
     {
-        PolutedLevel1=WallSprite[0].name;
+        PolutedLevel1 = WallSprite[0].name;
         PolutedLevel1_1 = WallSprite[1].name;
-        PolutedLevel2=WallSprite[2].name;
+        PolutedLevel2 = WallSprite[2].name;
 
 
     }
