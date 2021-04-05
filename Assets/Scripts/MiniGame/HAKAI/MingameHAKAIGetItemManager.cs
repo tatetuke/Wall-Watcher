@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.Events;
 public class MingameHAKAIGetItemManager : MonoBehaviour
 {
-    [SerializeField, ReadOnly] List<GameObject> Item;
-    [SerializeField, ReadOnly] GameObject[,] Wall;
+    [ ReadOnly] public List<GameObject> Item;
+    [ ReadOnly] public GameObject[,] Wall;
     private int WallLength;
     MinGameHakaiManager2 GameManager;
     private float LineThickness = 1;  // 光らせる際の線の太さ

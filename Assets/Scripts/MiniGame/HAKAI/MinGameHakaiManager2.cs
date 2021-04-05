@@ -2,24 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using DG.Tweening;
 public class MinGameHakaiManager2 : MonoBehaviour
 {
-    public const int m_size = 7;
-    [HideInInspector]public GameObject[,] Wall = new GameObject[m_size, m_size];
-    
+    public const int m_size = 7;//盤面のサイズ
+    [HideInInspector]public GameObject[,] Wall = new GameObject[m_size, m_size];//盤面全体
+    int[] dx = new int[9] { -1, 0, 1, -1, 0, 1, -1, 0, 1 };//裏返す壁のIndex
+    int[] dy = new int[9] { -1, -1, -1, 0, 0, 0, 1, 1, 1 };//
+    private string PolutedLevel1;//壁の画像の名前
+    public string PolutedLevel2;//
     [SerializeField] private UnityEvent UpdateItemData=new UnityEvent(); //アイテムデータのアップデート
-    [SerializeField] private MinGameHAKAIStatus gameStatus;
-        
-    int[] dx = new int[9] { -1, 0, 1, -1, 0, 1, -1, 0, 1 };
-    int[] dy = new int[9] { -1, -1, -1, 0, 0, 0, 1, 1, 1 };
-    private string PolutedLevel1;
-    public string PolutedLevel2;
+
+    [SerializeField] private MinGameHAKAIStatus gameStatus;//HPやHPを減らす関数を持つクラス
 
     [SerializeField]MinGameHakaiToolDataManager toolManager;
     [SerializeField]MinGameHakaiToolData tool;
 
+    [SerializeField] GameObject shakeObj;//揺らすゲームオブジェクトの選択
+    [SerializeField] GameObject lifeGage;//揺らすゲームオブジェクトの選択
 
-    public Sprite []WallSprite=new Sprite[2];
+    public Sprite []WallSprite=new Sprite[2];//壁の画像
+
+    [SerializeField] private MinGameHakaiItemGetUI ItemGetUI;//UIのアイテム欄を更新する.
 
     enum Game_State
     {
@@ -112,18 +116,20 @@ public class MinGameHakaiManager2 : MonoBehaviour
         }
         //クリックしたものが壁でなければリターン
         if (clickedGameObject==null||clickedGameObject.tag != "Wall") return;
+
+        ////現在のHPよりくらうダメージが大きい場合ゲージを揺らす
+        //if(gameStatus.life-(int)tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1] < 0)
+        //{
+        //    Debug.Log("この道具を使うには体力が足りません");
+        //    //画面を揺らす。
+        //    iTween.ShakePosition(lifeGage, iTween.Hash("x", 0.3f, "y", 0.3f, "time", 0.5f));
+        //    return;
+        //}
+
         Debug.Log(clickedGameObject);
-
-        //使用した道具に応じて体力を減らす。
-        //使用しているツール=tool.Tools[toolManager.SelectToolNum]
-        //受けるダメージ=damage[tool.Tools[toolManager.SelectToolNum].level-1]
-        //ToDo
-        //レベルが0の時の例外処理（多分いらない）
-        gameStatus.Damage(tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level-1]);
-
         int raw = 0, column = 0;
         //クリックしたタイルのindexを取得。
-        (raw,column)=SearchIndex(clickedGameObject);
+        (raw, column) = SearchIndex(clickedGameObject);
         //周りのスプライトの画像を変える。
         for (int i = 0; i < 9; i++)
         {
@@ -135,10 +141,39 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
             ChangeSprite(Wall[nraw, ncolumn]);
         }
-        //アイテムの情報を更新
-        UpdateItemData.Invoke();
+
+        ReverseSprite();
     }
 
+
+
+    /// <summary>
+    /// 盤面を反転させるときの処理
+    /// </summary>
+    private void ReverseSprite()
+    {
+
+        // シェイク(一定時間のランダムな動き)
+        var duration = 0.7f;    // 時間
+        var strength = 0.5f;    // 力
+        var vibrato = 100;    // 揺れ度合い
+        var randomness = 90f;   // 揺れのランダム度合い(0で一定方向のみの揺れになる)
+        var snapping = false; // 値を整数に変換するか
+        var fadeOut = true;  // 揺れが終わりに向かうにつれ段々小さくなっていくか(falseだとピタッと止まる)
+        shakeObj.transform.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut);
+        
+        //使用した道具に応じて体力を減らす
+        //ToDo
+        //レベルが0の時の例外処理（多分いらない）
+        gameStatus.Damage(tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1]);
+
+        //取得できるかどうかについてアイテムの情報を更新
+        UpdateItemData.Invoke();
+
+        //UIのアイテム情報の更新
+        ItemGetUI.ChangeGetItemUI();
+
+    }
 
     /// <summary>
     ///壁の添え字を探索する。
