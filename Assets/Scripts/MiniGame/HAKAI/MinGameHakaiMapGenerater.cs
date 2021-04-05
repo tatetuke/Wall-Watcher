@@ -29,7 +29,7 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
         }
         //アイテムデータの初期化
         InitItemData();
-        Debug.Log("HI");
+        //Debug.Log("HI");
         //最後タイルを選ぶ確率が100%になるようにする。
         tile[tile.Count - 1].P = RandomRageLengthWall;
         //壁の生成
@@ -118,6 +118,7 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
                 //既に枠にアイテムが入っていたらスキップ
                 if (m_cansetItem == false) continue;
 
+                Debug.Log("アイテムを盤面に配置:" + Items[j].name);
                 //盤面にアイテムを格納する;
                 for (int k = 0; k < ItemData[j].m_Ysize; k++)
                 {
