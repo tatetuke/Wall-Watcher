@@ -155,6 +155,9 @@ public class MinGameHakaiManager2 : MonoBehaviour
             {
                 ChangeSprite2(Wall[nraw, ncolumn]);
 
+            }else if (gameType == 3)
+            {
+                ChangeSprite3(Wall[nraw, ncolumn]);
             }
         }
         //道具を使用した時のエフェクトを出す。
@@ -227,7 +230,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     }
 
     /// <summary>
-    /// スプライトの変更
+    /// スプライトの変更、2サイクルバージョン
     /// </summary>
     /// <param name="m_Wall"></param>
     private void ChangeSprite1(GameObject m_Wall)
@@ -246,7 +249,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     }
 
     /// <summary>
-    /// スプライトの変更
+    /// スプライトの変更、3サイクルバージョン
     /// </summary>
     /// <param name="m_Wall"></param>
     private void ChangeSprite2(GameObject m_Wall)
@@ -267,6 +270,23 @@ public class MinGameHakaiManager2 : MonoBehaviour
         }
         
 
+    }
+    /// <summary>
+    /// DPバージョン
+    /// </summary>
+    /// <param name="m_Wall"></param>
+    private void ChangeSprite3(GameObject m_Wall)
+    {
+        string spriteName = m_Wall.GetComponent<SpriteRenderer>().sprite.name;
+        if (spriteName == PolutedLevel1)
+        {
+            m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[1];
+        }
+        else if (spriteName == PolutedLevel1_1)
+        {
+            m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[2];
+
+        }
     }
     /// <summary>
     /// スプライトのファイル名を取得
