@@ -119,14 +119,21 @@ namespace Fungus
             }
             else
             {
-                // テキストをキャラクターの上に表示する
-                GameObject panel = sayDialog.transform.Find("Panel").gameObject;
-                GameObject storytext = panel.transform.Find("StoryText").gameObject;
-                RectTransform rectTransform = storytext.GetComponent<RectTransform>();
-                GameObject spriteGameObject = character.transform.GetChild(0).gameObject;
-                Vector3 pos = RectTransformUtility.WorldToScreenPoint(Camera.main, spriteGameObject.transform.position);
-                pos.y = 750;
-                rectTransform.position = pos;
+                if (character.name != "Void")
+                {
+                    // テキストをキャラクターの上に表示する
+                    GameObject panel = sayDialog.transform.Find("Panel").gameObject;
+                    GameObject storytext = panel.transform.Find("StoryText").gameObject;
+                    RectTransform rectTransform = storytext.GetComponent<RectTransform>();
+                    GameObject spriteGameObject = character.transform.GetChild(0).gameObject;
+                    Vector3 pos = RectTransformUtility.WorldToScreenPoint(Camera.main, spriteGameObject.transform.position);
+                    pos.y = 750;
+                    rectTransform.position = pos;
+                }
+                else
+                {
+                    Debug.Log("void");
+                }
             }
 
             var activeCustomTags = CustomTag.activeCustomTags;

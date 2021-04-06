@@ -157,7 +157,7 @@ public class Player : MonoBehaviour
 
     public void PlayFootStepSE()
     {
-        SEManager.Instance.Play("footsteps");
+        //SEManager.Instance.Play("footsteps");
     }
 
     /// <summary>
