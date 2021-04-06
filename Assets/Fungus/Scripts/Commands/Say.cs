@@ -123,8 +123,10 @@ namespace Fungus
                 GameObject panel = sayDialog.transform.Find("Panel").gameObject;
                 GameObject storytext = panel.transform.Find("StoryText").gameObject;
                 RectTransform rectTransform = storytext.GetComponent<RectTransform>();
-                rectTransform.anchoredPosition3D = character.transform.position;
-                rectTransform.anchoredPosition3D += new Vector3(0, 100, 0);
+                GameObject spriteGameObject = character.transform.GetChild(0).gameObject;
+                Vector3 pos = RectTransformUtility.WorldToScreenPoint(Camera.main, spriteGameObject.transform.position);
+                pos.y = 750;
+                rectTransform.position = pos;
             }
 
             var activeCustomTags = CustomTag.activeCustomTags;
