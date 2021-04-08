@@ -1411,6 +1411,11 @@ namespace Fungus
             return modified;
         }
 
+        public static implicit operator Flowchart(MessageReceived v)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

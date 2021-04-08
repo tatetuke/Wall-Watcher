@@ -8,7 +8,7 @@ public class SetConversationPositionPlayableBehaviour : PlayableBehaviour
 {
     public GameObject Player;
     public GameObject PlayerSprite;
-    public float Distance;
+    public float Distance = 2;
     public GameObject TargetNPC;
     public Vector3 startPosition;
     public Vector3 endPosition;
@@ -17,7 +17,7 @@ public class SetConversationPositionPlayableBehaviour : PlayableBehaviour
     public override void OnGraphStart(Playable playable)
     {
         PlayerSprite = Player.transform.Find("PlayerSprite").gameObject;
-        TargetNPC = ConversationDataManager.Instance.GetTargetNPC();
+        TargetNPC = ConversationManager.Instance.GetTargetNPC();
 
         startPosition = Player.transform.position;
 
