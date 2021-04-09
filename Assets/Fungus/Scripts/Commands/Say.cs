@@ -2,6 +2,7 @@
 // It is released for free under the MIT open source license (https://github.com/snozbot/fungus/blob/master/LICENSE)
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Fungus
 {
@@ -111,6 +112,29 @@ namespace Fungus
             sayDialog.SetCharacterImage(portrait);
 
             string displayText = storyText;
+
+            if (character == null)
+            {
+                Debug.LogError("fungusで会話の話し手が設定されてません!!!!!");
+            }
+            else
+            {
+                if (character.name != "Void")
+                {
+                    // テキストをキャラクターの上に表示する
+                    GameObject panel = sayDialog.transform.Find("Panel").gameObject;
+                    GameObject storytext = panel.transform.Find("StoryText").gameObject;
+                    RectTransform rectTransform = storytext.GetComponent<RectTransform>();
+                    GameObject spriteGameObject = character.transform.GetChild(0).gameObject;
+                    Vector3 pos = RectTransformUtility.WorldToScreenPoint(Camera.main, spriteGameObject.transform.position);
+                    pos.y = 750;
+                    rectTransform.position = pos;
+                }
+                else
+                {
+                    Debug.Log("void");
+                }
+            }
 
             var activeCustomTags = CustomTag.activeCustomTags;
             for (int i = 0; i < activeCustomTags.Count; i++)
