@@ -6,17 +6,18 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
 {
     public const int Rsize=7;
     public const int Csize=7;
-    public bool[,] CanSetItem = new bool[Rsize,Csize ];
+    private bool[,] CanSetItem = new bool[Rsize,Csize ];
     public int RandomRageLengthWall=1000;
     public int RandomRageLengthItem=1000;
     public int itemcount=4;
     public GameObject[,] Wall = new GameObject[Rsize, Csize];
     public List<GameObject> Items;
-    public List<MinGameHAKAIItem> ItemData;
+    [HideInInspector]public List<MinGameHAKAIItem> ItemData;
     /// <summary>
     /// 確率の低い順に並べる必要があります。
     /// </summary>
     public List<MinGameHakaiMapTileData>tile;
+    public MinGameHakaiManager2 gameManager; 
     private void Start()
     {
         for (int i = 0; i < Rsize; i++)
@@ -62,6 +63,8 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
                 //Debug.Log(" "+RandomNum);
             for (int k = 0; k < tile.Count; k++)
             {
+                if (gameManager.gameType == 1 && k == 1) continue;
+
                 //生成された乱数がタイルを生成する確率より小さければ。
                 if (tile[k].P >= RandomNum)
                 {

@@ -9,7 +9,10 @@ public class MinGameHAKAIStatus : MonoBehaviour
    protected MingameHAKAIStatusGauge statusGage;
     private void Start()
     {
-        maxLife = 100;
+        if (maxLife == 0)
+        {
+            maxLife = 100;
+        }
         life = maxLife;
         statusGage = GameObject.FindObjectOfType<MingameHAKAIStatusGauge>();
         statusGage.SetPlayer(this);
