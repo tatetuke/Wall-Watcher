@@ -1751,7 +1751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91962808935f26945a1dc82c07138e80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameType: 3
+  gameType: 1
   Rsize: 7
   Csize: 7
   PolutedLevel2: 
