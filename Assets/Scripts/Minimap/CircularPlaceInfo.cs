@@ -9,7 +9,7 @@ using UnityEngine;
 public class CircularPlaceInfo: PlaceInfo
 {
     [SerializeField] private CircleCollider2D circleWay;
-    [SerializeField] private float startAngle;// x軸正の向きからの角度　0~360
+    [SerializeField,Tooltip("x軸正の向きからの角度")] private float startAngle;// x軸正の向きからの角度　0~360
     [SerializeField] private Direction direction;
 
     private enum Direction

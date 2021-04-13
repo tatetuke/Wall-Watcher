@@ -544,8 +544,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   placeName: 
   circleWay: {fileID: 5707897952175061490}
-  startAngle: 90
-  direction: 0
+  startAngle: -30
+  direction: 1
 --- !u!1 &5707897952175061488
 GameObject:
   m_ObjectHideFlags: 0
