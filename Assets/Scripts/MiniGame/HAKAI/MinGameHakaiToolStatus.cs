@@ -5,6 +5,10 @@ using UnityEngine;
 public class MinGameHakaiToolStatus : MonoBehaviour
 {
     /// <summary>
+    /// 行動スキルの種類
+    /// </summary>
+    public int skillType;
+    /// <summary>
     /// 道具の名前
     /// </summary>
     public string toolName;
@@ -28,4 +32,21 @@ public class MinGameHakaiToolStatus : MonoBehaviour
     /// 3x3マスの正方形を左から右に、上から下に見たとき、画像を変更できるかどうか.
     /// </summary>
     public bool[] CanChangeSprite = new bool[9] {true,true,true,true,true,true,true,true,true};
+
+    /*行動スキルについて
+     * 
+     * skillType=0:盤面を反転させるタイプ
+     * skillType=1:一定ターン数盤面を反転できなくする
+     * skillType=2:盤面のアイテムを透視する
+     */
+    //スキルタイプ0
+
+    //スキルタイプ1
+    public int protectTime;
+
+    //スキルタイプ2
+
+
+    
+
 }
