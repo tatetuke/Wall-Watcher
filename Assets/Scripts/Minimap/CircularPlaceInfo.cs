@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public class CircularPlaceInfo: PlaceInfo
 {
-    [SerializeField] private CircleCollider2D circleWay;
+    [SerializeField] private float radius;
     [SerializeField,Tooltip("x軸正の向きからの角度")] private float startAngle;// x軸正の向きからの角度　0~360
     [SerializeField] private Direction direction;
 
@@ -26,17 +26,23 @@ public class CircularPlaceInfo: PlaceInfo
         float c = Mathf.Clamp(progress, 0, 1);
         int dir = direction == Direction.CLOCKWISE ? -1 : 1;
         //内分点
-        Vector3 pos = circleWay.transform.position;
-        pos.x += circleWay.radius * Mathf.Cos(2 * Mathf.PI * progress * dir + startAngle / 180 * Mathf.PI);
-        pos.y += circleWay.radius * Mathf.Sin(2 * Mathf.PI * progress * dir + startAngle / 180 * Mathf.PI);
+        Vector3 pos = transform.position;
+        pos.x += radius * Mathf.Cos(2 * Mathf.PI * progress * dir + startAngle / 180 * Mathf.PI);
+        pos.y += radius * Mathf.Sin(2 * Mathf.PI * progress * dir + startAngle / 180 * Mathf.PI);
         return pos;
     }
 
 #if UNITY_EDITOR
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
+        Vector3 pos = transform.position;
+        pos.x += radius * Mathf.Cos(startAngle / 180 * Mathf.PI);
+        pos.y += radius * Mathf.Sin(startAngle / 180 * Mathf.PI);
+
         Gizmos.color = Color.green;
-        
+        Utils.GizmosExtensions.DrawWireCircle(transform.position, radius,segments:30, rotation: Quaternion.LookRotation(Vector3.up));
+        Gizmos.DrawLine(transform.position, pos);
+        //Utils.GizmosExtensions.DrawArrow(); //円の接線を回る方向に出したい
     }
 #endif
 }

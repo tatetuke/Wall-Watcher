@@ -30,7 +30,7 @@ public class CharacterController : MonoBehaviour
         //transform.localPosition += deltaPos;
         //transform.position += deltaPos;
         //transform.position += new Vector3(1,0,0);
-        Debug.Log(deltaPos);
+        //Debug.Log(deltaPos);
     }
 
     // Measure the amount of movement to the Z axis during animation
