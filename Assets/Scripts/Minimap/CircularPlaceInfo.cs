@@ -31,4 +31,12 @@ public class CircularPlaceInfo: PlaceInfo
         pos.y += circleWay.radius * Mathf.Sin(2 * Mathf.PI * progress * dir + startAngle / 180 * Mathf.PI);
         return pos;
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        
+    }
+#endif
 }
