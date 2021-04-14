@@ -17,9 +17,10 @@ public class PointPlaceInfo : PlaceInfo
     }
 
 #if UNITY_EDITOR
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
+        Utils.GizmosExtensions.DrawWireCircle(transform.position, 10, segments: 4, rotation: Quaternion.LookRotation(Vector3.up));
     }
 #endif
 }

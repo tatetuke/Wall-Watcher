@@ -32,5 +32,12 @@ class LocationGetter : SingletonMonoBehaviour<LocationGetter>
         return Mathf.Clamp((position.x - startPosition.position.x) / (endPosition.position.x - startPosition.position.x), 0, 1);
     }
 
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Utils.GizmosExtensions.DrawArrow(startPosition.position, endPosition.position);
+    }
+#endif
 }
 

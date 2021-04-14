@@ -26,7 +26,6 @@ public class LinearPlaceInfo : PlaceInfo
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
-        //Gizmos.DrawLine(startPosition.position, endPosition.position);
         Utils.GizmosExtensions.DrawArrow(startPosition.position, endPosition.position);
     }
 #endif
