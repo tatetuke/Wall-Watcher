@@ -29,6 +29,8 @@ public class Player : MonoBehaviour
         IDLE,//立ち状態
         WALKING,//歩き
         MINIGAME,//ミニゲーム
+        AUTOR,//自動歩行（右方向）
+        AUTOL,//自動歩行（左方向）
     }
 
     public bool IsWalking
@@ -111,6 +113,10 @@ public class Player : MonoBehaviour
         {
 
         }
+        else if(m_State == State.AUTOR || m_State == State.AUTOL)
+        {
+            m_AnimationModule.ChangeState(AnimationModule.State.WALKING);
+        }
         else
         {
             Debug.LogWarning("対応できていない状態です");
@@ -148,6 +154,20 @@ public class Player : MonoBehaviour
         else if (m_State == State.MINIGAME)
         {
 
+        }
+        else if(m_State == State.AUTOR)
+        {
+            UpdateInertia(1);
+
+            if (!IsWalking)
+                ChangeState(State.IDLE);
+        }
+        else if (m_State == State.AUTOL)
+        {
+            UpdateInertia(-1);
+
+            if (!IsWalking)
+                ChangeState(State.IDLE);
         }
         else
         {

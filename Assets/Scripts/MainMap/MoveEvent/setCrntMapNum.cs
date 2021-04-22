@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(-1)]
+
 public class setCrntMapNum : MonoBehaviour
 {
     public int setNum = 1;
