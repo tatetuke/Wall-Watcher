@@ -12,13 +12,11 @@ using DG.Tweening;
 
 /// <summary>
 /// 全体ボリューム、個別ボリューム、音のフェードイン・アウトを管理する
-/// TODO フェードイン・アウトでマックスボリュームが変更されてしまう
-/// TODO マックスボリュームを保存可能にしたい
 /// </summary>
 public class AudioMixerManager : SingletonMonoBehaviour<AudioMixerManager>
 {
     [SerializeField] private AudioMixer m_AudioMixer = default;
-    [SerializeField] private FadeState m_FadeState = FadeState.NONE;
+    //[SerializeField] private FadeState m_FadeState = FadeState.NONE;
     //[SerializeField] private Dictionary<string, float> m_AudioVolumes = new Dictionary<string, float>();
     /// <summary>最大ボリューム(デシベル)</summary>
     [SerializeField] private List<float> m_Volumes = new List<float>();
