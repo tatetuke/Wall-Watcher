@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 /// <summary>
 /// 最小限の情報
 /// </summary>
@@ -11,6 +12,8 @@ public class SaveDataHeader
     public int loopCount;//周回数
     public int chapterCount;
 }
+
+[System.Serializable]
 public class QuestSaveData
 {
     public string questName;
@@ -18,6 +21,7 @@ public class QuestSaveData
     public QuestChecker.QuestState state;
 }
 
+[System.Serializable]
 /// <summary>
 /// セーブデータの情報
 /// </summary>
@@ -29,4 +33,10 @@ public class SaveData
     public int money;
     public List<Kyoichi.ItemStack> inventry = new List<Kyoichi.ItemStack>();
     public List<QuestSaveData> quests = new List<QuestSaveData>();
+
+    public override string ToString()
+    {
+        return $"{base.ToString()} {JsonUtility.ToJson(this)}";
+    }
 }
+
