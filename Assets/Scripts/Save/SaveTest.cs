@@ -4,95 +4,125 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-using Assets.Scripts.Save;
+//新しくセーブしたい項目を増やしたくなったときの見本
 
-/// <summary>
-/// SaveDataHolderなどをテストするためのオブジェクト
-/// </summary>
-public class SaveTest : MonoBehaviour
-{
-    public SaveData data;
+namespace Save.Test {
 
-
-    public void Start()
+    //　基本的にはSaveDataBaseを継承していれば大丈夫
+    //　継承する理由はToString()を上書きする必要があるため
+    [System.Serializable]
+    public class AudioSettingData : SaveDataBase
     {
-        //List<ListElement> list = new List<ListElement>();
-
-        //ListElement<int> a = new ListElement<int>(20);
-        //ListElement<double> b = new ListElement<double>();
-        //ListElement<string> c = new ListElement<string>();
-        //ListElement<MoneyScript> d;
-
-        //a.Value = 20;
-        //b.Value = 3.5;
-        //c.Value = "aaa";
-
-        //Debug.Log(a.Value);
-        //Debug.Log(b.Value);
-        //Debug.Log(c.Value);
-
-        //list.Add(a);
-        //list.Add(b);
-        //list.Add(c);
-
-        //foreach(ListElement el in list)
-        //{
-        //    int p = el.GetValue<int>();
-
-
-        //    if (el.CheckType(typeof(int)))
-        //        x.Add((int)el.obj);
-        //    if (el.CheckType(typeof(double)))
-        //        y.Add((double)el.obj);
-        //    if (el.CheckType(typeof(string)))
-        //        z.Add((string)el.obj);
-        //}
-
-        DataBank bank = DataBank.Open();
-        Debug.Log("DataBank.Open()");
-        Debug.Log($"save path of bank is { bank.SavePath }");
-
-        SaveData saveData = new SaveData()
-        {
-            header = new SaveDataHeader { loopCount=3,chapterCount=1},
-            playerPosition = new Vector3(10, 0, 0),
-            roomName = "room1",
-            money = 999,
-            inventry = new List<Kyoichi.ItemStack>(),
-            quests = new List<QuestSaveData> { 
-                new QuestSaveData { questName="quest1",cuestChapter=1,state=QuestChecker.QuestState.not_yet} 
-            },
-        };
-        Debug.Log(saveData);
-
-        bank.Store("player", saveData);
-        Debug.Log("bank.Store()");
-
-        bank.SaveAll();
-        Debug.Log("bank.SaveAll()");
-
-        SaveData storedData = new SaveData();
-        Debug.Log("default savedata");
-        Debug.Log(storedData);
-
-        storedData = bank.Get<SaveData>("player");
-        Debug.Log("bank.Get<SaveData>(\"player\")");
-        Debug.Log(storedData);
-
-        bank.Clear();
-        Debug.Log("bank.Clear()");
-
-        storedData = bank.Get<SaveData>("player");
-        Debug.Log(storedData);
-
-        bank.Load<SaveData>("player");
-        Debug.Log("bank.Load()");
-
-        storedData = bank.Get<SaveData>("player");
-        Debug.Log(storedData);
-
-        data = storedData;
+        public List<float> volumes = new List<float>(3);
+        //いつもInspectorに表示されるような単純な型は保存できる
+        //GameObject型やTransform型なども一応できる
     }
 
-}
+    [System.Serializable] //別にSerializableにしなくてもよい
+    public class UISetting : SaveDataBase
+    {
+        public float size;
+        public Color color;
+        //クラスや構造体の入れ子も可能
+        public MyClass myClass;
+        public Transform transform;
+        public GameObject gameObject;
+    }
 
+    public class MyClass
+    {
+        int abc;
+    }
+
+    /// <summary>
+    /// DataBankのテスト用
+    /// </summary>
+    public class SaveTest : MonoBehaviour
+    {
+        public SaveData data;
+        public AudioSettingData audioSettingData;
+        public UISetting uISetting;
+
+        public void Start()
+        {
+            audioSettingData = new AudioSettingData() { volumes = new List<float> { 1, 0.5f, 0.75f } };
+            uISetting = new UISetting() { size = 10, color = new Color(1, 1, 0) ,
+                transform = this.transform, gameObject = this.gameObject};
+
+            DataBank bank = DataBank.Open();
+            //一時データに保管
+            bank.Store("audio", audioSettingData);
+            bank.Store("ui_setting", uISetting);
+            //ファイルへと保存
+            bank.SaveAll();
+            //一時データを消去
+            bank.Clear();
+            //ファイルから読み込む
+            bank.Load<AudioSettingData>("audio");
+            bank.Load<UISetting>("ui_setting");
+            Debug.Log("Loaded");
+            //取得
+            Debug.Log(bank.Get<AudioSettingData>("audio"));
+            Debug.Log(bank.Get<UISetting>("ui_setting"));
+
+            Test();
+        }
+
+
+        public void Test()
+        {
+            DataBank bank = DataBank.Open();
+            Debug.Log("DataBank.Open()");
+            Debug.Log($"save path of bank is { bank.SavePath }");
+
+            //テスト用のセーブデータを定義
+            SaveData saveData = new SaveData()
+            {
+                header = new SaveDataHeader { loopCount = 3, chapterCount = 1 },
+                playerPosition = new Vector3(10, 0, 0),
+                roomName = "room1",
+                money = 999,
+                inventry = new List<Kyoichi.ItemStack>(),
+                quests = new List<QuestSaveData> {
+                new QuestSaveData { questName="quest1",cuestChapter=1,state=QuestChecker.QuestState.not_yet}
+            },
+            };
+            Debug.Log(saveData);
+
+            //データをキーに紐づけて一時的に保管　ファイルへ保存はされていないので注意
+            bank.Store("player", saveData);
+            Debug.Log("bank.Store()");
+
+            //保管しているデータをすべてファイルへと書き込んで保存
+            bank.SaveAll();
+            Debug.Log("bank.SaveAll()");
+
+            SaveData storedData = new SaveData();
+            Debug.Log("default savedata");
+            Debug.Log(storedData);
+
+            //保管された一時データから取得　セーブされたファイルからではないので注意
+            storedData = bank.Get<SaveData>("player");
+            Debug.Log("bank.Get<SaveData>(\"player\")");
+            Debug.Log(storedData);
+
+            //保管された一時データを消去
+            bank.Clear();
+            Debug.Log("bank.Clear()");
+
+            //保管された一時データから読み込む　Clearしたので null のはず
+            storedData = bank.Get<SaveData>("player");
+            Debug.Log(storedData);
+
+            //指定したキーでデータをファイルから読み込む
+            bank.Load<SaveData>("player");
+            Debug.Log("bank.Load()");
+
+            //保管された一時データから読み込む
+            storedData = bank.Get<SaveData>("player");
+            Debug.Log(storedData);
+
+            data = storedData;
+        }
+    }
+}

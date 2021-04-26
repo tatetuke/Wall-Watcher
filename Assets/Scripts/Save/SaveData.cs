@@ -25,7 +25,7 @@ public class QuestSaveData
 /// <summary>
 /// セーブデータの情報
 /// </summary>
-public class SaveData
+public class SaveData : SaveDataBase
 {
     public SaveDataHeader header = new SaveDataHeader();
     public Vector3 playerPosition;
@@ -33,10 +33,12 @@ public class SaveData
     public int money;
     public List<Kyoichi.ItemStack> inventry = new List<Kyoichi.ItemStack>();
     public List<QuestSaveData> quests = new List<QuestSaveData>();
+}
 
+public class SaveDataBase
+{
     public override string ToString()
     {
         return $"{base.ToString()} {JsonUtility.ToJson(this)}";
     }
 }
-

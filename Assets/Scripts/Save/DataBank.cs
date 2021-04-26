@@ -6,10 +6,13 @@ using UnityEngine;
 using System.IO;
 using System.Text;
 
+// 保管されるものを object型から SaveDataBase にした
+// ToString()のoverrideし忘れを防ぐため
+
 public class DataBank
 {
     static DataBank instance = new DataBank();
-    static Dictionary<string, object> bank = new Dictionary<string, object>();
+    static Dictionary<string, SaveDataBase> bank = new Dictionary<string, SaveDataBase>();
 
     static readonly string path = "SaveData";
     //static readonly string fullPath = $"{ Application.persistentDataPath }/{ path }";
@@ -41,7 +44,7 @@ public class DataBank
         return bank.ContainsKey(key);
     }
 
-    public void Store(string key, object obj)
+    public void Store(string key, SaveDataBase obj)
     {
         bank[key] = obj;
     }
@@ -57,6 +60,7 @@ public class DataBank
     }
 
     public DataType Get<DataType>(string key)
+        where DataType: SaveDataBase
     {
         if (ExistsKey(key))
         {
@@ -105,6 +109,7 @@ public class DataBank
     }
 
     public bool Load<DataType>(string key)
+        where DataType : SaveDataBase
     {
         string filePath = $"{ fullPath }/{ key }.{ extension }";
 
