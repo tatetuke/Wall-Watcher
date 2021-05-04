@@ -25,7 +25,7 @@ public class QuestSaveData
 /// <summary>
 /// セーブデータの情報
 /// </summary>
-public class SaveData : SaveDataBase
+public class SaveData : SaveDataBaseClass
 {
     public SaveDataHeader header = new SaveDataHeader();
     public Vector3 playerPosition;
@@ -35,7 +35,7 @@ public class SaveData : SaveDataBase
     public List<QuestSaveData> quests = new List<QuestSaveData>();
 }
 
-public class SaveDataBase
+public class SaveDataBaseClass
 {
     public override string ToString()
     {

@@ -11,7 +11,7 @@ namespace Save.Test {
     //　基本的にはSaveDataBaseを継承していれば大丈夫
     //　継承する理由はToString()を上書きする必要があるため
     [System.Serializable]
-    public class AudioSettingData : SaveDataBase
+    public class AudioSettingData : SaveDataBaseClass
     {
         public List<float> volumes = new List<float>(3);
         //いつもInspectorに表示されるような単純な型は保存できる
@@ -19,7 +19,7 @@ namespace Save.Test {
     }
 
     [System.Serializable] //別にSerializableにしなくてもよい
-    public class UISetting : SaveDataBase
+    public class UISetting : SaveDataBaseClass
     {
         public float size;
         public Color color;
@@ -49,7 +49,7 @@ namespace Save.Test {
             uISetting = new UISetting() { size = 10, color = new Color(1, 1, 0) ,
                 transform = this.transform, gameObject = this.gameObject};
 
-            DataBank bank = DataBank.Open();
+            DataBank bank = DataBank.Instance;
             //一時データに保管
             bank.Store("audio", audioSettingData);
             bank.Store("ui_setting", uISetting);
@@ -71,7 +71,7 @@ namespace Save.Test {
 
         public void Test()
         {
-            DataBank bank = DataBank.Open();
+            DataBank bank = DataBank.Instance;
             Debug.Log("DataBank.Open()");
             Debug.Log($"save path of bank is { bank.SavePath }");
 

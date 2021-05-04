@@ -9,10 +9,13 @@ using System.Text;
 // 保管されるものを object型から SaveDataBase にした
 // ToString()のoverrideし忘れを防ぐため
 
+/// <summary>
+/// ローカルへの書き出し・読みだしを管理する
+/// </summary>
 public class DataBank
 {
     static DataBank instance = new DataBank();
-    static Dictionary<string, SaveDataBase> bank = new Dictionary<string, SaveDataBase>();
+    static Dictionary<string, SaveDataBaseClass> bank = new Dictionary<string, SaveDataBaseClass>();
 
     static readonly string path = "SaveData";
     //static readonly string fullPath = $"{ Application.persistentDataPath }/{ path }";
@@ -34,6 +37,11 @@ public class DataBank
         return instance;
     }
 
+    public static DataBank Instance
+    {
+        get { return instance; }
+    }
+
     public bool IsEmpty()
     {
         return bank.Count == 0;
@@ -44,23 +52,27 @@ public class DataBank
         return bank.ContainsKey(key);
     }
 
-    public void Store(string key, SaveDataBase obj)
+    /// <summary>データを一時保存する</summary>
+    public void Store(string key, SaveDataBaseClass obj)
     {
         bank[key] = obj;
     }
 
+    /// <summary>一時保存されているデータを全て削除する</summary>
     public void Clear()
     {
         bank.Clear();
     }
 
+    /// <summary>一時保存されているデータを削除する</summary>
     public void Remove(string key)
     {
         bank.Remove(key);
     }
 
+    /// <summary>一時保存されているデータを取得する</summary>
     public DataType Get<DataType>(string key)
-        where DataType: SaveDataBase
+        where DataType: SaveDataBaseClass
     {
         if (ExistsKey(key))
         {
@@ -72,6 +84,7 @@ public class DataBank
         }
     }
 
+    /// <summary>一時保存されているデータを全てファイルへ書き出す</summary>
     public void SaveAll()
     {
         foreach (string key in bank.Keys)
@@ -80,6 +93,7 @@ public class DataBank
         }
     }
 
+    /// <summary>一時保存されているデータをファイルへ書き出す</summary>
     public bool Save(string key)
     {
         if (!ExistsKey(key))
@@ -108,8 +122,9 @@ public class DataBank
         return true;
     }
 
+    /// <summary>ファイルからデータを読み込み一時保存する</summary>
     public bool Load<DataType>(string key)
-        where DataType : SaveDataBase
+        where DataType : SaveDataBaseClass
     {
         string filePath = $"{ fullPath }/{ key }.{ extension }";
 
