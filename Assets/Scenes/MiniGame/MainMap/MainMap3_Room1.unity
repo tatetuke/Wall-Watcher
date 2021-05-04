@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -598,17 +598,17 @@ PrefabInstance:
     - target: {fileID: 8038776165051113482, guid: 3d17117fd1207e94a806907f46672c47,
         type: 3}
       propertyPath: m_Size.x
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8038776165051113482, guid: 3d17117fd1207e94a806907f46672c47,
         type: 3}
       propertyPath: m_Offset.x
-      value: -6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8038776165051113482, guid: 3d17117fd1207e94a806907f46672c47,
         type: 3}
       propertyPath: m_Offset.y
-      value: -4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8038776165051113483, guid: 3d17117fd1207e94a806907f46672c47,
         type: 3}
@@ -618,12 +618,12 @@ PrefabInstance:
     - target: {fileID: 8038776165051113483, guid: 3d17117fd1207e94a806907f46672c47,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7
+      value: -14
       objectReference: {fileID: 0}
     - target: {fileID: 8038776165051113483, guid: 3d17117fd1207e94a806907f46672c47,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 8038776165051113483, guid: 3d17117fd1207e94a806907f46672c47,
         type: 3}
@@ -1157,24 +1157,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b80aed50585236448d951105186f9a2, type: 3}
---- !u!1 &1139169955 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6626503895012448112, guid: 1b80aed50585236448d951105186f9a2,
-    type: 3}
-  m_PrefabInstance: {fileID: 1139169954}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1139169956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1139169955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe468ece471247c4eaa0435f694c65d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1139169957 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6626503895012448115, guid: 1b80aed50585236448d951105186f9a2,
@@ -1600,6 +1582,11 @@ PrefabInstance:
         type: 3}
       propertyPath: move_key
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8038776165051113484, guid: 3d17117fd1207e94a806907f46672c47,
+        type: 3}
+      propertyPath: autoDirection
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d17117fd1207e94a806907f46672c47, type: 3}
