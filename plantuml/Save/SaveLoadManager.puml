@@ -1,0 +1,26 @@
+@startuml
+class SaveLoadManager {
+    - path : string
+    - usedKeyDictionary : Dictionary<string, bool>
+    - SaveCallBack : UnityEvent
+    - LoadCallBack : UnityEvent
+    - Awake() : void
+    + SaveAll() : void
+    + LoadAll() : void
+    + AddSaveCallBack(save:UnityAction) : void
+    + AddLoadCallBack(load:UnityAction) : void
+    + CheckKeyAvailable(key:string) : bool
+    + CheckKeyListAvailable(keys:List<string>) : bool
+    + AddKey(key:string) : void
+    + AddKeyList(keys:List<string>) : void
+    + Clear() : void
+    + ShowAllKeys() : void
+}
+note bottom of SaveLoadManager
+    SaveAll(), LoadAll()で
+    一括セーブ・ロードが可能
+    keyの重複の確認も行う
+end note
+
+"SingletonMonoBehaviour`1" "<SaveLoadManager>" <|-- SaveLoadManager
+@enduml
