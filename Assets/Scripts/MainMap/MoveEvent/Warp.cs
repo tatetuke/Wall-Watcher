@@ -7,6 +7,7 @@ public class Warp : MonoBehaviour
 {
     public int fromNum = 0;
     public int toNum = 0;
+    public int autoDirection = 0;
 
     public enum MOVE_KEY
     {
@@ -32,7 +33,7 @@ public class Warp : MonoBehaviour
                     move = false;
                     AllMapSet.prevMap = fromNum;
                     AllMapSet.currentMap = toNum;
-                    //Debug.Log(AllMapSet.warpMap[fromNum, toNum].Item3);
+                    AllMapSet.autoWalkingDirection = autoDirection;
                     FadeManager.Instance.LoadLevel(AllMapSet.warpMap[fromNum, toNum].Item3, 1f);
                 }
             }
