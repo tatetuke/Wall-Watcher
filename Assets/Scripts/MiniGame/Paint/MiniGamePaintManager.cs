@@ -9,6 +9,13 @@ using TMPro;
 /// </summary>
 public class MiniGamePaintManager : MonoBehaviour
 {
+    [SerializeField] private MiniGamePaintStatus gameStatus;//HPやHPを減らす関数を持つクラス
+
+    [SerializeField] MiniGamePaintToolDataManager toolManager;
+    [SerializeField] MiniGamePaintToolData tool;
+
+    [SerializeField] GameObject lifeGage;//揺らすゲームオブジェクトの選択
+
     [SerializeField] GameObject FrameArrow;
     [SerializeField] GameObject FrameSquare;
     private GameObject NowFrame;

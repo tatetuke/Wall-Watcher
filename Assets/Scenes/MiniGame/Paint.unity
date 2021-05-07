@@ -427,7 +427,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &104574245
 GameObject:
@@ -507,7 +507,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &228218091
 GameObject:
@@ -805,7 +805,7 @@ RectTransform:
   - {fileID: 280085408}
   - {fileID: 1775755407}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1507,7 +1507,7 @@ RectTransform:
   m_Children:
   - {fileID: 1529797159}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2018,7 +2018,7 @@ Transform:
   - {fileID: 2061547524}
   - {fileID: 42324613}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &585773513
 GameObject:
@@ -2108,7 +2108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 586495307}
   m_Layer: 5
-  m_Name: ToolDiscription
+  m_Name: ToolDescription
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2551,7 +2551,7 @@ Transform:
   - {fileID: 26284373}
   - {fileID: 1992290736}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &731580274
 GameObject:
@@ -2744,7 +2744,7 @@ Transform:
   - {fileID: 281295549}
   - {fileID: 1744257840}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &846052082
 GameObject:
@@ -3225,7 +3225,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1055637552}
   m_Layer: 5
-  m_Name: Discription
+  m_Name: Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3787,7 +3787,7 @@ RectTransform:
   - {fileID: 855855620}
   - {fileID: 402830564}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4469,7 +4469,7 @@ GameObject:
   - component: {fileID: 1506989334}
   - component: {fileID: 1506989333}
   m_Layer: 5
-  m_Name: Text
+  m_Name: DescriptionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5401,7 +5401,7 @@ RectTransform:
   - {fileID: 1479671429}
   - {fileID: 1371379444}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5819,6 +5819,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2144912234}
   - component: {fileID: 2144912233}
+  - component: {fileID: 2144912236}
+  - component: {fileID: 2144912235}
+  - component: {fileID: 2144912239}
+  - component: {fileID: 2144912238}
   m_Layer: 0
   m_Name: MiniGamePaintManager
   m_TagString: Untagged
@@ -5838,6 +5842,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd081f58f5825814c86eb928e1660619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameStatus: {fileID: 2144912235}
+  toolManager: {fileID: 2144912239}
+  tool: {fileID: 2144912238}
+  lifeGage: {fileID: 1775755406}
   FrameArrow: {fileID: 816116334}
   FrameSquare: {fileID: 579366093}
   ParameterCollection: {fileID: 1992290732}
@@ -5858,8 +5866,75 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2144912235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144912232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b6a81f8de6674c49b2f77b867346142, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  life: 0
+  maxLife: 1000
+--- !u!114 &2144912236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144912232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b58f6621786f70d43be20f9495e08f4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GreenGauge: {fileID: 667911741}
+  RedGauge: {fileID: 1412527511}
+--- !u!114 &2144912238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144912232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e303147c32fc3974390117f3604d769d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tools:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  ToolImages:
+  - {fileID: 21300000, guid: 69f32ca30ab555646b9c92c01904e041, type: 3}
+  - {fileID: 21300000, guid: fd39cc7abd267af428e768b20e6b9260, type: 3}
+  - {fileID: 21300000, guid: 857399b0f628c7a44a26382f10c994b3, type: 3}
+--- !u!114 &2144912239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144912232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e382b222330ed34fa10894adf5a5a1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toolDataScript: {fileID: 2144912238}
+  level: {fileID: 1461099195}
+  toolName: {fileID: 985911663}
+  descripton: {fileID: 1506989333}
+  damage: {fileID: 846052084}
+  hanniImage: {fileID: 38044826}
+  SelectToolNum: 0
 --- !u!1001 &240109077595890728
 PrefabInstance:
   m_ObjectHideFlags: 0
