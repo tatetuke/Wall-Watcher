@@ -23,14 +23,14 @@ public class WallManager : MonoBehaviour
     void SetGlowLine(Color color)
     {
         Material material = this.GetComponent<Renderer>().material;
-        material.color = color;
-        //material.SetColor("Color_7C7012AB", color);
+        //material.color = color;
+        material.SetColor("Color_7C7012AB", color);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        SetGlowLine(Color.cyan);
     }
 
     // Update is called once per frame
@@ -49,7 +49,7 @@ public class WallManager : MonoBehaviour
     private bool IsInCollider()
     {
         Material material = this.GetComponent<Renderer>().material;
-        return material.color == Color.yellow;
-        //return material.GetColor("Color_7C7012AB") == Color.yellow;
+        //return material.color == Color.yellow;
+        return material.GetColor("Color_7C7012AB") == Color.yellow;
     }
 }
