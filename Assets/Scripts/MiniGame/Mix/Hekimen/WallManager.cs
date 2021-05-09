@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class WallManager : MonoBehaviour
 {
+    public string SceneNameForDebug;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -40,7 +42,7 @@ public class WallManager : MonoBehaviour
         {
             if (IsInCollider())
             {
-                FadeManager.Instance.LoadLevel("Paint", 1f);
+                FadeManager.Instance.LoadLevel(SceneNameForDebug, 1f);
                 Debug.Log("MiniGamePaintシーンに遷移!");
             }
         }

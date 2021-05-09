@@ -10,7 +10,7 @@ public class MinGameHakaiToolData : MonoBehaviour
     {
         for(int i = 0; i < Tools.Length; i++)
         {
-            Tools[i] = new MinGameHakaiToolStatus();
+            Tools[i] = gameObject.AddComponent<MinGameHakaiToolStatus>();
         }
         Tool1Init();
         Tool2Init();

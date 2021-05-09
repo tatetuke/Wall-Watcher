@@ -10,7 +10,7 @@ public class TItleUIController : MonoBehaviour
     [SerializeField] Transform optionsParent;//選択肢を保持する親
     [Header("Options")]
     [SerializeField] string loadGameSceneName = "FileSelect";//LOAD GAME押したときに飛ぶシーン名
-    [SerializeField] string newGameSceneName = "MainMap3_CircleWay";//NEW GAME押したときに飛ぶシーン名
+    [SerializeField] string newGameSceneName = "MainMap3_Hekimen";//NEW GAME押したときに飛ぶシーン名
     [SerializeField] KeyCode enterKey=KeyCode.Space;//選択肢を決定するキー
     [Header("Debug")]
     [SerializeField,ReadOnly] int m_Select=0;//選択中のタイトルを表す変数.
