@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class WallManager : MonoBehaviour
 {
+    public enum State
+    {
+        NORMAL, // 通常状態
+        BROKEN, // 壊された状態
+        PAINTED, // 塗られた状態
+    }
+    private State m_State = default;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -16,8 +24,18 @@ public class WallManager : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            SetGlowLine(Color.cyan);
+            if(m_State == State.NORMAL) SetGlowLine(Color.cyan);
+            else if (m_State == State.BROKEN) SetGlowLine(Color.blue);
         }
+    }
+    public void breakwall()
+    {
+        m_State = State.BROKEN;
+    }
+
+    public void paintwall()
+    {
+        m_State = State.PAINTED;
     }
 
     void SetGlowLine(Color color)
@@ -40,7 +58,9 @@ public class WallManager : MonoBehaviour
         {
             if (IsInCollider())
             {
-                FadeManager.Instance.LoadLevel("Paint", 1f);
+                //FadeManager.Instance.LoadLevel("Paint", 1f);
+                breakwall();
+
                 Debug.Log("MiniGamePaintシーンに遷移!");
             }
         }
