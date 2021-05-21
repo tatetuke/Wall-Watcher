@@ -2666,6 +2666,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 693933024}
   m_CullTransparentMesh: 0
+--- !u!1001 &703959725
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3277317736087746426, guid: 160d890abf99d9f438c581ba90228f64,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3277317736087746426, guid: 160d890abf99d9f438c581ba90228f64,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3277317736087746426, guid: 160d890abf99d9f438c581ba90228f64,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3277317736087746426, guid: 160d890abf99d9f438c581ba90228f64,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3277317736087746426, guid: 160d890abf99d9f438c581ba90228f64,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3277317736087746426, guid: 160d890abf99d9f438c581ba90228f64,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3277317736087746426, guid: 160d890abf99d9f438c581ba90228f64,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3277317736087746426, guid: 160d890abf99d9f438c581ba90228f64,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3277317736087746426, guid: 160d890abf99d9f438c581ba90228f64,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3277317736087746426, guid: 160d890abf99d9f438c581ba90228f64,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3277317736087746426, guid: 160d890abf99d9f438c581ba90228f64,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3277317736087746427, guid: 160d890abf99d9f438c581ba90228f64,
+        type: 3}
+      propertyPath: m_Name
+      value: Neji
+      objectReference: {fileID: 0}
+    - target: {fileID: 3277317736087746427, guid: 160d890abf99d9f438c581ba90228f64,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 160d890abf99d9f438c581ba90228f64, type: 3}
 --- !u!1 &727802235
 GameObject:
   m_ObjectHideFlags: 0
@@ -8481,6 +8555,7 @@ MonoBehaviour:
   RandomRageLengthItem: 1000
   itemcount: 4
   Items:
+  - {fileID: 4224702521940286717, guid: 21eccc0a9aafe3a438fe2232ebb6dbb8, type: 3}
   - {fileID: 3277317736087746427, guid: 160d890abf99d9f438c581ba90228f64, type: 3}
   ItemData: []
   tile:
