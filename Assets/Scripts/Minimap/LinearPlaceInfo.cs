@@ -21,4 +21,12 @@ public class LinearPlaceInfo : PlaceInfo
         Vector3 pos = startPosition.position * (1-c) + endPosition.position * c;
         return pos;
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Utils.GizmosExtensions.DrawArrow(startPosition.position, endPosition.position);
+    }
+#endif
 }

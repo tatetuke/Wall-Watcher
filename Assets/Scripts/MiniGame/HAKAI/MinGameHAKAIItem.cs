@@ -10,6 +10,10 @@ public class MinGameHAKAIItem : MonoBehaviour
     public int m_TopLeftRaw;
     public int m_TopLeftColumn;
     public bool CanGetItem;
+    /// <summary>
+    /// アイテムの出現確率
+    /// </summary>
+    public int Prob;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,9 +29,4 @@ public class MinGameHAKAIItem : MonoBehaviour
     //    KeyWall = collision.gameObject;
     //}
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
 }
