@@ -182,7 +182,7 @@ public class ConversationManager : SingletonMonoBehaviour<ConversationManager>
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(m_State);
+        //Debug.Log(m_State);
         UpdateState();
 
         if (m_State == State.Normal)

@@ -49,7 +49,7 @@ public class SearchNearNPC : SingletonMonoBehaviour<SearchNearNPC>
             }
 
         }
-        if (retNearNPC != null) Debug.Log($"NearNPC is {retNearNPC.name}");
+        //if (retNearNPC != null) Debug.Log($"NearNPC is {retNearNPC.name}");
         //最も近いNPCを返す
         return NearNPC = retNearNPC;
     }
