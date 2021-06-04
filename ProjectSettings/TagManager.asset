@@ -50,3 +50,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: EffectFront
+    uniqueID: 1899944219
+    locked: 0
