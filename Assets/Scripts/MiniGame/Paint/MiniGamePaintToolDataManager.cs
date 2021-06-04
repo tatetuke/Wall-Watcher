@@ -21,21 +21,20 @@ public class MiniGamePaintToolDataManager : MonoBehaviour
     //それぞれのボタンを押した際に呼ばれる関数
     public void PushTool1()
     {
-        SelectToolNum = 0;
+        MiniGamePaintManager.Instance.ChangeRange(MiniGamePaintManager.Range.Square);
         ChangeUI();
-
     }
     public void PushTool2()
     {
-        SelectToolNum = 1;
+        Debug.Log("2が押された");
+        MiniGamePaintManager.Instance.ChangeRange(MiniGamePaintManager.Range.Up);
         ChangeUI();
-
+        Debug.Log(MiniGamePaintManager.Instance.m_Range);
     }
     public void PushTool3()
     {
-        SelectToolNum = 2;
+        MiniGamePaintManager.Instance.ChangeRange(MiniGamePaintManager.Range.Up);
         ChangeUI();
-
     }
 
 
