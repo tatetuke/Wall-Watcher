@@ -16,21 +16,5 @@ MonoBehaviour:
   description: aaaaaa
   subQuests: []
   endConditions:
-  - description: "\u6761\u4EF6\uFF11"
-    conditions:
-    - parameterKey: money
-      conditionOperator: 4
-      valueType: 0
-      intValue: 10000
-      floatValue: 0
-      stringValue: 
-      boolValue: 0
-    - parameterKey: item.donut
-      conditionOperator: 4
-      valueType: 0
-      intValue: 1
-      floatValue: 0
-      stringValue: 
-      boolValue: 0
-  - description: "\u6761\u4EF6\uFF12"
-    conditions: []
+  - {fileID: 11400000, guid: 74617ab4ac6b53c4c90d1af3e7aab82b, type: 2}
+  - {fileID: 0}

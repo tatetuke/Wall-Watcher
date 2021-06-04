@@ -13,28 +13,33 @@ MonoBehaviour:
   m_Name: SubQuest1
   m_EditorClassIdentifier: 
   items:
-  - type: 0
-    id: 0
+  - id: 0
     targetID: 1
     text: "\u304F\u3041w\u305Bdrftgy\u3075\u3058\u3053lp\u304F\u3041w\u305Bdrftgy\u3075\u3058\u3053lp\u304F\u3041w\u305Bdrftgy\u3075\u3058\u3053lp"
+    playableDirector: {fileID: 0}
     audio: {fileID: 0}
     quest: {fileID: 0}
+    conditions:
+    - description: 
+      conditions: []
     options: []
     eventName: 
-  - type: 0
-    id: 1
+  - id: 1
     targetID: FINISH
     text: "(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)"
+    playableDirector: {fileID: 0}
     audio: {fileID: 0}
     quest: {fileID: 0}
+    conditions: []
     options: []
     eventName: 
-  - type: 0
-    id: FINISH
+  - id: FINISH
     targetID: FINISH
     text: 
+    playableDirector: {fileID: 0}
     audio: {fileID: 0}
     quest: {fileID: 0}
+    conditions: []
     options: []
     eventName: 
   m_firstConversation: 0
