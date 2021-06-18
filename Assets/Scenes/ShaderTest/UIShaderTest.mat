@@ -7,10 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Water_Unlit
-  m_Shader: {fileID: -6465566751694194690, guid: 56191d60fcf829c49a98fdce114be8c7,
+  m_Name: UIShaderTest
+  m_Shader: {fileID: -6465566751694194690, guid: e261c1a5d8d5ba7438a94381a3dbddb7,
     type: 3}
-  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
+  m_ShaderKeywords: ENUM_FF3C7A59_CIRCLE ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -20,8 +20,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Texture2D_3ABD3B8C:
-        m_Texture: {fileID: 8400000, guid: 921ab9349a1f23c4788566719571d72e, type: 2}
+    - Texture2D_3765AA2F:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AlphaTex:
@@ -41,17 +41,17 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_52909EDA: 10.25
-    - Vector1_6A8B50F0: 1
-    - Vector1_8F5EE685: 2
-    - Vector1_BB49C78C: 0.232
-    - Vector1_DC129BE: 5
-    - Vector1_DD119790: 1
+    - ENUM_FF3C7A59: 0
+    - Vector1_601142A5: 0.4
+    - Vector1_D9E484B7: 0.6
     - _EnableExternalAlpha: 0
     m_Colors:
-    - Color_4BDDB20F: {r: 0, g: 0.16862746, b: 0.18039216, a: 1}
-    - Color_A0D31A6A: {r: 0.03529411, g: 0.17882016, b: 0.40392157, a: 0.2117647}
-    - Vector2_2F7B3F9F: {r: 0.15, g: 1, b: 0, a: 0}
+    - Color_8A2C036E: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 0}
+    - Color_CE11E6C: {r: 1, g: 1, b: 1, a: 0}
+    - Vector2_B43440D7: {r: 3.55, g: -1, b: 0, a: 0}
+    - Vector2_B8EE35DE: {r: 7.8, g: 4.52, b: 0, a: 0}
+    - Vector2_CFDE99F: {r: 0.6, g: 0.26, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
+    - _MainCol: {r: 1, g: 1, b: 1, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
