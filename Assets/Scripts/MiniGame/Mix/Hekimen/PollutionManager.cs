@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,12 +11,10 @@ public class PollutionManager : MonoBehaviour
     static GameObject bluewall; // 青色壁面のゲームオブジェクト
     public static GameObject selected_marker;  // 選択されたマーカーオブジェクト
 
-
     public static void breakMarker()
     {
         selected_marker.GetComponent<WallManager>().breakwall();
     }
-
 
     // Start is called before the first frame update
     void Start()

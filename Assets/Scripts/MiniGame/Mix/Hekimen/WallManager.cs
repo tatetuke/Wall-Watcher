@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -62,6 +62,7 @@ public class WallManager : MonoBehaviour
             {
                 PollutionManager.selected_marker = this.gameObject;
                 FadeManager.Instance.LoadLevel("HAKAI", 1f);
+
                 breakwall();
 
                 Debug.Log("MiniGamePaintシーンに遷移!");

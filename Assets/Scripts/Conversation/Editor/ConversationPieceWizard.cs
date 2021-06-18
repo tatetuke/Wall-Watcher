@@ -17,44 +17,21 @@ namespace RPGM.Gameplay
         public Conversations conversationPiece, originalConversationPiece;
 
         public ReorderableList options;
+        public ReorderableList conditions;
+        SerializedProperty list_prop;
         ConversationData conversationScript;
-        bool isUpdate = false;
         string[] targets;
+        int conversation_index;
 
-        public static void New(ConversationData data, ConversationType type_)
-        {
-            var w = ScriptableWizard.DisplayWizard<ConversationPieceWizard>("New Conversation Piece", "Create");
-            w.conversationScript = data;
-            w.conversationPiece = new Conversations() { 
-                type = type_,
-                id = "", 
-                text = "", 
-                targetID = "",
-                talker= "",
-                options = new List<ConversationOption>() };
-            w.isUpdate = false;
-        }
-
-        public static void Edit(ConversationData conversationScript, Conversations conversationPiece)
+        public static void Edit(SerializedProperty list_prop, ConversationData conversationScript, Conversations conversationPiece, int index)
         {
             var w = ScriptableWizard.DisplayWizard<ConversationPieceWizard>("Edit Conversation Piece", "Update");
             w.targets = (from i in conversationScript.items select i.id).ToArray();
             w.originalConversationPiece = conversationPiece;
             w.conversationPiece = conversationPiece;
             w.conversationScript = conversationScript;
-            w.isUpdate = true;
-        }
-
-        void BuildOptionList()
-        {
-            options = new ReorderableList(conversationPiece.options, typeof(ConversationOption), true, true, true, true);
-            options.drawElementCallback = OnDrawOption;
-            options.drawHeaderCallback = OnDrawOptionHeader;
-        }
-
-        void OnDrawOptionHeader(Rect rect)
-        {
-            GUI.Label(rect, "Branches");
+            w.list_prop = list_prop;
+            w.conversation_index = index;
         }
 
         void OnDrawOption(Rect rect, int index, bool isActive, bool isFocused)
@@ -62,22 +39,35 @@ namespace RPGM.Gameplay
             var item = conversationPiece.options[index];
             var i = System.Array.IndexOf(targets, item.targetId);
             if (i < 0) i = 0;
-            var r = rect;
-            r.height = 16;
-            r.width = rect.width * 0.2f;
-            i = EditorGUI.Popup(r, i, targets);
-            r.x += r.width;
+            var popupRect = rect;
+            popupRect.height = 16;
+            popupRect.width = rect.width * 0.2f;
+            i = EditorGUI.Popup(popupRect, i, targets);//targetID候補をドロップダウンで表示
             item.targetId = targets[i];
-           // item.image = (Sprite)EditorGUI.ObjectField(r, item.image, typeof(Sprite), false);
-            r.x += r.width;
-            r.width = rect.width * 0.6f;
-            item.text = EditorGUI.TextField(r, item.text);
+            //r.x += r.width;
+            // item.image = (Sprite)EditorGUI.ObjectField(r, item.image, typeof(Sprite), false);
+            var textRect = rect;
+            textRect.x += popupRect.width + rect.width * 0.2f;
+            textRect.width = rect.width * 0.6f;
+            item.text = EditorGUI.TextField(textRect, item.text);
             conversationPiece.options[index] = item;
         }
 
-        private void OnAdd(ReorderableList list)
+        void OnDrawCondition(Rect rect, int index, bool isActive, bool isFocused)
         {
-            list.list.Add(new ConversationOption() { targetId = "", text = "",/* image = null,*/ enabled = true });
+            SerializedProperty piece = list_prop.GetArrayElementAtIndex(conversation_index);
+            SerializedProperty prop = piece.FindPropertyRelative("conditions");
+            if (prop.arraySize >= index)
+            {
+                Debug.Log($"array size out of range {prop.arraySize}");
+                return;
+            }
+            SerializedProperty element = prop.GetArrayElementAtIndex(index);
+            if (element == null)
+            {
+                return;
+            }
+            EditorGUI.PropertyField(rect, element);
         }
 
         /// <summary>
@@ -85,38 +75,28 @@ namespace RPGM.Gameplay
         /// </summary>
         void OnWizardCreate()
         {
-            if (isUpdate)
-            {
-                Undo.RecordObject(conversationScript, "Update Item");
-                conversationScript.Set(originalConversationPiece, conversationPiece);
-                EditorUtility.SetDirty(conversationScript);
-            }
-            else
-            {
-                Undo.RecordObject(conversationScript, "Add Item");
-                conversationScript.Add(conversationPiece);
-                EditorUtility.SetDirty(conversationScript);
-            }
+            Undo.RecordObject(conversationScript, "Update Item");
+            conversationScript.Set(originalConversationPiece, conversationPiece);
+            EditorUtility.SetDirty(conversationScript);
         }
 
         protected override bool DrawWizardGUI()
         {
-            if (Event.current.isKey && Event.current.keyCode == KeyCode.Escape)
+            if (Event.current.isKey && Event.current.keyCode == KeyCode.Escape)//エスケープキー押したらウィンドウを閉じる
             {
                 Close();
                 return true;
             }
             isValid = true;
             EditorGUI.BeginChangeCheck();
-            conversationPiece.type = (ConversationType)EditorGUILayout.EnumPopup("Conversation Type", conversationPiece.type);
             EditorGUILayout.PrefixLabel("ID");
             conversationPiece.id = EditorGUILayout.TextField(conversationPiece.id).Trim().ToUpper();
-            if (conversationPiece.id.Length == 0)
+            if (string.IsNullOrEmpty(conversationPiece.id))//IDが空白ならエラー
             {
                 EditorGUILayout.HelpBox("The ID field cannot be empty.", MessageType.Error);
                 isValid = false;
             }
-            else if (isUpdate && conversationPiece.id != originalConversationPiece.id)
+            else if (conversationPiece.id != originalConversationPiece.id)//元のIDと違う（編集された）とき
             {
                 if (conversationScript.ContainsKey(conversationPiece.id))
                 {
@@ -129,13 +109,11 @@ namespace RPGM.Gameplay
                 }
             }
 
-          //  EditorGUILayout.PrefixLabel("Image (Optional)");
-           // conversationPiece.image = (Sprite)EditorGUILayout.ObjectField(conversationPiece.image, typeof(Sprite), false);
             EditorGUILayout.PrefixLabel("TargetID");
             conversationPiece.targetID = EditorGUILayout.TextField(conversationPiece.targetID).Trim().ToUpper();
-            if (isUpdate && conversationPiece.targetID != originalConversationPiece.targetID)
+            if (conversationPiece.targetID != originalConversationPiece.targetID)//元のIDと違う（編集された）とき
             {
-                if (conversationPiece.targetID ==conversationPiece.id)
+                if (conversationPiece.targetID == conversationPiece.id)
                 {
                     EditorGUILayout.HelpBox("This ID targets own conversation.", MessageType.Error);
                     isValid = false;
@@ -146,26 +124,13 @@ namespace RPGM.Gameplay
                 }
             }
 
-            switch (conversationPiece.type)
-            {
-                case ConversationType.normal:
-                    DrawNormalGUI();
-                    break;
-                case ConversationType.events:
-                    DrawEventGUI();
-                    break;
-            }
+            DrawNormalGUI();
 
             return EditorGUI.EndChangeCheck();
         }
 
-        void  DrawNormalGUI()
+        void DrawNormalGUI()
         {
-            EditorGUILayout.PrefixLabel("Talker");
-            conversationPiece.talker= EditorGUILayout.TextArea(conversationPiece.talker);
-            //conversationPiece.talker= (TalkerData)EditorGUILayout.ObjectField(conversationPiece.talker, typeof(TalkerData), false);
-            // conversationPiece.talkType = (TalkData.TalkType)EditorGUILayout.EnumPopup("Talk Type", conversationPiece.talkType);
-            //conversationPiece.talkFace = (TalkData.FaceType)EditorGUILayout.EnumPopup("Face Type", conversationPiece.talkFace);
             EditorGUILayout.PrefixLabel("Text");
             conversationPiece.text = EditorGUILayout.TextArea(conversationPiece.text);
             EditorGUILayout.PrefixLabel("Timeline");
@@ -175,17 +140,35 @@ namespace RPGM.Gameplay
             EditorGUILayout.PrefixLabel("Quest (Optional)");
             conversationPiece.quest = (QuestDataSO)EditorGUILayout.ObjectField(conversationPiece.quest, typeof(QuestDataSO), true);
 
-            if (conversationScript.items.Count > 0)
+            /*SerializedProperty piece = list_prop.GetArrayElementAtIndex(conversation_index);
+            SerializedProperty prop = piece.FindPropertyRelative("conditions");
+            if (conditions == null)
             {
-                if (options == null) BuildOptionList();
-                options.DoLayoutList();
+                conditions = new ReorderableList(conversationPiece.conditions, typeof(QuestConditions), true, true, true, true);
+                conditions.elementHeight = 68;
+                conditions.onAddCallback = (list) =>
+                {
+                    conversationScript.items[conversation_index].conditions.Add(new QuestConditions());
+                };
+               conditions.drawElementCallback = OnDrawCondition;
             }
-        }
-
-        void DrawEventGUI()
-        {
-            EditorGUILayout.PrefixLabel("Event Name");
-            conversationPiece.eventName = EditorGUILayout.TextArea(conversationPiece.eventName);
+            conditions.DoLayoutList();*/
+            if (options == null)
+            {
+                options = new ReorderableList(conversationPiece.options, typeof(ConversationOption), true, true, true, true);
+                options.drawElementCallback = OnDrawOption;
+                options.drawHeaderCallback = (rect) =>
+                {
+                    GUI.Label(rect, "Branches");
+                };
+            }
+            options.DoLayoutList();
         }
     }
 }
+
+/* void DrawEventGUI()
+ {
+     EditorGUILayout.PrefixLabel("Event Name");
+     conversationPiece.eventName = EditorGUILayout.TextArea(conversationPiece.eventName);
+ }*/

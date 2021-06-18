@@ -1,0 +1,16 @@
+@startuml
+abstract class SaveLoadableMonoBehaviour {
+    # {abstract} Save() : void
+    # {abstract} Load() : void
+    # {abstract} GetKeyList() : List<string>
+    # <<virtual>> Awake() : void
+}
+MonoBehaviour <|-- SaveLoadableMonoBehaviour
+SaveLoadableMonoBehaviour -left- SaveLoadManager
+note right on link 
+    GetKeyList()でkeyの重複を確認
+    Save()をSaveCallBackに、
+    Load()をLoadCallBackに登録
+end note
+
+@enduml
