@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -235,7 +235,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: aaf11e7972a967442a6d29dc8c9aa33b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6e205713aa57c104faefecc282cdcd80, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -796,7 +796,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: aaf11e7972a967442a6d29dc8c9aa33b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6e205713aa57c104faefecc282cdcd80, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1081,20 +1081,20 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 978008934}
     m_ColliderPaths:
-    - - X: 179999707
+    - - X: 184999707
         Y: -70000000
-      - X: 179999707
+      - X: 184999707
         Y: 70000000
-      - X: -180000000
+      - X: -185000000
         Y: 69999707
-      - X: -179999707
+      - X: -184999707
         Y: -70000000
   m_CompositePaths:
     m_Paths:
-    - - {x: 17.99994, y: -7}
-      - {x: 17.99994, y: 7}
-      - {x: -18, y: 6.999942}
-      - {x: -17.99994, y: -7}
+    - - {x: 18.49994, y: -7}
+      - {x: 18.49994, y: 7}
+      - {x: -18.5, y: 6.999942}
+      - {x: -18.49994, y: -7}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
 --- !u!50 &978008933
@@ -1142,7 +1142,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 36, y: 14}
+  m_Size: {x: 37, y: 14}
   m_EdgeRadius: 0
 --- !u!4 &978008935
 Transform:

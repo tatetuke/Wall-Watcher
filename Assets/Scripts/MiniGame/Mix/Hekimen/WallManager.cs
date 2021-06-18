@@ -12,11 +12,12 @@ public class WallManager : MonoBehaviour
     }
     private State m_State = default;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            SetGlowLine(Color.yellow);
+            if (m_State == State.BROKEN) SetGlowLine(Color.blue);
+            else SetGlowLine(Color.yellow);
         }
     }
 
@@ -54,11 +55,13 @@ public class WallManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (Input.GetKeyDown("space"))
         {
             if (IsInCollider())
             {
-                //FadeManager.Instance.LoadLevel("Paint", 1f);
+                PollutionManager.selected_marker = this.gameObject;
+                FadeManager.Instance.LoadLevel("HAKAI", 1f);
                 breakwall();
 
                 Debug.Log("MiniGamePaintシーンに遷移!");
