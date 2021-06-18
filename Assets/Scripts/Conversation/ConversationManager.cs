@@ -21,6 +21,7 @@ public class ConversationManager : SingletonMonoBehaviour<ConversationManager>
     private GameObject TargetNPC;
     [SerializeField] private PlayableDirector playableDirector;
     public Flowchart CurrentFlowchart = null;
+    public Flowchart CurrentQuestFlowchart = null;
     public string MessageId; // メッセージID
 
     void UpdateState()
@@ -151,9 +152,19 @@ public class ConversationManager : SingletonMonoBehaviour<ConversationManager>
     private void StartConversation()
     {
         NPCController npcController = TargetNPC.GetComponent<NPCController>();
-        CurrentFlowchart = npcController.GetFlowchart();
+        string npcname = TargetNPC.GetComponent<Character>()?.NameText;
 
-        CurrentFlowchart.SendFungusMessage("Test1");
+        if (ContainNPCConversation(npcname, CurrentQuestFlowchart))
+        {
+            CurrentFlowchart = CurrentQuestFlowchart;
+            CurrentFlowchart.SendFungusMessage(npcname);
+        }
+        else
+        {
+            CurrentFlowchart = npcController.GetFlowchart();
+            CurrentFlowchart.SendFungusMessage("Test1");
+            Debug.Log("No Quest");
+        }
         //MessageReceived[] receivers = FindObjectsOfType<MessageReceived>();
         ////取得できた場合
         //if (receivers != null)
@@ -193,5 +204,12 @@ public class ConversationManager : SingletonMonoBehaviour<ConversationManager>
             return;
         else if (m_State == State.Talking)
             return;
+    }
+
+    /// <summary>指定したNPCの会話がFlowchartに存在するならTrueを返す</summary>
+    private bool ContainNPCConversation(string npcname, Flowchart flowchart)
+    {
+        //Flowchart中にNPCの名前をしたブロックが存在するか
+        return flowchart?.FindBlock(npcname);
     }
 }
