@@ -74,6 +74,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
             case Game_State.Pause:
                 break;
             case Game_State.End:
+                PollutionManager.breakMarker();  // hekimenマップのマーカー状態を変更させる関数
                 break;
 
 
