@@ -6,7 +6,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 
 /// <summary>
-/// セーブ・ロードを行うための抽象クラス
+/// セーブ・ロードを行うための抽象クラス（シングルトン版）
 /// SaveLoadManagerから一括で呼ばれる
 /// </summary>
 public abstract class SaveLoadableSingletonMonoBehaviour<T> : SaveLoadableMonoBehaviour where T : MonoBehaviour

@@ -12,6 +12,7 @@ public class UIView : MonoBehaviour
     public UnityEvent OnViewHide { get; } = new UnityEvent();
     private void Awake()
     {
+        //viewが起動したときに最初に選択されるボタンを選択
         OnViewShow.AddListener(() => { firstSelectUI?.Select(); });
     }
 }

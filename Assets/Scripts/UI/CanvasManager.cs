@@ -22,7 +22,7 @@ public class CanvasManager : MonoBehaviour
         foreach (var i in m_views)
         {
             if (i == null||i.backButton==null) continue;
-            i.backButton.onClick.AddListener(Back);
+            i.backButton.onClick.AddListener(Back);//それぞれのviewの「戻る」ボタンに関数を登録
         }
     }
 
