@@ -14,18 +14,12 @@ public class PauseUIManager : CanvasManager
         active,
         fadeOut
     }
-    [Tooltip("ポーズしたときにいつも表示されるview（ポーズしてないときは表示されない）")]
-    [SerializeField] UIView allwaysShowView;
     [SerializeField] Animator animator;
     [SerializeField] string fadeInTrriger = "FadeIn";
     [SerializeField] string fadeOutTrriger = "FadeOut";
     [SerializeField] Button saveButton;
-    [SerializeField] string firstViewName;
     [Header("Debug")]
-    [SerializeField, ReadOnly] List<UIView> m_views = new List<UIView>();
     [SerializeField, ReadOnly] State m_state;
-    Stack<string> m_viewHistory = new Stack<string>();
-    public UnityEvent OnCloseCanvas { get; } = new UnityEvent();
 
     private void Awake()
     {

@@ -9,11 +9,11 @@ using UnityEngine.UI;
 public class CanvasManager : MonoBehaviour
 {
     [Tooltip("ポーズしたときにいつも表示されるview（ポーズしてないときは表示されない）")]
-    [SerializeField] UIView allwaysShowView;
-    [SerializeField] string firstViewName;
+    [SerializeField] protected UIView allwaysShowView;
+    [SerializeField] protected string firstViewName;
     [Header("Debug")]
-    [SerializeField, ReadOnly] List<UIView> m_views = new List<UIView>();
-    Stack<string> m_viewHistory = new Stack<string>();
+    [SerializeField, ReadOnly]protected List<UIView> m_views = new List<UIView>();
+    protected Stack<string> m_viewHistory = new Stack<string>();
     public UnityEvent OnCloseCanvas { get; } = new UnityEvent();
 
     private void Awake()
