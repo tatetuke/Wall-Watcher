@@ -8,8 +8,8 @@ public class UIView : MonoBehaviour
 {
     public Selectable firstSelectUI;
     public Button backButton;
-    public UnityEvent OnViewShow = new UnityEvent();
-    public UnityEvent OnViewHide = new UnityEvent();
+    public UnityEvent OnViewShow { get; } = new UnityEvent();
+    public UnityEvent OnViewHide { get; } = new UnityEvent();
     private void Awake()
     {
         OnViewShow.AddListener(() => { firstSelectUI?.Select(); });

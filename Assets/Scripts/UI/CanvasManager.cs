@@ -34,7 +34,7 @@ public class CanvasManager : MonoBehaviour
             i.gameObject.SetActive(false);
     }
 
-    UIView GetView(string viewName)
+    protected UIView GetView(string viewName)
     {
         foreach (var i in m_views)
             if (i.name == viewName)
@@ -64,7 +64,7 @@ public class CanvasManager : MonoBehaviour
         HideView(GetView(beforeActive));
         m_viewHistory.Push(viewName);
     }
-    void Back()
+    protected void Back()
     {
         Debug.Log("back");
         //もしviewを移動させてない状態でbackを押した場合、viewを非表示にし終了
@@ -79,12 +79,12 @@ public class CanvasManager : MonoBehaviour
         string nextActive = m_viewHistory.Peek();
         ShowView(GetView(nextActive));
     }
-    void ShowView(UIView view)
+    protected void ShowView(UIView view)
     {
         view.gameObject.SetActive(true);
         view.OnViewShow.Invoke();
     }
-    void HideView(UIView view)
+    protected void HideView(UIView view)
     {
         view.gameObject.SetActive(false);
         view.OnViewHide.Invoke();
