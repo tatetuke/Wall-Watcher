@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Kyoichi
 {
-    public class ItemManager : SingletonMonoBehaviour<ItemManager>, ILoadableAsync
+    public class ItemManager : SaveLoadableSingletonMonoBehaviour<ItemManager>
     {
         enum LoadState
         {
@@ -33,7 +34,6 @@ namespace Kyoichi
         // Start is called before the first frame update
         void Awake()
         {
-            Kyoichi.GameManager.Instance.AddLoadableAsync(this);
             Kyoichi.GameManager.Instance.OnGameSave.AddListener(Save);
             if (m_state == LoadState.loaded)//エディタ上でロードしたとき
             {
@@ -46,33 +46,8 @@ namespace Kyoichi
         //ゲーム開始時の部屋を読み込む
         public async Task LoadAsync(CancellationToken cancellationToken)
         {
-            if (m_state != LoadState.notLoaded)
-            {
-                Debug.Log("<color=#4a19bd>item loaded or loading</color>");
-                return;
-            }
-            Debug.Log("<color=#4a19bd>Try load item</color>");
-            m_data.Clear();
-            m_state = LoadState.loading;
-            m_handle = Addressables.LoadAssetsAsync<ItemSO>(_labelReference, null);
-            await m_handle.Task;
-            Debug.Log("<color=#4a19bd>Item loaded</color>");
-            foreach (var res in m_handle.Result)
-            {
-                Debug.Log($"<color=#4a19bd>item '{res.name}'</color>");
-                m_data.Add(res.name, res);
-            }
-            m_state = LoadState.loaded;
         }
 
-        public void Save()
-        {
-            for (int i=0;i< m_inventries.Count;)
-            {
-             //   m_inventries[i].SaveToFile();
-                m_inventries.RemoveAt(i);
-            }
-        }
 
         void OnDisable()
         {
@@ -127,5 +102,48 @@ namespace Kyoichi
             return m_data[name];
         }
 
+        protected override void Save()
+        {
+            for (int i = 0; i < m_inventries.Count;)
+            {
+                //   m_inventries[i].SaveToFile();
+                m_inventries.RemoveAt(i);
+            }
+        }
+
+        protected override void Load()
+        {
+        }
+
+        protected override List<string> GetKeyList()
+        {
+            return null;
+        }
+
+        protected override async UniTask SaveAsync()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override async UniTask LoadAsync()
+        {
+            if (m_state != LoadState.notLoaded)
+            {
+                Debug.Log("<color=#4a19bd>item loaded or loading</color>");
+                return;
+            }
+            Debug.Log("<color=#4a19bd>Try load item</color>");
+            m_data.Clear();
+            m_state = LoadState.loading;
+            m_handle = Addressables.LoadAssetsAsync<ItemSO>(_labelReference, null);
+            await m_handle.Task;
+            Debug.Log("<color=#4a19bd>Item loaded</color>");
+            foreach (var res in m_handle.Result)
+            {
+                Debug.Log($"<color=#4a19bd>item '{res.name}'</color>");
+                m_data.Add(res.name, res);
+            }
+            m_state = LoadState.loaded;
+        }
     }
 }

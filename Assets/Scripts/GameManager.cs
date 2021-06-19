@@ -23,8 +23,6 @@ namespace Kyoichi
         GameState m_state = GameState.nothing;
 
         public GameState State { get => m_state; }
-        List<ISaveableAsync> m_saveablesAsync = new List<ISaveableAsync>();
-        List<ILoadableAsync> m_loadablesAsync = new List<ILoadableAsync>();
 
         public UnityEvent OnPauseStart { get; } = new UnityEvent();
         public UnityEvent OnPauseEnd { get; } = new UnityEvent();
@@ -36,9 +34,6 @@ namespace Kyoichi
 
         public bool IsLoadFinished { get; private set; } = false;
         public bool IsSaveFinished { get; private set; } = false;
-
-        public void AddLoadableAsync(ILoadableAsync obj) => m_loadablesAsync.Add(obj);
-        public void AddSaveableAsync(ISaveableAsync obj) => m_saveablesAsync.Add(obj);
 
         private CancellationTokenSource loadCancellationTokenSource;
         private CancellationTokenSource saveCancellationTokenSource;
@@ -73,7 +68,6 @@ namespace Kyoichi
                 IsSaveFinished = true;
             });
             OnGameLoad.Invoke();
-            LoadAsync();
             OnPauseStart.AddListener(() =>
             {
                 FindObjectOfType<Player>().ChangeState(Player.State.FREEZE);
@@ -83,28 +77,6 @@ namespace Kyoichi
                 FindObjectOfType<Player>().ChangeState(Player.State.IDLE);
             });
         }
-
-        async Task LoadAsync()
-        {
-            foreach (var i in m_loadablesAsync)
-            {
-                await i.LoadAsync(loadCancellationTokenSource.Token);
-            }
-            //非同期でロードし、すべてのオブジェクトについて完了するまで待つ
-            Debug.Log("All Data Loading Finished");
-            OnLoadFinished.Invoke();
-        }
-        async Task SaveAsync()
-        {
-            foreach (var i in m_saveablesAsync)
-            {
-                await i.SaveAsync(saveCancellationTokenSource.Token);
-            }
-            //非同期でロードし、すべてのオブジェクトについて完了するまで待つ
-            Debug.Log("All Data Save Finished");
-            OnSaveFinished.Invoke();
-        }
-
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -126,7 +98,6 @@ namespace Kyoichi
         {
             Debug.Log("Player Data Saving...");
             OnGameSave.Invoke();
-            SaveAsync().Wait();
         }
         public void PauseEnd()
         {
