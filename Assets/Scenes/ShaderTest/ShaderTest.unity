@@ -360,7 +360,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.631
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.83
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 00000000
   m_LightCookieSprite: {fileID: 0}
@@ -378,13 +378,13 @@ MonoBehaviour:
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
-  m_ShapeLightFalloffSize: 3.01
+  m_ShapeLightFalloffSize: 5.75
   m_ShapeLightFalloffOffset: {x: 0, y: 0}
   m_ShapePath:
-  - {x: 0.70537007, y: -5.548588, z: 0}
-  - {x: 2.3351808, y: -5.3660684, z: 0}
-  - {x: -4.7831755, y: 4.3939934, z: 0}
-  - {x: -4.956766, y: 4.3290524, z: 0}
+  - {x: 0.2287657, y: -3.4588683, z: 0}
+  - {x: 2.2251964, y: -3.4229956, z: 0}
+  - {x: -3.0234103, y: 4.5406404, z: 0}
+  - {x: -3.4902968, y: 4.5490227, z: 0}
 --- !u!4 &651406463
 Transform:
   m_ObjectHideFlags: 0
@@ -621,7 +621,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &986998367
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1000,7 +1000,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1454542101
 SpriteRenderer:
   m_ObjectHideFlags: 0
