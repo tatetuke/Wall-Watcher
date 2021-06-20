@@ -8,7 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Kyoichi
 {
-    public class ItemManager : SingletonMonoBehaviour<ItemManager>, ILoadableAsync,ISaveable
+    public class ItemManager : SingletonMonoBehaviour<ItemManager>, ILoadableAsync
     {
         enum LoadState
         {
@@ -27,14 +27,14 @@ namespace Kyoichi
                 return m_data;
             }
         }
-        List<Inventry> inventries = new List<Inventry>();
-        public void AddInventry(Inventry inventry) { inventries.Add(inventry); }
+        List<Inventry> m_inventries = new List<Inventry>();
+        public void AddInventry(Inventry inventry) { m_inventries.Add(inventry); }
 
         // Start is called before the first frame update
         void Awake()
         {
-            SaveLoadManager.Instance.SetLoadable(this);
-            SaveLoadManager.Instance.SetSaveable(this);
+            Kyoichi.GameManager.Instance.AddLoadableAsync(this);
+            Kyoichi.GameManager.Instance.OnGameSave.AddListener(Save);
             if (m_state == LoadState.loaded)//エディタ上でロードしたとき
             {
                 Addressables.Release(m_handle);
@@ -43,9 +43,8 @@ namespace Kyoichi
         }
 
         AsyncOperationHandle<IList<ItemSO>> m_handle;
-        private CancellationTokenSource _cancellationTokenSource;
         //ゲーム開始時の部屋を読み込む
-        public async Task Load(CancellationToken cancellationToken)
+        public async Task LoadAsync(CancellationToken cancellationToken)
         {
             if (m_state != LoadState.notLoaded)
             {
@@ -57,6 +56,7 @@ namespace Kyoichi
             m_state = LoadState.loading;
             m_handle = Addressables.LoadAssetsAsync<ItemSO>(_labelReference, null);
             await m_handle.Task;
+            Debug.Log("<color=#4a19bd>Item loaded</color>");
             foreach (var res in m_handle.Result)
             {
                 Debug.Log($"<color=#4a19bd>item '{res.name}'</color>");
@@ -67,10 +67,10 @@ namespace Kyoichi
 
         public void Save()
         {
-            for (int i=0;i<inventries.Count;)
+            for (int i=0;i< m_inventries.Count;)
             {
-                inventries[i].SaveToFile();
-                inventries.RemoveAt(i);
+             //   m_inventries[i].SaveToFile();
+                m_inventries.RemoveAt(i);
             }
         }
 

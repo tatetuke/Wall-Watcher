@@ -15,9 +15,26 @@ MonoBehaviour:
   items:
   - type: 0
     id: 0
-    targetID: 0
-    text: SubQuest1
+    targetID: 1
+    text: "\u304F\u3041w\u305Bdrftgy\u3075\u3058\u3053lp\u304F\u3041w\u305Bdrftgy\u3075\u3058\u3053lp\u304F\u3041w\u305Bdrftgy\u3075\u3058\u3053lp"
     audio: {fileID: 0}
+    quest: {fileID: 0}
+    options: []
+    eventName: 
+  - type: 0
+    id: 1
+    targetID: FINISH
+    text: "(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)(*\xB4\u03C9\uFF40*)"
+    audio: {fileID: 0}
+    quest: {fileID: 0}
+    options: []
+    eventName: 
+  - type: 0
+    id: FINISH
+    targetID: FINISH
+    text: 
+    audio: {fileID: 0}
+    quest: {fileID: 0}
     options: []
     eventName: 
   m_firstConversation: 0
