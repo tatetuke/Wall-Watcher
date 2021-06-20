@@ -49,6 +49,13 @@ namespace Kyoichi
         {
             Addressables.Release(m_handle);
         }
+
+        /// <summary>
+        /// プレイヤーのインベントリをファイルから読み込む
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         public List<Kyoichi.ItemStack> LoadItemFrom(string directory, string filename)
         {
             var res = new List<Kyoichi.ItemStack>();
