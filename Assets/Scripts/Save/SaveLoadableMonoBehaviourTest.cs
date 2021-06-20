@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -46,19 +47,29 @@ namespace Save.Test
 
         }
         
-        public void SaveTest()
+        public async void SaveTest()
         {
             Debug.Log("Save");
-            SaveLoadManager.Instance.SaveAll();
+            await SaveLoadManager.Instance.SaveAllAsync();
         }
 
-        public void LoadTest()
+        public async void LoadTest()
         {
             Debug.Log("Load");
-            SaveLoadManager.Instance.LoadAll();
+            await SaveLoadManager.Instance.LoadAllAsync();
             text.text = exampleSaveData.text;
             text.color = exampleSaveData.color;
             text.gameObject.transform.localPosition = exampleSaveData.position;
+        }
+
+        protected override UniTask SaveAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override UniTask LoadAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

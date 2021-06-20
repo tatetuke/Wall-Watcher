@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Cysharp.Threading.Tasks;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,8 +14,16 @@ public class Effect : MonoBehaviour
     public UnityEvent OnDestroy { get; } = new UnityEvent();
     float m_time=0f;
 
+    async void Start()
+    {
+        await UniTask.Delay(TimeSpan.FromSeconds(1));
+        Destroy(gameObject);
+        OnDestroy.Invoke();
+    }
+
+
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         if (m_time >= lifeTime)
         {
@@ -22,5 +32,5 @@ public class Effect : MonoBehaviour
         }
         m_time += Time.deltaTime;
 
-    }
+    }*/
 }
