@@ -26,7 +26,7 @@ public abstract class SaveLoadableMonoBehaviour : MonoBehaviour
     protected virtual void Awake()
     {
         var usedKeyList = GetKeyList();
-        if(usedKeyList.Count == 0)
+        if(usedKeyList==null||usedKeyList.Count == 0)
         {
             Debug.LogWarning("usedKeyList.Count is 0. Add Key used in Save&Load");
         }

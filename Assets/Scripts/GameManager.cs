@@ -19,11 +19,8 @@ namespace Kyoichi
             running,
             pause
         }
-        [SerializeField,ReadOnly]
-        GameState m_state = GameState.nothing;
-
+        [SerializeField,ReadOnly] GameState m_state = GameState.nothing;
         public GameState State { get => m_state; }
-
         public UnityEvent OnPauseStart { get; } = new UnityEvent();
         public UnityEvent OnPauseEnd { get; } = new UnityEvent();
         public UnityEvent OnGameLoad { get; }=new UnityEvent();
@@ -47,34 +44,28 @@ namespace Kyoichi
 
 
         // Start is called before the first frame update
-        void Start()
+        async void Start()
         {
             //データをロードするときはSaveLoadManager.LoadをStartもしくはUpdate内で行ってください。
             //Awakeでは行わないよう
             m_state = GameState.loading;
             Debug.Log("Loading properties");
-            //SaveLoadManager.Instance.Load().Wait();
-            //Waitするとロードしなくなる（Start内でAddressable.Wait()やろうとするといつまでたっても完了しないっぽい）
-            Debug.Log("Player Data Loading...");
             IsLoadFinished = false;
             IsSaveFinished = false;
-            OnLoadFinished.AddListener(() =>
-            {
-                m_state = GameState.running;
-                IsLoadFinished = true;
-            });
-            OnSaveFinished.AddListener(() =>
-            {
-                IsSaveFinished = true;
-            });
+
             OnGameLoad.Invoke();
+            await SaveLoadManager.Instance.LoadAllAsync();
+            m_state = GameState.running;
+            IsLoadFinished = true;
+            OnLoadFinished.Invoke();
+
             OnPauseStart.AddListener(() =>
             {
-                FindObjectOfType<Player>().ChangeState(Player.State.FREEZE);
+                FindObjectOfType<Player>()?.ChangeState(Player.State.FREEZE);
             });
             OnPauseEnd.AddListener(() =>
             {
-                FindObjectOfType<Player>().ChangeState(Player.State.IDLE);
+                FindObjectOfType<Player>()?.ChangeState(Player.State.IDLE);
             });
         }
         private void Update()
@@ -94,10 +85,13 @@ namespace Kyoichi
         }
 
         //ゲームを終了したときに自動でセーブされるようになってます
-        private void OnApplicationQuit()
+       async private void OnApplicationQuit()
         {
             Debug.Log("Player Data Saving...");
             OnGameSave.Invoke();
+            await SaveLoadManager.Instance.SaveAllAsync();
+            OnSaveFinished.Invoke();
+            IsSaveFinished = false;
         }
         public void PauseEnd()
         {

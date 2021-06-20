@@ -59,6 +59,7 @@ public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
     /// <summary>指定したkeyが全て新しく使用可能(重複していない)であればtrueを返す</summary>
     public bool CheckKeyListAvailable(List<string> keys)
     {
+        if (keys == null) return true;
         foreach(string key in keys)
         {
             if (!CheckKeyAvailable(key))
@@ -75,6 +76,7 @@ public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
 
     public void AddKeyList(List<string> keys)
     {
+        if (keys == null) return;
         foreach (string key in keys)
             AddKey(key);
     }

@@ -32,8 +32,9 @@ namespace Kyoichi
         public void AddInventry(Inventry inventry) { m_inventries.Add(inventry); }
 
         // Start is called before the first frame update
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             Kyoichi.GameManager.Instance.OnGameSave.AddListener(Save);
             if (m_state == LoadState.loaded)//エディタ上でロードしたとき
             {
@@ -43,11 +44,6 @@ namespace Kyoichi
         }
 
         AsyncOperationHandle<IList<ItemSO>> m_handle;
-        //ゲーム開始時の部屋を読み込む
-        public async Task LoadAsync(CancellationToken cancellationToken)
-        {
-        }
-
 
         void OnDisable()
         {
@@ -122,7 +118,7 @@ namespace Kyoichi
 
         protected override async UniTask SaveAsync()
         {
-            throw new System.NotImplementedException();
+
         }
 
         protected override async UniTask LoadAsync()
