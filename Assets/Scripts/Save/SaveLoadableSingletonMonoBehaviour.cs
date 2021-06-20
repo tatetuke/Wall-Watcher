@@ -9,8 +9,27 @@ using Cysharp.Threading.Tasks;
 /// セーブ・ロードを行うための抽象クラス
 /// SaveLoadManagerから一括で呼ばれる
 /// </summary>
-public abstract class SaveLoadableMonoBehaviour : MonoBehaviour
+public abstract class SaveLoadableSingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 {
+    private static T instance;
+    public static T Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = (T)FindObjectOfType(typeof(T));
+
+                if (instance == null)
+                {
+                    Debug.LogError(typeof(T) + " is nothing");
+                }
+            }
+
+            return instance;
+        }
+    }
+
     protected abstract void Save();
     protected abstract void Load();
     protected abstract UniTask SaveAsync();
@@ -26,7 +45,7 @@ public abstract class SaveLoadableMonoBehaviour : MonoBehaviour
     protected virtual void Awake()
     {
         var usedKeyList = GetKeyList();
-        if(usedKeyList.Count == 0)
+        if (usedKeyList.Count == 0)
         {
             Debug.LogWarning("usedKeyList.Count is 0. Add Key used in Save&Load");
         }

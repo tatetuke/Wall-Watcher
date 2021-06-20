@@ -9,7 +9,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 /// <summary>
 /// ゲーム内のクエストデータをロードし、一覧としてまとめる
 /// </summary>
-public class QuestsManager : SingletonMonoBehaviour<QuestsManager>,ILoadableAsync
+public class QuestsManager : SingletonMonoBehaviour<QuestsManager>
 {
     [SerializeField] private AssetLabelReference _labelReference;
     [SerializeField,ReadOnly] List<QuestDataSO> m_quests = new List<QuestDataSO>();
@@ -29,10 +29,6 @@ public class QuestsManager : SingletonMonoBehaviour<QuestsManager>,ILoadableAsyn
     }
 
     AsyncOperationHandle<IList<QuestDataSO>> m_handle;
-    void Awake()
-    {
-        Kyoichi.GameManager.Instance.AddLoadableAsync(this);
-    }
     void OnDisable()
     {
         Addressables.Release(m_handle);
