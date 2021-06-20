@@ -8,7 +8,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Player_Walk
-  m_Speed: 0.75
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -3502533524377183729}
@@ -21,7 +21,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: c4fe7a9fb74cc5b40bb1d3dbc3d11d8d, type: 2}
+  m_Motion: {fileID: 7400000, guid: e5e5963be810691428005168ad729df5, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -116,7 +116,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 1175549776336868272}
-    m_Position: {x: 30, y: 200, z: 0}
+    m_Position: {x: 30, y: 210, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3550473673242682843}
     m_Position: {x: 30, y: 330, z: 0}
@@ -151,7 +151,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 3dd4ae2b0720f2c4a99a5d4f86890f6a, type: 2}
+  m_Motion: {fileID: 7400000, guid: 82923c19eb982c647af29f1a6ae50f38, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

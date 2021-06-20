@@ -11,10 +11,7 @@ using System;
 [CreateAssetMenu(menuName = "CreateConversationData", fileName = "ConversationData")]
 public class ConversationData : ScriptableObject
 {
-    [HideInInspector] [SerializeField] public List<Conversations> items = new List<Conversations>();
-
-    //public TalkerData m_left;
-    //public TalkerData m_right;
+    [HideInInspector]public List<Conversations> items = new List<Conversations>();
 
     [HideInInspector]public  string m_firstConversation="";
 

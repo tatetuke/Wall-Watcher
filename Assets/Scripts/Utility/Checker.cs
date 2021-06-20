@@ -6,11 +6,18 @@ using System.Collections;
 //親にRigitbody2Dがあるとうまく動かないときがある。なぜ？
 public class Checker : MonoBehaviour
 {
+    /// <summary>
+    /// この範囲にCheckableがあったらチェックできる
+    /// </summary>
     [SerializeField] Collider2D m_collider = default;
-    Checkable currentCheckable = null;
-    // Use this for initialization
 
-    public string targetTag;
+    /// <summary>
+    /// 現在のCheckable
+    /// 複数あったら最後に範囲に入ったオブジェクトに上書きされる
+    /// </summary>
+    Checkable currentCheckable = null;
+
+    //public string targetTag;
 
     /// <summary>
     /// エリア内にCheckableがあるか
@@ -21,14 +28,13 @@ public class Checker : MonoBehaviour
 
     /// <summary>
     /// 範囲内にあるCheckableを１つチェックする
+    /// NPCであれば会話が始まったり、機械だったらメニューが開いたり
     /// </summary>
-    /// <param name="player"></param>
     /// <returns></returns>
-    public bool Check(GameObject player)
+    public bool Check()
     {
         if (currentCheckable != null)
         {
-            // moveable = CanMove();
             currentCheckable.TakeCheck(this);
             return true;
         }
@@ -47,6 +53,7 @@ public class Checker : MonoBehaviour
         if (collision.TryGetComponent<Checkable>(out checkable))
         {
             currentCheckable = checkable;
+            currentCheckable.OnEnter.Invoke(this);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -55,11 +62,12 @@ public class Checker : MonoBehaviour
         if (collision.TryGetComponent<Checkable>(out _))
         {
             currentCheckable = null;
+            currentCheckable.OnExit.Invoke(this);
         }
     }
 
-    public void SetAngle(float angleDeg)
+    /*public void SetAngle(float angleDeg)
     {
         transform.rotation = Quaternion.Euler(0, 0, angleDeg + 90f);
-    }
+    }*/
 }

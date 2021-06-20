@@ -25,7 +25,7 @@ public class EditorItemManager : Editor
             EditorGUILayout.BeginHorizontal(GUI.skin.box);
             {
                 EditorGUILayout.LabelField(i.Key);
-                EditorGUILayout.ObjectField(i.Value,typeof(ItemSO));
+                EditorGUILayout.ObjectField(i.Value,typeof(ItemSO),true);
             }
             EditorGUILayout.EndHorizontal();
         }

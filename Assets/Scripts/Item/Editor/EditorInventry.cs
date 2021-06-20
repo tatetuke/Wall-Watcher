@@ -64,16 +64,14 @@ public class EditorInventry : Editor
                 }
                 else
                 {
-                    editorCSVData = scr.GetFileData();
+                    //editorCSVData = scr.GetFileData();
                 }
             }
             if (GUILayout.Button("Save to file"))
             {
-
-                scr.SaveToFile();
+              //  scr.SaveToFile();
             }
         }
-        SerializedProperty test;
         EditorGUILayout.EndHorizontal();
     }
 }
