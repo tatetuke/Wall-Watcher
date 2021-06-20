@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using System.Threading;
+using Cysharp.Threading.Tasks;
 
 /// <summary>
 /// セーブ・ロードを行うための抽象クラス
@@ -12,6 +13,8 @@ public abstract class SaveLoadableMonoBehaviour : MonoBehaviour
 {
     protected abstract void Save();
     protected abstract void Load();
+    protected abstract UniTask SaveAsync();
+    protected abstract UniTask LoadAsync();
 
     /// <summary>
     /// 内部で使用する予定のkeyのList
@@ -23,7 +26,7 @@ public abstract class SaveLoadableMonoBehaviour : MonoBehaviour
     protected virtual void Awake()
     {
         var usedKeyList = GetKeyList();
-        if(usedKeyList.Count == 0)
+        if(usedKeyList==null||usedKeyList.Count == 0)
         {
             Debug.LogWarning("usedKeyList.Count is 0. Add Key used in Save&Load");
         }
@@ -46,5 +49,7 @@ public abstract class SaveLoadableMonoBehaviour : MonoBehaviour
         SaveLoadManager.Instance.AddKeyList(usedKeyList);
         SaveLoadManager.Instance.AddSaveCallBack(Save);
         SaveLoadManager.Instance.AddLoadCallBack(Load);
+        SaveLoadManager.Instance.AddLoadCallBack(SaveAsync());
+        SaveLoadManager.Instance.AddLoadCallBack(LoadAsync());
     }
 }

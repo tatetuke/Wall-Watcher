@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,6 +16,9 @@ public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
     private UnityEvent SaveCallBack = new UnityEvent();
     private UnityEvent LoadCallBack = new UnityEvent();
 
+    List<UniTask> saveAsync = new List<UniTask>();
+    List<UniTask> loadAsync = new List<UniTask>();
+
     private void Awake()
     {
         if (SaveLoadManager.Instance != this)
@@ -23,25 +27,28 @@ public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
         path = DataBank.Instance.SavePath;
     }
 
-    public void SaveAll()
+    public async UniTask SaveAllAsync()
     {
         SaveCallBack.Invoke();
+        foreach(var save_ in saveAsync)
+        {
+           await save_;
+        }
     }
 
-    public void LoadAll()
+    public async UniTask LoadAllAsync()
     {
         LoadCallBack.Invoke();
+        foreach (var load_ in loadAsync)
+        {
+            await load_;
+        }
     }
 
-    public void AddSaveCallBack(UnityAction save)
-    {
-        SaveCallBack.AddListener(save);
-    }
-
-    public void AddLoadCallBack(UnityAction load)
-    {
-        LoadCallBack.AddListener(load);
-    }
+    public void AddSaveCallBack(UniTask save)=>saveAsync.Add(save);
+    public void AddLoadCallBack(UniTask load) => loadAsync.Add(load);
+    public void AddSaveCallBack(UnityAction save)=>LoadCallBack.AddListener(save);
+    public void AddLoadCallBack(UnityAction load)=> LoadCallBack.AddListener(load);
 
     /// <summary>指定したkeyが新しく使用可能(重複していない)であればtrueを返す</summary>
     public bool CheckKeyAvailable(string key)
@@ -52,6 +59,7 @@ public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
     /// <summary>指定したkeyが全て新しく使用可能(重複していない)であればtrueを返す</summary>
     public bool CheckKeyListAvailable(List<string> keys)
     {
+        if (keys == null) return true;
         foreach(string key in keys)
         {
             if (!CheckKeyAvailable(key))
@@ -68,6 +76,7 @@ public class SaveLoadManager : SingletonMonoBehaviour<SaveLoadManager>
 
     public void AddKeyList(List<string> keys)
     {
+        if (keys == null) return;
         foreach (string key in keys)
             AddKey(key);
     }
