@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +9,13 @@ public class PollutionManager : MonoBehaviour
     float[] marker_positison_x = new float[] { -65, -35, -25, -15, -5, 5, 15, 55, 65 };
     static private bool[] marker_flag = new bool[] { false, false, false, false, false, false, false, false, false }; // 生成された marker の管理フラグのリスト
     static GameObject bluewall; // 青色壁面のゲームオブジェクト
+    public static GameObject selected_marker;  // 選択されたマーカーオブジェクト
+
+    public static void breakMarker()
+    {
+        selected_marker.GetComponent<WallManager>().breakwall();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
