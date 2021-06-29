@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Fungus;
+using NaughtyAttributes;
 
 class Test : MonoBehaviour
 {
@@ -7,9 +8,16 @@ class Test : MonoBehaviour
     public Flowchart flowchart;
     public FlowchartData flowchartData;
 
+    [Button]
     public void EncodeFlowchart()
     {
         flowchartData = FlowchartData.Encode(flowchart);
+    }
+
+    [Button]
+    public void DecodeFlowchart()
+    {
+        FlowchartData.Decode(flowchartData);
     }
 
     public int GetMoney()
@@ -23,14 +31,6 @@ class Test : MonoBehaviour
         money = m;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            //flowchart.SendFungusMessage("Start");
-            EncodeFlowchart();
-        }
-    }
 
 }
 
