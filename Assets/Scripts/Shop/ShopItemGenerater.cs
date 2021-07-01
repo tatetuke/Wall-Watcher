@@ -6,11 +6,11 @@ public class ShopItemGenerater : MonoBehaviour
 {
     // Start is called before the first frame update
     public ShopLineUpSO ShopLineup;
-    List<ItemSO> Item = new List<ItemSO>();
+    List<ItemSO> item = new List<ItemSO>();
 
     private void Start()
     {
-        Item = ShopLineup.GetItemLists();
+        item = ShopLineup.GetItemLists();
         PrepareItem();
        
     }
@@ -26,12 +26,11 @@ public class ShopItemGenerater : MonoBehaviour
     private void PrepareItem()
     {
         GameObject prefab = (GameObject)Resources.Load("Shop/ShopItem");
-        for (int i = 0; i < Item.Count; i++)
+        for (int i = 0; i < item.Count; i++)
         {
             GameObject instance=(GameObject)Instantiate(prefab,new Vector3(0f,0f,0f),Quaternion.identity);
             instance.transform.parent = this.transform;
-            instance.GetComponent<ShopItem>().itemdata = Item[i];
-            //instance.GetComponent<ShopItem>().ItemName.text = Item[i].item_name;
+            instance.GetComponent<ShopItem>().itemdata = item[i];
         }
             Debug.Log("生成終わり？");
 
