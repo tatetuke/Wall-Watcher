@@ -13,27 +13,42 @@ public class ShopItem : MonoBehaviour
     TextMeshProUGUI UIItemName;
     Image Icon;
     Text ItemName;
+    ShopBuyItem BuyItem;
 
     // Start is called before the first frame update
     void Start()
     {
-        ItemName = this.gameObject.transform.GetChild(0).GetComponent<Text>();
+
         descriptionObj = GameObject.Find("ShopUIItemDescription");
         IconObj = GameObject.Find("ShopUIItemIcon");
         UIItemNameObj = GameObject.Find("ShopUIItemName");
+        BuyItem= GameObject.Find("ShopBuyButton").GetComponent<ShopBuyItem>();
+
+        ItemName = this.gameObject.transform.GetChild(0).GetComponent<Text>();
         Icon = IconObj.GetComponent<Image>();
         description = descriptionObj.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        Debug.Log("アイテム生成");
         UIItemName = UIItemNameObj.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        if (itemdata == null) Debug.Log("error");
-        if (description == null) Debug.Log("error1");
         ItemName.text = itemdata.item_name;
     }
-
+    /// <summary>
+    /// Itemのボタンが押されたときに呼ばれる関数
+    /// </summary>
+    public void PushItemButton()
+    {
+        ChangeUI();
+        ChangeSelectBuyItem();
+    }
+    /// <summary>
+    ///購入するアイテムを変更する．
+    /// </summary>
+    private void ChangeSelectBuyItem()
+    {
+        BuyItem.item = itemdata;
+    }
     /// <summary>
     ///UIのテキスト，アイコンを変更する関数．
     /// </summary>
-    public void ChangeUI()
+    private void ChangeUI()
     {
         description.text = itemdata.description;
         Icon.sprite = itemdata.icon;

@@ -11,19 +11,14 @@ public class ShopItemGenerater : MonoBehaviour
     private void Start()
     {
         item = ShopLineup.GetItemLists();
-        PrepareItem();
+        PrepareBuyItem();
        
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     /// <summary>
     /// ショップアイテムのリストにプレハブを生成．
     /// </summary>
-    private void PrepareItem()
+    private void PrepareBuyItem()
     {
         GameObject prefab = (GameObject)Resources.Load("Shop/ShopItem");
         for (int i = 0; i < item.Count; i++)
