@@ -13,16 +13,16 @@ public class ShopItem : MonoBehaviour
     TextMeshProUGUI UIItemName;
     Image Icon;
     Text ItemName;
-    ShopBuyItem BuyItem;
+    ShopSelectItemManager selectManager;
 
     // Start is called before the first frame update
     void Start()
     {
-
+    
         descriptionObj = GameObject.Find("ShopUIItemDescription");
         IconObj = GameObject.Find("ShopUIItemIcon");
         UIItemNameObj = GameObject.Find("ShopUIItemName");
-        BuyItem= GameObject.Find("ShopBuyButton").GetComponent<ShopBuyItem>();
+        selectManager= GameObject.Find("ShopSelectItemManager").GetComponent<ShopSelectItemManager>();
 
         ItemName = this.gameObject.transform.GetChild(0).GetComponent<Text>();
         Icon = IconObj.GetComponent<Image>();
@@ -43,7 +43,7 @@ public class ShopItem : MonoBehaviour
     /// </summary>
     private void ChangeSelectBuyItem()
     {
-        BuyItem.item = itemdata;
+        selectManager.item = itemdata;
     }
     /// <summary>
     ///UIのテキスト，アイコンを変更する関数．
