@@ -13,11 +13,40 @@ MonoBehaviour:
   m_Name: SubQuest2
   m_EditorClassIdentifier: 
   items:
-  - type: 0
-    id: 0
-    targetID: 0
+  - id: 0
+    targetID: 1
     text: SubQuest2
+    playableDirector: {fileID: 0}
     audio: {fileID: 0}
+    quest: {fileID: 0}
+    conditions: []
+    options: []
+    eventName: 
+  - id: 1
+    targetID: 2
+    text: 
+    playableDirector: {fileID: 0}
+    audio: {fileID: 0}
+    quest: {fileID: 0}
+    conditions: []
+    options: []
+    eventName: 
+  - id: 2
+    targetID: 3
+    text: 
+    playableDirector: {fileID: 0}
+    audio: {fileID: 0}
+    quest: {fileID: 0}
+    conditions: []
+    options: []
+    eventName: 
+  - id: 3
+    targetID: 4
+    text: 
+    playableDirector: {fileID: 0}
+    audio: {fileID: 0}
+    quest: {fileID: 0}
+    conditions: []
     options: []
     eventName: 
   m_firstConversation: 0

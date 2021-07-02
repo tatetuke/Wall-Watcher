@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 /// <summary>
 /// ゲーム内のクエストデータをロードし、一覧としてまとめる
 /// </summary>
-public class QuestsManager : SingletonMonoBehaviour<QuestsManager>,ILoadableAsync
+public class QuestsManager : SaveLoadableSingletonMonoBehaviour<QuestsManager>
 {
     [SerializeField] private AssetLabelReference _labelReference;
     [SerializeField,ReadOnly] List<QuestDataSO> m_quests = new List<QuestDataSO>();
@@ -29,15 +30,25 @@ public class QuestsManager : SingletonMonoBehaviour<QuestsManager>,ILoadableAsyn
     }
 
     AsyncOperationHandle<IList<QuestDataSO>> m_handle;
-    void Awake()
-    {
-        Kyoichi.GameManager.Instance.AddLoadableAsync(this);
-    }
     void OnDisable()
     {
         Addressables.Release(m_handle);
     }
-    public async Task LoadAsync(CancellationToken token)
+
+    protected override void Save()
+    {
+    }
+
+    protected override void Load()
+    {
+    }
+
+    protected override async UniTask SaveAsync()
+    {
+
+    }
+
+    protected override async UniTask LoadAsync()
     {
         m_handle = Addressables.LoadAssetsAsync<QuestDataSO>(_labelReference, null);
         await m_handle.Task;
@@ -48,4 +59,8 @@ public class QuestsManager : SingletonMonoBehaviour<QuestsManager>,ILoadableAsyn
         }
     }
 
+    protected override List<string> GetKeyList()
+    {
+        return null;
+    }
 }

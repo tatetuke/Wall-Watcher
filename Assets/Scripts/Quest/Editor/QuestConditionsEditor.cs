@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(QuestConditions))]
+/*[CustomPropertyDrawer(typeof(QuestConditions))]
 public class QuestDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -61,4 +61,4 @@ public class QuestDrawer : PropertyDrawer
         var height = base.GetPropertyHeight(property, label);
         return height * 4;
     }
-}
+}*/

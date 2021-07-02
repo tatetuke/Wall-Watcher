@@ -1,0 +1,25 @@
+@startuml
+class ExampleSaveData {
+    + text : string
+    + color : Color
+    + position : Vector3
+}
+class SaveLoadableMonoBehaviourTest {
+    - text : TMPro.TextMeshProUGUI
+    - saveKey : string
+    - exampleSaveData : ExampleSaveData
+    # <<override>> Save() : void
+    # <<override>> Load() : void
+    # <<override>> GetKeyList() : List<string>
+    # <<override>> Awake() : void
+    + SaveTest() : void
+    + LoadTest() : void
+}
+SaveDataBaseClass <|-- ExampleSaveData
+SaveLoadableMonoBehaviour <|-- SaveLoadableMonoBehaviourTest
+SaveLoadableMonoBehaviourTest -left- DataBank
+note right on link 
+    Save(),Load()の実装で
+    DataBankを使用
+end note
+@enduml
