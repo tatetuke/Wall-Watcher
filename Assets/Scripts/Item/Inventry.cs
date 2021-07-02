@@ -77,13 +77,15 @@ namespace Kyoichi
         public void AddItem(ItemStack item)
         {
             if (item == null) return;
-            foreach (var i in m_inventry)
+            foreach (var i in m_inventry)//インベントリ内にすでにアイテムがあるか
             {
                 if (i.item != item.item) continue;
                 OnItemAdd.Invoke(item);
                 i.count += item.count;
                 return;
             }
+            //インベントリにそのアイテムが存在してなかったら
+            OnItemAdd.Invoke(item);
             m_inventry.Add(item);
         }
         /// <summary>
@@ -125,6 +127,7 @@ namespace Kyoichi
             {
                 if (i.item == item)
                 {
+                     OnItemRemove.Invoke(new ItemStack(item, m_inventry[index].count));
                     m_inventry[index].count = 0;
                     return;
                 }

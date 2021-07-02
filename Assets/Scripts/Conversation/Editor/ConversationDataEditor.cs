@@ -27,24 +27,17 @@ public class AudioClipDataEditor : Editor
         m_list.elementHeight =  50;
         m_list.onAddDropdownCallback = (rect, list) =>
         {
-            var menu = new GenericMenu();
+            m_script.Add(new Conversations());
+            /*var menu = new GenericMenu();
             menu.AddItem(
                 new GUIContent("Conversation"),
                 false,
                 () =>
                 {
-                    ConversationPieceWizard.New(m_script, ConversationType.normal);
+                    ConversationPieceWizard.New(serializedObject,m_script, list.count);
                 }
                 );
-            menu.AddItem(
-                new GUIContent("Event"),
-                false,
-                () =>
-                {
-                    ConversationPieceWizard.New(m_script, ConversationType.events);
-                }
-                );
-            menu.DropDown(rect);
+            menu.DropDown(rect);*/
         };
     }
 
@@ -81,35 +74,14 @@ public class AudioClipDataEditor : Editor
     void OnDrawElement(Rect rect, int index, bool isActive, bool isFocused)
     {
         var item = (Conversations)m_list.list[index];
-        switch (item.type)
-        {
-            case ConversationType.normal:
                 GUI.color = Color.white;
-                break;
-            case ConversationType.events:
-                GUI.color = new Color32(200, 160, 120,255);
-                break;
-            default:
-                break;
-        }
         var idRect = rect;
         idRect.width = rect.width * 0.2f;
         GUI.Label(idRect, item.id, EditorStyles.boldLabel);
         var textRect = rect;
         textRect.x += idRect.width;
         textRect.width = rect.width * 0.7f;
-        switch (item.type)
-        {
-            case ConversationType.normal:
                 GUI.Label(textRect, item.text);
-                break;
-            case ConversationType.events:
-                GUI.Label(textRect, item.eventName);
-                break;
-            default:
-                break;
-        }
-
 
         var targetRect = rect;
         targetRect.y += 15;
@@ -129,7 +101,8 @@ public class AudioClipDataEditor : Editor
         {
             if (GUI.Button(buttonRect, "Edit", EditorStyles.miniButton))
             {
-                ConversationPieceWizard.Edit(m_script, item);
+                var prop = serializedObject.FindProperty("items");
+                ConversationPieceWizard.Edit(prop,m_script, item,index);
             }
         }
     }

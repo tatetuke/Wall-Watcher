@@ -1,0 +1,9 @@
+@startuml
+package Save{
+    !include .\\Save/DataBank.puml
+    !include .\\Save/SaveData.puml
+    !include .\\Save/SaveLoadableMonoBehaviour.puml
+    !include .\\Save/SaveLoadableMonoBehaviourTest.puml
+    !include .\\Save/SaveLoadManager.puml
+}
+@enduml

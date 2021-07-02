@@ -12,26 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ef7334790f26274aba18c542e6595fa, type: 3}
   m_Name: Otukai
   m_EditorClassIdentifier: 
-  title: "\u304A\u3064\u304B\u3044"
-  description: "\u3055\u3044\u3057\u3087\u306E\u304F\u3048\u3059\u3068"
-  subQuests:
-  - {fileID: 11400000, guid: 1bbf06480eae0d24d8d148d9061fdb54, type: 2}
+  title: "\u304A\u3064\u304B\u3044\u30AF\u30A8\u30B9\u30C8"
+  description: aaaaaa
+  subQuests: []
   endConditions:
-  - description: "\u6761\u4EF6\uFF11"
-    conditions:
-    - parameterKey: money
-      conditionOperator: 4
-      valueType: 0
-      intValue: 100
-      floatValue: 0
-      stringValue: 
-      boolValue: 0
-    - parameterKey: item.donut
-      conditionOperator: 4
-      valueType: 0
-      intValue: 1
-      floatValue: 0
-      stringValue: 
-      boolValue: 0
-  flowchart: {fileID: 6329313743067654110, guid: 123541932f6472c42a135e971e38bffc,
-    type: 3}
+  - {fileID: 11400000, guid: 74617ab4ac6b53c4c90d1af3e7aab82b, type: 2}
+  - {fileID: 0}
