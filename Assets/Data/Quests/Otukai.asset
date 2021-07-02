@@ -22,7 +22,7 @@ MonoBehaviour:
     - parameterKey: money
       conditionOperator: 4
       valueType: 0
-      intValue: 10000
+      intValue: 100
       floatValue: 0
       stringValue: 
       boolValue: 0
@@ -33,20 +33,5 @@ MonoBehaviour:
       floatValue: 0
       stringValue: 
       boolValue: 0
-  - description: "\u6761\u4EF6\uFF11"
-    conditions:
-    - parameterKey: money
-      conditionOperator: 4
-      valueType: 0
-      intValue: 10000
-      floatValue: 0
-      stringValue: 
-      boolValue: 0
-    - parameterKey: item.donut
-      conditionOperator: 4
-      valueType: 0
-      intValue: 1
-      floatValue: 0
-      stringValue: 
-      boolValue: 0
-  flowchart: {fileID: 0}
+  flowchart: {fileID: 6329313743067654110, guid: 123541932f6472c42a135e971e38bffc,
+    type: 3}

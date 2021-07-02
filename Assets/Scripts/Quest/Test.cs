@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
 using Fungus;
 using NaughtyAttributes;
+using System.Collections;
+using System.Collections.Generic;
 
 class Test : MonoBehaviour
 {
-    public int money;
+    public int value1;
+    public string questName;
     public Flowchart flowchart;
     public FlowchartData flowchartData;
+    [SerializeField, ReadOnly] QuestDataSO m_questDataSO;
 
     [Button]
     public void EncodeFlowchart()
@@ -20,17 +24,31 @@ class Test : MonoBehaviour
         FlowchartData.Decode(flowchartData);
     }
 
+    [Button]
+    public void AddOtsukaiQuest()
+    {
+        QuestHolder questHolder = FindObjectOfType<QuestHolder>();
+        QuestDataSO questDataSO = QuestsManager.Instance.GetQuest(questName);
+        m_questDataSO = questDataSO;
+        if (questDataSO == null)
+        {
+            Debug.Log("nullllll");
+        }
+        else
+        {
+            questHolder.AddQuest(questDataSO);
+        }
+    }
+
     public int GetMoney()
     {
-        EncodeFlowchart();
-        return money;
+        return 10;
     }
 
-    public void SetMoney(int m)
+    public string GetQuestName()
     {
-        money = m;
+        return questName;
     }
-
 
 }
 

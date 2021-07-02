@@ -38,6 +38,8 @@ public class QuestHolder : MonoBehaviour
     {
         var obj = new GameObject(quest_.name);
         var scr = obj.AddComponent<QuestChecker>();
+        Fungus.Flowchart flowchart = Instantiate(quest_.flowchart, obj.transform);
+        scr.m_Flowchart = flowchart;
         scr.Initialize(quest_, QuestChecker.QuestState.working, 0);
         scr.gameObject.transform.parent = transform.parent;
         m_quests.Add(scr);
@@ -47,5 +49,29 @@ public class QuestHolder : MonoBehaviour
     /// クエストを請け負ったときに実行されるイベント
     /// </summary>
     public UnityEvent OnQuestAdd { get; } = new UnityEvent();
+
+
+    public Fungus.Flowchart GetQuestFlowchart(string npcname)
+    {
+        if (string.IsNullOrEmpty(npcname))
+            return null;
+
+
+        //指定したNPCの会話がFlowchartに存在するならTrueを返す
+        bool ContainNPCConversation(Fungus.Flowchart flowchart)
+        {
+            //Flowchart中にNPCの名前をしたブロックが存在するか
+            return flowchart?.FindBlock(npcname);
+        }
+
+        foreach (var i in Data)
+        {   
+            if (ContainNPCConversation(i.m_Flowchart))
+            {
+                return i.m_Flowchart;
+            }    
+        }
+        return null;
+    }
 
 }

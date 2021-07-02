@@ -25,6 +25,7 @@ public class QuestChecker : MonoBehaviour
     [SerializeField, ReadOnly] QuestDataSO m_quest;
     [SerializeField,ReadOnly]QuestState m_state = QuestState.not_yet;
     [SerializeField, ReadOnly] int m_currentPhase = 0;
+    [SerializeField]public Fungus.Flowchart m_Flowchart;
 
     public QuestSaveData GetData()
     {
