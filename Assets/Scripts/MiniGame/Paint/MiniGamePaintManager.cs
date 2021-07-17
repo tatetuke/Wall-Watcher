@@ -7,12 +7,21 @@ using TMPro;
 /// ミニゲームの塗るパートを統括する
 /// クリック時の土・コストの更新や、クリックする前に範囲を指し示す
 /// </summary>
-public class MiniGamePaintManager : MonoBehaviour
+public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
 {
+    [SerializeField] private MiniGamePaintStatus gameStatus;//HPやHPを減らす関数を持つクラス
+
+    [SerializeField] MiniGamePaintToolDataManager toolManager;
+    [SerializeField] MiniGamePaintToolData tool;
+
+    [SerializeField] GameObject lifeGage;//揺らすゲームオブジェクトの選択
+
     [SerializeField] GameObject FrameArrow;
     [SerializeField] GameObject FrameSquare;
     private GameObject NowFrame;
     [SerializeField] GameObject ParameterCollection;
+
+    [SerializeField] Sprite[] WallSprites;
 
     public int ParamSize = 20;
     public int ConditionCanClick = 8;
@@ -29,15 +38,15 @@ public class MiniGamePaintManager : MonoBehaviour
     // MEMO : 誤差が怖いので足し引きでパラメータをいじるのではなく
     //        あらかじめ決められたパラメータに変更するという方針のためのList
     List<float> ParamList = new List<float>();
-    [SerializeField] Range m_Range = Range.Square;
+    public Range m_Range = Range.Square;
 
-    enum Range
+    public enum Range
     {
         Square,
         Up,
         Right,
         Down,
-        Left
+        Left,
     }
 
 
@@ -55,11 +64,14 @@ public class MiniGamePaintManager : MonoBehaviour
 
     void Update()
     {
-        UpdateParameters();
+        Debug.Log(m_Range);
+        //UpdateParameters();
         if (/*左クリックが押されたら*/Input.GetMouseButtonDown(0))
         {
             int raw, column;
             (raw, column) = GetCursorObjectIndex();
+            Debug.Log(raw);
+            Debug.Log(column); 
             int add, sub;
             (add, sub) = SetAddSub(m_Range, raw, column);
             if (CanClick(raw, column, sub))
@@ -69,7 +81,11 @@ public class MiniGamePaintManager : MonoBehaviour
         {
             int raw, column;
             (raw, column) = GetCursorObjectIndex();
-            FillSoil(raw, column);
+            if (gameStatus.life >= 40)
+            {
+                gameStatus.Damage(40);
+                FillSoil(raw, column);
+            }
         }
         else if (/*中クリックが押されたら*/Input.GetMouseButtonDown(2))
         {
@@ -106,7 +122,8 @@ public class MiniGamePaintManager : MonoBehaviour
         {
             Wall[i, j] = v;
             SpriteRenderer spriteRenderer = Wall[i, j].GetComponent<SpriteRenderer>();
-            spriteRenderer.color = new Color(1, 1, 1, ParamList[Random.Range(0, ParamSize - 1)]);
+            spriteRenderer.sprite = WallSprites[Random.Range(0, 7)];
+            //spriteRenderer.color = new Color(1, 1, 1, ParamList[Random.Range(0, ParamSize - 1)]);
             i++;
             if (i == WallLength)
             {
@@ -236,9 +253,10 @@ public class MiniGamePaintManager : MonoBehaviour
 
     private bool CanClick(int raw, int column, int sub)
     {
-        if (raw < 0 || column < 0) return false;
+        if (raw < 0 || raw >= WallLength || column < 0 || column >= WallLength) return false;
 
-        return IsEnoughCost(raw, column, sub) && !IsOutOfFrame(m_Range, raw, column);
+        return true;
+        //return IsEnoughCost(raw, column, sub) && !IsOutOfFrame(m_Range, raw, column);
     }
 
     bool IsEnoughCost(int raw, int column, int sub)
@@ -282,18 +300,50 @@ public class MiniGamePaintManager : MonoBehaviour
         }
     }
 
+    private int GetWallSpriteItr(Sprite sprite,int raw, int column)
+    {
+        for (int i = 0; i < 7; i++)
+            if (WallSprites[i] == sprite)
+                return i;
+
+        return -1;
+    }
+
+    void ChangeSprite(int raw,int column,int add)
+    {
+        SpriteRenderer spriteRenderer = Wall[raw, column].GetComponent<SpriteRenderer>();
+        Sprite sprite = spriteRenderer.sprite;
+        int wallSpriteItr = GetWallSpriteItr(sprite, raw, column);
+        int ni = wallSpriteItr + add;
+        if (ni < 0) ni = 0;
+        if (ni >= 7) ni = 6;
+        sprite = WallSprites[ni];
+    }
+
     private void UpdateWall(Range direction,int raw, int column,int add, int sub)
     {
         if (direction == Range.Square)
         {
-            for (int i = 0; i < 9; i++)
+            Debug.Log("Update!");
+            for(int i = 0; i < 9; i++)
             {
                 int nraw = raw + dy[i];
                 int ncolumn = column + dx[i];
                 if (nraw < 0 || nraw >= WallLength || ncolumn < 0 || ncolumn >= WallLength) continue;
-                if (dx[i] == 0 && dy[i] == 0) ChangeSprite(Wall[nraw, ncolumn], sub);
-                else ChangeSprite(Wall[nraw, ncolumn], add);
+                if (raw == nraw && column == ncolumn)
+                    ChangeSprite(raw, column, 10);
+                else
+                    ChangeSprite(raw, column, 1);
             }
+
+            //for (int i = 0; i < 9; i++)
+            //{
+            //    int nraw = raw + dy[i];
+            //    int ncolumn = column + dx[i];
+            //    if (nraw < 0 || nraw >= WallLength || ncolumn < 0 || ncolumn >= WallLength) continue;
+            //    if (dx[i] == 0 && dy[i] == 0) ChangeSprite(Wall[nraw, ncolumn], sub);
+            //    else ChangeSprite(Wall[nraw, ncolumn], add);
+            //}
         }
         else
         {
@@ -321,6 +371,7 @@ public class MiniGamePaintManager : MonoBehaviour
 
     private void ChangeSprite(GameObject gameObject, int changeAmount)
     {
+
         SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         if (spriteRenderer.color == Brown)
         {
@@ -361,14 +412,18 @@ public class MiniGamePaintManager : MonoBehaviour
 
     void ChangeRange()
     {
-        NowFrame.SetActive(false);
-        if (m_Range == Range.Square)
-            NowFrame = FrameArrow;
-        else if (m_Range == Range.Left)
-            NowFrame = FrameSquare;
+        if (m_Range == Range.Up) m_Range = Range.Right;
+        else if (m_Range == Range.Right) m_Range = Range.Down;
+        else if (m_Range == Range.Down) m_Range = Range.Left;
+        else if (m_Range == Range.Left) m_Range = Range.Up;
+        //NowFrame.SetActive(false);
+        //if (m_Range == Range.Square)
+        //    NowFrame = FrameArrow;
+        //else if (m_Range == Range.Left)
+        //    NowFrame = FrameSquare;
 
-        m_Range = (Range)(((int)m_Range + 1) % 5);
-        m_TextRange.text = Textes[(int)m_Range];
+        //m_Range = (Range)(((int)m_Range + 1) % 5);
+        //m_TextRange.text = Textes[(int)m_Range];
     }
 
     private void DisplayRangeFrame(int raw, int column)
@@ -399,5 +454,15 @@ public class MiniGamePaintManager : MonoBehaviour
             ParameterCollection.SetActive(false);
         else
             ParameterCollection.SetActive(true);
+    }
+
+    public void ChangeRange(Range range)
+    {
+        NowFrame.SetActive(false);
+        m_Range = range;
+        if (m_Range == Range.Square)
+            NowFrame = FrameSquare;
+        else
+            NowFrame = FrameArrow;
     }
 }

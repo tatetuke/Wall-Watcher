@@ -1,0 +1,26 @@
+@startuml
+class DataBank {
+    {static} instance : DataBank
+    {static} bank : Dictionary<string, SaveDataBaseClass>
+    {static} <<readonly>> path : string = "SaveData"
+    {static} <<readonly>> fullPath : string
+    {static} <<readonly>> extension : string = "dat"
+    + SavePath : string <<get>>
+    DataBank()
+    + {static} Open() : DataBank
+    + {static} Instance : DataBank <<get>>
+    + IsEmpty() : bool
+    + ExistsKey(key:string) : bool
+    + Store(key:string, obj:SaveDataBaseClass) : void
+    + Clear() : void
+    + Remove(key:string) : void
+    + Get(key:string) : DataType
+    + SaveAll() : void
+    + Save(key:string) : bool
+    + Load(key:string) : bool
+}
+note bottom of DataBank
+    データのファイルへの読み書きを行う
+    各クラスはJSON形式へと変換される
+end note
+@enduml
