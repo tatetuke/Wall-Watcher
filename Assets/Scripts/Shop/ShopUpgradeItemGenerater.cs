@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Kyoichi;
-public class ShopSellItemGenerator : MonoBehaviour
+public class ShopUpgradeItemGenerater : MonoBehaviour
 {
     public Inventry inventry;
     private void Start()
@@ -25,12 +25,12 @@ public class ShopSellItemGenerator : MonoBehaviour
     /// </summary>
     private void PrepareItem()
     {
-        GameObject prefab = (GameObject)Resources.Load("Shop/ShopSellItem");
+        GameObject prefab = (GameObject)Resources.Load("Shop/ShopUpgradeItem");
 
         int i = 0;
         foreach (var item in inventry.Data)
         {
-            if (item.item.canSellItem == false) continue;
+            if (!item.item.canUpgradeItem) continue;
             ItemStack tmpItem = new ItemStack(item.item, item.count);
             GameObject instance = (GameObject)Instantiate(prefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
             instance.transform.parent = this.transform;
