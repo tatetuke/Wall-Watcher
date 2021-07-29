@@ -74,14 +74,11 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
 
     void Update()
     {
-        Debug.Log(gameStatus.maxLife);
         UpdateParameters();
         if (/*左クリックが押されたら*/Input.GetMouseButtonDown(0))
         {
             int raw, column;
             (raw, column) = GetCursorObjectIndex();
-            Debug.Log(raw);
-            Debug.Log(column); 
             int add, sub;
             (add, sub) = SetAddSub(m_Range, raw, column);
             if (CanClick(raw, column, sub))
@@ -217,7 +214,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
         //Debug.Log($"{raw}, {column}");
         return (raw, column);
     }
-    
+
     // 土の変化量を設定する
     private (int, int) SetAddSub(Range direction, int raw, int column)
     {
@@ -306,7 +303,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
     }
 
 
-    private void UpdateWall(Range direction,int raw, int column,int add, int sub)
+    private void UpdateWall(Range direction, int raw, int column, int add, int sub)
     {
         if (direction == Range.Square)
         {
@@ -316,7 +313,11 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
                 int ncolumn = column + dx[i];
                 if (nraw < 0 || nraw >= WallLength || ncolumn < 0 || ncolumn >= WallLength) continue;
                 if (dx[i] == 0 && dy[i] == 0) ChangeSprite(nraw, ncolumn, sub);
-                else ChangeSprite(nraw,ncolumn, add);
+                else ChangeSprite(nraw, ncolumn, add);
+                for (int j = 0; j < 5; j++)
+                {
+                    Particle.Add(Wall[nraw, ncolumn].transform.position.x, Wall[nraw, ncolumn].transform.position.y);
+                }
             }
         }
         else
@@ -325,8 +326,15 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
             (draw, dcolumn) = SetItr(m_Range);
             ChangeSprite(raw, column, sub);
             ChangeSprite(raw + 1 * draw, column + 1 * dcolumn, 3 * add);
+            for (int j = 0; j < 7; j++)
+                Particle.Add(Wall[raw + 1 * draw, column + 1 * dcolumn].transform.position.x, Wall[raw + 1 * draw, column + 1 * dcolumn].transform.position.y);
             ChangeSprite(raw + 2 * draw, column + 2 * dcolumn, 2 * add);
+            for (int j = 0; j < 7; j++)
+                Particle.Add(Wall[raw + 2 * draw, column + 2 * dcolumn].transform.position.x, Wall[raw + 2 * draw, column + 2 * dcolumn].transform.position.y);
             ChangeSprite(raw + 3 * draw, column + 3 * dcolumn, 1 * add);
+            for (int j = 0; j < 7; j++)
+                Particle.Add(Wall[raw + 3 * draw, column + 3 * dcolumn].transform.position.x, Wall[raw + 3 * draw, column + 3 * dcolumn].transform.position.y);
+
         }
     }
 
@@ -343,7 +351,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
             return (-1, 0);
     }
 
-    private void ChangeSprite(int raw,int column, int changeAmount)
+    private void ChangeSprite(int raw, int column, int changeAmount)
     {
 
         SpriteRenderer spriteRenderer = Wall[raw, column].GetComponent<SpriteRenderer>();
@@ -382,6 +390,10 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
         spriteRenderer.color = Brown;
         WallParam[raw, column] = 14 + 24;
         spriteRenderer.sprite = WallSprites[(ParamSize - 1) / 3];
+        for (int i = 0; i < 32; i++)
+        {
+            Particle.Add(Wall[raw, column].transform.position.x, Wall[raw, column].transform.position.y);
+        }
     }
 
     private void ChangeCost(int num)
