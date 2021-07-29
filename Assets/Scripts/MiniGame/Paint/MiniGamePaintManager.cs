@@ -91,7 +91,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
             if (!(raw < 0 || column < 0))
             {
                 int damage = 14 + 24 - WallParam[raw, column];
-                if (gameStatus.life >= damage)
+                if (gameStatus.life >= damage && !IsBrown(raw, column))
                 {
                     gameStatus.Damage(40);
                     FillSoil(raw, column);
