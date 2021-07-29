@@ -347,6 +347,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4368147750092273802, guid: 9ef8d4b4d4413294c9d2f4d2edfac45e,
+        type: 3}
+      propertyPath: filename
+      value: ShopInventrySampleData.csv
+      objectReference: {fileID: 0}
     - target: {fileID: 5258322693995725204, guid: 9ef8d4b4d4413294c9d2f4d2edfac45e,
         type: 3}
       propertyPath: m_RootOrder
@@ -3704,7 +3709,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad5d70c5f57b0dc4fbfd22d795ee0a3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventry: {fileID: 0}
+  inventry: {fileID: 790180131}
 --- !u!114 &1227625663
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -30,7 +30,7 @@ public class ShopUpgradeItemGenerater : MonoBehaviour
         int i = 0;
         foreach (var item in inventry.Data)
         {
-            if (!item.item.canUpgradeItem) continue;
+            if (item.item.canUpgradeItem==false) continue;
             ItemStack tmpItem = new ItemStack(item.item, item.count);
             GameObject instance = (GameObject)Instantiate(prefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
             instance.transform.parent = this.transform;
