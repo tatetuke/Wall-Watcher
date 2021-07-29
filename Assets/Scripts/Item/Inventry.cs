@@ -188,22 +188,21 @@ namespace Kyoichi
         }
         public void SaveToFile()
         {
-            ItemManager.Instance.SaveItemTo(directory, filename, Data);
         }
 
         protected override UniTask SaveAsync()
         {
-            throw new System.NotImplementedException();
+            return new UniTask();
         }
 
         protected override UniTask LoadAsync()
         {
-            throw new System.NotImplementedException();
+            return new UniTask();
         }
 
         protected override List<string> GetKeyList()
         {
-            throw new System.NotImplementedException();
+            return null;
         }
     }
 

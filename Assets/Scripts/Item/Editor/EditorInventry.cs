@@ -74,7 +74,7 @@ public class EditorInventry : Editor
                 if (EditorApplication.isPlaying)
                 {
                     Debug.Log("Inventry saving");
-                    scr.Save();
+                    scr.SaveToFile();
                 }
             }
         }
