@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
+
 [RequireComponent(typeof(Animator))]
+[DisallowMultipleComponent]
 public class PauseUIManager : CanvasManager
 {
     enum State

@@ -33,6 +33,7 @@ public class Connector : MonoBehaviour
             {
                 OnConnectEnter.Invoke(currentConnector);
                 currentConnector.Connect();
+                if(connectEffect!=null)
                 Instantiate(connectEffect, transform.position, Quaternion.identity).SetActive(true);
                 //currentDraggable.stopTillDragEnd = true;
             }

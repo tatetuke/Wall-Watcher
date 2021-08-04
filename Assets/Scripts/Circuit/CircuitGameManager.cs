@@ -13,9 +13,15 @@ public class CircuitGameManager : MonoBehaviour
     /// クリアするために、どういうConnecterがつながっていればいいか
     /// </summary>
     [SerializeField] List<Connector> targetConnecter = new List<Connector>();
+    /// <summary>
+    /// ゲームに必要なアイテムたち
+    /// </summary>
+    [SerializeField] List<CircuitSO> requiredItems = new List<CircuitSO>();
+    public IEnumerable<CircuitSO> RequiredItems { get => requiredItems; }
+
     public UnityEvent OnGameStart { get; } = new UnityEvent();
     public UnityEvent OnGameClear { get; } = new UnityEvent();
-
+    [Header("Debug")]
     //現在接続されているConnecter
    [SerializeField,ReadOnly] int currentCount = 0;
     //成功判定になるためのConnecterのカウント
@@ -41,6 +47,11 @@ public class CircuitGameManager : MonoBehaviour
             sumCount++;
         }
         OnGameStart.Invoke();
+    }
+
+    public void AddCircuitToGame(CircuitSO data)
+    {
+        Instantiate(data.prefab).GetComponent<CircuitScript>().SetData(data);
     }
 
 }
