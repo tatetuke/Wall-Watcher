@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(Timer))]
 /// <summary>
 /// 回路の修理Sceneに配置するスクリプト
 /// ゲームの進行を管理
@@ -23,10 +24,14 @@ public class CircuitGameManager : MonoBehaviour
     public UnityEvent OnGameClear { get; } = new UnityEvent();
     [Header("Debug")]
     //現在接続されているConnecter
-   [SerializeField,ReadOnly] int currentCount = 0;
+    [SerializeField, ReadOnly] int currentCount = 0;
     //成功判定になるためのConnecterのカウント
     [SerializeField, ReadOnly] int sumCount = 0;
-
+    public Timer gameTimer { get; private set; }
+    private void Awake()
+    {
+        gameTimer = GetComponent<Timer>();
+    }
     private void Start()
     {
         foreach(var i in targetConnecter)
@@ -47,6 +52,7 @@ public class CircuitGameManager : MonoBehaviour
             sumCount++;
         }
         OnGameStart.Invoke();
+        gameTimer.StartTimer(0,100);
     }
 
     public void AddCircuitToGame(CircuitSO data)
