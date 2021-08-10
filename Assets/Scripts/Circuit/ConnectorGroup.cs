@@ -27,6 +27,7 @@ public class ConnectorGroup : MonoBehaviour
                 {
                     m_draggable.canDrag = false;
                 }
+                connector.transform.position = receiver.transform.position;
             });
             connector.OnConnectExit.AddListener((receiver) => {
                 currentCounter--;

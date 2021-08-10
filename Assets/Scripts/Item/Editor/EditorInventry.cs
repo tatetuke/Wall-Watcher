@@ -60,16 +60,22 @@ public class EditorInventry : Editor
             {
                 if (EditorApplication.isPlaying)
                 {
+                    Debug.Log("Inventry loading");
                     scr.LoadFromFile();
                 }
                 else
                 {
+                    Debug.Log("Inventry loading");
                     //editorCSVData = scr.GetFileData();
                 }
             }
             if (GUILayout.Button("Save to file"))
             {
-              //  scr.SaveToFile();
+                if (EditorApplication.isPlaying)
+                {
+                    Debug.Log("Inventry saving");
+                    scr.SaveToFile();
+                }
             }
         }
         EditorGUILayout.EndHorizontal();

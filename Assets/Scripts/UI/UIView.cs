@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+[DisallowMultipleComponent]
 public class UIView : MonoBehaviour
 {
     public Selectable firstSelectUI;

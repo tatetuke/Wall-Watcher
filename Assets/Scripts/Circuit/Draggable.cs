@@ -12,7 +12,6 @@ using UnityEngine.EventSystems;
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public bool canDrag = true;
-    public bool stopTillDragEnd = false;//マウスを離すまでドラッグできないようにする
     public bool resetOnReceiverNotFound = false;//Receiverにドラッグできなかったら座標を戻す
 
     public class OnDragEvent : UnityEvent<Vector3> { }
@@ -35,7 +34,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     }
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
-        if (!canDrag|| stopTillDragEnd) return;
+        if (!canDrag) return;
         Vector3 TargetPos = Camera.main.ScreenToWorldPoint(eventData.position);
         TargetPos.z = 0;
         transform.position = TargetPos + posDelta;
@@ -45,7 +44,6 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
         OnDragEnd.Invoke();
-        stopTillDragEnd = false;
         /*if (resetOnReceiverNotFound)
         {
             transform.position = initialPos;

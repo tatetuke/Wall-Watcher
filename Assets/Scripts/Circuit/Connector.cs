@@ -10,42 +10,62 @@ using UnityEngine.Events;
 /// </summary>
 public class Connector : MonoBehaviour
 {
-    [ReadOnly,SerializeField]Receiver currentReceiver;
+    //接触している Connector
+    [ReadOnly, SerializeField] Connector currentConnector;
     public string key;//同じkeyをもつReceiverと接続できる
-    public bool ignoreKey=true;
+    public bool ignoreKey = true;
+    public List<string> targetKeys = new List<string>();
     public GameObject connectEffect;
-    public class OnConnectorEvent : UnityEvent<Receiver> { }
+    bool connecting = false;
+
+    public class OnConnectorEvent : UnityEvent<Connector> { }
     public OnConnectorEvent OnConnectEnter = new OnConnectorEvent();
     public OnConnectorEvent OnConnectExit = new OnConnectorEvent();
 
-    public bool Linked() { return currentReceiver != null; }
+    public bool Linked() { return currentConnector != null; }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("enter trriger");
-        if (collision.gameObject.TryGetComponent<Receiver>(out currentReceiver))
+        if (collision.gameObject.TryGetComponent<Connector>(out currentConnector))
         {
-            Debug.Log("connector key:"+currentReceiver.key);
-            if (ignoreKey || currentReceiver.key.Contains(key))
+            if (ignoreKey || currentConnector.CanConnect(key))
             {
-                OnConnectEnter.Invoke(currentReceiver);
-                currentReceiver.isConnecting = true;
-                Instantiate(connectEffect,transform.position,Quaternion.identity).SetActive(true);
-            }
-            else
-            {
-                currentReceiver = null;
+                OnConnectEnter.Invoke(currentConnector);
+                currentConnector.Connect();
+                if(connectEffect!=null)
+                Instantiate(connectEffect, transform.position, Quaternion.identity).SetActive(true);
+                //currentDraggable.stopTillDragEnd = true;
             }
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         Debug.Log("exit trriger");
-        if (currentReceiver == null) return;
-        if (ignoreKey || currentReceiver.key.Contains(key))
+        if (currentConnector == null) return;
+        if (collision.GetComponent<Connector>() == null) return;
+        if (ignoreKey || currentConnector.CanConnect(key))
         {
-            OnConnectExit.Invoke(currentReceiver);
-            currentReceiver = null;
+            OnConnectExit.Invoke(currentConnector);
+            currentConnector.Disconnect();
+            currentConnector = null;
         }
+    }
+
+
+    public void Connect()
+    {
+        connecting = true;
+    }
+    public void Disconnect()
+    {
+        connecting = false;
+    }
+
+    public bool CanConnect(string key)
+    {
+        foreach (var i in targetKeys)
+            if (i == key) return true;
+        return false;
     }
 }
