@@ -113,6 +113,22 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
             else
                 HideRangeFrame();
         }
+
+        for (int i = 0; i < WallLength; i++)
+        {
+            for (int j = 0; j < WallLength; j++)
+            {
+                if (IsBrown(i, j))
+                {
+                    if (Random.value <= 0.05)
+                    {
+                        float x = (Wall[i, j].transform.position.x + Random.Range(-0.5f, 0.5f));
+                        float y = (Wall[i, j].transform.position.y + Random.Range(-0.5f, 0.5f));
+                        Particle2.Add(x, y);
+                    }
+                }
+            }
+        }
     }
 
 
