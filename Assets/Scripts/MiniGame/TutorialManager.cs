@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
+    [SerializeField] Animator anim;
     [SerializeField] Image TutorialImage;
     [SerializeField] Text TutorialText;
     [SerializeField] Sprite[] Images;
@@ -23,7 +24,6 @@ public class TutorialManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(TutorialImage);
     }
 
     public void OnClickBack()
@@ -42,5 +42,12 @@ public class TutorialManager : MonoBehaviour
     {
         TutorialImage.sprite = Images[Now];
         TutorialText.text = Explanations[Now];
+    }
+
+    public void OnClickTutorial()
+    {
+        Debug.Log("a");
+        bool b = anim.GetBool("IsSmall");
+        anim.SetBool("IsSmall", !b);
     }
 }
