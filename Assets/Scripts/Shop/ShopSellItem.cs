@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Kyoichi;
@@ -9,15 +8,21 @@ public class ShopSellItem : MonoBehaviour
 {
     public ItemStack item;
     public ItemSO itemdata;
+    
     GameObject descriptionObj;
     GameObject UIItemNameObj;
     GameObject IconObj;
+
     TextMeshProUGUI description;
     TextMeshProUGUI UIItemName;
+
     Image Icon;
-    Text ItemName;
-    Text priceText;
-    Text itemCountText;
+    
+    public Text ItemName;
+    public Text priceText;
+    public Text itemCountText;
+    public GameObject blackImage;
+
     ShopSelectItemManager selectManager;
 
     // Start is called before the first frame update
@@ -28,10 +33,9 @@ public class ShopSellItem : MonoBehaviour
         IconObj = GameObject.Find("ShopUIItemIcon");
         UIItemNameObj = GameObject.Find("ShopUIItemName");
         selectManager = GameObject.Find("ShopSelectItemManager").GetComponent<ShopSelectItemManager>();
-        ItemName = this.gameObject.transform.GetChild(0).GetComponent<Text>();
-        priceText = this.gameObject.transform.GetChild(1).GetComponent<Text>();
-        itemCountText = this.gameObject.transform.GetChild(2).GetComponent<Text>();
+
         Icon = IconObj.GetComponent<Image>();
+
         description = descriptionObj.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         UIItemName = UIItemNameObj.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         
@@ -47,14 +51,15 @@ public class ShopSellItem : MonoBehaviour
     public void PushItemButton()
     {
         ChangeUI();
-        ChangeSelectBuyItem();
+        ChangeSelectSellItem();
     }
     /// <summary>
     ///売却するアイテムを変更する．
     /// </summary>
-    private void ChangeSelectBuyItem()
+    private void ChangeSelectSellItem()
     {
         selectManager.item = itemdata;
+        selectManager.sellItem = this;
     }
     /// <summary>
     ///UIのテキスト，アイコンを変更する関数．
@@ -65,4 +70,49 @@ public class ShopSellItem : MonoBehaviour
         Icon.sprite = itemdata.icon;
         UIItemName.text = itemdata.item_name;
     }
+
+    //アイテム売却したときに呼び出される関数．
+    public void SellItem()
+    {
+        PopItem();
+        ChangeUIThisItemNum();
+        CheckItemNum();
+    }
+    //売却ボタンが押されたときのアイテムの所持数の表示を変更．
+    private void ChangeUIThisItemNum()
+    {
+        itemCountText.text = item.count.ToString();
+    }
+    /// <summary>
+    /// アイテムの数を減らす．
+    /// </summary>
+    private void PopItem()
+    {
+        item.count--;
+
+    }
+    /// <summary>
+    /// アイテムの数が0になった時の処理
+    /// </summary>
+    public void CheckItemNum()
+    {
+        if (item.count != 0) return;
+     
+        //ボタンのコンポーネントを削除することでボタンを押されなくする．
+        Destroy(this.GetComponent<Button>());
+        //リストのUIを暗転させる．
+        blackImage.SetActive(true);
+    }
+
+    //↓ここからは，現在使用してない関数
+    /// <summary>
+    /// アイテムの数が0になった時に呼び出される．
+    /// リスト中のこの売却アイテムを消去する．
+    /// </summary>
+    private void DestroyItem()
+    {
+        Destroy(this.gameObject);
+    }
+    //アイテムがなくなった時の表示は？...→そのままオブジェクト削除or黒い画像で覆い隠す
+
 }

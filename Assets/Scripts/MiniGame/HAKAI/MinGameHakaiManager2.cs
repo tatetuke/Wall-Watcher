@@ -300,6 +300,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
             //m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[0];//サイクルバージョン
 
         }
+        
     }
     /// <summary>
     /// DPバージョン
