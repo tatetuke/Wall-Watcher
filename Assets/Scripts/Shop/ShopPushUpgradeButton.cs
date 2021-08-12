@@ -1,51 +1,40 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Kyoichi;
-public class ShopBuyItem : MonoBehaviour
+
+public class ShopPushUpgradeButton : MonoBehaviour
 {
     public ShopSelectItemManager selectManager;
     public Fungus.Flowchart flowchart;
-    public Inventry inventry;
-
-    private void Start()
-    {
-        inventry=GameObject.Find("Managers").GetComponent<Inventry>();
-    }
-
     /// <summary>
     /// 買うボタンが押されたときに発動する関数．
     /// </summary>
-    public void PushBuyButton()
+    public void PushUpgradeButton()
     {
-        
         if (selectManager.item == null)
         {
-            CantBuyItem();
+            CantUpgradeItem();
         }
         else
         {
-            BuyItem();
-            //ここでセーブデータに書き込み
-            inventry.AddItem(selectManager.item);
+            UpgradeItem();
         }
     }
     /// <summary>
     /// アイテムを買う場合に発動する関数を纏めたもの．
     /// </summary>
-    private void BuyItem()
+    private void UpgradeItem()
     {
         //店員が話す
-        flowchart.SendFungusMessage("BuyItem!");
+        flowchart.SendFungusMessage("UpgradeItem!");
 
     }
     /// <summary>
     /// アイテムを買えない場合に発動する関数を纏めたもの．
     /// </summary>
-    private void CantBuyItem()
+    private void CantUpgradeItem()
     {
         //店員が話す
-        flowchart.SendFungusMessage("CantBuyItem!");
+        flowchart.SendFungusMessage("CantUpgradeItem!");
     }
-
 }

@@ -63,7 +63,7 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
                 //Debug.Log(" "+RandomNum);
             for (int k = 0; k < tile.Count; k++)
             {
-                if (gameManager.gameType == 1 && k == 1) continue;
+                //if (gameManager.gameType == 1 && k == 1) continue;
 
                 //生成された乱数がタイルを生成する確率より小さければ。
                 if (tile[k].P >= RandomNum)

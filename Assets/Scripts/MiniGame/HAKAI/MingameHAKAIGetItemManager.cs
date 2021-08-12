@@ -84,7 +84,7 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
         {
             for(int j = m_Item.m_TopLeftColumn; j < m_Item.m_TopLeftColumn + m_Item.m_Ysize; j++)
             {
-                if (Wall[i, j].GetComponent<SpriteRenderer>().sprite.name != GameManager.PolutedLevel2)
+                if (Wall[i, j].GetComponent<SpriteRenderer>().sprite.name != GameManager.PolutedLevel3)
                 {
                     m_Item.CanGetItem = false;
                     return;
