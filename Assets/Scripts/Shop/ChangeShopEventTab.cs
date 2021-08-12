@@ -25,6 +25,8 @@ public class ChangeShopEventTab : MonoBehaviour
     public GameObject sellItemButton;
     public GameObject upgradeItemButton;
 
+    public GameObject NoItemImage;
+
     public SelectTabEnum selectTab;  
     public enum SelectTabEnum
     {
@@ -37,20 +39,24 @@ public class ChangeShopEventTab : MonoBehaviour
         //初期状態では購入ボタンが押されている状態にする．
         ChangeSelectTabEnumBuy();
     }
+    //タブが押されたときに呼ばれる関数(メイン)
     public void pushBuyTab()
     {
+        UnactivateNoItemImage();
         ChangeSelectTabEnumBuy();
         ActivateBuyItemList();
         ActivateBuyItemButton();
     }
     public void pushSellTab()
     {
+        UnactivateNoItemImage();
         ChangeSelectTabEnumSell();
         ActivateSellItemList();
         ActivateSellItemButton();
     }
     public void pushUpgradeTab()
     {
+        UnactivateNoItemImage();
         ChangeSelectTabEnumUpgrade();
         ActivateUpgradeList();
         ActivateUpgradeItemButton();
@@ -145,4 +151,10 @@ public class ChangeShopEventTab : MonoBehaviour
     {
         selectTab = SelectTabEnum.Upgrade;
     }
+
+    public void UnactivateNoItemImage()
+    {
+        NoItemImage.SetActive(false);
+    }
+
 }

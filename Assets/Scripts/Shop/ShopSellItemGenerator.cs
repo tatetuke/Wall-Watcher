@@ -6,6 +6,7 @@ using Kyoichi;
 public class ShopSellItemGenerator : MonoBehaviour
 {
     public Inventry inventry;
+    public GameObject NoSellItemImage;
     private void Start()
     {
         inventry = GameObject.Find("Managers").GetComponent<Inventry>();
@@ -27,6 +28,7 @@ public class ShopSellItemGenerator : MonoBehaviour
     {
         GameObject prefab = (GameObject)Resources.Load("Shop/ShopSellItem");
 
+        bool IsSetItem = false;//アイテムが生成されたかどうかを管理する変数．
         int i = 0;
         foreach (var item in inventry.Data)
         {
@@ -38,15 +40,21 @@ public class ShopSellItemGenerator : MonoBehaviour
                 continue;
             }
 
+            IsSetItem = true;
+
             ItemStack tmpItem = new ItemStack(item.item, item.count);
-            GameObject instance = (GameObject)Instantiate(prefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
-            instance.transform.parent = this.transform;
-            instance.GetComponent<ShopSellItem>().item = tmpItem;
-            ChangeItemListColor(instance.GetComponent<Image>(), i);
+            GameObject instance = (GameObject)Instantiate(prefab, new Vector3(0f, 0f, 0f), Quaternion.identity);//オブジェクトの生成
+            instance.transform.parent = this.transform;//生成するオブジェクトの位置を指定
+            instance.GetComponent<ShopSellItem>().item = tmpItem;//アイテムデータを渡す
+            ChangeItemListColor(instance.GetComponent<Image>(), i);//背景色の変更
             i++;
-        Debug.Log("売却アイテム生成");
+            Debug.Log("売却アイテム生成");
         }
+
         Debug.Log("売却アイテム生成おわり");
+
+        //アイテムが生成されなかったら
+        if (IsSetItem == false) ActivateNoSellItemImage();
 
     }
     private void ChangeItemListColor(Image image, int i)
@@ -64,5 +72,10 @@ public class ShopSellItemGenerator : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+    }
+
+    public void ActivateNoSellItemImage()
+    {
+        NoSellItemImage.SetActive(true);
     }
 }
