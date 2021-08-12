@@ -84,6 +84,7 @@ public class CircuitGameUIManager : MonoBehaviour
         {
             animator.gameObject.SetActive(true);
             animator.Play("CircuitUIFadeOut");
+            gameManager.EndGame();
         });
     }
 

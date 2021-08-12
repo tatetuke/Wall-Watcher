@@ -43,6 +43,7 @@ public class OutLineGenerator : MonoBehaviour
 
     void update_child()
     {
+        if (child.Count < 8) return;
         child[0].transform.position = transform.position + new Vector3(1, 0) * width;
         child[0].material.SetColor("_MainColor", color);
         child[1].transform.position = transform.position + new Vector3(-1, 0) * width;

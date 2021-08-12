@@ -20,14 +20,45 @@ public class CircuitGameManager : MonoBehaviour
     [SerializeField] List<CircuitSO> requiredItems = new List<CircuitSO>();
     public IEnumerable<CircuitSO> RequiredItems { get => requiredItems; }
 
+    /// <summary>
+    /// ゲームを開始したときに実行される
+    /// </summary>
     public UnityEvent OnGameStart { get; } = new UnityEvent();
+    /// <summary>
+    /// ポーズボタンを押したときに実行される
+    /// </summary>
+    public UnityEvent OnGamePause { get; } = new UnityEvent();
+    /// <summary>
+    /// ポーズを終了し、修理ゲームに戻るときに実行される
+    /// </summary>
+    public UnityEvent OnGameResume { get; } = new UnityEvent();
+    /// <summary>
+    /// ゲームの終了条件を満たしたときに実行される
+    /// </summary>
     public UnityEvent OnGameClear { get; } = new UnityEvent();
+    /// <summary>
+    /// クリア演出が終わったり、ゲームを中断したときなど、
+    /// ゲームを終了したときに実行される
+    /// </summary>
+    public UnityEvent OnGameQuit { get; } = new UnityEvent();
     [Header("Debug")]
     //現在接続されているConnecter
     [SerializeField, ReadOnly] int currentCount = 0;
     //成功判定になるためのConnecterのカウント
     [SerializeField, ReadOnly] int sumCount = 0;
     public Timer gameTimer { get; private set; }
+
+    public enum State
+    {
+        notStarted,//まだ初期化されてない
+      // starting,
+        running,//実行中
+        pause,//ポーズ中
+       cleared,//クリア条件達成
+       //quitting,
+    }
+
+    [SerializeField, ReadOnly] State m_state=State.notStarted;
     private void Awake()
     {
         gameTimer = GetComponent<Timer>();
@@ -52,6 +83,7 @@ public class CircuitGameManager : MonoBehaviour
             sumCount++;
         }
         OnGameStart.Invoke();
+        m_state = State.running;
         gameTimer.StartTimer(0,100);
     }
 
@@ -60,4 +92,27 @@ public class CircuitGameManager : MonoBehaviour
         Instantiate(data.prefab).GetComponent<CircuitScript>().SetData(data);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (m_state == State.running)
+            {
+                m_state = State.pause;
+            OnGamePause.Invoke();
+            }
+            else
+            {
+                m_state = State.running;
+            OnGameResume.Invoke();
+            }
+        }
+    }
+    /// <summary>
+    /// ゲームを終了させる
+    /// </summary>
+    public void EndGame()
+    {
+        OnGameQuit.Invoke();
+    }
 }
