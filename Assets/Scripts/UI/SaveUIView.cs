@@ -15,22 +15,8 @@ public class SaveUIView : UIView
     // Start is called before the first frame update
     void Start()
     {
-            successPopUp.gameObject.SetActive(false);
+        successPopUp.gameObject.SetActive(false);
         yesNoPopUp.gameObject.SetActive(false);
-        for (int i = 0; i < SaveDataReader.Instance.GetFileCount(); i++)
-        {
-            var scr = Instantiate(saveFilePrefab, contentParent).GetComponent<SaveUI>();
-            m_saveDatas.Add(scr);
-            var item = SaveDataReader.Instance.GetFileHeader(i);
-            if (item == null)
-            {
-                m_saveDatas[i].Initialize($"DataFile ???", $"0.0", i, OnClickSaveData);
-            }
-            else
-            {
-                m_saveDatas[i].Initialize($"DataFile {i}", $"{item.loopCount}.{item.chapterCount}", i, OnClickSaveData);
-            }
-        }
         successPopUp.onClick.AddListener(() =>
         {
             successPopUp.gameObject.SetActive(false);
@@ -45,6 +31,26 @@ public class SaveUIView : UIView
             SaveDataWriter.Instance.Save(m_saveFileIndex);
             successPopUp.gameObject.SetActive(true);
         });
+
+        if (SaveDataReader.Instance == null)
+        {
+            Debug.Log("SaveDataReader not found");
+            return;
+        }
+        for (int i = 0; i < SaveDataReader.Instance.GetFileCount(); i++)
+        {
+            var scr = Instantiate(saveFilePrefab, contentParent).GetComponent<SaveUI>();
+            m_saveDatas.Add(scr);
+            var item = SaveDataReader.Instance.GetFileHeader(i);
+            if (item == null)
+            {
+                m_saveDatas[i].Initialize($"DataFile ???", $"0.0", i, OnClickSaveData);
+            }
+            else
+            {
+                m_saveDatas[i].Initialize($"DataFile {i}", $"{item.loopCount}.{item.chapterCount}", i, OnClickSaveData);
+            }
+        }
     }
 
     /// <summary>
