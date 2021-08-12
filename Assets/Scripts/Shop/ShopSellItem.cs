@@ -84,7 +84,7 @@ public class ShopSellItem : MonoBehaviour
         itemCountText.text = item.count.ToString();
     }
     /// <summary>
-    /// アイテムの数を減らす．
+    /// アイテムの数を減らす．（インベントリのデータには影響がない）
     /// </summary>
     private void PopItem()
     {

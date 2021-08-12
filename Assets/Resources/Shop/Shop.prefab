@@ -2733,6 +2733,9 @@ GameObject:
   - component: {fileID: 795011634044992320}
   - component: {fileID: 1566909148750964752}
   - component: {fileID: 2003661484849480573}
+  - component: {fileID: 5050435397794525195}
+  - component: {fileID: 4043679476279224067}
+  - component: {fileID: 4705723102921666480}
   m_Layer: 0
   m_Name: ShopKeeperFlowChart
   m_TagString: Untagged
@@ -2767,21 +2770,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
-  scrollPos: {x: -230.70625, y: 153.8027}
+  scrollPos: {x: -124.07292, y: 68.6553}
   variablesScrollPos: {x: 0, y: 0}
   variablesExpanded: 1
   blockViewHeight: 280
-  zoom: 0.97
+  zoom: 1
   scrollViewRect:
     serializedVersion: 2
     x: -343
     y: -340
     width: 1114
     height: 859
-  selectedBlocks:
-  - {fileID: 6765163302760100926}
-  selectedCommands:
-  - {fileID: 6765163302760100925}
+  selectedBlocks: []
+  selectedCommands: []
   variables: []
   description: 
   stepPause: 0
@@ -3017,7 +3018,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 959
     y: 24
-    width: 75.97938
+    width: 74
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -3293,7 +3294,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 614
     y: 377
-    width: 74.94845
+    width: 73
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -3362,7 +3363,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 766
     y: 371
-    width: 65.670105
+    width: 64
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -3562,6 +3563,75 @@ MonoBehaviour:
     floatRef: {fileID: 0}
     floatVal: 1.5
   durationOLD: 0
+--- !u!114 &5050435397794525195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6765163302760100900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d3d73aef2cfc4f51abf34ac00241f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodeRect:
+    serializedVersion: 2
+    x: 480
+    y: 72.00001
+    width: 97
+    height: 40
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  useCustomTint: 1
+  itemId: 17
+  blockName: CantBuyNoMoney
+  description: "\u30A2\u30A4\u30C6\u30E0\u3092\u8CFC\u5165\u3059\u308B\u6642\u306B\u547C\u3073\u51FA\u3055\u308C\u307E\u3059"
+  eventHandler: {fileID: 4705723102921666480}
+  commandList:
+  - {fileID: 4043679476279224067}
+  suppressAllAutoSelections: 0
+--- !u!114 &4043679476279224067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6765163302760100900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 35
+  indentLevel: 0
+  storyText: "\u91D1\u304C\u8DB3\u308A\u306A\u3044\u305E"
+  description: 
+  character: {fileID: 0}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+--- !u!114 &4705723102921666480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6765163302760100900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d7d417659cd54a6787f70f763950c34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentBlock: {fileID: 5050435397794525195}
+  suppressBlockAutoSelect: 0
+  message: CantBuyNoMoney
 --- !u!1 &6765163302839698709
 GameObject:
   m_ObjectHideFlags: 0
@@ -3786,12 +3856,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 6765163302558915932}
-        m_MethodName: 
+      - m_Target: {fileID: 7503067648767382125}
+        m_MethodName: ChangeMoneyUI
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3880,6 +3950,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6765163302968288715}
+  - component: {fileID: 7503067648767382125}
   m_Layer: 0
   m_Name: Money
   m_TagString: Untagged
@@ -3901,9 +3972,23 @@ Transform:
   - {fileID: 6765163303565167005}
   - {fileID: 6765163303638735074}
   - {fileID: 6765163303901451829}
+  - {fileID: 2781552925333459635}
   m_Father: {fileID: 6765163302225402324}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7503067648767382125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6765163302968288714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fb57bec7058e20488de359e8d123083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 6765163303901451830}
 --- !u!1 &6765163302971665369
 GameObject:
   m_ObjectHideFlags: 0
@@ -4134,6 +4219,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6765163302972876385}
         m_MethodName: PushBuyButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7503067648767382125}
+        m_MethodName: ChangeMoneyUI
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6483,7 +6579,7 @@ GameObject:
   - component: {fileID: 6765163303901451831}
   - component: {fileID: 6765163303901451830}
   m_Layer: 5
-  m_Name: Text (1)
+  m_Name: Money
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6505,7 +6601,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1364.6, y: 212.8}
+  m_AnchoredPosition: {x: 1336.5, y: 212.2}
   m_SizeDelta: {x: 223.62747, y: 67.479195}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6765163303901451831
@@ -6537,18 +6633,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 30
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 40
-    m_Alignment: 4
+    m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 10000000000$
+  m_Text: 100000000
 --- !u!1 &6765163303946645306
 GameObject:
   m_ObjectHideFlags: 0
@@ -6836,6 +6932,84 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &7465698963591895828
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2781552925333459635}
+  - component: {fileID: 5348375988406067447}
+  - component: {fileID: 1494627938643313310}
+  m_Layer: 5
+  m_Name: tanni
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2781552925333459635
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7465698963591895828}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6765163302968288715}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 1461.2988, y: 212.4}
+  m_SizeDelta: {x: 223.62747, y: 67.479195}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &5348375988406067447
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7465698963591895828}
+  m_CullTransparentMesh: 0
+--- !u!114 &1494627938643313310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7465698963591895828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 40
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: $
 --- !u!1001 &6218326199708564446
 PrefabInstance:
   m_ObjectHideFlags: 0
