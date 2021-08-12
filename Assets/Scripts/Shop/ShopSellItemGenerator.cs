@@ -10,7 +10,7 @@ public class ShopSellItemGenerator : MonoBehaviour
     private void Start()
     {
         inventry = GameObject.Find("Managers").GetComponent<Inventry>();
-        //PrepareItem();
+        PrepareItem();
     }
     /// <summary>
     /// 持ち物のアイテムを再度取得する．
