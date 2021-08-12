@@ -2767,11 +2767,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
-  scrollPos: {x: -289.04065, y: 92.382935}
+  scrollPos: {x: -230.70625, y: 153.8027}
   variablesScrollPos: {x: 0, y: 0}
   variablesExpanded: 1
   blockViewHeight: 280
-  zoom: 0.8799998
+  zoom: 0.97
   scrollViewRect:
     serializedVersion: 2
     x: -343
@@ -2779,9 +2779,9 @@ MonoBehaviour:
     width: 1114
     height: 859
   selectedBlocks:
-  - {fileID: 854257171268132492}
+  - {fileID: 6765163302760100926}
   selectedCommands:
-  - {fileID: 8210165995435852881}
+  - {fileID: 6765163302760100925}
   variables: []
   description: 
   stepPause: 0
@@ -3017,7 +3017,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 959
     y: 24
-    width: 75.9091
+    width: 75.97938
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -3249,7 +3249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 19
   indentLevel: 0
-  storyText: "\u3042\u308A\u304C\u3068\u3046\uFF0E\u52A9\u304B\u308B\u3088"
+  storyText: "\u3042\u308A\u304C\u3068\u3046\uFF0E\n\u52A9\u304B\u308B\u3088"
   description: 
   character: {fileID: 0}
   portrait: {fileID: 0}
@@ -3293,7 +3293,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 614
     y: 377
-    width: 71.36365
+    width: 74.94845
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -3362,7 +3362,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 766
     y: 371
-    width: 63.409103
+    width: 65.670105
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -6033,7 +6033,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -423, y: -84}
+  m_AnchoredPosition: {x: -445, y: -86}
   m_SizeDelta: {x: 550.0385, y: 310.15945}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6765163303817351557
