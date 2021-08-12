@@ -32,6 +32,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         initialPos = transform.position;
         OnDragBegin.Invoke();
     }
+
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
         if (!canDrag) return;

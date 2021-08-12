@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5538754887895729346}
   - component: {fileID: 1959893071693060417}
   - component: {fileID: 5420307932903639109}
+  - component: {fileID: -4513989940551396846}
   m_Layer: 0
   m_Name: BasicCircuit
   m_TagString: Untagged
@@ -127,7 +128,8 @@ MonoBehaviour:
   key: 
   ignoreKey: 1
   targetKeys: []
-  connectEffect: {fileID: 0}
+  connectEffect: {fileID: 407267688360948511, guid: 9ba402a3d1ac8464f89dec279eb76e64,
+    type: 3}
 --- !u!114 &1959893071693060417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,3 +162,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 017abca2136b8a34eb00f880717f46df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-4513989940551396846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797627292612944796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13349a985619dc7468b58e80ab19f203, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  KEY: thre
+  material: {fileID: 0}
+  current_t: 0
+  target: {fileID: 0}

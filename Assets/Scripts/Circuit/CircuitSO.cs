@@ -6,4 +6,5 @@ using UnityEngine;
 public class CircuitSO : ItemSO
 {
     public GameObject prefab;
+    public Sprite emission;
 }

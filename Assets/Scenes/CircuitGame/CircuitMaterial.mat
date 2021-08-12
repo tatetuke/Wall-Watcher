@@ -20,6 +20,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - EmisssionTexture:
+        m_Texture: {fileID: 2800000, guid: 65bafab12ed8ff34f91674a4df38bf88, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - Texture2D_A13A7A:
         m_Texture: {fileID: 2800000, guid: f088ff6a72d3fbb4ca8c6a211c94be92, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -44,7 +48,7 @@ Material:
     - Boolean_2A9494F0: 0
     - Vector1_EE6C7857: 0.32
     - _EnableExternalAlpha: 0
-    - thre: 0.39
+    - thre: 0.127
     m_Colors:
     - Color_9350ABAA: {r: 10.680627, g: 0.3526624, b: 0.3526624, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
