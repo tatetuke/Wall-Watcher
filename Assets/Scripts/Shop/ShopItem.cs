@@ -6,14 +6,19 @@ using TMPro;
 public class ShopItem : MonoBehaviour
 {
     public ItemSO itemdata;
+    
     GameObject descriptionObj;
     GameObject UIItemNameObj;
     GameObject IconObj;
+    
     TextMeshProUGUI description;
     TextMeshProUGUI UIItemName;
+
     Image Icon;
+
     Text ItemName;
     Text priceText;
+    
     ShopSelectItemManager selectManager;
 
     // Start is called before the first frame update
@@ -23,6 +28,7 @@ public class ShopItem : MonoBehaviour
         IconObj = GameObject.Find("ShopUIItemIcon");
         UIItemNameObj = GameObject.Find("ShopUIItemName");
         selectManager= GameObject.Find("ShopSelectItemManager").GetComponent<ShopSelectItemManager>();
+
         ItemName = this.gameObject.transform.GetChild(0).GetComponent<Text>();
         priceText = this.gameObject.transform.GetChild(1).GetComponent<Text>();
         Icon = IconObj.GetComponent<Image>();
@@ -36,8 +42,8 @@ public class ShopItem : MonoBehaviour
     /// </summary>
     public void PushItemButton()
     {
-        ChangeUI();
         ChangeSelectBuyItem();
+        ChangeUI();
     }
     /// <summary>
     ///購入するアイテムを変更する．
@@ -54,5 +60,7 @@ public class ShopItem : MonoBehaviour
         description.text = itemdata.description;
         Icon.sprite = itemdata.icon;
         UIItemName.text = itemdata.item_name;
+        selectManager.ChangeUIHasItemNum();
+
     }
 }
