@@ -8,9 +8,10 @@ public class WallManager : MonoBehaviour
     {
         NORMAL, // 通常状態
         BROKEN, // 壊された状態
-        PAINTED, // 塗られた状態
     }
     private State m_State = default;
+
+    public Sprite HoldSprite;
 
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -36,7 +37,7 @@ public class WallManager : MonoBehaviour
 
     public void paintwall()
     {
-        m_State = State.PAINTED;
+        m_State = State.NORMAL;
     }
 
     void SetGlowLine(Color color)
@@ -49,6 +50,12 @@ public class WallManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (m_State == State.BROKEN)
+        {
+            SpriteRenderer MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+            MainSpriteRenderer.sprite = HoldSprite;
+        }
+
         SetGlowLine(Color.cyan);
     }
 
@@ -63,7 +70,6 @@ public class WallManager : MonoBehaviour
                 PollutionManager.selected_marker = this.gameObject;
                 FadeManager.Instance.LoadLevel("HAKAI", 1f);
                 breakwall();
-
                 Debug.Log("MiniGamePaintシーンに遷移!");
             }
         }

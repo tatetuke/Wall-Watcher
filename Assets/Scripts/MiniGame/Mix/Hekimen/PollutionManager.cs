@@ -12,11 +12,17 @@ public class PollutionManager : MonoBehaviour
     public static GameObject selected_marker;  // 選択されたマーカーオブジェクト
 
 
+    // マーカーの状態を"破壊済み(BROKEN)"に変更する。
     public static void breakMarker()
     {
         selected_marker.GetComponent<WallManager>().breakwall();
     }
 
+    // マーカーの状態を"塗装済み(NORMAL)"に変更する。
+    public static void paintMarker()
+    {
+        selected_marker.GetComponent<WallManager>().paintwall();
+    }
 
     // Start is called before the first frame update
     void Start()
