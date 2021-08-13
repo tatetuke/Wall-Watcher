@@ -98,21 +98,52 @@ public class CircuitGameManager : MonoBehaviour
         {
             if (m_state == State.running)
             {
-                m_state = State.pause;
-            OnGamePause.Invoke();
+                Pause();
             }
             else
             {
-                m_state = State.running;
-            OnGameResume.Invoke();
+                Resume();
             }
         }
     }
     /// <summary>
-    /// ゲームを終了させる
+    /// ゲームを完了させる
     /// </summary>
     public void EndGame()
     {
+        Quit();
+    }
+    /// <summary>
+    /// ポーズし、ゲームを中断する
+    /// </summary>
+    public void Pause()
+    {
+        if (m_state == State.pause) return;
+        m_state = State.pause;
+        OnGamePause.Invoke();
+    }
+    /// <summary>
+    /// ポーズを解除しゲームを再開させる
+    /// </summary>
+    public void Resume()
+    {
+        if (m_state == State.running) return;
+        m_state = State.running;
+        OnGameResume.Invoke();
+    }
+    /// <summary>
+    /// ミニゲームを終了させ、マップに戻る
+    /// </summary>
+    public void Quit()
+    {
         OnGameQuit.Invoke();
     }
+    /// <summary>
+    /// WallWatcherを終了し、デスクトップ画面に戻る
+    /// </summary>
+    public void BackToDesktop()
+    {
+
+    }
+
 }
