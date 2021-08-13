@@ -21,7 +21,6 @@ public class ConversationManager : SingletonMonoBehaviour<ConversationManager>
     private GameObject TargetNPC;
     [SerializeField] private PlayableDirector playableDirector;
     public Flowchart CurrentFlowchart = null;
-    public Flowchart CurrentQuestFlowchart = null;
     public string MessageId; // メッセージID
     private QuestHolder m_QuestHolder;
 
@@ -154,19 +153,20 @@ public class ConversationManager : SingletonMonoBehaviour<ConversationManager>
     {
         NPCController npcController = TargetNPC.GetComponent<NPCController>();
         string npcname = TargetNPC.GetComponent<Character>()?.NameText;
-        Flowchart flowchart = m_QuestHolder.GetQuestFlowchart(npcname);
+        List<string> questNames = m_QuestHolder.GetQuestNames();
+
+        Flowchart flowchart = npcController.SelectFlowchart(questNames);
 
         if (flowchart!=null)
-        {
-            CurrentQuestFlowchart = flowchart;
+        {            
             CurrentFlowchart = flowchart;
-            CurrentFlowchart.SendFungusMessage(npcname);
+            CurrentFlowchart.SendFungusMessage("Start");
         }
         else
         {
-            CurrentFlowchart = npcController.GetFlowchart();
-            CurrentFlowchart.SendFungusMessage("Test1");
-            Debug.Log("No Quest");
+            flowchart = npcController.GetFlowchart("NoQuest");
+            CurrentFlowchart = flowchart;
+            CurrentFlowchart.SendFungusMessage("Start");
         }
         //MessageReceived[] receivers = FindObjectsOfType<MessageReceived>();
         ////取得できた場合

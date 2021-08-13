@@ -50,6 +50,5 @@ public class CustomFadeEditor : Editor
         reorderableList3.DoLayoutList();
         serializedObject.ApplyModifiedProperties();
 
-        scr.flowchart = EditorGUILayout.ObjectField("flowchart", scr.flowchart, typeof(Fungus.Flowchart), true) as Fungus.Flowchart;
     }
 }

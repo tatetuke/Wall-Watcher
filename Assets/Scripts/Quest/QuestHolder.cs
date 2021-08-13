@@ -38,8 +38,6 @@ public class QuestHolder : MonoBehaviour
     {
         var obj = new GameObject(quest_.name);
         var scr = obj.AddComponent<QuestChecker>();
-        Fungus.Flowchart flowchart = Instantiate(quest_.flowchart, obj.transform);
-        scr.m_Flowchart = flowchart;
         scr.Initialize(quest_, QuestChecker.QuestState.working, 0);
         scr.gameObject.transform.parent = transform.parent;
         m_quests.Add(scr);
@@ -51,27 +49,22 @@ public class QuestHolder : MonoBehaviour
     public UnityEvent OnQuestAdd { get; } = new UnityEvent();
 
 
-    public Fungus.Flowchart GetQuestFlowchart(string npcname)
+    // 毎回List作ってて重そう TODO
+    public List<string> GetQuestNames()
     {
-        if (string.IsNullOrEmpty(npcname))
-            return null;
-
-
-        //指定したNPCの会話がFlowchartに存在するならTrueを返す
-        bool ContainNPCConversation(Fungus.Flowchart flowchart)
+        List<string> questNames = new List<string>();
+        foreach(var i in m_quests)
         {
-            //Flowchart中にNPCの名前をしたブロックが存在するか
-            return flowchart?.FindBlock(npcname);
+            QuestSaveData questSaveData = i.GetData();
+            if (questSaveData.state == QuestChecker.QuestState.finish)
+                continue;
+            if (questSaveData.state == QuestChecker.QuestState.error)
+                continue;
+            
+            // not_yet, working のとき会話対象のクエストでいいかな？　TODO
+            questNames.Add(questSaveData.questName);
         }
 
-        foreach (var i in Data)
-        {   
-            if (ContainNPCConversation(i.m_Flowchart))
-            {
-                return i.m_Flowchart;
-            }    
-        }
-        return null;
+        return questNames;
     }
-
 }

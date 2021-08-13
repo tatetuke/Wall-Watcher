@@ -10,7 +10,6 @@ public class QuestDataSO : ScriptableObject
     public string description;//クエストの詳しい説明
     public List<QuestDataSO> subQuests = new List<QuestDataSO>();
     public List<QuestConditions> endConditions = new List<QuestConditions>();
-    public Flowchart flowchart;
 
     /// <summary>
     /// endConditionsのうち、どれか一つでも成り立っていればOK（OR条件）
