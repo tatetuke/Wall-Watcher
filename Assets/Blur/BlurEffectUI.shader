@@ -2,7 +2,7 @@
 {
     Properties
     {
-        _MainTex("Base (RGB)", 2D) = "" {}
+        _Texture("Base (RGB)", 2D) = "" {}
         _BlurSize("Blur size", Float) = 0
     }
         Subshader
@@ -36,8 +36,8 @@
                 };
 
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
+            sampler2D _Texture;
+            float4 _Texture_ST;
             uniform half4 _MainTex_TexelSize;
             uniform half _BlurSize;
             sampler2D _GrabPassTexture;
@@ -50,7 +50,7 @@
                         OUT.worldPosition = v.vertex;
                         OUT.vertex = UnityObjectToClipPos(OUT.worldPosition);
 
-                        OUT.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
+                        OUT.texcoord = TRANSFORM_TEX(v.texcoord, _Texture);
 
                         OUT.pos = ComputeScreenPos(OUT.vertex);
 
@@ -76,7 +76,7 @@
                             float distance_normalized = abs(x / blur);
                             float weight = exp(-0.5 * pow(distance_normalized, 2) * 5.0);
                             weight_total += weight;
-                            col += tex2D(_GrabPassTexture, uv+ half2(x*0.01, 0)) * weight;
+                            col += tex2D(_Texture, uv+ half2(x*0.01, 0)) * weight;
                         }
                         [loop]
                         for (float y = -blur; y <= blur; y += 1)
@@ -84,7 +84,7 @@
                             float distance_normalized = abs(y / blur);
                             float weight = exp(-0.5 * pow(distance_normalized, 2) * 5.0);
                             weight_total += weight;
-                            col += tex2D(_GrabPassTexture, uv + half2(0, y*0.01)) * weight;
+                            col += tex2D(_Texture, uv + half2(0, y*0.01)) * weight;
                         }
 
                         col /= weight_total;
