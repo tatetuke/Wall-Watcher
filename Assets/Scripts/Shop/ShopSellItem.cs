@@ -50,8 +50,9 @@ public class ShopSellItem : MonoBehaviour
     /// </summary>
     public void PushItemButton()
     {
-        ChangeUI();
+
         ChangeSelectSellItem();
+        ChangeUI();
     }
     /// <summary>
     ///売却するアイテムを変更する．
@@ -69,6 +70,8 @@ public class ShopSellItem : MonoBehaviour
         description.text = itemdata.description;
         Icon.sprite = itemdata.icon;
         UIItemName.text = itemdata.item_name;
+        selectManager.ChangeUIHasItemNum();
+
     }
 
     //アイテム売却したときに呼び出される関数．
@@ -82,6 +85,7 @@ public class ShopSellItem : MonoBehaviour
     private void ChangeUIThisItemNum()
     {
         itemCountText.text = item.count.ToString();
+
     }
     /// <summary>
     /// アイテムの数を減らす．（インベントリのデータには影響がない）

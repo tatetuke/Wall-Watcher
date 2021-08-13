@@ -30,6 +30,7 @@ public class ShopPushSellButton : MonoBehaviour
         else 
         {
             SellItem();
+            selectManager.ChangeUIHasItemNum();
         }
     }
     /// <summary>

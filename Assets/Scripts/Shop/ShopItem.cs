@@ -42,8 +42,8 @@ public class ShopItem : MonoBehaviour
     /// </summary>
     public void PushItemButton()
     {
-        ChangeUI();
         ChangeSelectBuyItem();
+        ChangeUI();
     }
     /// <summary>
     ///購入するアイテムを変更する．
@@ -60,5 +60,7 @@ public class ShopItem : MonoBehaviour
         description.text = itemdata.description;
         Icon.sprite = itemdata.icon;
         UIItemName.text = itemdata.item_name;
+        selectManager.ChangeUIHasItemNum();
+
     }
 }

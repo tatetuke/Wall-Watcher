@@ -970,7 +970,7 @@ GameObject:
   - component: {fileID: 1971898157}
   - component: {fileID: 1971898156}
   m_Layer: 0
-  m_Name: shop_back3
+  m_Name: "\u80CC\u666F\u753B\u50CF"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

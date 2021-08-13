@@ -31,6 +31,8 @@ public class ShopBuyItem : MonoBehaviour
         else
         {
             BuyItem();
+            selectManager.ChangeUIHasItemNum();
+
         }
     }
     /// <summary>
