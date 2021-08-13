@@ -14,6 +14,7 @@ public class TutorialManager : MonoBehaviour
     private int NowPage = 0;
     private int TutorialSize;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +26,7 @@ public class TutorialManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
     }
 
     public void OnClickBack()
@@ -44,6 +46,11 @@ public class TutorialManager : MonoBehaviour
             NowPage++;
             UpdatePage(NowPage + 1);
         }
+        else
+        {
+            Anim.SetBool("IsSmall", true);
+            Invoke(nameof(Init), 2);
+        }
         UpdateTutorial();
     }
 
@@ -57,10 +64,26 @@ public class TutorialManager : MonoBehaviour
     {
         bool b = Anim.GetBool("IsSmall");
         Anim.SetBool("IsSmall", !b);
+        if (b)
+        {
+            MiniGamePaintManager.Instance.ChangeState(MiniGamePaintManager.State.Tutorial);
+        }
+        else if (!b)
+        {
+            Invoke(nameof(Init), 1);
+        }
     }
 
     void UpdatePage(int num)
     {
         Page.text = num.ToString() + "/" + TutorialSize.ToString();
+    }
+
+    void Init()
+    {
+        NowPage = 0;
+        UpdatePage(NowPage + 1);
+        UpdateTutorial();
+        MiniGamePaintManager.Instance.ChangeState(MiniGamePaintManager.State.Playing);
     }
 }
