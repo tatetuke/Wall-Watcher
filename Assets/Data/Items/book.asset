@@ -16,6 +16,3 @@ MonoBehaviour:
   description: "\u306A\u3093\u304B\u306E\u672C"
   icon: {fileID: 21300000, guid: 1a6d53b58a5be6644bbaf61aac267b00, type: 3}
   type: 1
-  price: 300
-  canSellItem: 1
-  canUpgradeItem: 0

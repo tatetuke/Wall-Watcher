@@ -9,7 +9,6 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Kyoichi
 {
-
     public class ItemManager : SaveLoadableSingletonMonoBehaviour<ItemManager>
     {
         enum LoadState

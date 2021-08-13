@@ -7,7 +7,6 @@ using UnityEngine;
 /// </summary>
 
 [RequireComponent(typeof(Renderer))]
-[DisallowMultipleComponent]
 public class CurcuitMaterialEditor : MonoBehaviour
 {
     [SerializeField] string KEY = "thre";
@@ -45,9 +44,6 @@ public class CurcuitMaterialEditor : MonoBehaviour
         current_t = t;
         material.SetFloat(KEY, current_t);
     }
-    public void SetEmission(Sprite sprite)
-    {
-        material.SetTexture("EmisssionTexture", sprite.texture);
-    }
+
 
 }

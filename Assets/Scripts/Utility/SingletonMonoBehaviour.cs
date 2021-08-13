@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-[DisallowMultipleComponent]
 public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T instance;

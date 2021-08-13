@@ -7,7 +7,6 @@ public class DraggableLine : MonoBehaviour
 {
     public string key;
     public GameObject connectEffect;
-    [SerializeField] Connector defaultConnect;
     LineRenderer m_line;
     List<Draggable> childDraggable = new List<Draggable>();
     private void Start()

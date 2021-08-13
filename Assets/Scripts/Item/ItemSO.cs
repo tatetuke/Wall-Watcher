@@ -18,7 +18,4 @@ public class ItemSO : ScriptableObject
     public string description;
     public Sprite icon;
     public Rarelity type;
-    public int price;//アイテムの値段
-    public bool canSellItem;
-    public bool canUpgradeItem;
 }

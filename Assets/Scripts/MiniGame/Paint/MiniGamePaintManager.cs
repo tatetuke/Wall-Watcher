@@ -50,6 +50,14 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
     List<float> ParamList = new List<float>();
     public Range m_Range = Range.Square;
 
+    public enum State
+    {
+        Tutorial,
+        Playing,
+        Finished
+    }
+    State m_State = State.Tutorial;
+
     public enum Range
     {
         Square,
@@ -74,44 +82,63 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
 
     void Update()
     {
-        UpdateParameters();
-        if (/*左クリックが押されたら*/Input.GetMouseButtonDown(0))
+        if (m_State == State.Playing)
         {
-            int raw, column;
-            (raw, column) = GetCursorObjectIndex();
-            int add, sub;
-            (add, sub) = SetAddSub(m_Range, raw, column);
-            if (CanClick(raw, column, sub))
-                UpdateWall(m_Range, raw, column, add, sub);
-        }
-        else if (/*右クリックが押されたら*/Input.GetMouseButtonDown(1))
-        {
-            int raw, column;
-            (raw, column) = GetCursorObjectIndex();
-            if (!(raw < 0 || column < 0))
+            UpdateParameters();
+            if (/*左クリックが押されたら*/Input.GetMouseButtonDown(0))
             {
-                int damage = 14 + 24 - WallParam[raw, column];
-                if (gameStatus.life >= damage && !IsBrown(raw, column))
+                int raw, column;
+                (raw, column) = GetCursorObjectIndex();
+                int add, sub;
+                (add, sub) = SetAddSub(m_Range, raw, column);
+                if (CanClick(raw, column, sub))
+                    UpdateWall(m_Range, raw, column, add, sub);
+            }
+            else if (/*右クリックが押されたら*/Input.GetMouseButtonDown(1))
+            {
+                int raw, column;
+                (raw, column) = GetCursorObjectIndex();
+                if (!(raw < 0 || column < 0))
                 {
-                    gameStatus.Damage(40);
-                    FillSoil(raw, column);
+                    int damage = 14 + 24 - WallParam[raw, column];
+                    if (gameStatus.life >= damage && !IsBrown(raw, column))
+                    {
+                        gameStatus.Damage(40);
+                        FillSoil(raw, column);
+                    }
                 }
             }
-        }
-        else if (/*中クリックが押されたら*/Input.GetMouseButtonDown(2))
-        {
-            ChangeRange();
-        }
-        else  // クリックが押されていなかったら
-        {
-            int raw, column;
-            (raw, column) = GetCursorObjectIndex();
-            int sub;
-            (_, sub) = SetAddSub(m_Range, raw, column);
-            if (CanClick(raw, column, sub))
-                DisplayRangeFrame(raw, column);
-            else
-                HideRangeFrame();
+            else if (/*中クリックが押されたら*/Input.GetMouseButtonDown(2))
+            {
+                ChangeRange();
+            }
+            else  // クリックが押されていなかったら
+            {
+                int raw, column;
+                (raw, column) = GetCursorObjectIndex();
+                int sub;
+                (_, sub) = SetAddSub(m_Range, raw, column);
+                if (CanClick(raw, column, sub))
+                    DisplayRangeFrame(raw, column);
+                else
+                    HideRangeFrame();
+            }
+
+            for (int i = 0; i < WallLength; i++)
+            {
+                for (int j = 0; j < WallLength; j++)
+                {
+                    if (IsBrown(i, j))
+                    {
+                        if (Random.value <= 0.05)
+                        {
+                            float x = (Wall[i, j].transform.position.x + Random.Range(-0.5f, 0.5f));
+                            float y = (Wall[i, j].transform.position.y + Random.Range(-0.5f, 0.5f));
+                            Particle2.Add(x, y);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -463,6 +490,11 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
             NowFrame = FrameArrow;
     }
 
+    public void ChangeState(State state)
+    {
+        m_State = state;
+    }
+
 
 
     // スコア計算は仮
@@ -504,9 +536,13 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
 
     public void OnClick()
     {
-        SatisfactionValue.text = ValSatisfaction();
-        HPValue.text = ValHP();
-        FinishTaskButton.interactable = false;
-        playableDirector.Play();
+        if (m_State == State.Playing)
+        {
+            ChangeState(State.Finished);
+            SatisfactionValue.text = ValSatisfaction();
+            HPValue.text = ValHP();
+            FinishTaskButton.interactable = false;
+            playableDirector.Play();
+        }
     }
 }

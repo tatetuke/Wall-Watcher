@@ -15,8 +15,8 @@ public class MinGameHakaiManager2 : MonoBehaviour
     int[] dx = new int[9] { -1, 0, 1, -1, 0, 1, -1, 0, 1 };//裏返す壁のIndex
     int[] dy = new int[9] { -1, -1, -1, 0, 0, 0, 1, 1, 1 };//
     private string PolutedLevel1;//壁の画像の名前
-    private string PolutedLevel2;//
-    public string PolutedLevel3;//
+    private string PolutedLevel1_1;//
+    public string PolutedLevel2;//
     [SerializeField] private UnityEvent UpdateItemData=new UnityEvent(); //アイテムデータのアップデート
 
     [SerializeField] private MinGameHAKAIStatus gameStatus;//HPやHPを減らす関数を持つクラス
@@ -271,7 +271,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[2];
             animt.SetTrigger("StartAnime");
         }
-        else if (spriteName == PolutedLevel3)
+        else if (spriteName == PolutedLevel2)
         {
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[0];
             animt.SetTrigger("StartAnime");
@@ -290,17 +290,18 @@ public class MinGameHakaiManager2 : MonoBehaviour
         if (spriteName == PolutedLevel1) {
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[1];
         }
-        else if(spriteName==PolutedLevel2)
+        else if(spriteName==PolutedLevel1_1)
         {
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[2];
             
-        }else if (spriteName == PolutedLevel3)
+        }else if (spriteName == PolutedLevel2)
         {
-            return;
-            //m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[0];//サイクルバージョン
+
+            m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[0];
 
         }
         
+
     }
     /// <summary>
     /// DPバージョン
@@ -313,7 +314,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
         {
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[1];
         }
-        else if (spriteName == PolutedLevel2)
+        else if (spriteName == PolutedLevel1_1)
         {
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[2];
 
@@ -325,8 +326,8 @@ public class MinGameHakaiManager2 : MonoBehaviour
     private void GetSpriteName()
     {
         PolutedLevel1 = WallSprite[0].name;
-        PolutedLevel2 = WallSprite[1].name;
-        PolutedLevel3 = WallSprite[2].name;
+        PolutedLevel1_1 = WallSprite[1].name;
+        PolutedLevel2 = WallSprite[2].name;
 
 
     }
