@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
-
+using Cysharp.Threading.Tasks;
 
 namespace Kyoichi
 {
@@ -26,8 +26,10 @@ namespace Kyoichi
     /// インベントリ管理クラス
     /// </summary>
     [DisallowMultipleComponent]
-    public class Inventry : MonoBehaviour
+    public class Inventry : SaveLoadableMonoBehaviour
     {
+        public string directory = "Data";
+        public string filename = "inventry.csv";
         public class ItemEvent : UnityEvent<ItemStack> { }
         public ItemEvent OnItemAdd { get; } = new ItemEvent();
         public ItemEvent OnItemRemove { get; } = new ItemEvent();
@@ -39,37 +41,26 @@ namespace Kyoichi
         {
             get { return m_inventry; }
         }
+
+        /// <summary>
+        /// 対象となるitemの持っている個数を返す。見つからなかったら-1を返す
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public int DataCount(ItemSO item)
+        {
+            foreach(var i in m_inventry)
+            {
+                if (i.item == item) return i.count;
+            }
+            return -1;
+        }
+
         private void Start()
         {
             ItemManager.Instance.AddInventry(this);
         }
 
-        private void OnEnable()
-        {
-            //インベントリが生成されたとき、ItemManagerのロードが終わってたらアイテムをロード
-            if (Kyoichi.GameManager.Instance.IsLoadFinished)
-            {
-                LoadFromFile();
-            }
-            else
-            {
-                //ロードが終わってなかったら終わったときに読み込むようにする
-                Kyoichi.GameManager.Instance.OnLoadFinished.AddListener(() =>
-                {
-                    LoadFromFile();
-                });
-            }
-        }
-
-        public void LoadFromFile()
-        {
-            Clear();
-           // m_inventry = ItemManager.Instance.LoadItemFrom(inventryDirectory, FileName);
-            foreach(var i in m_inventry)
-            {
-                Debug.Log($"Inventry loaded '{i.item.name}':{i.count}");
-            }
-        }
         public void AddItem(ItemSO item)
         {
             AddItem(new ItemStack(item,1));
@@ -77,13 +68,15 @@ namespace Kyoichi
         public void AddItem(ItemStack item)
         {
             if (item == null) return;
-            foreach (var i in m_inventry)
+            foreach (var i in m_inventry)//インベントリ内にすでにアイテムがあるか
             {
                 if (i.item != item.item) continue;
                 OnItemAdd.Invoke(item);
                 i.count += item.count;
                 return;
             }
+            //インベントリにそのアイテムが存在してなかったら
+            OnItemAdd.Invoke(item);
             m_inventry.Add(item);
         }
         /// <summary>
@@ -125,6 +118,7 @@ namespace Kyoichi
             {
                 if (i.item == item)
                 {
+                     OnItemRemove.Invoke(new ItemStack(item, m_inventry[index].count));
                     m_inventry[index].count = 0;
                     return;
                 }
@@ -173,8 +167,58 @@ namespace Kyoichi
             return true;
         }
 
+        protected override void Save()
+        {
+            SaveToFile();
+        }
 
+        protected override void Load()
+        {
+            //インベントリが生成されたとき、ItemManagerのロードが終わってたらアイテムをロード
+            if (Kyoichi.GameManager.Instance.IsLoadFinished)
+            {
+                LoadFromFile();
+            }
+            else
+            {
+                //ロードが終わってなかったら終わったときに読み込むようにする
+                Kyoichi.GameManager.Instance.OnLoadFinished.AddListener(() =>
+                {
+                    LoadFromFile();
+                });
+            }
+        }
 
+        /// <summary>
+        /// 今あるアイテムをすべて削除し、csvファイルからロード
+        /// </summary>
+        public void LoadFromFile()
+        {
+            Clear();
+            m_inventry = ItemManager.Instance.LoadItemFrom(directory, filename);
+            foreach (var i in m_inventry)
+            {
+                Debug.Log($"Inventry loaded '{i.item.name}':{i.count}");
+            }
+        }
+        public void SaveToFile()
+        {
+        }
+
+        protected override UniTask SaveAsync()
+        {
+            return new UniTask();
+        }
+
+        protected override UniTask LoadAsync()
+        {
+            return new UniTask();
+        }
+
+        protected override List<string> GetKeyList()
+        {
+            return null;
+        }
     }
 
 }

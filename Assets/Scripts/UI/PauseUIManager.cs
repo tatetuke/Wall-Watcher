@@ -5,6 +5,8 @@ using UnityEngine.Events;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Animator))]
+[DisallowMultipleComponent]
 public class PauseUIManager : CanvasManager
 {
     enum State
@@ -14,25 +16,20 @@ public class PauseUIManager : CanvasManager
         active,
         fadeOut
     }
-    [Tooltip("ポーズしたときにいつも表示されるview（ポーズしてないときは表示されない）")]
-    [SerializeField] UIView allwaysShowView;
-    [SerializeField] Animator animator;
+     Animator animator;
     [SerializeField] string fadeInTrriger = "FadeIn";
     [SerializeField] string fadeOutTrriger = "FadeOut";
     [SerializeField] Button saveButton;
-    [SerializeField] string firstViewName;
     [Header("Debug")]
-    [SerializeField, ReadOnly] List<UIView> m_views = new List<UIView>();
     [SerializeField, ReadOnly] State m_state;
-    Stack<string> m_viewHistory = new Stack<string>();
-    public UnityEvent OnCloseCanvas { get; } = new UnityEvent();
 
     private void Awake()
     {
+        animator = GetComponent<Animator>();
         m_views.AddRange(GetComponentsInChildren<UIView>(true));
         foreach (var i in m_views)
         {
-            if (i == null || i.backButton == null) continue;
+            if (i?.backButton == null) continue;
             i.backButton.onClick.AddListener(Back);
         }
     }
@@ -57,7 +54,7 @@ public class PauseUIManager : CanvasManager
             animator.SetTrigger(fadeOutTrriger);
         });
         //会話中はセーブできないようにする
-        ConversationDataManager.Instance.OnTalkAccepted.AddListener(() =>
+        /*ConversationDataManager.Instance.OnTalkAccepted.AddListener(() =>
         {
             saveButton.interactable = false;
         });
@@ -65,7 +62,7 @@ public class PauseUIManager : CanvasManager
         ConversationDataManager.Instance.OnTalkEnd.AddListener(() =>
         {
             saveButton.interactable = true;
-        });
+        });*/
     }
 
     /// <summary>
@@ -94,59 +91,4 @@ public class PauseUIManager : CanvasManager
         OnCloseCanvas.Invoke();
     }
 
-    UIView GetView(string viewName)
-    {
-        foreach (var i in m_views)
-            if (i.name == viewName)
-                return i;
-        return null;
-    }
-    public void SwitchView(string viewName)
-    {
-        Debug.Log($"switch to '{viewName}'");
-        if (m_viewHistory.Count == 0)//初めてviewを起動したとき
-        {
-            var obj = GetView(viewName);
-            if (obj == null) return;
-            ShowView(obj);
-            m_viewHistory.Push(viewName);
-            return;
-        }
-        string beforeActive = m_viewHistory.Peek();
-        if (viewName == beforeActive) return;
-        var view = GetView(viewName);
-        if (view == null)
-        {
-            Debug.LogWarning($"View '{viewName}' is not found");
-            return;
-        }
-        ShowView(view);
-        HideView(GetView(beforeActive));
-        m_viewHistory.Push(viewName);
-    }
-    void Back()
-    {
-        Debug.Log("back");
-        //もしviewを移動させてない状態でbackを押した場合、viewを非表示にし終了
-        if (m_viewHistory.Count == 1)
-        {
-            Kyoichi.GameManager.Instance.PauseEnd();
-            return;
-        }
-        string lastActive = m_viewHistory.Peek();
-        HideView(GetView(lastActive));
-        m_viewHistory.Pop();
-        string nextActive = m_viewHistory.Peek();
-        ShowView(GetView(nextActive));
-    }
-    void ShowView(UIView view)
-    {
-        view.gameObject.SetActive(true);
-        view.OnViewShow.Invoke();
-    }
-    void HideView(UIView view)
-    {
-        view.gameObject.SetActive(false);
-        view.OnViewHide.Invoke();
-    }
 }

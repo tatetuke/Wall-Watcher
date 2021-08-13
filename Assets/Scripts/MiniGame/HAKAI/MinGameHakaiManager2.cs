@@ -11,11 +11,12 @@ public class MinGameHakaiManager2 : MonoBehaviour
     [HideInInspector]public int Rsize=RawSize; 
     [HideInInspector]public int Csize=ColumnSize; 
     [HideInInspector]public GameObject[,] Wall = new GameObject[RawSize, ColumnSize];//盤面全体
+    [HideInInspector]public GameObject[,] WallAnime = new GameObject[RawSize, ColumnSize];//盤面全体
     int[] dx = new int[9] { -1, 0, 1, -1, 0, 1, -1, 0, 1 };//裏返す壁のIndex
     int[] dy = new int[9] { -1, -1, -1, 0, 0, 0, 1, 1, 1 };//
     private string PolutedLevel1;//壁の画像の名前
-    private string PolutedLevel1_1;//
-    public string PolutedLevel2;//
+    private string PolutedLevel2;//
+    public string PolutedLevel3;//
     [SerializeField] private UnityEvent UpdateItemData=new UnityEvent(); //アイテムデータのアップデート
 
     [SerializeField] private MinGameHAKAIStatus gameStatus;//HPやHPを減らす関数を持つクラス
@@ -46,6 +47,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     {
         State = Game_State.PreStart;
         WallInit();
+        WallAnimeInit();
         GetSpriteName();
         //取得できるかどうかについてアイテムの情報を更新
         UpdateItemData.Invoke();
@@ -108,6 +110,30 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
 
     }
+    private void WallAnimeInit()
+    {
+        int i, j;
+        i = 0;
+        j = 0;
+        foreach (GameObject v in GameObject.FindGameObjectsWithTag("WallAnime"))
+        {
+            if (j >= RawSize)
+            {
+                Debug.LogError("壁の数が多すぎます");
+                break;
+            }
+            WallAnime[i, j] = v;
+            i++;
+            if (i == ColumnSize)
+            {
+                i = 0;
+                j++;
+            }
+
+        }
+
+
+    }
 
     /// <summary>
     /// クリックしたオブジェクトを取得
@@ -151,7 +177,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
             if (nraw < 0 || nraw >= RawSize || ncolumn < 0 || ncolumn >= ColumnSize) continue;
             if (gameType == 1)
             {
-                ChangeSprite1(Wall[nraw, ncolumn]);
+                ChangeSprite1(Wall[nraw, ncolumn],WallAnime[nraw,ncolumn]);
             }else if (gameType == 2)
             {
                 ChangeSprite2(Wall[nraw, ncolumn]);
@@ -208,6 +234,8 @@ public class MinGameHakaiManager2 : MonoBehaviour
         var snapping = false; // 値を整数に変換するか
         var fadeOut = true;  // 揺れが終わりに向かうにつれ段々小さくなっていくか(falseだとピタッと止まる)
         shakeObj.transform.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut);
+
+        //athleics
     }
 
     /// <summary>
@@ -231,19 +259,22 @@ public class MinGameHakaiManager2 : MonoBehaviour
     }
 
     /// <summary>
-    /// スプライトの変更、2サイクルバージョン
+    /// スプライトの変更、2サイクルバージョン及びアニメションの開始
     /// </summary>
     /// <param name="m_Wall"></param>
-    private void ChangeSprite1(GameObject m_Wall)
+    private void ChangeSprite1(GameObject m_Wall, GameObject m_WallAnime)
     {
         string spriteName = m_Wall.GetComponent<SpriteRenderer>().sprite.name;
+        Animator animt = m_WallAnime.GetComponent<Animator>();
         if (spriteName == PolutedLevel1)
         {
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[2];
+            animt.SetTrigger("StartAnime");
         }
-        else if (spriteName == PolutedLevel2)
+        else if (spriteName == PolutedLevel3)
         {
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[0];
+            animt.SetTrigger("StartAnime");
 
         }
 
@@ -259,18 +290,17 @@ public class MinGameHakaiManager2 : MonoBehaviour
         if (spriteName == PolutedLevel1) {
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[1];
         }
-        else if(spriteName==PolutedLevel1_1)
+        else if(spriteName==PolutedLevel2)
         {
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[2];
             
-        }else if (spriteName == PolutedLevel2)
+        }else if (spriteName == PolutedLevel3)
         {
-
-            m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[0];
+            return;
+            //m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[0];//サイクルバージョン
 
         }
         
-
     }
     /// <summary>
     /// DPバージョン
@@ -283,7 +313,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
         {
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[1];
         }
-        else if (spriteName == PolutedLevel1_1)
+        else if (spriteName == PolutedLevel2)
         {
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[2];
 
@@ -295,8 +325,8 @@ public class MinGameHakaiManager2 : MonoBehaviour
     private void GetSpriteName()
     {
         PolutedLevel1 = WallSprite[0].name;
-        PolutedLevel1_1 = WallSprite[1].name;
-        PolutedLevel2 = WallSprite[2].name;
+        PolutedLevel2 = WallSprite[1].name;
+        PolutedLevel3 = WallSprite[2].name;
 
 
     }

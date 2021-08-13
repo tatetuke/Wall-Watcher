@@ -1,0 +1,12 @@
+{
+  "neji": {
+    "name": "neji",
+    "price": 100,
+    "discription": "禍々しいオーラを感じる…！"
+  },
+  "nanika": {
+    "name": "nanika",
+    "price": 1000000,
+    "discription": "どこかで見たことのある生き物"
+  }
+}

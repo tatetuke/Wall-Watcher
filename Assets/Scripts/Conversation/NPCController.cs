@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using RPGM.Core;
 using RPGM.Gameplay;
 using TMPro;
 using KoganeUnityLib;
