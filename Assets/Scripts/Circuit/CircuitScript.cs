@@ -23,4 +23,13 @@ public class CircuitScript : MonoBehaviour
         materialEditor.SetEmission(data.emission);
     }
 
+    private void OnMouseOver()
+    {
+        GetComponent<OutLineGenerator>().width = 0.1f;
+    }
+    private void OnMouseExit()
+    {
+        GetComponent<OutLineGenerator>().width = 0.0f;
+    }
+
 }
