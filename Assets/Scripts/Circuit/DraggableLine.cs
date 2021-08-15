@@ -3,22 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
-[RequireComponent(typeof(OutLineGeneratorLineRenderer))]
 public class DraggableLine : MonoBehaviour
 {
     public string key;
     public GameObject connectEffect;
     [SerializeField] Connector defaultConnect;
     LineRenderer m_line;
-    OutLineGeneratorLineRenderer outline;
     List<Draggable> childDraggable = new List<Draggable>();
     private void Start()
     {
-        outline = GetComponent<OutLineGeneratorLineRenderer>();
         m_line = GetComponent<LineRenderer>();
         for (int i = 0; i < m_line.positionCount; i++)
         {
-            GameObject obj = new GameObject($"Draggable {i}");
+            GameObject obj = new GameObject();
             obj.transform.parent = transform;
             int index = i;
             obj.transform.position = m_line.GetPosition(index) + m_line.transform.position;
@@ -41,13 +38,5 @@ public class DraggableLine : MonoBehaviour
 
             var connectorGroup = obj.AddComponent<ConnectorGroup>();
         }
-    }
-    private void OnMouseOver()
-    {
-        outline.width = 0.3f;
-    }
-    private void OnMouseExit()
-    {
-        outline.width = 0.0f;
     }
 }

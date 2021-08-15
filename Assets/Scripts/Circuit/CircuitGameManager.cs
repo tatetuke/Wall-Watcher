@@ -8,7 +8,7 @@ using UnityEngine.Events;
 /// 回路の修理Sceneに配置するスクリプト
 /// ゲームの進行を管理
 /// </summary>
-public class CircuitGameManager : MonoBehaviour, IGameManager
+public class CircuitGameManager : MonoBehaviour
 {
     /// <summary>
     /// クリアするために、どういうConnecterがつながっていればいいか
@@ -51,25 +51,24 @@ public class CircuitGameManager : MonoBehaviour, IGameManager
     public enum State
     {
         notStarted,//まだ初期化されてない
-                   // starting,
+      // starting,
         running,//実行中
         pause,//ポーズ中
-        cleared,//クリア条件達成
-                //quitting,
+       cleared,//クリア条件達成
+       //quitting,
     }
 
-    [SerializeField, ReadOnly] State m_state = State.notStarted;
+    [SerializeField, ReadOnly] State m_state=State.notStarted;
     private void Awake()
     {
         gameTimer = GetComponent<Timer>();
     }
     private void Start()
     {
-        foreach (var i in targetConnecter)
+        foreach(var i in targetConnecter)
         {
             if (i == null) continue;
-            i.OnConnectEnter.AddListener((receiver) =>
-            {
+            i.OnConnectEnter.AddListener((receiver)=> {
                 currentCount++;
                 if (currentCount >= sumCount)
                 {
@@ -83,7 +82,9 @@ public class CircuitGameManager : MonoBehaviour, IGameManager
             });
             sumCount++;
         }
-        StartGame();
+        OnGameStart.Invoke();
+        m_state = State.running;
+        gameTimer.StartTimer(0,100);
     }
 
     public void AddCircuitToGame(CircuitSO data)
@@ -104,6 +105,13 @@ public class CircuitGameManager : MonoBehaviour, IGameManager
                 Resume();
             }
         }
+    }
+    /// <summary>
+    /// ゲームを完了させる
+    /// </summary>
+    public void EndGame()
+    {
+        Quit();
     }
     /// <summary>
     /// ポーズし、ゲームを中断する
@@ -138,36 +146,4 @@ public class CircuitGameManager : MonoBehaviour, IGameManager
 
     }
 
-    public void StartGame()
-    {
-        OnGameStart.Invoke();
-        m_state = State.running;
-        gameTimer.StartTimer(0, 100);
-    }
-
-    /// <summary>
-    /// ゲームを完了させる
-    /// </summary>
-    public void ClearGame()
-    {
-        Quit();
-    }
-    public void EndGame()
-    {
-        OnEndGame().Invoke();
-    }
-
-    public UnityEvent OnStartGame() => OnGameStart;
-    public UnityEvent OnPause() => OnGamePause;
-    public UnityEvent OnResume() => OnGameResume;
-    public UnityEvent OnClearGame() => OnGameClear;
-    public UnityEvent OnEndGame() => OnGameQuit;
-
-    public void EndProgram()
-    {
-    }
-
-    public void Back()
-    {
-    }
 }

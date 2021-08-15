@@ -14,29 +14,16 @@ public class MiniGamePauseUI : MonoBehaviour
     {
         animator = GetComponent<Animator>();
     }
-    IGameManager gameManager;
-    T FindObjectOfInterface<T>() where T : class
-    {
-        foreach (var i in FindObjectsOfType<Component>())
-        {
-            var component = i as T;
-            if (component != null)
-            {
-                return component;
-            }
-        }
-        return null;
-    }
-
+    CircuitGameManager gameManager;
     private void Start()
     {
-        gameManager = FindObjectOfInterface<IGameManager>();
+        gameManager = FindObjectOfType<CircuitGameManager>();
         gameObject.SetActive(false);//初期状態は隠す
-        gameManager.OnPause().AddListener(()=> {
+        gameManager.OnGamePause.AddListener(()=> {
             gameObject.SetActive(true);
             animator.Play("CircuitPauseUIFadeIn");
         });
-        gameManager.OnResume().AddListener(() =>
+        gameManager.OnGameResume.AddListener(() =>
         {
             animator.Play("CircuitPauseUIFadeOut");
             gameObject.SetActive(false);
@@ -55,13 +42,13 @@ public class MiniGamePauseUI : MonoBehaviour
     /// </summary>
     public void Quit()
     {
-       // gameManager.();
+        gameManager.Quit();
     }
     /// <summary>
     /// デスクトップに戻るボタンが押されたときの処理
     /// </summary>
     public void BackToDesktop()
     {
-      //  gameManager.EndGame();
+        gameManager.BackToDesktop();
     }
 }
