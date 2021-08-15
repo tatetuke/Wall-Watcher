@@ -7,7 +7,7 @@ using UnityEngine.Events;
 /// 回路の修理Sceneに配置するスクリプト
 /// ゲームの進行を管理
 /// </summary>
-public class CircuitGameManager : MonoBehaviour
+public class CircuitGameManager : MonoBehaviour, IGameManager
 {
     /// <summary>
     /// クリアするために、どういうConnecterがつながっていればいいか
@@ -26,13 +26,30 @@ public class CircuitGameManager : MonoBehaviour
    [SerializeField,ReadOnly] int currentCount = 0;
     //成功判定になるためのConnecterのカウント
     [SerializeField, ReadOnly] int sumCount = 0;
+    public Timer gameTimer { get; private set; }
 
+    public enum State
+    {
+        notStarted,//まだ初期化されてない
+                   // starting,
+        running,//実行中
+        pause,//ポーズ中
+        cleared,//クリア条件達成
+                //quitting,
+    }
+
+    [SerializeField, ReadOnly] State m_state = State.notStarted;
+    private void Awake()
+    {
+        gameTimer = GetComponent<Timer>();
+    }
     private void Start()
     {
-        foreach(var i in targetConnecter)
+        foreach (var i in targetConnecter)
         {
             if (i == null) continue;
-            i.OnConnectEnter.AddListener((receiver)=> {
+            i.OnConnectEnter.AddListener((receiver) =>
+            {
                 currentCount++;
                 if (currentCount >= sumCount)
                 {
@@ -46,7 +63,7 @@ public class CircuitGameManager : MonoBehaviour
             });
             sumCount++;
         }
-        OnGameStart.Invoke();
+        StartGame();
     }
 
     public void AddCircuitToGame(CircuitSO data)
@@ -54,4 +71,83 @@ public class CircuitGameManager : MonoBehaviour
         Instantiate(data.prefab).GetComponent<CircuitScript>().SetData(data);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (m_state == State.running)
+            {
+                Pause();
+            }
+            else
+            {
+                Resume();
+            }
+        }
+    }
+    /// <summary>
+    /// ポーズし、ゲームを中断する
+    /// </summary>
+    public void Pause()
+    {
+        if (m_state == State.pause) return;
+        m_state = State.pause;
+        OnGamePause.Invoke();
+    }
+    /// <summary>
+    /// ポーズを解除しゲームを再開させる
+    /// </summary>
+    public void Resume()
+    {
+        if (m_state == State.running) return;
+        m_state = State.running;
+        OnGameResume.Invoke();
+    }
+    /// <summary>
+    /// ミニゲームを終了させ、マップに戻る
+    /// </summary>
+    public void Quit()
+    {
+        OnGameQuit.Invoke();
+    }
+    /// <summary>
+    /// WallWatcherを終了し、デスクトップ画面に戻る
+    /// </summary>
+    public void BackToDesktop()
+    {
+
+    }
+
+    public void StartGame()
+    {
+        OnGameStart.Invoke();
+        m_state = State.running;
+        gameTimer.StartTimer(0, 100);
+    }
+
+    /// <summary>
+    /// ゲームを完了させる
+    /// </summary>
+    public void ClearGame()
+    {
+        Quit();
+    }
+    public void EndGame()
+    {
+        OnEndGame().Invoke();
+    }
+
+    public UnityEvent OnStartGame() => OnGameStart;
+    public UnityEvent OnPause() => OnGamePause;
+    public UnityEvent OnResume() => OnGameResume;
+    public UnityEvent OnClearGame() => OnGameClear;
+    public UnityEvent OnEndGame() => OnGameQuit;
+
+    public void EndProgram()
+    {
+    }
+
+    public void Back()
+    {
+    }
 }

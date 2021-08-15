@@ -1,4 +1,4 @@
-﻿Shader "BlurEffect_UI"
+﻿Shader "BlurEffect_UI_heavy"
 {
     Properties
     {
@@ -67,24 +67,18 @@
                 half blur = _BlurSize;
                 blur = max(1, blur);
 
-                fixed4 col = (0, 0, 0, 0);
+                fixed4 col = fixed4(0, 0, 0, 0);
                 float weight_total = 0;
-
                 [loop]
-                for (float x = -blur; x < blur; x += 1)
+                for (float x = -blur; x <= blur; x += 1)
                 {
-                    float distance_normalized = abs(x / blur);
-                    float weight = exp(-0.5 * pow(distance_normalized, 2) * 5.0);
-                    weight_total += weight;
-                    col += tex2D(_Texture, uv+ half2(x*0.01, 0)) * weight;
-                }
-                [loop]
-                for (float y = -blur; y < blur; y += 1)
-                {
-                    float distance_normalized = abs(y / blur);
-                    float weight = exp(-0.5 * pow(distance_normalized, 2) * 5.0);
-                    weight_total += weight;
-                    col += tex2D(_Texture, uv + half2(0, y*0.01)) * weight;
+                    for (float y = -blur; y <= blur; y += 1)
+                    {
+                        float distance_normalized = abs(sqrt(x*x+y*y) / blur);
+                        float weight = exp(-0.5 * pow(distance_normalized, 2) * 5.0);
+                        weight_total += weight;
+                        col += tex2D(_Texture, uv + half2(x*0.01, y * 0.01)) * weight;
+                    }
                 }
 
                 col /= weight_total;
