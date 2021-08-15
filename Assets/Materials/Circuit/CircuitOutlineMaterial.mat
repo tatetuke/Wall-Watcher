@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CircuitOutlineMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: 87b37738f5f16b540b12e3a1656a7333,
+  m_Shader: {fileID: -6465566751694194690, guid: 7cb5cd10c15f6644a950ed4d1bae8c76,
     type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
@@ -20,12 +20,16 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_A13A7A:
+        m_Texture: {fileID: 2800000, guid: 65bafab12ed8ff34f91674a4df38bf88, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _AlphaTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: b6374589f5d9cad42912ac98b7be6257, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
@@ -37,9 +41,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Boolean_2A9494F0: 1
     - _EnableExternalAlpha: 0
+    - thre: 0.1
     m_Colors:
     - Color_8F7E5F72: {r: 0, g: 0, b: 0, a: 0}
+    - Color_9350ABAA: {r: 1, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _MainColor: {r: 1, g: 1, b: 1, a: 0}
