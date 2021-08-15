@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(Timer))]
 /// <summary>
 /// 回路の修理Sceneに配置するスクリプト
 /// ゲームの進行を管理
@@ -19,11 +20,30 @@ public class CircuitGameManager : MonoBehaviour, IGameManager
     [SerializeField] List<CircuitSO> requiredItems = new List<CircuitSO>();
     public IEnumerable<CircuitSO> RequiredItems { get => requiredItems; }
 
+    /// <summary>
+    /// ゲームを開始したときに実行される
+    /// </summary>
     public UnityEvent OnGameStart { get; } = new UnityEvent();
+    /// <summary>
+    /// ポーズボタンを押したときに実行される
+    /// </summary>
+    public UnityEvent OnGamePause { get; } = new UnityEvent();
+    /// <summary>
+    /// ポーズを終了し、修理ゲームに戻るときに実行される
+    /// </summary>
+    public UnityEvent OnGameResume { get; } = new UnityEvent();
+    /// <summary>
+    /// ゲームの終了条件を満たしたときに実行される
+    /// </summary>
     public UnityEvent OnGameClear { get; } = new UnityEvent();
+    /// <summary>
+    /// クリア演出が終わったり、ゲームを中断したときなど、
+    /// ゲームを終了したときに実行される
+    /// </summary>
+    public UnityEvent OnGameQuit { get; } = new UnityEvent();
     [Header("Debug")]
     //現在接続されているConnecter
-   [SerializeField,ReadOnly] int currentCount = 0;
+    [SerializeField, ReadOnly] int currentCount = 0;
     //成功判定になるためのConnecterのカウント
     [SerializeField, ReadOnly] int sumCount = 0;
     public Timer gameTimer { get; private set; }
