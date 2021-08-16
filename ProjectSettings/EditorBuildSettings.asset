@@ -42,7 +42,7 @@ EditorBuildSettings:
     path: Assets/Scenes/TItle/FileSelect.unity
     guid: 567fba5ea90a20042812442e3f48fc7c
   - enabled: 1
-    path: Assets/Scenes/Shop.unity
+    path: Assets/Scenes/Shop/Shop.unity
     guid: 77aaf15d931ee804c8a01552fd749df6
   - enabled: 1
     path: Assets/Scenes/MiniGame/MainMap/MainMap3_Informal.unity
