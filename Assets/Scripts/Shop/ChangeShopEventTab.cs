@@ -127,7 +127,6 @@ public class ChangeShopEventTab : MonoBehaviour
         description.text = "";
         UIItemName.text = "";
         Icon.sprite = toumei;
-       
     }
 
     //現在選択中のタブを変更するための関数3つ.
