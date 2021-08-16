@@ -36,6 +36,7 @@ public class QuestHolder : MonoBehaviour
     /// <param name="quest"></param>
     public void AddQuest(QuestDataSO quest_)
     {
+        // Scene内にゲームオブジェクトが配置されるためシーン切り替えでQuestCheckerがきえてしまう　TODO
         var obj = new GameObject(quest_.name);
         var scr = obj.AddComponent<QuestChecker>();
         scr.Initialize(quest_, QuestChecker.QuestState.working, 0);
