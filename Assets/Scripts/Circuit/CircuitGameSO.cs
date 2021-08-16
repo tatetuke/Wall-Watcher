@@ -14,9 +14,13 @@ public class CircuitGameSO : ScriptableObject
     [Tooltip("修理クエストの説明")]
     public string description;
 
+    [Tooltip("どうすれば完了になるのかの説明")]
+    public string finishConditionDescription;
+
     [Tooltip("修理に必要なパーツ")]
     public List<CircuitSO> requiredCircuit = new List<CircuitSO>();
 
-    
+    [Tooltip("該当する修理ゲームのPrefab")]
+    public GameObject scene;
 
 }

@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questName: 
   description: 
+  finishConditionDescription: 
   requiredCircuit: []
+  scene: {fileID: 6242733163214375629, guid: d2281b261bafdb74689f94cdf92feec2, type: 3}

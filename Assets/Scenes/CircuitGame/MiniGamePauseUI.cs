@@ -14,29 +14,15 @@ public class MiniGamePauseUI : MonoBehaviour
     {
         animator = GetComponent<Animator>();
     }
-    IGameManager gameManager;
-    T FindObjectOfInterface<T>() where T : class
-    {
-        foreach (var i in FindObjectsOfType<Component>())
-        {
-            var component = i as T;
-            if (component != null)
-            {
-                return component;
-            }
-        }
-        return null;
-    }
 
     private void Start()
     {
-        gameManager = FindObjectOfInterface<IGameManager>();
         gameObject.SetActive(false);//初期状態は隠す
-        gameManager.OnPause().AddListener(()=> {
+        PauseManager.Instance.OnPauseEnter.AddListener(()=> {
             gameObject.SetActive(true);
             animator.Play("CircuitPauseUIFadeIn");
         });
-        gameManager.OnResume().AddListener(() =>
+        PauseManager.Instance.OnPauseExit.AddListener(() =>
         {
             animator.Play("CircuitPauseUIFadeOut");
             gameObject.SetActive(false);
@@ -48,7 +34,7 @@ public class MiniGamePauseUI : MonoBehaviour
     /// </summary>
     public void Resume()
     {
-        gameManager.Resume();
+        PauseManager.Instance.Resume();
     }
     /// <summary>
     /// ミニゲームを終了するボタンが押されたときの処理

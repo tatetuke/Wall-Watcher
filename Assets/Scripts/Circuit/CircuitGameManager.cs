@@ -8,7 +8,7 @@ using UnityEngine.Events;
 /// 回路の修理Sceneに配置するスクリプト
 /// ゲームの進行を管理
 /// </summary>
-public class CircuitGameManager : MonoBehaviour, IGameManager
+public class CircuitGameManager : MonoBehaviour
 {
     /// <summary>
     /// クリアするために、どういうConnecterがつながっていればいいか
@@ -24,14 +24,6 @@ public class CircuitGameManager : MonoBehaviour, IGameManager
     /// ゲームを開始したときに実行される
     /// </summary>
     public UnityEvent OnGameStart { get; } = new UnityEvent();
-    /// <summary>
-    /// ポーズボタンを押したときに実行される
-    /// </summary>
-    public UnityEvent OnGamePause { get; } = new UnityEvent();
-    /// <summary>
-    /// ポーズを終了し、修理ゲームに戻るときに実行される
-    /// </summary>
-    public UnityEvent OnGameResume { get; } = new UnityEvent();
     /// <summary>
     /// ゲームの終了条件を満たしたときに実行される
     /// </summary>
@@ -53,7 +45,6 @@ public class CircuitGameManager : MonoBehaviour, IGameManager
         notStarted,//まだ初期化されてない
                    // starting,
         running,//実行中
-        pause,//ポーズ中
         cleared,//クリア条件達成
                 //quitting,
     }
@@ -91,38 +82,6 @@ public class CircuitGameManager : MonoBehaviour, IGameManager
         Instantiate(data.prefab).GetComponent<CircuitScript>().SetData(data);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (m_state == State.running)
-            {
-                Pause();
-            }
-            else
-            {
-                Resume();
-            }
-        }
-    }
-    /// <summary>
-    /// ポーズし、ゲームを中断する
-    /// </summary>
-    public void Pause()
-    {
-        if (m_state == State.pause) return;
-        m_state = State.pause;
-        OnGamePause.Invoke();
-    }
-    /// <summary>
-    /// ポーズを解除しゲームを再開させる
-    /// </summary>
-    public void Resume()
-    {
-        if (m_state == State.running) return;
-        m_state = State.running;
-        OnGameResume.Invoke();
-    }
     /// <summary>
     /// ミニゲームを終了させ、マップに戻る
     /// </summary>
@@ -158,8 +117,6 @@ public class CircuitGameManager : MonoBehaviour, IGameManager
     }
 
     public UnityEvent OnStartGame() => OnGameStart;
-    public UnityEvent OnPause() => OnGamePause;
-    public UnityEvent OnResume() => OnGameResume;
     public UnityEvent OnClearGame() => OnGameClear;
     public UnityEvent OnEndGame() => OnGameQuit;
 
