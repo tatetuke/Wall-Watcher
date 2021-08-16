@@ -36,7 +36,8 @@ public class CircuitGameUIManager : MonoBehaviour
     void Start()
     {
         var gameManager = FindObjectOfType<CircuitGameManager>();
-        foreach (var i in gameManager.RequiredItems)
+        var requiredItems = new List<CircuitSO>();
+        foreach (var i in requiredItems)
         {
             if (i == null) continue;
             var scr = Instantiate(itemPrefab, itemContainer).GetComponent<CircuitItemUI>();

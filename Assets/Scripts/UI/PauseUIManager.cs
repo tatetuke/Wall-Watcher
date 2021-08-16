@@ -41,14 +41,14 @@ public class PauseUIManager : CanvasManager
         foreach (var i in m_views)
             i.gameObject.SetActive(false);
 
-        Kyoichi.GameManager.Instance.OnPauseStart.AddListener(() =>
+        PauseManager.Instance.OnPauseEnter.AddListener(() =>
         {
             m_state = State.fadeIn;
             animator.SetTrigger(fadeInTrriger);
             SwitchView(firstViewName);
             allwaysShowView.gameObject.SetActive(true);
         });
-        Kyoichi.GameManager.Instance.OnPauseEnd.AddListener(() =>
+        PauseManager.Instance.OnPauseExit.AddListener(() =>
         {
             m_state = State.fadeOut;
             animator.SetTrigger(fadeOutTrriger);

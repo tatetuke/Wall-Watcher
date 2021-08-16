@@ -70,7 +70,7 @@ public class CanvasManager : MonoBehaviour
         //もしviewを移動させてない状態でbackを押した場合、viewを非表示にし終了
         if (m_viewHistory.Count == 1)
         {
-            Kyoichi.GameManager.Instance.PauseEnd();
+            PauseManager.Instance.Resume();
             return;
         }
         string lastActive = m_viewHistory.Peek();
