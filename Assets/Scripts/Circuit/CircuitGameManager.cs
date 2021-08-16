@@ -14,11 +14,6 @@ public class CircuitGameManager : MonoBehaviour
     /// クリアするために、どういうConnecterがつながっていればいいか
     /// </summary>
     [SerializeField] List<Connector> targetConnecter = new List<Connector>();
-    /// <summary>
-    /// ゲームに必要なアイテムたち
-    /// </summary>
-    [SerializeField] List<CircuitSO> requiredItems = new List<CircuitSO>();
-    public IEnumerable<CircuitSO> RequiredItems { get => requiredItems; }
 
     /// <summary>
     /// ゲームを開始したときに実行される

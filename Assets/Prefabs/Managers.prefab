@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 2005104341916565844}
   - component: {fileID: 4236181000602136703}
   - component: {fileID: 3386658694790212803}
+  - component: {fileID: -6601384200722135496}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -121,6 +122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 855038bb098027e479e3f2f83ccd78fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  directory: Data
+  filename: inventry.csv
 --- !u!114 &6620006400604418315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,5 +201,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c125913bb9da5854ea5c275f2c8533f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-6601384200722135496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5258322693995725206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 835f7dac583d186458facef8f86214d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
