@@ -41,6 +41,20 @@ namespace Kyoichi
         {
             get { return m_inventry; }
         }
+
+        /// <summary>
+        /// 対象となるitemの持っている個数を返す。見つからなかったら-1を返す
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public int DataCount(ItemSO item)
+        {
+            foreach (var i in m_inventry)
+            {
+                if (i.item == item) return i.count;
+            }
+            return -1;
+        }
         private void Start()
         {
             ItemManager.Instance.AddInventry(this);

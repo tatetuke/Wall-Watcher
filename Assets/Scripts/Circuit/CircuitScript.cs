@@ -19,4 +19,13 @@ public class CircuitScript : MonoBehaviour
         sprite.sprite = data.icon;
     }
 
+    private void OnMouseOver()
+    {
+        GetComponent<OutLineGenerator>().width = 0.1f;
+    }
+    private void OnMouseExit()
+    {
+        GetComponent<OutLineGenerator>().width = 0.0f;
+    }
+
 }

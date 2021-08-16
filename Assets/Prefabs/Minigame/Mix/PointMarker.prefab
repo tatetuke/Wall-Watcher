@@ -121,3 +121,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c063e69301fa5f54c841f91d86b153be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HoldSprite: {fileID: 21300000, guid: 9729e9baa847df84fa27d7609fe45af2, type: 3}
