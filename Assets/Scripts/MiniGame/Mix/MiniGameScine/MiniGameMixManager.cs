@@ -26,6 +26,9 @@ public class MiniGameMixManager : MonoBehaviour
     [SerializeField] GameObject WaterUpButtonColor;
     [SerializeField] GameObject WaterDownButtonColor;
 
+    [SerializeField] GameObject SoilGoodArea;
+    [SerializeField] GameObject WaterGoodArea;
+
     [SerializeField] GameObject TripleCircle;
     [SerializeField] GameObject DoubleCircle;
     [SerializeField] GameObject SingleCircle;
@@ -40,10 +43,12 @@ public class MiniGameMixManager : MonoBehaviour
     private Image SoilGauge;
     private Image WaterGauge;
 
-    private float ParamSpeed = 0.003f;
+    private float ParamSpeed = 0.01f;
     private float IdealRatio = 2;  // 土/水
     private float SoilGaugeParam;
     private float WaterGaugeParam;
+    private float DeltaSoilParam;
+    private float DeltaWaterParam;
 
 
     void Start()
@@ -54,16 +59,53 @@ public class MiniGameMixManager : MonoBehaviour
         SoilGaugeParam = 0;
         WaterGaugeParam = 0;
         CalcIdealRatio();
+        SetSoilGoodArea();
+        WaterSoilGoodArea();
+        DeltaSoilParam = Random.Range(0.005f, 0.025f);
+        DeltaWaterParam = Random.Range(0.005f, 0.025f);
     }
 
     void Update()
     {
+        SoilGauge.fillAmount += DeltaSoilParam;
+        WaterGauge.fillAmount += DeltaWaterParam;
+        if (SoilGauge.fillAmount >= 1 || SoilGauge.fillAmount <= 0) DeltaSoilParam *= -1;
+        if (WaterGauge.fillAmount >= 1 || WaterGauge.fillAmount <= 0) DeltaWaterParam *= -1;
+
         if (m_State == State.IsPlaying)
         {
             GlowButton();
-            UpdateGauge();
+            //UpdateGauge();
             UpdateMark();
         }
+    }
+
+    private void SetSoilGoodArea()
+    {
+        float mn = -0.64f;
+        float mx = 1.62f;
+        Vector3 pos = SoilGoodArea.transform.position;
+        pos.y = Random.Range(mn, mx);
+        SoilGoodArea.transform.position = pos;
+    }
+
+    private void WaterSoilGoodArea()
+    {
+        float mn = -0.65f;
+        float mx = 1.55f;
+        Vector3 pos = WaterGoodArea.transform.position;
+        pos.y = Random.Range(mn, mx);
+        WaterGoodArea.transform.position = pos;
+    }
+
+    public void OnSoilButtonClick()
+    {
+        DeltaSoilParam = 0;
+    }
+
+    public void OnWaterButtonClick()
+    {
+        DeltaWaterParam = 0;
     }
 
     private void UpdateMark()
