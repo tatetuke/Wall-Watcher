@@ -5,6 +5,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// TODO : 
+// 温度とかのテキスト
+// 終了押したら
+// マーク
+
 public class MiniGameMixManager : MonoBehaviour
 {
     //public CameraShake shake;
@@ -16,28 +21,33 @@ public class MiniGameMixManager : MonoBehaviour
 
     private State m_State = State.IsPlaying;
 
+    [SerializeField] Animator MachineAnim;
+
     [SerializeField] GameObject shakeObj;//揺らすゲームオブジェクトの選択
     [SerializeField] Button CompleteButton;
 
-    [SerializeField] GameObject TaskCompleteText;
+    //[SerializeField] GameObject TaskCompleteText;
 
-    [SerializeField] GameObject SoilUpButtonColor;
-    [SerializeField] GameObject SoilDownButtonColor;
-    [SerializeField] GameObject WaterUpButtonColor;
-    [SerializeField] GameObject WaterDownButtonColor;
+    //[SerializeField] GameObject SoilUpButtonColor;
+    //[SerializeField] GameObject SoilDownButtonColor;
+    //[SerializeField] GameObject WaterUpButtonColor;
+    //[SerializeField] GameObject WaterDownButtonColor;
 
-    [SerializeField] GameObject SoilGoodArea;
-    [SerializeField] GameObject WaterGoodArea;
+    //[SerializeField] GameObject SoilGoodArea;
+    //[SerializeField] GameObject WaterGoodArea;
 
-    [SerializeField] GameObject TripleCircle;
-    [SerializeField] GameObject DoubleCircle;
-    [SerializeField] GameObject SingleCircle;
-    [SerializeField] GameObject Triangle;
+    [SerializeField] Image Mark;
+    [SerializeField] Sprite TripleCircleMark;
+    [SerializeField] Sprite DoubleCircleMark;
+    [SerializeField] Sprite SingleCircleMark;
+    [SerializeField] Sprite TriangleMark;
 
-    [SerializeField] TextMeshProUGUI Temperature;
-    [SerializeField] TextMeshProUGUI Humidity;
-    [SerializeField] TextMeshProUGUI HRC;
+    [SerializeField] Text Temperature;
+    [SerializeField] Text Humidity;
+    [SerializeField] Text HRC;
 
+    [SerializeField] GameObject SoilArea;
+    [SerializeField] GameObject WaterArea;
     [SerializeField] GameObject SoilGaugeGameObject;
     [SerializeField] GameObject WaterGaugeGameObject;
     private Image SoilGauge;
@@ -59,14 +69,17 @@ public class MiniGameMixManager : MonoBehaviour
         SoilGaugeParam = 0;
         WaterGaugeParam = 0;
         CalcIdealRatio();
-        SetSoilGoodArea();
-        WaterSoilGoodArea();
-        DeltaSoilParam = Random.Range(0.005f, 0.025f);
-        DeltaWaterParam = Random.Range(0.005f, 0.025f);
+        SetSoilArea();
+        WaterSoilArea();
+        //DeltaSoilParam = Random.Range(0.005f, 0.01f);
+        //DeltaWaterParam = Random.Range(0.008f, 0.015f);
+        DeltaSoilParam = 0.008f;
+        DeltaWaterParam = 0.015f;
     }
 
     void Update()
     {
+        DecideMark(SoilArea, SoilGauge);
         SoilGauge.fillAmount += DeltaSoilParam;
         WaterGauge.fillAmount += DeltaWaterParam;
         if (SoilGauge.fillAmount >= 1 || SoilGauge.fillAmount <= 0) DeltaSoilParam *= -1;
@@ -74,28 +87,28 @@ public class MiniGameMixManager : MonoBehaviour
 
         if (m_State == State.IsPlaying)
         {
-            GlowButton();
+            //GlowButton();
             //UpdateGauge();
-            UpdateMark();
+            //UpdateMark();
         }
     }
 
-    private void SetSoilGoodArea()
+    private void SetSoilArea()
     {
-        float mn = -0.64f;
-        float mx = 1.62f;
-        Vector3 pos = SoilGoodArea.transform.position;
+        float mn = 122f;
+        float mx = 330f;
+        Vector3 pos = SoilArea.transform.localPosition;
         pos.y = Random.Range(mn, mx);
-        SoilGoodArea.transform.position = pos;
+        SoilArea.transform.localPosition = pos;
     }
 
-    private void WaterSoilGoodArea()
+    private void WaterSoilArea()
     {
-        float mn = -0.65f;
-        float mx = 1.55f;
-        Vector3 pos = WaterGoodArea.transform.position;
+        float mn = 122f;
+        float mx = 330f;
+        Vector3 pos = WaterArea.transform.localPosition;
         pos.y = Random.Range(mn, mx);
-        WaterGoodArea.transform.position = pos;
+        WaterArea.transform.localPosition = pos;
     }
 
     public void OnSoilButtonClick()
@@ -108,35 +121,35 @@ public class MiniGameMixManager : MonoBehaviour
         DeltaWaterParam = 0;
     }
 
-    private void UpdateMark()
-    {
-        HideMark();
-        if (WaterGaugeParam == 0)
-        {
-            Triangle.SetActive(true);
-            return;
-        }
-        float ratio = SoilGaugeParam / WaterGaugeParam;
-        Debug.Log(ratio);
-        float relativeError = CalcRelativeError(ratio, IdealRatio);
-        Debug.Log(relativeError);
-        if (relativeError<=0.05f)
-            TripleCircle.SetActive(true);
-        else if (relativeError <= 0.1f)
-            DoubleCircle.SetActive(true);
-        else if (relativeError <= 0.2f)
-            SingleCircle.SetActive(true);
-        else
-            Triangle.SetActive(true);
-    }
+    //private void UpdateMark()
+    //{
+    //    HideMark();
+    //    if (WaterGaugeParam == 0)
+    //    {
+    //        Triangle.SetActive(true);
+    //        return;
+    //    }
+    //    float ratio = SoilGaugeParam / WaterGaugeParam;
+    //    Debug.Log(ratio);
+    //    float relativeError = CalcRelativeError(ratio, IdealRatio);
+    //    Debug.Log(relativeError);
+    //    if (relativeError<=0.05f)
+    //        TripleCircle.SetActive(true);
+    //    else if (relativeError <= 0.1f)
+    //        DoubleCircle.SetActive(true);
+    //    else if (relativeError <= 0.2f)
+    //        SingleCircle.SetActive(true);
+    //    else
+    //        Triangle.SetActive(true);
+    //}
 
-    private void HideMark()
-    {
-        TripleCircle.SetActive(false);
-        DoubleCircle.SetActive(false);
-        SingleCircle.SetActive(false);
-        Triangle.SetActive(false);
-    }
+    //private void HideMark()
+    //{
+    //    TripleCircle.SetActive(false);
+    //    DoubleCircle.SetActive(false);
+    //    SingleCircle.SetActive(false);
+    //    Triangle.SetActive(false);
+    //}
 
     private float CalcRelativeError(float MeasuredValue, float TheoreticalValue)
     {
@@ -145,62 +158,62 @@ public class MiniGameMixManager : MonoBehaviour
     }
 
 
-    private void GlowButton()
-    {
-        HideGlowBotton();
-        if (/*左クリックが押されている*/Input.GetMouseButton(0))
-        {
-            GameObject cursorObject = GetCursorObject();
-            if (cursorObject == null)
-                HideGlowBotton();
-            else if (cursorObject.name == "SoilUpButton")
-                SoilUpButtonColor.SetActive(true);
-            else if (cursorObject.name == "SoilDownButton")
-                SoilDownButtonColor.SetActive(true);
-            else if (cursorObject.name == "WaterUpButton")
-                WaterUpButtonColor.SetActive(true);
-            else if (cursorObject.name == "WaterDownButton")
-                WaterDownButtonColor.SetActive(true);
-        }
-    }
+    //private void GlowButton()
+    //{
+    //    HideGlowBotton();
+    //    if (/*左クリックが押されている*/Input.GetMouseButton(0))
+    //    {
+    //        GameObject cursorObject = GetCursorObject();
+    //        if (cursorObject == null)
+    //            HideGlowBotton();
+    //        else if (cursorObject.name == "SoilUpButton")
+    //            SoilUpButtonColor.SetActive(true);
+    //        else if (cursorObject.name == "SoilDownButton")
+    //            SoilDownButtonColor.SetActive(true);
+    //        else if (cursorObject.name == "WaterUpButton")
+    //            WaterUpButtonColor.SetActive(true);
+    //        else if (cursorObject.name == "WaterDownButton")
+    //            WaterDownButtonColor.SetActive(true);
+    //    }
+    //}
 
-    private void HideGlowBotton()
-    {
-        SoilUpButtonColor.SetActive(false);
-        SoilDownButtonColor.SetActive(false);
-        WaterUpButtonColor.SetActive(false);
-        WaterDownButtonColor.SetActive(false);
-    }
+    //private void HideGlowBotton()
+    //{
+    //    SoilUpButtonColor.SetActive(false);
+    //    SoilDownButtonColor.SetActive(false);
+    //    WaterUpButtonColor.SetActive(false);
+    //    WaterDownButtonColor.SetActive(false);
+    //}
 
-    private void UpdateGauge()
-    {
-        if (/*左クリックが押されている*/Input.GetMouseButton(0))
-        {
-            GameObject cursorObject = GetCursorObject();
-            if (cursorObject == null)
-                HideGlowBotton();
-            else if (cursorObject.name == "SoilUpButton")
-            {
-                SoilGaugeParam += ParamSpeed;
-            }
-            else if (cursorObject.name == "SoilDownButton")
-            {
-                SoilGaugeParam += -ParamSpeed;
-            }
-            else if (cursorObject.name == "WaterUpButton")
-            {
-                WaterGaugeParam += ParamSpeed;
-            }
-            else if (cursorObject.name == "WaterDownButton")
-            {
-                WaterGaugeParam += -ParamSpeed;
-            }
-        }
-        SoilGaugeParam = AdjustParam(SoilGaugeParam);
-        WaterGaugeParam = AdjustParam(WaterGaugeParam);
-        SoilGauge.fillAmount = SoilGaugeParam;
-        WaterGauge.fillAmount = WaterGaugeParam;
-    }
+    //private void UpdateGauge()
+    //{
+    //    if (/*左クリックが押されている*/Input.GetMouseButton(0))
+    //    {
+    //        GameObject cursorObject = GetCursorObject();
+    //        if (cursorObject == null)
+    //            HideGlowBotton();
+    //        else if (cursorObject.name == "SoilUpButton")
+    //        {
+    //            SoilGaugeParam += ParamSpeed;
+    //        }
+    //        else if (cursorObject.name == "SoilDownButton")
+    //        {
+    //            SoilGaugeParam += -ParamSpeed;
+    //        }
+    //        else if (cursorObject.name == "WaterUpButton")
+    //        {
+    //            WaterGaugeParam += ParamSpeed;
+    //        }
+    //        else if (cursorObject.name == "WaterDownButton")
+    //        {
+    //            WaterGaugeParam += -ParamSpeed;
+    //        }
+    //    }
+    //    SoilGaugeParam = AdjustParam(SoilGaugeParam);
+    //    WaterGaugeParam = AdjustParam(WaterGaugeParam);
+    //    SoilGauge.fillAmount = SoilGaugeParam;
+    //    WaterGauge.fillAmount = WaterGaugeParam;
+    //}
 
     // [0,1]の範囲に修正する
     private float AdjustParam(float num)
@@ -237,18 +250,41 @@ public class MiniGameMixManager : MonoBehaviour
 
     public void CompleteButtonClick()
     {
-        ChangeState(State.IsFinished);
-        CompleteButton.interactable = false;
-        // シェイク(一定時間のランダムな動き)
-        var duration = 5f;    // 時間
-        var strength = 0.3f;    // 力
-        //strength *= (float)tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1] / 10;
-        var vibrato = 100;    // 揺れ度合い
-        var randomness = 90f;   // 揺れのランダム度合い(0で一定方向のみの揺れになる)
-        var snapping = false; // 値を整数に変換するか
-        var fadeOut = true;  // 揺れが終わりに向かうにつれ段々小さくなっていくか(falseだとピタッと止まる)
-        shakeObj.transform.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut);
-        Invoke("ShowTaskComplete", 5.5f);
+        int score = 0;
+
+        float mn, mx, diff;
+        GameObject GoodArea;
+        mn = 436f; mx = 753f;
+        GoodArea = SoilArea.transform.Find("GoodArea").gameObject;
+        diff = Mathf.Abs((GoodArea.transform.position.y - mn) / (mx - mn) - SoilGauge.fillAmount);
+        if (diff < 15f / (mx - mn)) score += 2;
+        else if (diff < 50f / (mx - mn)) score += 1;
+        else score += 0;
+
+        mn = 436f; mx = 745f;
+        GoodArea = WaterArea.transform.Find("GoodArea").gameObject;
+        diff = Mathf.Abs((WaterArea.transform.position.y - mn) / (mx - mn) - WaterGauge.fillAmount);
+        if (diff < 15f / (mx - mn)) score += 2;
+        else if (diff < 50f / (mx - mn)) score += 1;
+        else score += 0;
+
+        if (score == 4) Mark.sprite = TripleCircleMark;
+        else if (score == 3) Mark.sprite = DoubleCircleMark;
+        else if (score == 2) Mark.sprite = SingleCircleMark;
+        else Mark.sprite = TriangleMark;
+
+        MachineAnim.SetBool("IsStarted", false);
+        //CompleteButton.interactable = false;
+        //// シェイク(一定間のランダムな動き)
+        //var duration = 5f;    // 時間
+        //var strength = 0.3f;    // 力
+        ////strength *= (float)tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1] / 10;
+        //var vibrato = 100;    // 揺れ度合い
+        //var randomness = 90f;   // 揺れのランダム度合い(0で一定方向のみの揺れになる)
+        //var snapping = false; // 値を整数に変換するか
+        //var fadeOut = true;  // 揺れが終わりに向かうにつれ段々小さくなっていくか(falseだとピタッと止まる)
+        //shakeObj.transform.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut);
+        ////Invoke("ShowTaskComplete", 5.5f);
     }
 
     private void ChangeState(State state)
@@ -256,8 +292,26 @@ public class MiniGameMixManager : MonoBehaviour
         m_State = state;
     }
 
-    void ShowTaskComplete()
+    //void ShowTaskComplete()
+    //{
+    //    TaskCompleteText.SetActive(true);
+    //}
+
+    //public void CompleteMix()
+    //{
+    //    ChangeState(State.Close);
+    //    MachineAnim.SetBool("IsStarted", false);
+    //}
+
+    void DecideMark(GameObject gameObject, Image gauge)
     {
-        TaskCompleteText.SetActive(true);
+        float mn = 436f;
+        float mx = 753f;  // 745
+        GameObject GoodArea = gameObject.transform.Find("GoodArea").gameObject;
+        GameObject ExcellentArea = gameObject.transform.Find("ExcellentArea").gameObject;
+        float pos = (GoodArea.transform.position.y - mn) / (mx - mn);
+        if (Mathf.Abs(pos - gauge.fillAmount) < 15f / (mx - mn)) Debug.Log("Red");
+        else if (Mathf.Abs(pos - gauge.fillAmount) < 50f / (mx - mn)) Debug.Log("Orange");
+        else Debug.Log("Miss");
     }
 }
