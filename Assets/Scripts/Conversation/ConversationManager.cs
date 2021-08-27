@@ -28,7 +28,7 @@ public class ConversationManager : SingletonMonoBehaviour<ConversationManager>
     {
         if (m_State == State.Normal)
         {
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (Input.GetKeyDown(KeyCode.Q))
             {
                 TargetNPC = SearchNearNPC.Instance.GetNearNPC();
                 if (TargetNPC != null)
