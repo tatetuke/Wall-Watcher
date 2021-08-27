@@ -127,8 +127,18 @@ namespace Fungus
                     RectTransform rectTransform = storytext.GetComponent<RectTransform>();
                     GameObject spriteGameObject = character.transform.GetChild(0).gameObject;
                     Vector3 pos = RectTransformUtility.WorldToScreenPoint(Camera.main, spriteGameObject.transform.position);
-                    pos.y = 750;
-                    rectTransform.position = pos;
+                    //pos.y = 700; // これのせいで文字が画面外にいってた　どうして・・・
+                    //rectTransform.position = pos;
+
+                    RectTransform panelRectTransform = panel.GetComponent<RectTransform>();
+                    pos.y += 20;
+                    panelRectTransform.position = pos;
+
+                    //panelの上端に合わせる 試行錯誤の結果なので不具合起きやすいかも・・・
+                    rectTransform.anchorMin = new Vector2(0.5f, 1);
+                    rectTransform.anchorMax= new Vector2(0.5f, 1);
+                    rectTransform.pivot = new Vector2(0.5f, 0);
+                    rectTransform.localPosition = Vector3.zero;
                 }
                 else
                 {

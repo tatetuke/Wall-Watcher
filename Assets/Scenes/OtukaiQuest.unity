@@ -651,7 +651,7 @@ MonoBehaviour:
   storyText: "\u30AF\u30A8\u30B9\u30C8\u306A\u3044\u3088"
   description: 
   character: {fileID: 956516570}
-  portrait: {fileID: 0}
+  portrait: {fileID: 21300000, guid: e22b2c171f680974b8ffbee30dcec24c, type: 3}
   voiceOverClip: {fileID: 0}
   showAlways: 1
   showCount: 1
@@ -1188,8 +1188,9 @@ MonoBehaviour:
     width: 0
     height: 0
   selectedBlocks:
-  - {fileID: 262704168}
-  selectedCommands: []
+  - {fileID: 262704155}
+  selectedCommands:
+  - {fileID: 262704152}
   variables:
   - {fileID: 262704169}
   - {fileID: 262704170}
@@ -4810,7 +4811,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -888, y: 249}
+  m_AnchoredPosition: {x: -30, y: 74}
   m_SizeDelta: {x: 357, y: 435}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &992519845
@@ -11094,7 +11095,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
+<<<<<<< Updated upstream
   scrollPos: {x: 307.9151, y: 136.7745}
+=======
+  scrollPos: {x: 154.55716, y: -69.915955}
+>>>>>>> Stashed changes
   variablesScrollPos: {x: 0, y: 0}
   variablesExpanded: 1
   blockViewHeight: 400
@@ -12286,11 +12291,11 @@ RectTransform:
   m_Father: {fileID: 2126184944}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0.78700006}
-  m_AnchoredPosition: {x: 3, y: 72.81494}
-  m_SizeDelta: {x: -61, y: 54.370117}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 839, y: 318.37012}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1601314352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13563,11 +13568,17 @@ RectTransform:
   m_Father: {fileID: 593430944}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< Updated upstream
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -450.0001, y: -50}
+=======
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 700}
+>>>>>>> Stashed changes
   m_SizeDelta: {x: 900, y: 335}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!1001 &892659700848244544
 PrefabInstance:
   m_ObjectHideFlags: 0
