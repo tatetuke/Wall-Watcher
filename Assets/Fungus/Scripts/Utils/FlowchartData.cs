@@ -211,6 +211,33 @@ namespace Fungus
             }
         }
 
+        /// <summary>
+        /// Decodes a FlowchartData object and uses it to restore the state of a given Flowchart.
+        /// </summary>
+        public static void Decode(Flowchart flowchart, FlowchartData flowchartData)
+        {
+            for (int i = 0; i < flowchartData.BoolVars.Count; i++)
+            {
+                var boolVar = flowchartData.BoolVars[i];
+                flowchart.SetBooleanVariable(boolVar.Key, boolVar.Value);
+            }
+            for (int i = 0; i < flowchartData.IntVars.Count; i++)
+            {
+                var intVar = flowchartData.IntVars[i];
+                flowchart.SetIntegerVariable(intVar.Key, intVar.Value);
+            }
+            for (int i = 0; i < flowchartData.FloatVars.Count; i++)
+            {
+                var floatVar = flowchartData.FloatVars[i];
+                flowchart.SetFloatVariable(floatVar.Key, floatVar.Value);
+            }
+            for (int i = 0; i < flowchartData.StringVars.Count; i++)
+            {
+                var stringVar = flowchartData.StringVars[i];
+                flowchart.SetStringVariable(stringVar.Key, stringVar.Value);
+            }
+        }
+
         #endregion
     }
 }

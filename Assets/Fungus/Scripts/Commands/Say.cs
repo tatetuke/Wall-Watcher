@@ -130,8 +130,9 @@ namespace Fungus
                     //pos.y = 700; // これのせいで文字が画面外にいってた　どうして・・・
                     //rectTransform.position = pos;
 
+                    // NPCの頭上ちょい上に合わせる
                     RectTransform panelRectTransform = panel.GetComponent<RectTransform>();
-                    pos.y += 20;
+                    pos.y += 40;
                     panelRectTransform.position = pos;
 
                     //panelの上端に合わせる 試行錯誤の結果なので不具合起きやすいかも・・・

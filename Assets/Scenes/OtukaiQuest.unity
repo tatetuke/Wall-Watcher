@@ -220,7 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 262704171}
+  selectedFlowchart: {fileID: 1288427994}
 --- !u!4 &119992637
 Transform:
   m_ObjectHideFlags: 1
@@ -591,6 +591,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 189386310}
   m_CullTransparentMesh: 0
+--- !u!1 &223997157
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 223997159}
+  - component: {fileID: 223997158}
+  m_Layer: 0
+  m_Name: FlowchartDataContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &223997158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223997157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01fd69cc90a523d41b63133934ed5d13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_savekey: FlowchartData
+  money: 200
+  pollutionDegree: 3000
+  playerName: ring
+  getEnding: 1
+--- !u!4 &223997159
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223997157}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.5049458, y: -2.9356527, z: -0.47408727}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &262704150
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,6 +661,7 @@ GameObject:
   - component: {fileID: 262704154}
   - component: {fileID: 262704153}
   - component: {fileID: 262704152}
+  - component: {fileID: 262704160}
   m_Layer: 0
   m_Name: NoQuest
   m_TagString: Untagged
@@ -725,7 +774,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 370.47665
     y: 1.5218153
-    width: 96.54542
+    width: 60
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -736,6 +785,7 @@ MonoBehaviour:
   commandList:
   - {fileID: 262704154}
   - {fileID: 262704152}
+  - {fileID: 262704160}
   - {fileID: 262704153}
   suppressAllAutoSelections: 0
 --- !u!114 &262704156
@@ -906,7 +956,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 592.7953
     y: 120.53702
-    width: 112.54541
+    width: 69.01636
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -953,6 +1003,33 @@ MonoBehaviour:
     stringVal: 
   startIndex: 0
   callMode: 0
+--- !u!114 &262704160
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262704150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 62
+  indentLevel: 0
+  storyText: "\u305D\u3063\u304B\u3042\u3002"
+  description: 
+  character: {fileID: 1822664151}
+  portrait: {fileID: 21300000, guid: 3bcfc8e7b3c790e45b57cc6db1526225, type: 3}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
 --- !u!114 &262704167
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -1121,7 +1198,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 26.399994
     y: 1.7660828
-    width: 90.72724
+    width: 60
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -1176,11 +1253,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
-  scrollPos: {x: 93.88379, y: 260.68652}
+  scrollPos: {x: 39.946, y: 231.67693}
   variablesScrollPos: {x: 0, y: 0}
   variablesExpanded: 1
-  blockViewHeight: 400
-  zoom: 0.5500004
+  blockViewHeight: 352.5
+  zoom: 0.6100004
   scrollViewRect:
     serializedVersion: 2
     x: 0
@@ -1190,7 +1267,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 262704155}
   selectedCommands:
-  - {fileID: 262704152}
+  - {fileID: 262704160}
   variables:
   - {fileID: 262704169}
   - {fileID: 262704170}
@@ -5056,6 +5133,7 @@ MonoBehaviour:
   - {fileID: 1018363780}
   - {fileID: 1018363775}
   - {fileID: 2033971871402241373}
+  - {fileID: 1018363770}
   description: OtukaiQuest
   stepPause: 0
   colorCommands: 1
@@ -5068,17 +5146,19 @@ MonoBehaviour:
   luaBindingName: flowchart
 --- !u!114 &1018363770
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1018363767}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 468ad376e8728ec4cb7a72cfcc5b3532, type: 3}
+  m_Script: {fileID: 11500000, guid: 5d02d9822eec54c98afe95bb497211b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Flowchart: {fileID: 0}
+  scope: 0
+  key: Kinoko
+  value: 1
 --- !u!114 &1018363775
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -7938,6 +8018,50 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b0c255a579501642b80e41eadf96072, type: 3}
+--- !u!1 &1193516158
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1193516160}
+  - component: {fileID: 1193516159}
+  m_Layer: 0
+  m_Name: FlowchartSaveLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1193516159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1193516158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 468ad376e8728ec4cb7a72cfcc5b3532, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flowchart: {fileID: 1288427994}
+--- !u!4 &1193516160
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1193516158}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.5049458, y: -2.9356527, z: -0.47408727}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1218871593
 GameObject:
   m_ObjectHideFlags: 0
@@ -9231,6 +9355,7 @@ GameObject:
   - component: {fileID: 1288427925}
   - component: {fileID: 1288427924}
   - component: {fileID: 1288427994}
+  - component: {fileID: 1288427923}
   m_Layer: 0
   m_Name: Otukai
   m_TagString: Untagged
@@ -9252,6 +9377,21 @@ Transform:
   m_Father: {fileID: 462416296}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1288427923
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1288427921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d02d9822eec54c98afe95bb497211b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scope: 0
+  key: Kinoko
+  value: 0
 --- !u!114 &1288427924
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -11113,6 +11253,7 @@ MonoBehaviour:
   - {fileID: 1288427953}
   - {fileID: 1288427993}
   - {fileID: 1288427924}
+  - {fileID: 1288427923}
   description: OtukaiQuest
   stepPause: 0
   colorCommands: 1
