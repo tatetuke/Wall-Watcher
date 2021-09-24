@@ -47,6 +47,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MiniGame/MainMap/MainMap3_Informal.unity
     guid: 32f48341c72dc0246954cbb5d7e3900c
+  - enabled: 1
+    path: Assets/Scenes/MiniGame/HAKAI.unity
+    guid: c7914bef46d4f384db78219bcfa755e9
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 4825a4e1bc6314a4b8e0e0a366b6b1b4,
       type: 2}
