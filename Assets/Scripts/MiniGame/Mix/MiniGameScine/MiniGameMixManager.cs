@@ -22,6 +22,7 @@ public class MiniGameMixManager : MonoBehaviour
     private State m_State = State.IsPlaying;
 
     [SerializeField] Animator MachineAnim;
+    [SerializeField] Animator MarkAnim;
 
     [SerializeField] GameObject shakeObj;//揺らすゲームオブジェクトの選択
     [SerializeField] Button CompleteButton;
@@ -36,7 +37,11 @@ public class MiniGameMixManager : MonoBehaviour
     //[SerializeField] GameObject SoilGoodArea;
     //[SerializeField] GameObject WaterGoodArea;
 
-    [SerializeField] Image Mark;
+    [SerializeField] Image MarkImage;
+    [SerializeField] GameObject MarkAnimationGameObject;
+    [SerializeField] GameObject MarkGameObject;
+    [SerializeField] GameObject SoilHantei;
+    [SerializeField] GameObject WaterHantei;
     [SerializeField] Sprite TripleCircleMark;
     [SerializeField] Sprite DoubleCircleMark;
     [SerializeField] Sprite SingleCircleMark;
@@ -52,6 +57,8 @@ public class MiniGameMixManager : MonoBehaviour
     [SerializeField] GameObject WaterGaugeGameObject;
     private Image SoilGauge;
     private Image WaterGauge;
+    [SerializeField] Button SoilButton;
+    [SerializeField] Button WaterButton;
 
     private float ParamSpeed = 0.01f;
     private float IdealRatio = 2;  // 土/水
@@ -59,13 +66,32 @@ public class MiniGameMixManager : MonoBehaviour
     private float WaterGaugeParam;
     private float DeltaSoilParam;
     private float DeltaWaterParam;
+    private int Score = 0;
 
 
     void Start()
     {
+        MarkImage.sprite = TriangleMark;
         UpdateText();
         SoilGauge = SoilGaugeGameObject.GetComponent<Image>();
         WaterGauge = WaterGaugeGameObject.GetComponent<Image>();
+        MiniGameMixInit();
+        //SoilGaugeParam = 0;
+        //WaterGaugeParam = 0;
+        //CalcIdealRatio();
+        //SetSoilArea();
+        //WaterSoilArea();
+        ////DeltaSoilParam = Random.Range(0.005f, 0.01f);
+        ////DeltaWaterParam = Random.Range(0.008f, 0.015f);
+        //DeltaSoilParam = 0.008f;
+        //DeltaWaterParam = 0.015f;
+    }
+
+    public void MiniGameMixInit()
+    {
+        CompleteButton.interactable = true;
+        SoilButton.interactable = true;
+        WaterButton.interactable = true;
         SoilGaugeParam = 0;
         WaterGaugeParam = 0;
         CalcIdealRatio();
@@ -75,11 +101,21 @@ public class MiniGameMixManager : MonoBehaviour
         //DeltaWaterParam = Random.Range(0.008f, 0.015f);
         DeltaSoilParam = 0.008f;
         DeltaWaterParam = 0.015f;
+        MarkGameObject.SetActive(false);
+        Score = 0;
+        SoilHantei.SetActive(false);
+        WaterHantei.SetActive(false);
     }
 
     void Update()
     {
-        DecideMark(SoilArea, SoilGauge);
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    //GameObject g = GameObject.Find("HRC");
+        //    Text text = WaterHantei.GetComponent<Text>();
+        //    text.color = new Color(0f / 255f, 96f / 255f, 255f / 255f);
+        //}
+        //DecideMark(SoilArea, SoilGauge);
         SoilGauge.fillAmount += DeltaSoilParam;
         WaterGauge.fillAmount += DeltaWaterParam;
         if (SoilGauge.fillAmount >= 1 || SoilGauge.fillAmount <= 0) DeltaSoilParam *= -1;
@@ -113,12 +149,64 @@ public class MiniGameMixManager : MonoBehaviour
 
     public void OnSoilButtonClick()
     {
+        SoilHantei.SetActive(true);
         DeltaSoilParam = 0;
+        SoilButton.interactable = false;
+        Text hanteiText = SoilHantei.GetComponent<Text>();
+        float mn, mx, diff;
+        GameObject GoodArea;
+        mn = 436f; mx = 753f;
+        GoodArea = SoilArea.transform.Find("GoodArea").gameObject;
+        diff = Mathf.Abs((GoodArea.transform.position.y - mn) / (mx - mn) - SoilGauge.fillAmount);
+        if (diff < 15f / (mx - mn))
+        {
+            Score += 2;
+            hanteiText.text = "Excellent";
+            hanteiText.color = Color.red;
+        }
+        else if (diff < 50f / (mx - mn))
+        {
+            Score += 1;
+            hanteiText.text = "Good";
+            hanteiText.color = new Color(255f / 255f, 146f / 255f, 0f / 255f);
+        }
+        else
+        {
+            Score += 0;
+            hanteiText.text = "Bad";
+            hanteiText.color = new Color(0f / 255f, 96f / 255f, 255f / 255f);
+        }
     }
 
     public void OnWaterButtonClick()
     {
+        WaterHantei.SetActive(true);
         DeltaWaterParam = 0;
+        WaterButton.interactable = false;
+        Text hanteiText = WaterHantei.GetComponent<Text>();
+        float mn, mx, diff;
+        GameObject GoodArea;
+        mn = 436f; mx = 745f;
+        GoodArea = WaterArea.transform.Find("GoodArea").gameObject;
+        diff = Mathf.Abs((GoodArea.transform.position.y - mn) / (mx - mn) - WaterGauge.fillAmount);
+        if (diff < 15f / (mx - mn))
+        {
+            Score += 2;
+            hanteiText.text = "Excellent";
+            hanteiText.color = Color.red;
+        }
+        else if (diff < 50f / (mx - mn))
+        {
+            Score += 1;
+            hanteiText.text = "Good";
+            hanteiText.color = new Color(255f / 255f, 146f / 255f, 0f / 255f);
+        }
+        else
+        {
+            Score += 0;
+            hanteiText.text = "Bad";
+            hanteiText.color = new Color(0f / 255f, 96f / 255f, 255f / 255f);
+        }
     }
 
     //private void UpdateMark()
@@ -250,30 +338,12 @@ public class MiniGameMixManager : MonoBehaviour
 
     public void CompleteButtonClick()
     {
-        int score = 0;
+        CompleteButton.interactable = false;
+        MarkAnimationGameObject.SetActive(true);
+        MarkAnim.SetBool("IsStarted", true);
+        Invoke("CalcMark", 2f);
+        Invoke("FinishTask", 3f);
 
-        float mn, mx, diff;
-        GameObject GoodArea;
-        mn = 436f; mx = 753f;
-        GoodArea = SoilArea.transform.Find("GoodArea").gameObject;
-        diff = Mathf.Abs((GoodArea.transform.position.y - mn) / (mx - mn) - SoilGauge.fillAmount);
-        if (diff < 15f / (mx - mn)) score += 2;
-        else if (diff < 50f / (mx - mn)) score += 1;
-        else score += 0;
-
-        mn = 436f; mx = 745f;
-        GoodArea = WaterArea.transform.Find("GoodArea").gameObject;
-        diff = Mathf.Abs((WaterArea.transform.position.y - mn) / (mx - mn) - WaterGauge.fillAmount);
-        if (diff < 15f / (mx - mn)) score += 2;
-        else if (diff < 50f / (mx - mn)) score += 1;
-        else score += 0;
-
-        if (score == 4) Mark.sprite = TripleCircleMark;
-        else if (score == 3) Mark.sprite = DoubleCircleMark;
-        else if (score == 2) Mark.sprite = SingleCircleMark;
-        else Mark.sprite = TriangleMark;
-
-        MachineAnim.SetBool("IsStarted", false);
         //CompleteButton.interactable = false;
         //// シェイク(一定間のランダムな動き)
         //var duration = 5f;    // 時間
@@ -285,6 +355,41 @@ public class MiniGameMixManager : MonoBehaviour
         //var fadeOut = true;  // 揺れが終わりに向かうにつれ段々小さくなっていくか(falseだとピタッと止まる)
         //shakeObj.transform.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut);
         ////Invoke("ShowTaskComplete", 5.5f);
+    }
+
+    private void CalcMark()
+    {
+        MarkGameObject.SetActive(true);
+        MarkAnimationGameObject.SetActive(false);
+        MarkAnim.SetBool("IsStarted", false);
+        //int score = 0;
+        //float mn, mx, diff;
+        //GameObject GoodArea;
+        //mn = 436f; mx = 753f;
+        //GoodArea = SoilArea.transform.Find("GoodArea").gameObject;
+        //diff = Mathf.Abs((GoodArea.transform.position.y - mn) / (mx - mn) - SoilGauge.fillAmount);
+        //if (diff < 15f / (mx - mn)) score += 2;
+        //else if (diff < 50f / (mx - mn)) score += 1;
+        //else score += 0;
+
+        //mn = 436f; mx = 745f;
+        //GoodArea = WaterArea.transform.Find("GoodArea").gameObject;
+        //diff = Mathf.Abs((WaterArea.transform.position.y - mn) / (mx - mn) - WaterGauge.fillAmount);
+        //if (diff < 15f / (mx - mn)) score += 2;
+        //else if (diff < 50f / (mx - mn)) score += 1;
+        //else score += 0;
+
+        if (Score == 4) MarkImage.sprite = TripleCircleMark;
+        else if (Score == 3) MarkImage.sprite = DoubleCircleMark;
+        else if (Score == 2 || Score == 1) MarkImage.sprite = SingleCircleMark;
+        else MarkImage.sprite = TriangleMark;
+        Debug.Log("score:" + Score);
+    }
+
+    void FinishTask()
+    {
+        MachineAnim.SetBool("IsStarted", false);
+        
     }
 
     private void ChangeState(State state)

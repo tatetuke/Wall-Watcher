@@ -8,10 +8,15 @@ public class MixMachineManager : MonoBehaviour
     [Header("縁取りの太さ")] [SerializeField] float OutlineWidthInit = 1f;
     [SerializeField] Animator MachineAnim;
 
+    [SerializeField] Player player;
     [SerializeField] GameObject SoilGaugeGameObject;
     [SerializeField] GameObject WaterGaugeGameObject;
+    [SerializeField] Button SoilButton;
+    [SerializeField] Button WaterButton;
     private Image SoilGauge;
     private Image WaterGauge;
+
+    private MiniGameMixManager miniGameMixManager;
 
     private float SoilGaugeParam;
     private float WaterGaugeParam;
@@ -28,6 +33,8 @@ public class MixMachineManager : MonoBehaviour
 
     void Start()
     {
+        GameObject miniGameMixManagerGO = GameObject.Find("MiniGameMixManager");
+        miniGameMixManager = miniGameMixManagerGO.GetComponent<MiniGameMixManager>();
         Material material = this.GetComponent<Renderer>().material;
         material.SetFloat("Vector1_C1366B5E", OutlineWidthInit);
         SoilGauge = SoilGaugeGameObject.GetComponent<Image>();
@@ -38,13 +45,15 @@ public class MixMachineManager : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(MachineAnim.GetBool("IsStarted"));
+        Debug.Log(m_State);
         if (Input.GetKeyDown("space"))
         {
             if (m_State == State.Close)
             {
+                player.ChangeState(Player.State.FREEZE);
                 ChangeState(State.Playing);
                 MachineAnim.SetBool("IsStarted", true);
+                miniGameMixManager.MiniGameMixInit();
                 //FadeManager.Instance.LoadLevel("Mix", 1f);
                 //Debug.Log("MiniGameMixシーンに遷移!");
             }
@@ -52,22 +61,22 @@ public class MixMachineManager : MonoBehaviour
 
         if (m_State == State.Playing)
         {
-            SoilGauge.fillAmount += DeltaSoilParam;
-            WaterGauge.fillAmount += DeltaWaterParam;
-            if (SoilGauge.fillAmount >= 1 || SoilGauge.fillAmount <= 0) DeltaSoilParam *= -1;
-            if (WaterGauge.fillAmount >= 1 || WaterGauge.fillAmount <= 0) DeltaWaterParam *= -1;
+            //SoilGauge.fillAmount += DeltaSoilParam;
+            //WaterGauge.fillAmount += DeltaWaterParam;
+            //if (SoilGauge.fillAmount >= 1 || SoilGauge.fillAmount <= 0) DeltaSoilParam *= -1;
+            //if (WaterGauge.fillAmount >= 1 || WaterGauge.fillAmount <= 0) DeltaWaterParam *= -1;
         }
     }
 
-    public void OnSoilButtonClick()
-    {
-        DeltaSoilParam = 0;
-    }
+    //public void OnSoilButtonClick()
+    //{
+    //    DeltaSoilParam = 0;
+    //}
 
-    public void OnWaterButtonClick()
-    {
-        DeltaWaterParam = 0;
-    }
+    //public void OnWaterButtonClick()
+    //{
+    //    DeltaWaterParam = 0;
+    //}
 
     // プレイヤーが近かったら赤く表示
     private void OnTriggerEnter2D(Collider2D collision)
