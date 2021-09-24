@@ -49,13 +49,12 @@ namespace Kyoichi
         /// <returns></returns>
         public int DataCount(ItemSO item)
         {
-            foreach(var i in m_inventry)
+            foreach (var i in m_inventry)
             {
                 if (i.item == item) return i.count;
             }
             return -1;
         }
-
         private void Start()
         {
             ItemManager.Instance.AddInventry(this);

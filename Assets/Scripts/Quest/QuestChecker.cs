@@ -63,6 +63,7 @@ public class QuestChecker : MonoBehaviour
 
     public void Initialize(QuestDataSO quest, QuestState state,int chapter)
     {
+        //Awake後に実行されるためAwakeの内容の意味がなくなっている　TODO
         m_quest = quest;
         m_state = state;
         m_currentPhase = chapter;

@@ -7,10 +7,13 @@ public class ShopPushSellButton : MonoBehaviour
     public ShopSelectItemManager selectManager;
     public Fungus.Flowchart flowchart;
     public Inventry inventry;
+    private MoneyScript money;
+
 
     private void Start()
     {
         inventry = GameObject.Find("Managers").GetComponent<Inventry>();
+        money = GameObject.Find("Managers").GetComponent<MoneyScript>();
     }
     /// <summary>
     /// 買うボタンが押されたときに発動する関数．
@@ -27,6 +30,7 @@ public class ShopPushSellButton : MonoBehaviour
         else 
         {
             SellItem();
+            selectManager.ChangeUIHasItemNum();
         }
     }
     /// <summary>
@@ -40,7 +44,8 @@ public class ShopPushSellButton : MonoBehaviour
         inventry.PopItem(selectManager.item);
         //店員が話す
         flowchart.SendFungusMessage("SellItem!");
-
+        //お金を更新する
+        UpdateMoney();
     }
     /// <summary>
     /// アイテムを買えない場合に発動する関数を纏めたもの．
@@ -58,5 +63,9 @@ public class ShopPushSellButton : MonoBehaviour
     {
         //店員が話す.
         flowchart.SendFungusMessage("NoSellItem");
+    }
+    private void UpdateMoney()
+    {
+        money.Money = selectManager.item.price / 2 +money.Money;
     }
 }

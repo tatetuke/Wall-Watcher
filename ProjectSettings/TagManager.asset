@@ -13,7 +13,6 @@ TagManager:
   - PolutedWall
   - Item
   - WallAnime
-  - ShopPrefab
   layers:
   - Default
   - TransparentFX

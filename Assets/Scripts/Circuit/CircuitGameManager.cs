@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,24 +15,11 @@ public class CircuitGameManager : MonoBehaviour
     /// クリアするために、どういうConnecterがつながっていればいいか
     /// </summary>
     [SerializeField] List<Connector> targetConnecter = new List<Connector>();
-    /// <summary>
-    /// ゲームに必要なアイテムたち
-    /// </summary>
-    [SerializeField] List<CircuitSO> requiredItems = new List<CircuitSO>();
-    public IEnumerable<CircuitSO> RequiredItems { get => requiredItems; }
 
     /// <summary>
     /// ゲームを開始したときに実行される
     /// </summary>
     public UnityEvent OnGameStart { get; } = new UnityEvent();
-    /// <summary>
-    /// ポーズボタンを押したときに実行される
-    /// </summary>
-    public UnityEvent OnGamePause { get; } = new UnityEvent();
-    /// <summary>
-    /// ポーズを終了し、修理ゲームに戻るときに実行される
-    /// </summary>
-    public UnityEvent OnGameResume { get; } = new UnityEvent();
     /// <summary>
     /// ゲームの終了条件を満たしたときに実行される
     /// </summary>
@@ -51,24 +39,24 @@ public class CircuitGameManager : MonoBehaviour
     public enum State
     {
         notStarted,//まだ初期化されてない
-      // starting,
+                   // starting,
         running,//実行中
-        pause,//ポーズ中
-       cleared,//クリア条件達成
-       //quitting,
+        cleared,//クリア条件達成
+                //quitting,
     }
 
-    [SerializeField, ReadOnly] State m_state=State.notStarted;
+    [SerializeField, ReadOnly] State m_state = State.notStarted;
     private void Awake()
     {
         gameTimer = GetComponent<Timer>();
     }
     private void Start()
     {
-        foreach(var i in targetConnecter)
+        foreach (var i in targetConnecter)
         {
             if (i == null) continue;
-            i.OnConnectEnter.AddListener((receiver)=> {
+            i.OnConnectEnter.AddListener((receiver) =>
+            {
                 currentCount++;
                 if (currentCount >= sumCount)
                 {
@@ -82,9 +70,17 @@ public class CircuitGameManager : MonoBehaviour
             });
             sumCount++;
         }
-        OnGameStart.Invoke();
-        m_state = State.running;
-        gameTimer.StartTimer(0,100);
+        StartGame();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            Kyoichi.SceneChangeWrapper.Instance.SceneChange(
+                "CIrcuitGame_template"
+                );
+        }
     }
 
     public void AddCircuitToGame(CircuitSO data)
@@ -92,27 +88,49 @@ public class CircuitGameManager : MonoBehaviour
         Instantiate(data.prefab).GetComponent<CircuitScript>().SetData(data);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (m_state == State.running)
-            {
-                m_state = State.pause;
-            OnGamePause.Invoke();
-            }
-            else
-            {
-                m_state = State.running;
-            OnGameResume.Invoke();
-            }
-        }
-    }
     /// <summary>
-    /// ゲームを終了させる
+    /// ミニゲームを終了させ、マップに戻る
     /// </summary>
-    public void EndGame()
+    public void Quit()
     {
         OnGameQuit.Invoke();
+    }
+    /// <summary>
+    /// WallWatcherを終了し、デスクトップ画面に戻る
+    /// </summary>
+    public void BackToDesktop()
+    {
+
+    }
+
+    public void StartGame()
+    {
+        OnGameStart.Invoke();
+        m_state = State.running;
+        gameTimer.StartTimer(0, 100);
+    }
+
+    /// <summary>
+    /// ゲームを完了させる
+    /// </summary>
+    public void ClearGame()
+    {
+        Quit();
+    }
+    public void EndGame()
+    {
+        OnEndGame().Invoke();
+    }
+
+    public UnityEvent OnStartGame() => OnGameStart;
+    public UnityEvent OnClearGame() => OnGameClear;
+    public UnityEvent OnEndGame() => OnGameQuit;
+
+    public void EndProgram()
+    {
+    }
+
+    public void Back()
+    {
     }
 }

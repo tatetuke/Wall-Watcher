@@ -22,6 +22,7 @@ public class ConversationManager : SingletonMonoBehaviour<ConversationManager>
     [SerializeField] private PlayableDirector playableDirector;
     public Flowchart CurrentFlowchart = null;
     public string MessageId; // メッセージID
+    private QuestHolder m_QuestHolder;
 
     void UpdateState()
     {
@@ -151,9 +152,22 @@ public class ConversationManager : SingletonMonoBehaviour<ConversationManager>
     private void StartConversation()
     {
         NPCController npcController = TargetNPC.GetComponent<NPCController>();
-        CurrentFlowchart = npcController.GetFlowchart();
+        string npcname = TargetNPC.GetComponent<Character>()?.NameText;
+        List<string> questNames = m_QuestHolder.GetQuestNames();
 
-        CurrentFlowchart.SendFungusMessage("Test1");
+        Flowchart flowchart = npcController.SelectFlowchart(questNames);
+
+        if (flowchart!=null)
+        {            
+            CurrentFlowchart = flowchart;
+            CurrentFlowchart.SendFungusMessage("Start");
+        }
+        else
+        {
+            flowchart = npcController.GetFlowchart("NoQuest");
+            CurrentFlowchart = flowchart;
+            CurrentFlowchart.SendFungusMessage("Start");
+        }
         //MessageReceived[] receivers = FindObjectsOfType<MessageReceived>();
         ////取得できた場合
         //if (receivers != null)
@@ -177,12 +191,13 @@ public class ConversationManager : SingletonMonoBehaviour<ConversationManager>
         m_Player = GameObject.Find("Player");
         m_PlayerSprite = m_Player.transform.Find("PlayerSprite").gameObject;
         PlayerScript = m_Player.GetComponent<Player>();
+        m_QuestHolder = FindObjectOfType<QuestHolder>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(m_State);
+        //Debug.Log(m_State);
         UpdateState();
 
         if (m_State == State.Normal)
@@ -194,4 +209,6 @@ public class ConversationManager : SingletonMonoBehaviour<ConversationManager>
         else if (m_State == State.Talking)
             return;
     }
+
+
 }
