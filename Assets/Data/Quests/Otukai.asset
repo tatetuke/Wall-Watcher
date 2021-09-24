@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Otukai
   m_EditorClassIdentifier: 
   title: "\u304A\u3064\u304B\u3044\u30AF\u30A8\u30B9\u30C8"
-  description: aaaaaa
-  subQuests: []
+  description: "\u306F\u3058\u3081\u3066\u306E\u304A\u3064\u304B\u3044"
+  subQuests:
+  - {fileID: 11400000, guid: 1bbf06480eae0d24d8d148d9061fdb54, type: 2}
   endConditions:
-  - {fileID: 11400000, guid: 74617ab4ac6b53c4c90d1af3e7aab82b, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: e38c79391d6cc1046b8462096ca16ace, type: 2}

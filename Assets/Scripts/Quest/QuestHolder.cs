@@ -36,6 +36,7 @@ public class QuestHolder : MonoBehaviour
     /// <param name="quest"></param>
     public void AddQuest(QuestDataSO quest_)
     {
+        // Scene内にゲームオブジェクトが配置されるためシーン切り替えでQuestCheckerがきえてしまう　TODO
         var obj = new GameObject(quest_.name);
         var scr = obj.AddComponent<QuestChecker>();
         scr.Initialize(quest_, QuestChecker.QuestState.working, 0);
@@ -48,4 +49,23 @@ public class QuestHolder : MonoBehaviour
     /// </summary>
     public UnityEvent OnQuestAdd { get; } = new UnityEvent();
 
+
+    // 毎回List作ってて重そう TODO
+    public List<string> GetQuestNames()
+    {
+        List<string> questNames = new List<string>();
+        foreach(var i in m_quests)
+        {
+            QuestSaveData questSaveData = i.GetData();
+            if (questSaveData.state == QuestChecker.QuestState.finish)
+                continue;
+            if (questSaveData.state == QuestChecker.QuestState.error)
+                continue;
+            
+            // not_yet, working のとき会話対象のクエストでいいかな？　TODO
+            questNames.Add(questSaveData.questName);
+        }
+
+        return questNames;
+    }
 }

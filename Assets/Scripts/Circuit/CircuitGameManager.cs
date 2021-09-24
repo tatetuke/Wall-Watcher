@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -70,6 +71,16 @@ public class CircuitGameManager : MonoBehaviour
             sumCount++;
         }
         StartGame();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            Kyoichi.SceneChangeWrapper.Instance.SceneChange(
+                "CIrcuitGame_template"
+                );
+        }
     }
 
     public void AddCircuitToGame(CircuitSO data)

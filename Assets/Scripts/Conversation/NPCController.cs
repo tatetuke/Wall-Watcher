@@ -25,8 +25,13 @@ public class NPCController : MonoBehaviour// , ILoadableAsync
     //[HideInInspector] string[] Files;
     //[HideInInspector] public List<string> ConversationDataList;
 
-    public Flowchart[] Flowcharts;
-    [SerializeField] private bool IsTalkNPC = true;
+
+    [SerializeField] private GameObject flowchartsParentObject;
+    [SerializeField] private bool isTalkNPC = true;
+    [ReadOnly] public List<Flowchart> flowcharts = new List<Flowchart>();
+    
+    // Dictionary<クエスト名, Flowchart>
+    private Dictionary<string, Flowchart> flowchartMap = new Dictionary<string, Flowchart>();
 
     //private void Awake()
     //{
@@ -94,11 +99,19 @@ public class NPCController : MonoBehaviour// , ILoadableAsync
 
     //追加したコード********************************************************************************************************************
 
-
+    private void Start()
+    {
+        flowcharts.AddRange(flowchartsParentObject.transform.GetComponentsInChildren<Flowchart>());
+        flowchartMap.Clear();
+        foreach(var i in flowcharts)
+        {
+            flowchartMap.Add(i.gameObject.name, i);
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (IsTalkNPC)
+        if (isTalkNPC)
         {
             if (other.gameObject.tag == "Player")
             {
@@ -109,7 +122,7 @@ public class NPCController : MonoBehaviour// , ILoadableAsync
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (IsTalkNPC)
+        if (isTalkNPC)
         {
             if (collision.gameObject.tag == "Player")
             {
@@ -119,8 +132,34 @@ public class NPCController : MonoBehaviour// , ILoadableAsync
         }
     }
 
-    public Flowchart GetFlowchart()
+    public Flowchart GetFlowchart(string questName)
     {
-        return Flowcharts[0];
+        Flowchart flowchart;
+        if(!flowchartMap.TryGetValue(questName, out flowchart))
+        {
+            //存在しなければ
+            return null;
+        }
+
+        //存在すれば
+        return flowchart;
     }
+
+    public Flowchart SelectFlowchart(List<string> questNames)
+    {
+        Flowchart flowchart;
+        //最初に見つけたFlowchartを返す
+        foreach (var questName in questNames)
+        {
+            if (flowchartMap.TryGetValue(questName, out flowchart))
+            {
+                //存在すれば
+                return flowchart;
+            }
+        }
+
+        //存在しなかったなら
+        return null;
+    }
+
 }
