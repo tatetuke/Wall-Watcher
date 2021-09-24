@@ -9,8 +9,8 @@ public class ShopSellItemGenerator : MonoBehaviour
     public GameObject NoSellItemImage;
     private void Start()
     {
-        inventry = GameObject.Find("Managers").GetComponent<Inventry>();
-        PrepareItem();
+        //inventry = GameObject.Find("Managers").GetComponent<Inventry>();
+        //PrepareItem();
     }
     /// <summary>
     /// 持ち物のアイテムを再度取得する．
@@ -18,6 +18,7 @@ public class ShopSellItemGenerator : MonoBehaviour
     /// </summary>
     public void reloadItemlist()
     {
+        inventry = GameObject.Find("Managers").GetComponent<Inventry>();
         DestroyItemList();
         PrepareItem();
     }

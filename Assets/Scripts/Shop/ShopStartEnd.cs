@@ -5,8 +5,15 @@ using UnityEngine;
 public class ShopStartEnd : MonoBehaviour
 {
     public Fungus.Flowchart flowchart;
-
+    private bool EndShop=false;
     public GameObject ShopPrefab;
+    private void Update()
+    {
+        if (Input.GetKeyDown("escape")&&!EndShop)
+        {
+            PushEndButton();
+        }
+    }
     /// <summary>
     /// ショップのプレハブを破壊する
     /// </summary>
@@ -20,6 +27,7 @@ public class ShopStartEnd : MonoBehaviour
     /// </summary>
     public void PushEndButton()
     {
+        EndShop = true;
         flowchart.SendFungusMessage("EndShopping");
     }
 

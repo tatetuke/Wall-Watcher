@@ -9,6 +9,7 @@ using Cysharp.Threading.Tasks;
 /// セーブ・ロードを行うための抽象クラス（シングルトン版）
 /// SaveLoadManagerから一括で呼ばれる
 /// </summary>
+[DisallowMultipleComponent]
 public abstract class SaveLoadableSingletonMonoBehaviour<T> : SaveLoadableMonoBehaviour where T : MonoBehaviour
 {
     private static T instance;

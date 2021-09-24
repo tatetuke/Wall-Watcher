@@ -49,5 +49,6 @@ public class CustomFadeEditor : Editor
         reorderableList.DoLayoutList();
         reorderableList3.DoLayoutList();
         serializedObject.ApplyModifiedProperties();
+
     }
 }

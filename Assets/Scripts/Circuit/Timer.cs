@@ -5,14 +5,14 @@ using UnityEngine.Events;
 
 public class Timer : MonoBehaviour
 {
-     float end_time;
-    [SerializeField,ReadOnly]float m_time;
+    float end_time;
+    [SerializeField, ReadOnly] float m_time;
     public class OnTimerUpdatedEvent : UnityEvent<float> { }
     public OnTimerUpdatedEvent OnTimerUpdated { get; } = new OnTimerUpdatedEvent();
     public UnityEvent OnTimerFinished { get; } = new UnityEvent();
     bool timer_starts = false;
     bool to_minus = false;//時間が減るタイプか
-    public void StartTimer(float begin,float end)
+    public void StartTimer(float begin, float end)
     {
         m_time = begin;
         end_time = end;
@@ -25,7 +25,7 @@ public class Timer : MonoBehaviour
         if (!timer_starts) return;
         if (to_minus)
         {
-            if(m_time< end_time)
+            if (m_time < end_time)
             {
                 OnTimerFinished.Invoke();
             }

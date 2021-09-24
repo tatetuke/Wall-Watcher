@@ -21,8 +21,6 @@ namespace Kyoichi
         }
         [SerializeField,ReadOnly] GameState m_state = GameState.nothing;
         public GameState State { get => m_state; }
-        public UnityEvent OnPauseStart { get; } = new UnityEvent();
-        public UnityEvent OnPauseEnd { get; } = new UnityEvent();
         public UnityEvent OnGameLoad { get; }=new UnityEvent();
         public UnityEvent OnLoadFinished { get; }=new UnityEvent();
         public UnityEvent OnGameSave { get; }= new UnityEvent();
@@ -59,29 +57,18 @@ namespace Kyoichi
             IsLoadFinished = true;
             OnLoadFinished.Invoke();
 
-            OnPauseStart.AddListener(() =>
+           PauseManager.Instance.OnPauseEnter.AddListener(() =>
             {
                 FindObjectOfType<Player>()?.ChangeState(Player.State.FREEZE);
             });
-            OnPauseEnd.AddListener(() =>
+            PauseManager.Instance.OnPauseExit.AddListener(() =>
             {
                 FindObjectOfType<Player>()?.ChangeState(Player.State.IDLE);
             });
         }
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                if (m_state == GameState.running)
-                {
-                    m_state = GameState.pause;
-                    OnPauseStart.Invoke();
-                }
-                else if (m_state == GameState.pause)
-                {
-                    PauseEnd();
-                }
-            }
+
         }
 
         //ゲームを終了したときに自動でセーブされるようになってます
@@ -92,11 +79,6 @@ namespace Kyoichi
             await SaveLoadManager.Instance.SaveAllAsync();
             OnSaveFinished.Invoke();
             IsSaveFinished = false;
-        }
-        public void PauseEnd()
-        {
-            m_state = GameState.running;
-            OnPauseEnd.Invoke();
         }
 
         public void OnSceneChanged()

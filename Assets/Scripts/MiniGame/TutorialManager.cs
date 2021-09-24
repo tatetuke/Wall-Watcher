@@ -5,12 +5,15 @@ using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
+    [SerializeField] Animator Anim;
     [SerializeField] Image TutorialImage;
     [SerializeField] Text TutorialText;
+    [SerializeField] Text Page;
     [SerializeField] Sprite[] Images;
     [SerializeField] string[] Explanations;
-    private int Now = 0;
+    private int NowPage = 0;
     private int TutorialSize;
+
 
     // Start is called before the first frame update
     void Start()
@@ -23,24 +26,64 @@ public class TutorialManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(TutorialImage);
+
     }
 
     public void OnClickBack()
     {
-        if (Now != 0) Now--;
+        if (NowPage != 0)
+        {
+            NowPage--;
+            UpdatePage(NowPage + 1);
+        }
         UpdateTutorial();
     }
 
     public void OnClickNext()
     {
-        if (Now < TutorialSize - 1) Now++;
+        if (NowPage < TutorialSize - 1)
+        {
+            NowPage++;
+            UpdatePage(NowPage + 1);
+        }
+        else
+        {
+            Anim.SetBool("IsSmall", true);
+            Invoke(nameof(Init), 2);
+        }
         UpdateTutorial();
     }
 
     void UpdateTutorial()
     {
-        TutorialImage.sprite = Images[Now];
-        TutorialText.text = Explanations[Now];
+        TutorialImage.sprite = Images[NowPage];
+        TutorialText.text = Explanations[NowPage];
+    }
+
+    public void OnClickTutorial()
+    {
+        bool b = Anim.GetBool("IsSmall");
+        Anim.SetBool("IsSmall", !b);
+        if (b)
+        {
+            MiniGamePaintManager.Instance.ChangeState(MiniGamePaintManager.State.Tutorial);
+        }
+        else if (!b)
+        {
+            Invoke(nameof(Init), 1);
+        }
+    }
+
+    void UpdatePage(int num)
+    {
+        Page.text = num.ToString() + "/" + TutorialSize.ToString();
+    }
+
+    void Init()
+    {
+        NowPage = 0;
+        UpdatePage(NowPage + 1);
+        UpdateTutorial();
+        MiniGamePaintManager.Instance.ChangeState(MiniGamePaintManager.State.Playing);
     }
 }
