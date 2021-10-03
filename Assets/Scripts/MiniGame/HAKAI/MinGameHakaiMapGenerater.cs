@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public class MinGameHakaiMapGenerater : MonoBehaviour
 {
-    public const int Rsize=7;
-    public const int Csize=7;
+    public const int Rsize=8;
+    public const int Csize=8;
     private bool[,] CanSetItem = new bool[Rsize,Csize ];
     public int RandomRageLengthWall=1000;
     public int RandomRageLengthItem=1000;
