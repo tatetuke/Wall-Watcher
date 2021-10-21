@@ -3,39 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Kyoichi;
 public class ShopItem : MonoBehaviour
 {
     public ItemSO itemdata;
     
     GameObject descriptionObj;
-    GameObject UIItemNameObj;
-    GameObject IconObj;
+    GameObject uiItemNameObj;
+    GameObject iconObj;
     
     TextMeshProUGUI description;
-    TextMeshProUGUI UIItemName;
+    TextMeshProUGUI uiItemName;
 
     Image Icon;
 
-    Text ItemName;
+    Text itemName;
     Text priceText;
     
     ShopSelectItemManager selectManager;
 
+    MoneyScript inventryMoney;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        descriptionObj = GameObject.Find("ShopUIItemDescription");
-        IconObj = GameObject.Find("ShopUIItemIcon");
-        UIItemNameObj = GameObject.Find("ShopUIItemName");
-        selectManager= GameObject.Find("ShopSelectItemManager").GetComponent<ShopSelectItemManager>();
+        Init();
+        ChangePriceColorAsInventryMoney();
 
-        ItemName = this.gameObject.transform.GetChild(0).GetComponent<Text>();
-        priceText = this.gameObject.transform.GetChild(1).GetComponent<Text>();
-        Icon = IconObj.GetComponent<Image>();
-        description = descriptionObj.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        UIItemName = UIItemNameObj.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        ItemName.text = itemdata.item_name;
-        priceText.text = itemdata.price.ToString();
     }
     /// <summary>
     /// Itemのボタンが押されたときに呼ばれる関数
@@ -44,6 +39,7 @@ public class ShopItem : MonoBehaviour
     {
         ChangeSelectBuyItem();
         ChangeUI();
+        ChangePriceColorAsInventryMoney();
     }
     /// <summary>
     ///購入するアイテムを変更する．
@@ -59,8 +55,40 @@ public class ShopItem : MonoBehaviour
     {
         description.text = itemdata.description;
         Icon.sprite = itemdata.icon;
-        UIItemName.text = itemdata.item_name;
+        uiItemName.text = itemdata.item_name;
         selectManager.ChangeUIHasItemNum();
 
+    }
+    //お金が足りなくなったときに色を変化させる．
+    private void ChangePriceColorAsInventryMoney()
+    {
+        if (inventryMoney.Money < itemdata.price)
+        {
+            priceText.color = Color.red;
+        }
+        else
+        {
+            priceText.color = Color.black;
+        }
+
+    }
+
+    //初期化
+    private void Init()
+    {
+        descriptionObj = GameObject.Find("ShopUIItemDescription");
+        iconObj = GameObject.Find("ShopUIItemIcon");
+        uiItemNameObj = GameObject.Find("ShopUIItemName");
+        selectManager = GameObject.Find("ShopSelectItemManager").GetComponent<ShopSelectItemManager>();
+        inventryMoney = GameObject.Find("Managers").GetComponent<MoneyScript>();
+
+
+        itemName = this.gameObject.transform.GetChild(0).GetComponent<Text>();
+        priceText = this.gameObject.transform.GetChild(1).GetComponent<Text>();
+        Icon = iconObj.GetComponent<Image>();
+        description = descriptionObj.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        uiItemName = uiItemNameObj.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        itemName.text = itemdata.item_name;
+        priceText.text = itemdata.price.ToString();
     }
 }

@@ -19,7 +19,7 @@ public class ShopItemGenerater : MonoBehaviour
     /// <summary>
     /// ショップアイテムのリストにプレハブを生成．
     /// </summary>
-    private void PrepareBuyItem()
+    public void PrepareBuyItem()
     {
         GameObject prefab = (GameObject)Resources.Load("Shop/ShopItem");
         for (int i = 0; i < item.Count; i++)
@@ -41,5 +41,16 @@ public class ShopItemGenerater : MonoBehaviour
         }
 
     }
-   
+    public void reloadBuyItemlist()
+    {
+        DestroyBuyItemList();
+        PrepareBuyItem();
+    }
+    private void DestroyBuyItemList()
+    {
+        foreach (Transform child in gameObject.transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
 }
