@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
+// reorderablelistにしたかったけど途中
 /*[CustomPropertyDrawer(typeof(QuestConditions))]
 public class QuestDrawer : PropertyDrawer
 {

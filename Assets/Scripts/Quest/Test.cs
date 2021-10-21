@@ -25,7 +25,7 @@ class Test : MonoBehaviour
     }
 
     [Button]
-    public void AddOtsukaiQuest()
+    public void AddQuest()
     {
         QuestHolder questHolder = FindObjectOfType<QuestHolder>();
         QuestDataSO questDataSO = QuestsManager.Instance.GetQuest(questName);
