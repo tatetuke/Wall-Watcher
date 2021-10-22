@@ -9,9 +9,9 @@ public class ShopSellItem : MonoBehaviour
     public ItemStack item;
     public ItemSO itemdata;
     
-    GameObject descriptionObj;
-    GameObject UIItemNameObj;
-    GameObject IconObj;
+    static GameObject descriptionObj;
+    static GameObject UIItemNameObj;
+    static GameObject IconObj;
 
     TextMeshProUGUI description;
     TextMeshProUGUI UIItemName;
@@ -24,6 +24,9 @@ public class ShopSellItem : MonoBehaviour
     public GameObject blackImage;
 
     ShopSelectItemManager selectManager;
+
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +56,11 @@ public class ShopSellItem : MonoBehaviour
 
         ChangeSelectSellItem();
         ChangeUI();
+        //アイテムリストに格納
+        if (ShopSellItemListToggle.toggle.isOn)
+        {
+            PushSellItemList();
+        }
     }
     /// <summary>
     ///売却するアイテムを変更する．
@@ -107,6 +115,15 @@ public class ShopSellItem : MonoBehaviour
         //リストのUIを暗転させる．
         blackImage.SetActive(true);
     }
+
+    public void PushSellItemList()
+    {
+        ShopSellOffInBalkList.PushSellItemList(itemdata,1);
+        ShopSellOffInBalkList.SellItemListUIUpdate();
+
+    }
+
+
 
     //↓ここからは，現在使用してない関数
     /// <summary>

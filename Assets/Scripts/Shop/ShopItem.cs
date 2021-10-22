@@ -59,7 +59,10 @@ public class ShopItem : MonoBehaviour
         selectManager.ChangeUIHasItemNum();
 
     }
-    //お金が足りなくなったときに色を変化させる．
+    
+    /// <summary>
+    /// お金が足りなくなったときに色を変化させる
+    /// </summary>
     private void ChangePriceColorAsInventryMoney()
     {
         if (inventryMoney.Money < itemdata.price)
