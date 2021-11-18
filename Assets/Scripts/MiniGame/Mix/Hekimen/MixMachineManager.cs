@@ -45,7 +45,7 @@ public class MixMachineManager : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(m_State);
+        //Debug.Log(m_State);
         if (Input.GetKeyDown("space"))
         {
             if (m_State == State.Close)
@@ -84,7 +84,7 @@ public class MixMachineManager : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             SetGlowLine(Color.red);
-            Debug.Log("Closeになった");
+            //Debug.Log("Closeになった");
             ChangeState(State.Close);
         }
     }
@@ -95,7 +95,7 @@ public class MixMachineManager : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             SetGlowLine(Color.cyan);
-            Debug.Log("Farになった");
+            //Debug.Log("Farになった");
             ChangeState(State.Far);
         }
     }

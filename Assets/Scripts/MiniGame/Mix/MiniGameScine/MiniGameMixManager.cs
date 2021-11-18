@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Fungus;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -19,6 +20,7 @@ public class MiniGameMixManager : MonoBehaviour
         IsFinished
     }
 
+    [SerializeField] Flowchart GuideMiniGameFlowChart;
     private State m_State = State.IsPlaying;
 
     [SerializeField] Animator MachineAnim;
@@ -67,6 +69,7 @@ public class MiniGameMixManager : MonoBehaviour
     private float DeltaSoilParam;
     private float DeltaWaterParam;
     private int Score = 0;
+    private bool isCompleted = true;
 
 
     void Start()
@@ -89,6 +92,7 @@ public class MiniGameMixManager : MonoBehaviour
 
     public void MiniGameMixInit()
     {
+        isCompleted = false;
         CompleteButton.interactable = true;
         SoilButton.interactable = true;
         WaterButton.interactable = true;
@@ -388,8 +392,8 @@ public class MiniGameMixManager : MonoBehaviour
 
     void FinishTask()
     {
+        isCompleted = true;
         MachineAnim.SetBool("IsStarted", false);
-        
     }
 
     private void ChangeState(State state)
@@ -418,5 +422,10 @@ public class MiniGameMixManager : MonoBehaviour
         if (Mathf.Abs(pos - gauge.fillAmount) < 15f / (mx - mn)) Debug.Log("Red");
         else if (Mathf.Abs(pos - gauge.fillAmount) < 50f / (mx - mn)) Debug.Log("Orange");
         else Debug.Log("Miss");
+    }
+
+    public void SetIsCompleted()
+    {
+        GuideMiniGameFlowChart.SetBooleanVariable("IsCompleted", isCompleted);
     }
 }

@@ -33,6 +33,12 @@ EditorBuildSettings:
     path: Assets/Scenes/MiniGame/MainMap/MainMap3_Hekimen.unity
     guid: f2dca6c7dbc25fb4c986cf58bbe52e68
   - enabled: 1
+    path: Assets/Scenes/MiniGame/HAKAI.unity
+    guid: c7914bef46d4f384db78219bcfa755e9
+  - enabled: 1
+    path: Assets/Scenes/MiniGame/GuideTest.unity
+    guid: f34ab288515fafa4d8c86a6c6a278d6d
+  - enabled: 1
     path: Assets/Scenes/MiniGame/Paint.unity
     guid: 99da0b77c38e5ce41b7a87591f9996cd
   - enabled: 1
