@@ -19,6 +19,7 @@ public class ItemSO : ScriptableObject
     public Sprite icon;
     public Rarelity type;
     public int price;
+    public int sellPrice;
     public bool canUpgradeItem;
     public bool canSellItem;
 

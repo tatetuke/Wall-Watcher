@@ -17,5 +17,6 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: bfee847c35f31c24084910e1612e4a93, type: 3}
   type: 0
   price: 2000
-  canSellItem: 1
+  sellPrice: 1000
   canUpgradeItem: 0
+  canSellItem: 1

@@ -32,6 +32,7 @@ public class ShopSellItem : MonoBehaviour
     void Start()
     {
         //初期化
+
         descriptionObj = GameObject.Find("ShopUIItemDescription");
         IconObj = GameObject.Find("ShopUIItemIcon");
         UIItemNameObj = GameObject.Find("ShopUIItemName");
@@ -48,6 +49,9 @@ public class ShopSellItem : MonoBehaviour
         priceText.text = (itemdata.price/2).ToString();//アイテムの買い値の2分の1を売値とする．
 
     }
+
+
+
     /// <summary>
     /// Itemのボタンが押されたときに呼ばれる関数
     /// </summary>
@@ -89,6 +93,8 @@ public class ShopSellItem : MonoBehaviour
         ChangeUIThisItemNum();
         CheckItemNum();
     }
+    
+
     //売却ボタンが押されたときのアイテムの所持数の表示を変更．
     private void ChangeUIThisItemNum()
     {

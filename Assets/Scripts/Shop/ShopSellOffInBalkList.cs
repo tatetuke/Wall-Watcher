@@ -10,10 +10,14 @@ public class ShopSellOffInBalkList : MonoBehaviour
     private static List<(ItemSO item,int num)>sellOperateList  = new List<(ItemSO,int)>();
 
     static private TextMeshProUGUI SellListText;
+    static public Text sumOfSellPriceText;
+
+    static public int sumOfSellPrice;
+
     private void Start()
     {
         SellListText= GameObject.Find("ShopSellOffInBalkListUIText").GetComponent<TextMeshProUGUI>();
-        if (SellListText != null) Debug.Log("pass");
+        sumOfSellPriceText = GameObject.Find("ShopSumOfSellPriceText").GetComponent<Text>();
     }
     //undoテスト用
     private void Update()
@@ -33,7 +37,7 @@ public class ShopSellOffInBalkList : MonoBehaviour
     }
 
     /// <summary>
-    /// 売却するアイテムをリストにぶち込む
+    /// 売却するアイテムをリストに入れる
     /// </summary>
     /// <param name="item">売却するアイテム</param>
     /// <param name="num">個数</param>
@@ -41,7 +45,8 @@ public class ShopSellOffInBalkList : MonoBehaviour
     {
         //Undo用のリストを更新
         sellOperateList.Add((item, num));
-
+        //売却合計金額を更新
+        UpdateSellPriceNum(item,num);
 
         bool isContainedItemInList = false;
         //既にアイテムがリストに格納されていれば，リスト中の該当するアイテムの個数を更新する
@@ -57,6 +62,8 @@ public class ShopSellOffInBalkList : MonoBehaviour
         }
         //リストにアイテムが含まれなければ，新たにリストにアイテムを格納する．
         if(!isContainedItemInList)sellItemList.Add((item, num));
+
+
     }
     
     
@@ -79,8 +86,8 @@ public class ShopSellOffInBalkList : MonoBehaviour
         int inLineSize = 0;
         for (int i = 0; i < sellItemList.Count; i++)
         {
-            string nextPrintText = sellItemList[i].item.name +" x"+ sellItemList[i].num.ToString();
-            if(inLineSize+nextPrintText.Length>13)
+            string nextPrintText = sellItemList[i].item.name +" x"+ sellItemList[i].num.ToString()+"  ";
+            if(inLineSize+nextPrintText.Length>20)
             {
                 SellListText.text += "\n";
                 inLineSize = 0;
@@ -88,8 +95,16 @@ public class ShopSellOffInBalkList : MonoBehaviour
             SellListText.text += nextPrintText;
             inLineSize += nextPrintText.Length;
         }
-
+        UpdateSumOfSellPriceText();
     }
+    public static void UpdateSumOfSellPriceText()
+    {
+        sumOfSellPriceText.text = sumOfSellPrice.ToString();
+    }
+
+
+
+
     /// <summary>
     /// Undoしたときの処理
     /// </summary>
@@ -100,6 +115,8 @@ public class ShopSellOffInBalkList : MonoBehaviour
         //Undoする操作
         (ItemSO item, int num) undoOperate =sellOperateList[sellOperateList.Count-1];
 
+
+        UpdateSellPriceNum(undoOperate.item, -undoOperate.num);
 
         for (int i = 0; i < sellItemList.Count; i++)
         {
@@ -115,5 +132,19 @@ public class ShopSellOffInBalkList : MonoBehaviour
             SellItemListUIUpdate();
                 break;
         }
+        sellOperateList.RemoveAt(sellOperateList.Count - 1);
+
+    }
+
+
+    /// <summary>
+    ///　売却時の取得金額の合計を更新
+    /// </summary>
+    /// <param name="item">対象のアイテムアイテム</param>
+    /// <param name="num">個数</param>
+    static private void UpdateSellPriceNum(ItemSO item,int num)
+    {
+        sumOfSellPrice += item.sellPrice * num;
+
     }
 }
