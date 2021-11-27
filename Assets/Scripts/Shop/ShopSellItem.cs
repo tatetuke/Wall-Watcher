@@ -74,10 +74,12 @@ public class ShopSellItem : MonoBehaviour
         selectManager.item = itemdata;
         selectManager.sellItem = this;
     }
+
+
     /// <summary>
     ///UIのテキスト，アイコンを変更する関数．
     /// </summary>
-    private void ChangeUI()
+    private void ChangeUI() 
     {
         description.text = itemdata.description;
         Icon.sprite = itemdata.icon;
@@ -85,6 +87,9 @@ public class ShopSellItem : MonoBehaviour
         selectManager.ChangeUIHasItemNum();
 
     }
+
+
+
 
     //アイテム売却したときに呼び出される関数．
     public void SellItem()

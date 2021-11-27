@@ -8,7 +8,7 @@ public class ShopPushSellButton : MonoBehaviour
     public Fungus.Flowchart flowchart;
     public Inventry inventry;
     private MoneyScript money;
-
+    public ShopMoneyUI moneyUI;
 
     private void Start()
     {
@@ -46,6 +46,8 @@ public class ShopPushSellButton : MonoBehaviour
         flowchart.SendFungusMessage("SellItem!");
         //お金を更新する
         UpdateMoney();
+        //お金の表示の更新
+        moneyUI.ChangeMoneyUI();
     }
     /// <summary>
     /// アイテムを買えない場合に発動する関数を纏めたもの．

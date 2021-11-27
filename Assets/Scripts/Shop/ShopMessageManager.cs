@@ -8,6 +8,7 @@ public class ShopMessageManager : MonoBehaviour
     public GameObject Manager;
     public Text yesText;
     public Text noText;
+    [SerializeField] private ShopPushSellButton sellButton;
     [SerializeField] private Text messageText;
     public ShopSelectItemManager selectItemManager;
     public ShopBuyItem buyItem;
@@ -69,14 +70,19 @@ public class ShopMessageManager : MonoBehaviour
         Debug.Log("wait select End");
         if (selectDialog)//「はい」を選択したときの処理
         {
-            buyItem.PushBuyButton();
-
+            SelectYes();
         }
 
         canGenerateDialog = true;
         messageTextObj.SetActive(false);
 
     }
+    
+
+
+    /// <summary>
+    /// 選択肢の選択
+    /// </summary>
     private void DialogSelect()
     {
         if (Input.GetKeyDown("a"))
@@ -92,8 +98,30 @@ public class ShopMessageManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 「はい」を選択したときのUI、内部データの変更
+    /// </summary>
+    private void SelectYes()
+    {
+        switch (mode)
+        {
+            case ShopMode.buy:
+                buyItem.PushBuyButton();
+                break;
+            case ShopMode.sell:
+                sellButton.PushSellButton();
+                break;
+            case ShopMode.upgrade:
+                break;
+        }
+    }
 
 
+
+
+    /// <summary>
+    /// 選択肢の表示の色変更
+    /// </summary>
     private void DialogColorChange()
     {
         if (selectDialog)//yesを選択
@@ -108,8 +136,24 @@ public class ShopMessageManager : MonoBehaviour
         }
         
     }
+    /// <summary>
+    /// 表示するテキストの初期化
+    /// </summary>
     private void TextInit()
     {
+        switch (mode)
+        {
+            case ShopMode.buy:
+                messageText.text = "購入しますか？";
+                break;
+            case ShopMode.sell:
+                messageText.text = "売却しますか？";
+                break;
+            case ShopMode.upgrade:
+                messageText.text = "強化しますか？";
+                break;
+        }
+  
         selectDialog = true;
         noText.color = gray;
         yesText.color = black;
