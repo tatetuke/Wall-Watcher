@@ -161,6 +161,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
             Wall[i, j] = v;
             SpriteRenderer spriteRenderer = Wall[i, j].GetComponent<SpriteRenderer>();
             int rndm = Random.Range(0, ParamSize - 1);
+            if (m_State == State.Tutorial) rndm = 0;
             WallParam[i, j] = rndm;
             // 内部のパラメータは[0,14]，スプライトは5段階
             spriteRenderer.sprite = WallSprites[rndm / 3];
