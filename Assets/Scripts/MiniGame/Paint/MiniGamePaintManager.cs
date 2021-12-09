@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.Playables;
+using Fungus;
 
 /// <summary>
 /// ミニゲームの塗るパートを統括する
@@ -11,6 +12,9 @@ using UnityEngine.Playables;
 /// </summary>
 public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
 {
+    [SerializeField] Flowchart GuideMiniGameFlowChart;
+
+
     [SerializeField] private MiniGamePaintStatus gameStatus;//HPやHPを減らす関数を持つクラス
 
     [SerializeField] MiniGamePaintToolDataManager toolManager;
@@ -139,6 +143,45 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
                     }
                 }
             }
+        }
+    }
+
+    void TutorialRightClick()
+    {
+        if (/*右クリックが押されたら*/Input.GetMouseButtonDown(1))
+        {
+            int raw, column;
+            (raw, column) = GetCursorObjectIndex();
+            if (raw == 3 && column == 3)
+            {
+                int damage = 14 + 24 - WallParam[raw, column];
+                if (gameStatus.life >= damage && !IsBrown(raw, column))
+                {
+                    gameStatus.Damage(40);
+                    FillSoil(raw, column);
+                }
+                GuideMiniGameFlowChart.SetBooleanVariable("IsTutorialRightClicked", true);
+            }
+        }
+    }
+
+    void TutorialLeftClick()
+    {
+        if (/*左クリックが押されたら*/Input.GetMouseButtonDown(0))
+        {
+            int raw, column;
+            (raw, column) = GetCursorObjectIndex();
+            int add, sub;
+            (add, sub) = SetAddSub(m_Range, raw, column);
+            if (raw == 3 && column == 3)
+            {
+                if (CanClick(raw, column, sub))
+                {
+                    UpdateWall(m_Range, raw, column, add, sub);
+                    GuideMiniGameFlowChart.SetBooleanVariable("IsTutorialLeftClicked", true);
+                }
+            }
+
         }
     }
 
