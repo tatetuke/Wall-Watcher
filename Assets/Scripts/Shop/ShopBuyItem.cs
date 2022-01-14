@@ -8,6 +8,7 @@ public class ShopBuyItem : MonoBehaviour
     public Fungus.Flowchart flowchart;
     public Inventry inventry;
     private MoneyScript money;
+    public ShopMoneyUI moneyUI;
     private void Start()
     {
         inventry=GameObject.Find("Managers").GetComponent<Inventry>();
@@ -32,7 +33,7 @@ public class ShopBuyItem : MonoBehaviour
         {
             BuyItem();
             selectManager.ChangeUIHasItemNum();
-
+            moneyUI.ChangeMoneyUI();
         }
     }
     /// <summary>
