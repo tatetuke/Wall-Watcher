@@ -9,9 +9,9 @@ public class ShopSellItem : MonoBehaviour
     public ItemStack item;
     public ItemSO itemdata;
     
-    GameObject descriptionObj;
-    GameObject UIItemNameObj;
-    GameObject IconObj;
+    static GameObject descriptionObj;
+    static GameObject UIItemNameObj;
+    static GameObject IconObj;
 
     TextMeshProUGUI description;
     TextMeshProUGUI UIItemName;
@@ -25,10 +25,14 @@ public class ShopSellItem : MonoBehaviour
 
     ShopSelectItemManager selectManager;
 
+
+
+
     // Start is called before the first frame update
     void Start()
     {
         //初期化
+
         descriptionObj = GameObject.Find("ShopUIItemDescription");
         IconObj = GameObject.Find("ShopUIItemIcon");
         UIItemNameObj = GameObject.Find("ShopUIItemName");
@@ -45,6 +49,9 @@ public class ShopSellItem : MonoBehaviour
         priceText.text = (itemdata.price/2).ToString();//アイテムの買い値の2分の1を売値とする．
 
     }
+
+
+
     /// <summary>
     /// Itemのボタンが押されたときに呼ばれる関数
     /// </summary>
@@ -53,6 +60,11 @@ public class ShopSellItem : MonoBehaviour
 
         ChangeSelectSellItem();
         ChangeUI();
+        //アイテムリストに格納
+        if (ShopSellItemListToggle.toggle.isOn)
+        {
+            PushSellItemList();
+        }
     }
     /// <summary>
     ///売却するアイテムを変更する．
@@ -62,10 +74,12 @@ public class ShopSellItem : MonoBehaviour
         selectManager.item = itemdata;
         selectManager.sellItem = this;
     }
+
+
     /// <summary>
     ///UIのテキスト，アイコンを変更する関数．
     /// </summary>
-    private void ChangeUI()
+    private void ChangeUI() 
     {
         description.text = itemdata.description;
         Icon.sprite = itemdata.icon;
@@ -74,6 +88,9 @@ public class ShopSellItem : MonoBehaviour
 
     }
 
+
+
+
     //アイテム売却したときに呼び出される関数．
     public void SellItem()
     {
@@ -81,6 +98,8 @@ public class ShopSellItem : MonoBehaviour
         ChangeUIThisItemNum();
         CheckItemNum();
     }
+    
+
     //売却ボタンが押されたときのアイテムの所持数の表示を変更．
     private void ChangeUIThisItemNum()
     {
@@ -107,6 +126,15 @@ public class ShopSellItem : MonoBehaviour
         //リストのUIを暗転させる．
         blackImage.SetActive(true);
     }
+
+    public void PushSellItemList()
+    {
+        ShopSellOffInBalkList.PushSellItemList(itemdata,1);
+        ShopSellOffInBalkList.SellItemListUIUpdate();
+
+    }
+
+
 
     //↓ここからは，現在使用してない関数
     /// <summary>
