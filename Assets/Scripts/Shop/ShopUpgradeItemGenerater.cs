@@ -34,7 +34,8 @@ public class ShopUpgradeItemGenerater : MonoBehaviour
             ItemStack tmpItem = new ItemStack(item.item, item.count);
             GameObject instance = (GameObject)Instantiate(prefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
             instance.transform.parent = this.transform;
-            instance.GetComponent<ShopSellItem>().item = tmpItem;
+            instance.GetComponent<ShopUpgradeItem>().item = tmpItem;
+            instance.transform.GetChild(0).GetComponent<Text>().text=item.item.name;
             ChangeItemListColor(instance.GetComponent<Image>(), i);
             i++;
         }

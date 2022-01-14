@@ -5,6 +5,7 @@ using Kyoichi;
 using UnityEngine.UI;
 public class ShopSelectItemManager : MonoBehaviour
 {
+    //static public ItemSO item;
     public ItemSO item;//選択中のアイテム
     public ShopSellItem sellItem;//売却するアイテム;
     public Inventry inventry;
