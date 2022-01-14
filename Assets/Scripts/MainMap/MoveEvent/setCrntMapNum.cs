@@ -6,13 +6,12 @@ using UnityEngine;
 
 public class setCrntMapNum : MonoBehaviour
 {
-    public int setNum = 1;
+    public Warp.MAP_NUM mapnum;
+    public float x = 0;
+    public float y = 0;
+
     void Start()
     {
-        if (AllMapSet.currentMap == 0 && AllMapSet.prevMap == 0)
-        {
-            AllMapSet.currentMap = setNum;
-            AllMapSet.prevMap = setNum;
-        }
+        AllMapSet.update_initial_mapdata(mapnum, mapnum, x, y);
     }
 }

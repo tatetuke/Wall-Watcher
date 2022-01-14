@@ -12,6 +12,8 @@ public class FadeManager2 : SingletonMonoBehaviour<FadeManager2>
     /// <summary>フェード中かどうか</summary>
     public bool isFading = false;
 
+    private GameObject moveObj;
+
     public void Awake()
     {
         if (this != Instance)
@@ -42,7 +44,8 @@ public class FadeManager2 : SingletonMonoBehaviour<FadeManager2>
     /// <param name="y">移動先の y 座標</param>
     public void LoadLevel2(float interval, GameObject obj, float x, float y)
     {
-        StartCoroutine(TransScene(interval, obj, x, y));
+        moveObj = obj;
+        StartCoroutine(TransScene(interval, x, y));
     }
 
     /// <summary>
@@ -52,7 +55,7 @@ public class FadeManager2 : SingletonMonoBehaviour<FadeManager2>
     /// <param name="obj">移動するオブジェクト</param>
     /// <param name="x">移動先の x 座標</param>
     /// <param name="y">移動先の y 座標</param>
-    private IEnumerator TransScene(float interval, GameObject obj, float x, float y)
+    private IEnumerator TransScene(float interval, float x, float y)
     {
         //だんだん暗く
         this.isFading = true;
@@ -65,7 +68,8 @@ public class FadeManager2 : SingletonMonoBehaviour<FadeManager2>
         }
 
         // オブジェクトの移動
-        obj.transform.position = new Vector3(x, y, 0);
+        moveObj.transform.position = new Vector3(x, y, 0);
+        StartCoroutine(autoMove());
 
         //だんだん明るく
         time = 0;
@@ -79,4 +83,19 @@ public class FadeManager2 : SingletonMonoBehaviour<FadeManager2>
         this.isFading = false;
     }
 
+    private float autoMoveTime = 0.4f;
+    IEnumerator autoMove()
+    {
+        if (AllMapSet.autoWalkingDirection == 1)
+        {
+            moveObj.GetComponent<Player>().ChangeState(Player.State.AUTOR);
+        }
+        else
+        {
+            moveObj.GetComponent<Player>().ChangeState(Player.State.AUTOL);
+        }
+
+        yield return new WaitForSeconds(autoMoveTime);
+        moveObj.GetComponent<Player>().ChangeState(Player.State.WALKING);
+    }
 }

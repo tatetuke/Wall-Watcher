@@ -10,15 +10,17 @@ public class PlayerPositionSet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int prev = AllMapSet.prevMap;
-        int crnt = AllMapSet.currentMap;
-        float newx = AllMapSet.warpMap[prev, crnt].Item1;
-        float newy = AllMapSet.warpMap[prev, crnt].Item2;
+        //int prev = AllMapSet.prevMap;
+        //int crnt = AllMapSet.currentMap;
+        float newx = AllMapSet.get_initial_position().Item1;
+        float newy = AllMapSet.get_initial_position().Item2;
         this.transform.position = new Vector3(newx, newy, 0);
-        if (prev != crnt)
-        {
+
+
+        if (AllMapSet.prevMap != AllMapSet.currentMap)   // この条件文は後で書き換える
+          {
             StartCoroutine(autoMove());
-        }
+          }
 
     }
 
