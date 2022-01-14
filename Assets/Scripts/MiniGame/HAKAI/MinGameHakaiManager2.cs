@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
+using Fungus;
 public class MinGameHakaiManager2 : MonoBehaviour
 {
+    [SerializeField] Flowchart GuideMiniGameFlowChart;
+
     public int gameType = 1;
     public const int RawSize = 8;//盤面のサイズ
     public const int ColumnSize = 8;
-    [HideInInspector]public int Rsize=RawSize; 
-    [HideInInspector]public int Csize=ColumnSize; 
-    [HideInInspector]public GameObject[,] Wall = new GameObject[RawSize, ColumnSize];//盤面全体
-    [HideInInspector]public GameObject[,] WallAnime = new GameObject[RawSize, ColumnSize];//盤面全体
+    [HideInInspector] public int Rsize = RawSize;
+    [HideInInspector] public int Csize = ColumnSize;
+    [HideInInspector] public GameObject[,] Wall = new GameObject[RawSize, ColumnSize];//盤面全体
+    [HideInInspector] public GameObject[,] WallAnime = new GameObject[RawSize, ColumnSize];//盤面全体
     int[] dx = new int[9] { -1, 0, 1, -1, 0, 1, -1, 0, 1 };//裏返す壁のIndex
     int[] dy = new int[9] { -1, -1, -1, 0, 0, 0, 1, 1, 1 };//
     public string PolutedLevel1;//壁の画像の名前
@@ -20,17 +23,17 @@ public class MinGameHakaiManager2 : MonoBehaviour
     public string PolutedLevel4;//
     public string PolutedLevel5;//
     public string PolutedLevel6;//
-    [SerializeField] private UnityEvent UpdateItemData=new UnityEvent(); //アイテムデータのアップデート
+    [SerializeField] private UnityEvent UpdateItemData = new UnityEvent(); //アイテムデータのアップデート
 
     [SerializeField] private MinGameHAKAIStatus gameStatus;//HPやHPを減らす関数を持つクラス
 
-    [SerializeField]MinGameHakaiToolDataManager toolManager;
-    [SerializeField]MinGameHakaiToolData tool;
+    [SerializeField] MinGameHakaiToolDataManager toolManager;
+    [SerializeField] MinGameHakaiToolData tool;
 
     [SerializeField] GameObject shakeObj;//揺らすゲームオブジェクトの選択
     [SerializeField] GameObject lifeGage;//揺らすゲームオブジェクトの選択
 
-    public Sprite []WallSprite=new Sprite[6];//壁の画像
+    public Sprite[] WallSprite = new Sprite[6];//壁の画像
 
     [SerializeField] private MinGameHakaiItemGetUI ItemGetUI;//UIのアイテム欄を更新する.
 
@@ -157,7 +160,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
             clickedGameObject = hit2d.transform.gameObject;
         }
         //クリックしたものが壁でなければリターン
-        if (clickedGameObject==null||clickedGameObject.tag != "Wall") return;
+        if (clickedGameObject == null || clickedGameObject.tag != "Wall") return;
 
         //現在のHPよりくらうダメージが大きい場合ゲージを揺らしてreturn 
         if (gameStatus.life - (int)tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1] < 0)
@@ -180,12 +183,14 @@ public class MinGameHakaiManager2 : MonoBehaviour
             if (nraw < 0 || nraw >= RawSize || ncolumn < 0 || ncolumn >= ColumnSize) continue;
             if (gameType == 1)
             {
-                ChangeSprite1(Wall[nraw, ncolumn],WallAnime[nraw,ncolumn]);
-            }else if (gameType == 2)
+                ChangeSprite1(Wall[nraw, ncolumn], WallAnime[nraw, ncolumn]);
+            }
+            else if (gameType == 2)
             {
                 ChangeSprite2(Wall[nraw, ncolumn]);
 
-            }else if (gameType == 3)
+            }
+            else if (gameType == 3)
             {
                 ChangeSprite3(Wall[nraw, ncolumn]);
             }
@@ -231,7 +236,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
         // シェイク(一定時間のランダムな動き)
         var duration = 0.35f;    // 時間
         var strength = 0.3f;    // 力
-        strength *= (float)tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1]/10;
+        strength *= (float)tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1] / 10;
         var vibrato = 100;    // 揺れ度合い
         var randomness = 90f;   // 揺れのランダム度合い(0で一定方向のみの揺れになる)
         var snapping = false; // 値を整数に変換するか
@@ -244,7 +249,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     /// <summary>
     ///壁の添え字を探索する。
     /// </summary>
-    public (int,int) SearchIndex(GameObject obj)
+    public (int, int) SearchIndex(GameObject obj)
     {
         for (int i = 0; i < RawSize; i++)
         {
@@ -252,7 +257,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
             {
                 if (obj == Wall[i, j])
                 {
-                    return(i, j);
+                    return (i, j);
 
                 }
             }
@@ -290,20 +295,22 @@ public class MinGameHakaiManager2 : MonoBehaviour
     private void ChangeSprite2(GameObject m_Wall)
     {
         string spriteName = m_Wall.GetComponent<SpriteRenderer>().sprite.name;
-        if (spriteName == PolutedLevel1) {
+        if (spriteName == PolutedLevel1)
+        {
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[1];
         }
-        else if(spriteName==PolutedLevel2)
+        else if (spriteName == PolutedLevel2)
         {
             m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[2];
-            
-        }else if (spriteName == PolutedLevel3)
+
+        }
+        else if (spriteName == PolutedLevel3)
         {
             return;
             //m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[0];//サイクルバージョン
 
         }
-        
+
     }
     /// <summary>
     /// DPバージョン
@@ -311,7 +318,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     /// <param name="m_Wall"></param>
     private void ChangeSprite3(GameObject m_Wall)
     {
-       
+
         string spriteName = m_Wall.GetComponent<SpriteRenderer>().sprite.name;
 
         if (spriteName == PolutedLevel1)
@@ -346,6 +353,22 @@ public class MinGameHakaiManager2 : MonoBehaviour
         PolutedLevel4 = WallSprite[3].name;
         PolutedLevel5 = WallSprite[4].name;
         PolutedLevel6 = WallSprite[5].name;
+    }
+
+    void TutorialRightClick()
+    {
+        if (/*右クリックが押されたら*/Input.GetMouseButtonDown(1))
+        {
+            GuideMiniGameFlowChart.SetBooleanVariable("IsTutorialRightClicked", true);
+        }
+    }
+
+    void TutorialLeftClick()
+    {
+        if (/*左クリックが押されたら*/Input.GetMouseButtonDown(0))
+        {
+            GuideMiniGameFlowChart.SetBooleanVariable("IsTutorialLeftClicked", true);
+        }
     }
 }
 

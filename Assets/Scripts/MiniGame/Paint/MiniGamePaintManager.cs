@@ -60,7 +60,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
         Playing,
         Finished
     }
-    State m_State = State.Tutorial;
+    State m_State = State.Playing;
 
     public enum Range
     {
@@ -161,6 +161,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
                     FillSoil(raw, column);
                 }
                 GuideMiniGameFlowChart.SetBooleanVariable("IsTutorialRightClicked", true);
+
             }
         }
     }
