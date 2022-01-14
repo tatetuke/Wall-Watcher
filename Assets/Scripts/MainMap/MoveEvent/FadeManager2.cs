@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+
+using map;
+
 /// <summary>
 /// シーン遷移無しのフェードイン・アウトを制御し、その間に指定のオブジェクトの移動を制御するためのクラス
 /// </summary>
@@ -69,7 +72,7 @@ public class FadeManager2 : SingletonMonoBehaviour<FadeManager2>
 
         // オブジェクトの移動
         moveObj.transform.position = new Vector3(x, y, 0);
-        StartCoroutine(autoMove());
+        if (AllMapSet.autoWalkingDirection != Direction2D.Invalid) StartCoroutine(autoMove());
 
         //だんだん明るく
         time = 0;
@@ -86,11 +89,11 @@ public class FadeManager2 : SingletonMonoBehaviour<FadeManager2>
     private float autoMoveTime = 0.4f;
     IEnumerator autoMove()
     {
-        if (AllMapSet.autoWalkingDirection == 1)
+        if (AllMapSet.autoWalkingDirection == Direction2D.Right)
         {
             moveObj.GetComponent<Player>().ChangeState(Player.State.AUTOR);
         }
-        else
+        else if (AllMapSet.autoWalkingDirection == Direction2D.Left)
         {
             moveObj.GetComponent<Player>().ChangeState(Player.State.AUTOL);
         }

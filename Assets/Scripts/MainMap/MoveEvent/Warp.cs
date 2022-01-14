@@ -3,24 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+using map;
+
 public class Warp : MonoBehaviour
 {
-    public enum MAP_NUM
-    {
-        MainMap2F_Floor,
-        MainMap3F_Floor,
-        MainMap3_Room1,
-        MainMap3_Room2,
-        MainMap3F_Renraku1,
-        MainMap3F_Renraku2,
-        MainMap3_Bokujou,
-        MainMap3_Hekimen,
-        invalid
-    }
 
     public MAP_NUM fromNum;
     public MAP_NUM toNum;
-    public int autoDirection = 0;
+    public Direction2D autoDirection = Direction2D.Invalid;
     public float x = 0;   // 移動後 x 座標
     public float y = 0;   // 移動後 y 座標
 

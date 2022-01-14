@@ -1061,7 +1061,7 @@ PrefabInstance:
     - target: {fileID: 8038776165051113484, guid: 3d17117fd1207e94a806907f46672c47,
         type: 3}
       propertyPath: x
-      value: 51
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8038776165051113484, guid: 3d17117fd1207e94a806907f46672c47,
         type: 3}
@@ -1072,6 +1072,11 @@ PrefabInstance:
         type: 3}
       propertyPath: fromNum
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8038776165051113484, guid: 3d17117fd1207e94a806907f46672c47,
+        type: 3}
+      propertyPath: autoDirection
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d17117fd1207e94a806907f46672c47, type: 3}
@@ -9414,7 +9419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe6a1e0d3234c85418c56b89d5efdfcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapnum: 0
+  mpnum: 0
   x: 0
   y: -2.05
 --- !u!4 &2142598325

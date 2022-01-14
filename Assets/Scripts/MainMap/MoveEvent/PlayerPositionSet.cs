@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using map;
+
 [DefaultExecutionOrder(1)]
 
 public class PlayerPositionSet : MonoBehaviour
@@ -19,18 +21,22 @@ public class PlayerPositionSet : MonoBehaviour
 
         if (AllMapSet.prevMap != AllMapSet.currentMap)   // この条件文は後で書き換える
           {
-            StartCoroutine(autoMove());
-          }
+            if (AllMapSet.autoWalkingDirection != Direction2D.Invalid)
+            {
+                StartCoroutine(autoMove());
+            }
+
+        }
 
     }
 
     IEnumerator autoMove()
     {
-        if (AllMapSet.autoWalkingDirection == 1)
+        if (AllMapSet.autoWalkingDirection == Direction2D.Right)
         {
             this.GetComponent<Player>().ChangeState(Player.State.AUTOR);
         }
-        else
+        else if (AllMapSet.autoWalkingDirection == Direction2D.Left)
         {
             this.GetComponent<Player>().ChangeState(Player.State.AUTOL);
         }
