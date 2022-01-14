@@ -239,6 +239,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
         shakeObj.transform.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut);
 
         //athleics
+
     }
 
     /// <summary>

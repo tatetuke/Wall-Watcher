@@ -55,10 +55,10 @@ public class Elevator : MonoBehaviour
         if (movekey)
         {
             movekey = false;  // 多重ループを回避するための処理
-            AllMapSet.prevMap = fromNum;
-            AllMapSet.currentMap = toNum;
-            AllMapSet.autoWalkingDirection = autoDirection;
-            FadeManager.Instance.LoadLevel(AllMapSet.warpMap[fromNum, toNum].Item3, 1f);
+            //AllMapSet.prevMap = fromNum;
+            //AllMapSet.currentMap = toNum;
+            //AllMapSet.autoWalkingDirection = autoDirection;
+            //FadeManager.Instance.LoadLevel(AllMapSet.warpMap[fromNum, toNum].Item3, 1f);
         }
     }
 }
