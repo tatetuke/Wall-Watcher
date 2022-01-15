@@ -38,11 +38,12 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
 
     public int ParamSize = 15;
     public int ConditionCanClick = 8;
-    public const int WallLength = 7;
+    public const int WallLengthRaw = 9;
+    public const int WallLengthColumn = 12;
     private int Cost = 0;
-    GameObject[,] Wall = new GameObject[WallLength, WallLength];
-    int[,] WallParam = new int[WallLength, WallLength];
-    TextMeshProUGUI[,] ParameterText = new TextMeshProUGUI[WallLength, WallLength];
+    GameObject[,] Wall = new GameObject[WallLengthRaw, WallLengthColumn];
+    int[,] WallParam = new int[WallLengthRaw, WallLengthColumn];
+    TextMeshProUGUI[,] ParameterText = new TextMeshProUGUI[WallLengthRaw, WallLengthColumn];
     public TextMeshProUGUI m_TextRange;
     public TextMeshProUGUI m_TextCost;
     private string[] Textes = new string[5] { "□", "↑", "→", "↓", "←" };
@@ -128,9 +129,9 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
                     HideRangeFrame();
             }
 
-            for (int i = 0; i < WallLength; i++)
+            for (int i = 0; i < WallLengthRaw; i++)
             {
-                for (int j = 0; j < WallLength; j++)
+                for (int j = 0; j < WallLengthColumn; j++)
                 {
                     if (IsBrown(i, j))
                     {
@@ -211,7 +212,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
             spriteRenderer.sprite = WallSprites[rndm / 3];
             //spriteRenderer.color = new Color(1, 1, 1, ParamList[Random.Range(0, ParamSize - 1)]);
             i++;
-            if (i == WallLength)
+            if (i == WallLengthRaw)
             {
                 i = 0;
                 j++;
@@ -228,7 +229,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
             ParameterText[i, j] = v.GetComponent<TextMeshProUGUI>();
             ParameterText[i, j].text = WallParam[i, j].ToString();
             i++;
-            if (i == WallLength)
+            if (i == WallLengthRaw)
             {
                 i = 0;
                 j++;
@@ -239,9 +240,9 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
 
     private void UpdateParameters()
     {
-        for (int i = 0; i < WallLength; i++)
+        for (int i = 0; i < WallLengthRaw; i++)
         {
-            for (int j = 0; j < WallLength; j++)
+            for (int j = 0; j < WallLengthColumn; j++)
             {
                 int param;
                 if (IsBrown(i, j))
@@ -272,9 +273,9 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
         GameObject cursorObject = GetCursorObject();
         if (cursorObject == null) return (-1, -1);
         int raw = -100, column = -100;
-        for (int i = 0; i < WallLength; i++)
+        for (int i = 0; i < WallLengthRaw; i++)
         {
-            for (int j = 0; j < WallLength; j++)
+            for (int j = 0; j < WallLengthColumn; j++)
             {
                 if (cursorObject == Wall[i, j])
                 {
@@ -327,7 +328,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
 
     private bool CanClick(int raw, int column, int sub)
     {
-        if (raw < 0 || raw >= WallLength || column < 0 || column >= WallLength) return false;
+        if (raw < 0 || raw >= WallLengthRaw || column < 0 || column >= WallLengthColumn) return false;
 
         return IsEnoughCost(raw, column, sub) && !IsOutOfFrame(m_Range, raw, column);
     }
@@ -353,7 +354,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
                 if (dx[i] == 0 && dy[i] == 0) continue;
                 int nraw = raw + dy[i];
                 int ncolumn = column + dx[i];
-                if (nraw < 0 || nraw >= WallLength || ncolumn < 0 || ncolumn >= WallLength)
+                if (nraw < 0 || nraw >= WallLengthRaw || ncolumn < 0 || ncolumn >= WallLengthColumn)
                     return true;
             }
             return false;
@@ -367,7 +368,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
             for (int i = 0; i < 3; i++)
             {
                 nraw += draw; ncolumn += dcolumn;
-                if (nraw < 0 || nraw >= WallLength || ncolumn < 0 || ncolumn >= WallLength)
+                if (nraw < 0 || nraw >= WallLengthRaw || ncolumn < 0 || ncolumn >= WallLengthColumn)
                     return true;
             }
             return false;
@@ -383,7 +384,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
             {
                 int nraw = raw + dy[i];
                 int ncolumn = column + dx[i];
-                if (nraw < 0 || nraw >= WallLength || ncolumn < 0 || ncolumn >= WallLength) continue;
+                if (nraw < 0 || nraw >= WallLengthRaw || ncolumn < 0 || ncolumn >= WallLengthColumn) continue;
                 if (dx[i] == 0 && dy[i] == 0) ChangeSprite(nraw, ncolumn, sub);
                 else ChangeSprite(nraw, ncolumn, add);
                 for (int j = 0; j < 5; j++)
@@ -563,8 +564,8 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
     {
         string res;
         int diff = 0;
-        for (int i = 0; i < WallLength; i++)
-            for (int j = 0; j < WallLength; j++)
+        for (int i = 0; i < WallLengthRaw; i++)
+            for (int j = 0; j < WallLengthColumn; j++)
                 diff += (WallParam[i, j] - (ParamSize - 1)) / 3;
 
         if (diff == 0)
