@@ -11,6 +11,8 @@ public class ShopUpgrade : MonoBehaviour
     public Fungus.Flowchart flowchart;
     public Inventry inventry;
     public ChangeShopEventTab tabManager;
+    private bool canUpgrade=true;
+
     [SerializeField] private ShopUpgradeItemGenerater generator;
 
     private void Start()
@@ -20,8 +22,28 @@ public class ShopUpgrade : MonoBehaviour
         selectManager = GameObject.Find("ShopSelectItemManager").GetComponent<ShopSelectItemManager>();
     }
 
-    public void Select()
+    //public void Select()
+    //{
+    //    if (!canUpgrade) return;
+    //    if (selectManager.item == null)
+    //    {
+    //        NoItem();
+    //    }
+    //    else if (money.Money < selectManager.item.price)
+    //    {
+    //        CantUpgradeItem();
+    //    }
+    //    else
+    //    {
+    //        StartCoroutine(Upgrade());
+    //        //Upgrade();
+    //        //selectManager.ChangeUIHasItemNum();
+    //    }
+    //}
+
+    public IEnumerator Select()
     {
+        if (!canUpgrade) yield return 0;
         if (selectManager.item == null)
         {
             NoItem();
@@ -32,16 +54,19 @@ public class ShopUpgrade : MonoBehaviour
         }
         else
         {
-            StartCoroutine(Upgrade());
+            yield return StartCoroutine(Upgrade());
             //Upgrade();
             //selectManager.ChangeUIHasItemNum();
         }
+        yield return 0;
     }
 
 
     IEnumerator Upgrade()
     {
-        
+
+        //次のアップグレードを行えないようにする。
+        canUpgrade = false;
 
         //セーブデータの書き換え
         inventry.PopItem(selectManager.item);
@@ -64,7 +89,9 @@ public class ShopUpgrade : MonoBehaviour
         tabManager.ClearUI();
         //選択しているオブジェクトの初期化
         selectManager.ClearItemSelect();
-
+        
+        //次のアップグレードが行えるようにする。
+        canUpgrade = true;
 
         yield return 0;
 
@@ -95,7 +122,12 @@ public class ShopUpgrade : MonoBehaviour
         updateDialog.SetActive(false);
 
         //連続入力を避ける
-        yield return null;
+        int t = 0;
+        while (t <= 3)
+        {
+            yield return null;
+            t++;
+        }
         yield return 0;
     }
     

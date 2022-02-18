@@ -72,11 +72,13 @@ public class ShopMessageManager : MonoBehaviour
         Debug.Log("wait select End");
         if (selectDialog)//「はい」を選択したときの処理
         {
-            SelectYes();
+            messageTextObj.SetActive(false);
+            yield return StartCoroutine(SelectYes());
         }
 
-        canGenerateDialog = true;
         messageTextObj.SetActive(false);
+        canGenerateDialog = true;
+        
 
     }
     
@@ -103,7 +105,7 @@ public class ShopMessageManager : MonoBehaviour
     /// <summary>
     /// 「はい」を選択したときのUI、内部データの変更
     /// </summary>
-    private void SelectYes()
+    IEnumerator SelectYes()
     {
         switch (mode)
         {
@@ -114,11 +116,27 @@ public class ShopMessageManager : MonoBehaviour
                 sellButton.PushSellButton();
                 break;
             case ShopMode.upgrade:
-                upgrade.Select();
+                yield return StartCoroutine(upgrade.Select());
                 break;
         }
+        yield return 0;
     }
 
+    //private void SelectYes()
+    //{
+    //    switch (mode)
+    //    {
+    //        case ShopMode.buy:
+    //            buyItem.PushBuyButton();
+    //            break;
+    //        case ShopMode.sell:
+    //            sellButton.PushSellButton();
+    //            break;
+    //        case ShopMode.upgrade:
+    //            StartCoroutine(upgrade.Select());
+    //            break;
+    //    }
+    //}
 
 
 

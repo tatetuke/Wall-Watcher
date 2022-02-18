@@ -75,4 +75,9 @@ public class ShopUpgradeItemGenerater : MonoBehaviour
         NoSellItemImage.SetActive(true);
     }
 
+    public void UnactivateNoSellItemImage()
+    {
+        NoSellItemImage.SetActive(false);
+    }
+
 }
