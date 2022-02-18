@@ -8,8 +8,10 @@ public class ShopMessageManager : MonoBehaviour
     public GameObject Manager;
     public Text yesText;
     public Text noText;
+    [SerializeField] private ShopUpgrade upgrade;
     [SerializeField] private ShopPushSellButton sellButton;
     [SerializeField] private Text messageText;
+   // [SerializeField] private ShopUpgrade upgradeItem;
     public ShopSelectItemManager selectItemManager;
     public ShopBuyItem buyItem;
     private bool canGenerateDialog;
@@ -112,6 +114,7 @@ public class ShopMessageManager : MonoBehaviour
                 sellButton.PushSellButton();
                 break;
             case ShopMode.upgrade:
+                upgrade.Select();
                 break;
         }
     }

@@ -7,7 +7,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
 {
     public int gameType = 1;
     public const int RawSize = 8;//盤面のサイズ
-    public const int ColumnSize = 8;
+    public const int ColumnSize = 11;
     [HideInInspector]public int Rsize=RawSize; 
     [HideInInspector]public int Csize=ColumnSize; 
     [HideInInspector]public GameObject[,] Wall = new GameObject[RawSize, ColumnSize];//盤面全体
@@ -96,17 +96,17 @@ public class MinGameHakaiManager2 : MonoBehaviour
         j = 0;
         foreach (GameObject v in GameObject.FindGameObjectsWithTag("Wall"))
         {
-            if (j >= RawSize)
+            if (i >= RawSize)
             {
                 Debug.LogError("壁の数が多すぎます");
                 break;
             }
             Wall[i, j] = v;
-            i++;
-            if (i == ColumnSize)
+            j++;
+            if (j == ColumnSize)
             {
-                i = 0;
-                j++;
+                j = 0;
+                i++;
             }
 
         }
