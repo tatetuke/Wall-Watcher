@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
+using map;  // マップ番号
+
 public class TItleUIController : MonoBehaviour
 {
     [Header("Object references")]
@@ -92,7 +95,8 @@ public class TItleUIController : MonoBehaviour
                 break;
             case 1:
                 Debug.Log("PlayNewGame");
-                FadeManager.Instance.LoadLevel(newGameSceneName, 1.5f);
+                //FadeManager.Instance.LoadLevel(newGameSceneName, 1.5f);
+                AllMapSet.warp_player_position(MAP_NUM.MainMap3F_Floor, MAP_NUM.MainMap3F_Floor, 0, -2, Direction2D.Invalid, 2.5f);
                 break;
             case 2:
                 m_State = TitleState.Config;
