@@ -67,7 +67,7 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
             int RandomNum;
             if (i == 0 && j == 0)
             {
-                RandomNum = UnityEngine.Random.Range(tile[tile.Count - 3].P, tile[tile.Count-1].P);
+                RandomNum = UnityEngine.Random.Range(tile[tile.Count - 3].P, tile[tile.Count - 1].P);
             }
             else
             {
@@ -77,12 +77,12 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
                 if (j - 1 >= 0)
                 {
                     int another = GetImageIndex(Wall[i, j - 1].GetComponent<SpriteRenderer>().sprite);
-                    minIndex = Math.Min(another,minIndex);
-                    maxIndex = Math.Max(another,maxIndex);
+                    minIndex = Math.Min(another, minIndex);
+                    maxIndex = Math.Max(another, maxIndex);
                 }
                 if (i - 1 >= 0)
                 {
-                    int another = GetImageIndex(Wall[i-1, j].GetComponent<SpriteRenderer>().sprite);
+                    int another = GetImageIndex(Wall[i - 1, j].GetComponent<SpriteRenderer>().sprite);
                     minIndex = Math.Min(another, minIndex);
                     maxIndex = Math.Max(another, maxIndex);
                 }
@@ -94,9 +94,10 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
                 }
                 else
                 {
-                    RandomNum = UnityEngine.Random.Range((tile[Math.Max(0, minIndex -1)].P+tile[Math.Max(0, minIndex - 2)].P)/2, tile[Math.Min(tile.Count - 1, maxIndex + 1)].P);
+                    RandomNum = UnityEngine.Random.Range((tile[Math.Max(0, minIndex - 1)].P + tile[Math.Max(0, minIndex - 2)].P) / 2, tile[Math.Min(tile.Count - 1, maxIndex + 1)].P);
                 }
             }
+            //RandomNum = UnityEngine.Random.Range(0,1000);
             for (int k = 0; k < tile.Count; k++)
             {
                 //if (gameManager.gameType == 1 && k == 1) continue;
