@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class MinGameHakaiGameManager : MonoBehaviour
 {
-    public const int m_size = 7;
-    GameObject[,] Wall = new GameObject[m_size, m_size];
+    public const int row_size = 11;
+    public const int col_size = 8;
+    GameObject[,] Wall = new GameObject[row_size, col_size];
 
     int[] dx = new int[9] { -1,0,1,-1,0,1,-1,0,1};
     int[] dy = new int[9] { -1,-1,-1,0,0,0,1,1,1};
@@ -68,14 +69,14 @@ public class MinGameHakaiGameManager : MonoBehaviour
         j = 0;
         foreach (GameObject v in GameObject.FindGameObjectsWithTag("Wall"))
         {
-            if (j >= m_size)
+            if (j >= col_size)
             {
                 Debug.LogError("壁の数が多すぎます");
                 break;
             }
             Wall[i, j] = v;
             i++;
-            if (i == m_size)
+            if (i == row_size)
             {
                 i = 0;
                 j++;
@@ -95,7 +96,7 @@ public class MinGameHakaiGameManager : MonoBehaviour
         {
             int nraw = raw + dy[i];
             int ncolumn = column + dx[i];
-            if (nraw < 0 || nraw >= m_size || ncolumn < 0 || ncolumn >= m_size) continue;
+            if (nraw < 0 || nraw >= row_size || ncolumn < 0 || ncolumn >= col_size) continue;
             //ほりたい壁が汚染された壁だった時
             if (Wall[nraw, ncolumn].GetComponent<SpriteRenderer>().sprite.name== PollutedLevel3) return false;
                
@@ -129,9 +130,9 @@ public class MinGameHakaiGameManager : MonoBehaviour
 
         int raw=0, column=0;
      
-         for (int i = 0; i < m_size; i++)
+         for (int i = 0; i < row_size; i++)
          {
-            for (int j = 0; j < m_size; j++)
+            for (int j = 0; j < col_size; j++)
             {
                 if (clickedGameObject == Wall[i, j])
                 {
@@ -148,7 +149,7 @@ public class MinGameHakaiGameManager : MonoBehaviour
             {
                 int nraw = raw + dy[i];
                 int ncolumn = column + dx[i];
-                if (nraw < 0 || nraw >= m_size || ncolumn < 0 || ncolumn >= m_size) continue;
+                if (nraw < 0 || nraw >= row_size || ncolumn < 0 || ncolumn >= col_size) continue;
 
                 ChangeSprite(Wall[nraw, ncolumn]);
             }

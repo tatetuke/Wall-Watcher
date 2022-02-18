@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class MinGameHakaiMapGenerater : MonoBehaviour
 {
     public const int Rsize=8;
-    public const int Csize=8;
+    public const int Csize=11;
     private bool[,] CanSetItem = new bool[Rsize,Csize ];
     public int RandomRageLengthWall=1000;
     public int RandomRageLengthItem=1000;
@@ -56,11 +57,47 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
     /// </summary>
     private void generateWall()
     {
-            int i = 0,j=0;
+        int i = 0,j=0;
+       
+
+
         foreach (GameObject wall in GameObject.FindGameObjectsWithTag("Wall"))
         {
-            int RandomNum = Random.Range(0, RandomRageLengthWall);
-                //Debug.Log(" "+RandomNum);
+
+            int RandomNum;
+            if (i == 0 && j == 0)
+            {
+                RandomNum = UnityEngine.Random.Range(tile[tile.Count - 3].P, tile[tile.Count - 1].P);
+            }
+            else
+            {
+
+                int minIndex = 1000;
+                int maxIndex = 0;
+                if (j - 1 >= 0)
+                {
+                    int another = GetImageIndex(Wall[i, j - 1].GetComponent<SpriteRenderer>().sprite);
+                    minIndex = Math.Min(another, minIndex);
+                    maxIndex = Math.Max(another, maxIndex);
+                }
+                if (i - 1 >= 0)
+                {
+                    int another = GetImageIndex(Wall[i - 1, j].GetComponent<SpriteRenderer>().sprite);
+                    minIndex = Math.Min(another, minIndex);
+                    maxIndex = Math.Max(another, maxIndex);
+                }
+                if (maxIndex - minIndex >= 2)
+                {
+                    RandomNum = UnityEngine.Random.Range((tile[Math.Max(0, minIndex - 1)].P + tile[Math.Max(0, minIndex - 2)].P) / 2, tile[Math.Min(tile.Count - 1, maxIndex + 1)].P);
+
+                    //RandomNum = UnityEngine.Random.Range(tile[Math.Max(0, minIndex - 1)].P+30, tile[Math.Min(tile.Count - 1, maxIndex)].P);
+                }
+                else
+                {
+                    RandomNum = UnityEngine.Random.Range((tile[Math.Max(0, minIndex - 1)].P + tile[Math.Max(0, minIndex - 2)].P) / 2, tile[Math.Min(tile.Count - 1, maxIndex + 1)].P);
+                }
+            }
+            //RandomNum = UnityEngine.Random.Range(0,1000);
             for (int k = 0; k < tile.Count; k++)
             {
                 //if (gameManager.gameType == 1 && k == 1) continue;
@@ -73,18 +110,20 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
 
                 }
             }
+            //Debug.Log(" "+RandomNum);
+
             //壁の初期化
-            if (j >= Rsize)
+            if (i >= Rsize)
             {
                 Debug.LogError("壁の数が多すぎます");
                 break;
             }
             Wall[i, j] = wall;
-            i++;
-            if (i == Csize)
+            j++;
+            if (j == Csize)
             {
-                i = 0;
-                j++;
+                j = 0;
+                i++;
             }
         }
     }
@@ -93,9 +132,9 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
         //設置できるアイテムの個数分だけ考える
         for(int i = 0; i < itemcount; i++)
         {
-            int RandomNum = Random.Range(0, RandomRageLengthItem);
-            int RandomRaw = Random.Range(0, Rsize - 1);
-            int RandomColumn = Random.Range(0, Csize - 1);
+            int RandomNum = UnityEngine.Random.Range(0, RandomRageLengthItem);
+            int RandomRaw = UnityEngine.Random.Range(0, Rsize - 1);
+            int RandomColumn = UnityEngine.Random.Range(0, Csize - 1);
             //j：アイテムのindex、アイテムとアイテムデータのindexは同じ
             for(int j = 0; j < Items.Count; j++)
             {
@@ -147,5 +186,17 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
 
     }
 
+    private int GetImageIndex(Sprite N)
+    {
+        for(int i = 0; i < tile.Count; i++)
+        {
+            if (tile[i].TileImage == N)
+            {
+                return i;
+            }
+        }
+        Debug.LogError("tileのIndexを取得できませんでした。");
+        return 0;
+    }
 
 }

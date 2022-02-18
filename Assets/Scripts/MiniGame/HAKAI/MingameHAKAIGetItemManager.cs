@@ -6,7 +6,8 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
 {
     [ ReadOnly] public List<GameObject> Item;
     [ ReadOnly] public GameObject[,] Wall;
-    private int WallLength;
+    private int col_size=11;
+    private int row_size=8;
     MinGameHakaiManager2 GameManager;
     private float LineThickness = 1;  // 光らせる際の線の太さ
     // Start is called before the first frame update
@@ -19,7 +20,6 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
             Item.Add(m_Item);
         }
         Wall = GameManager.Wall;
-        WallLength = 7;
 
     }
     private void Update()
@@ -49,9 +49,9 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
     /// <returns>行番号、列番号</returns>
     private (int, int) GetIndex(GameObject m_ItemWallData)
     {
-        for (int i = 0; i < WallLength; i++)
+        for (int i = 0; i < row_size; i++)
         {
-            for (int j = 0; j < WallLength; j++)
+            for (int j = 0; j < col_size; j++)
             {
                 if (m_ItemWallData != Wall[i, j]) continue;
                 return (i, j);

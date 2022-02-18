@@ -25,6 +25,18 @@ public class ChangeShopEventTab : MonoBehaviour
     public GameObject sellItemButton;
     public GameObject upgradeItemButton;
 
+    public ShopSelectItemManager shopSelectItemManager;
+    public ShopMessageManager shopMessageManager;
+    public ShopUpgradeItemGenerater shopUpgradeItemGenerater;
+    public ShopItemGenerater shopItemGenerater;
+    public ShopSellItemGenerator shopSellItemGenerator;
+
+    public Toggle buyToggle;
+    public Toggle sellToggle;
+    public Toggle upgradeToggle;
+
+
+
     public GameObject NoItemImage;
 
     public SelectTabEnum selectTab;  
@@ -42,24 +54,47 @@ public class ChangeShopEventTab : MonoBehaviour
     //タブが押されたときに呼ばれる関数(メイン)
     public void pushBuyTab()
     {
-        UnactivateNoItemImage();
-        ChangeSelectTabEnumBuy();
-        ActivateBuyItemList();
-        ActivateBuyItemButton();
+        if (buyToggle.isOn)
+        {
+            UnactivateNoItemImage();
+            ChangeSelectTabEnumBuy();
+            ActivateBuyItemList();
+            ActivateBuyItemButton();
+            shopSelectItemManager.ClearItemSelect();
+            shopItemGenerater.reloadBuyItemlist();
+            shopMessageManager.ChageModeToBuy();
+        }
     }
     public void pushSellTab()
     {
-        UnactivateNoItemImage();
-        ChangeSelectTabEnumSell();
-        ActivateSellItemList();
-        ActivateSellItemButton();
+        if (sellToggle.isOn)
+        {
+            UnactivateNoItemImage();
+            ChangeSelectTabEnumSell();
+            ActivateSellItemList();
+            ActivateSellItemButton();
+            shopSelectItemManager.ClearItemSelect();
+            shopSellItemGenerator.reloadItemlist();
+            shopMessageManager.ChageModeToSell();
+        }
+
     }
     public void pushUpgradeTab()
     {
-        UnactivateNoItemImage();
-        ChangeSelectTabEnumUpgrade();
-        ActivateUpgradeList();
-        ActivateUpgradeItemButton();
+        if (upgradeToggle.isOn)
+        {
+            UnactivateNoItemImage();
+            ChangeSelectTabEnumUpgrade();
+            ActivateUpgradeList();
+            ActivateUpgradeItemButton();
+            shopSelectItemManager.ClearItemSelect();
+            shopMessageManager.ChageModeToUpdate();
+            shopUpgradeItemGenerater.reloadItemlist();
+        }
+        else//OFFになったときに呼ばれる
+        {
+            shopUpgradeItemGenerater.UnactivateNoSellItemImage();
+        }
     }
 
     //購入，(売却，強化)するアイテムのリストを生成する関数，
