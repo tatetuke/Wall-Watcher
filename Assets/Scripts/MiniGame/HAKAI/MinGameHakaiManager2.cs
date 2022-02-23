@@ -30,6 +30,9 @@ public class MinGameHakaiManager2 : MonoBehaviour
     [SerializeField] GameObject shakeObj;//揺らすゲームオブジェクトの選択
     [SerializeField] GameObject lifeGage;//揺らすゲームオブジェクトの選択
 
+    [SerializeField] private GameObject result;
+
+
     public Sprite []WallSprite=new Sprite[6];//壁の画像
 
     [SerializeField] private MinGameHakaiItemGetUI ItemGetUI;//UIのアイテム欄を更新する.
@@ -43,7 +46,8 @@ public class MinGameHakaiManager2 : MonoBehaviour
         PreStart,
         Pause,
         Result,
-        End
+        End,
+        EndProcessing
     }
     Game_State State;
     private void Start()
@@ -56,33 +60,49 @@ public class MinGameHakaiManager2 : MonoBehaviour
         UpdateItemData.Invoke();
         //UIのアイテム情報の更新
         ItemGetUI.ChangeGetItemUI();
+
+        State = Game_State.Playing;
     }
     private void Update()
     {
-        ClickProcessing();
+        //ゲームが終わったかどうかの判定
+        CheckGameEnd();
+
+        //ゲーム状態に応じた処理を選択、実行
+        StartCoroutine(MinGameState());
+
 
     }
-    private void MinGameState()
+    IEnumerator MinGameState()
     {
+
 
         switch (State)
         {
             case Game_State.PreStart:
                 break;
             case Game_State.Playing:
+                Click();
                 break;
-
             case Game_State.Result:
+
+                State = Game_State.EndProcessing;
+
+                result.SetActive(true);
+
+                //State = Game_State.End;
+
                 break;
             case Game_State.Pause:
+                break;
+            case Game_State.EndProcessing://終了の処理待ち
                 break;
             case Game_State.End:
                 PollutionManager.breakMarker();  // hekimenマップのマーカー状態を変更させる関数
                 break;
-
-
         }
 
+        yield return 0;
 
     }
     /// <summary>
@@ -141,7 +161,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     /// <summary>
     /// クリックしたオブジェクトを取得
     /// </summary>
-    private void ClickProcessing()
+    private void Click()
     {
 
         GameObject clickedGameObject;
@@ -159,12 +179,14 @@ public class MinGameHakaiManager2 : MonoBehaviour
         //クリックしたものが壁でなければリターン
         if (clickedGameObject==null||clickedGameObject.tag != "Wall") return;
 
-        //現在のHPよりくらうダメージが大きい場合ゲージを揺らしてreturn 
-        if (gameStatus.life - (int)tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1] < 0)
-        {
-            AttackErrorEffect();
-            return;
-        }
+
+        //下。HPを0にする必要があるため削除?
+        ////現在のHPよりくらうダメージが大きい場合,ゲージを揺らしてreturn 
+        //if (gameStatus.life - (int)tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1] < 0)
+        //{
+        //    AttackErrorEffect();
+        //    return;
+        //}
 
         Debug.Log(clickedGameObject.name);
         int raw = 0, column = 0;
@@ -348,5 +370,42 @@ public class MinGameHakaiManager2 : MonoBehaviour
         PolutedLevel5 = WallSprite[4].name;
         PolutedLevel6 = WallSprite[5].name;
     }
+
+    /// <summary>
+    /// ゲームを終了するかどうかの判定をとる。
+    /// </summary>
+    private void CheckGameEnd()
+    {
+        bool end = false;
+        //HPが0ないときに終了する。
+        if (gameStatus.life <= 0) end = true;
+
+
+        //掘る場所がないとき終了する
+        bool canDig = false;
+        for(int i = 0; i <RawSize;i++)
+        {
+            for(int j = 0; j < ColumnSize; j++)
+            {
+                if (Wall[i, j].GetComponent<SpriteRenderer>().sprite.name != PolutedLevel6) canDig = true;
+            }
+        }
+
+        if (!canDig) end = true;
+
+        if (end) State = Game_State.Result;
+
+
+    }
+
+
+
+
+
+
+
+
+
+
 }
 
