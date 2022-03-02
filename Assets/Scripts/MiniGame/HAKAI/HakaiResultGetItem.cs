@@ -13,10 +13,17 @@ public class HakaiResultGetItem : MonoBehaviour
 
 
     public bool endFadeInAnime=false;
+    public bool endFadeOutAnime=false;
+    
 
     public void IsOnEndFadeInAnime()
     {
         endFadeInAnime = true;
+    }
+
+    public void IsOnEndFadeOutAnime()
+    {
+        endFadeOutAnime = true;
     }
 
 }

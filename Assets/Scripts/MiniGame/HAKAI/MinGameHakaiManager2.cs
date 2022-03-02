@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
+using UnityEngine.UI;
+using Kyoichi;
 public class MinGameHakaiManager2 : MonoBehaviour
 {
     public int gameType = 1;
@@ -31,9 +33,14 @@ public class MinGameHakaiManager2 : MonoBehaviour
     [SerializeField] GameObject lifeGage;//揺らすゲームオブジェクトの選択
 
     [SerializeField] private GameObject result;
-
+    [SerializeField] private Transform resultCanvas;
 
     public Sprite []WallSprite=new Sprite[6];//壁の画像
+
+    public MingameHAKAIGetItemManager itemManager;
+
+    private Inventry inventory;
+
 
     [SerializeField] private MinGameHakaiItemGetUI ItemGetUI;//UIのアイテム欄を更新する.
 
@@ -49,9 +56,12 @@ public class MinGameHakaiManager2 : MonoBehaviour
         End,
         EndProcessing
     }
-    Game_State State;
+    [SerializeField] private Game_State State;
     private void Start()
     {
+        //インベントリ初期化
+        inventory = GameObject.Find("Managers").GetComponent<Inventry>();
+
         State = Game_State.PreStart;
         WallInit();
         WallAnimeInit();
@@ -65,8 +75,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     }
     private void Update()
     {
-        //ゲームが終わったかどうかの判定
-        CheckGameEnd();
+        
 
         //ゲーム状態に応じた処理を選択、実行
         StartCoroutine(MinGameState());
@@ -83,20 +92,27 @@ public class MinGameHakaiManager2 : MonoBehaviour
                 break;
             case Game_State.Playing:
                 Click();
+                //ゲームが終わったかどうかの判定
+                CheckGameEnd();
+
                 break;
             case Game_State.Result:
-
                 State = Game_State.EndProcessing;
 
                 result.SetActive(true);
 
-                //State = Game_State.End;
+                //リザルトの表示
+                yield return  StartCoroutine(CreatGetItem());
+
+                State = Game_State.End;
 
                 break;
             case Game_State.Pause:
                 break;
+
             case Game_State.EndProcessing://終了の処理待ち
                 break;
+
             case Game_State.End:
                 PollutionManager.breakMarker();  // hekimenマップのマーカー状態を変更させる関数
                 break;
@@ -398,12 +414,63 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
     }
 
+    IEnumerator ResultGetItem(GameObject res)
+    {
+        HakaiResultGetItem resultData = res.GetComponent<HakaiResultGetItem>();
+        //アニメーションの終了待ち
+        while (!resultData.endFadeInAnime)
+        {
+            yield return null;
+        }
 
+        //入力待ち
+        while (!Input.anyKeyDown)
+        {
+            yield return null;
+        }
+        resultData.animator.SetTrigger("fadeOut");
 
+        //フェードアウトアニメの終了待ち
+        while (!resultData.endFadeOutAnime)
+        {
+            yield return null;
+        }
 
+        //削除
+        Destroy(res);
+        
 
+        yield return 0; 
+    }
 
+    IEnumerator CreatGetItem()
+    {
+        Debug.Log(itemManager.Item.Count);
+        foreach (GameObject res in itemManager.Item)
+        {
+            MinGameHAKAIItem itemData = res.GetComponent<MinGameHAKAIItem>();
+            //取得できないアイテムならパス
+            if (!itemData.CanGetItem) continue;
 
+            //インベントリーの更新(追加)
+            inventory.AddItem(itemData.itemSO);
+
+            GameObject view = Instantiate(Resources.Load("MinGameHakai/ResultGetItem"),resultCanvas.transform) as GameObject;
+
+            HakaiResultGetItem viewData = view.GetComponent<HakaiResultGetItem>();
+            viewData.itemIcon.GetComponent<Image>().sprite = itemData.itemSO.icon;
+            viewData.itemDiscription.GetComponent<Text>().text = itemData.itemSO.description;
+            viewData.itemName.GetComponent<Text>().text = itemData.itemSO.item_name;
+            viewData.itemInInventoryNum.GetComponent<Text>().text = "x" + inventory.DataCount(itemData.itemSO).ToString();
+
+            
+            yield return StartCoroutine(ResultGetItem(view));
+
+        }
+
+        yield return 0;
+    }
+ 
 
 
 
