@@ -41,6 +41,9 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
     private Inventry inventory;
 
+    public Image blackImage;//暗転のための画像
+    public GameObject blackImageObj;
+
 
     [SerializeField] private MinGameHakaiItemGetUI ItemGetUI;//UIのアイテム欄を更新する.
 
@@ -114,6 +117,10 @@ public class MinGameHakaiManager2 : MonoBehaviour
                 break;
 
             case Game_State.End:
+
+                //フェードアウト
+                yield return StartCoroutine(FadeOut(1.5f));
+
                 PollutionManager.breakMarker();  // hekimenマップのマーカー状態を変更させる関数
                 break;
         }
@@ -470,7 +477,24 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
         yield return 0;
     }
- 
+
+    IEnumerator FadeOut(float interval)
+    {
+        blackImageObj.SetActive(true);
+
+        float time = 0;
+       
+        Color alpha = blackImage.color;
+        
+        while (time<=interval)
+        {
+            alpha.a = Mathf.Lerp(0f, 1f, time / interval);
+            time += Time.deltaTime;
+            blackImage.color = alpha;
+            yield return null;
+        }
+        yield return 0;
+    }
 
 
 
