@@ -29,6 +29,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     [SerializeField]MinGameHakaiToolDataManager toolManager;
     [SerializeField]MinGameHakaiToolData tool;
 
+
     [SerializeField] GameObject shakeObj;//揺らすゲームオブジェクトの選択
     [SerializeField] GameObject lifeGage;//揺らすゲームオブジェクトの選択
 
@@ -49,6 +50,12 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
     public HakaiSoundManager soundManager;
 
+    public HakaiEndMessage endMessage;
+    public GameObject endMessageObj;
+
+    private Vector3 originalBordPosition;
+    private Vector3 originalHPBarPosition;
+
 
     //UIがシェイク時にぶれるバグを修正仕様とした跡地
     //private Vector3 initShakeObj;
@@ -67,6 +74,10 @@ public class MinGameHakaiManager2 : MonoBehaviour
     {
         //インベントリ初期化
         inventory = GameObject.Find("Managers").GetComponent<Inventry>();
+
+        //揺れによってオブジェクトが移動するバグ修正のための
+        originalBordPosition = shakeObj.transform.position;
+        originalHPBarPosition = lifeGage.transform.position;
 
         State = GAME_STATE.PRESTART;
         WallInit();
@@ -108,6 +119,11 @@ public class MinGameHakaiManager2 : MonoBehaviour
                 State = GAME_STATE.END_PROCESSING;
 
                 result.SetActive(true);
+
+
+                //終了メッセージの表示
+                yield return  StartCoroutine(EndMessageAnime());
+
 
                 //リザルトの表示
                 yield return  StartCoroutine(CreatGetItem());
@@ -277,8 +293,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
         //UIのアイテム情報の更新
         ItemGetUI.ChangeGetItemUI();
     }
-
-    //道具を使用できないときのエフェクト
+    //アイテムが使えないときの揺れ
     private void AttackErrorEffect()
     {
         Debug.Log("この道具を使うには体力が足りません");
@@ -296,7 +311,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     }
 
     /// <summary>
-    /// 盤面を反転させるときのエフェクト
+    /// 盤面を反転させるときの画面の揺れ
     /// </summary>
     private void ReverseSpriteEffect()
     {
@@ -314,6 +329,23 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
         //athleics
 
+        StartCoroutine(SetOriginalPositionBord(duration));
+
+
+    }
+    private IEnumerator SetOriginalPositionBord(float time)
+    {
+        float t=0;
+        
+        while(t<=time){
+
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        shakeObj.transform.position = originalBordPosition;
+
+        yield return 0;
     }
 
     /// <summary>
@@ -525,7 +557,20 @@ public class MinGameHakaiManager2 : MonoBehaviour
         yield return 0;
     }
 
+    IEnumerator EndMessageAnime()
+    {
+        endMessageObj.SetActive(true);
 
+        endMessage.animator.SetTrigger("ShowMessage");
+
+        while (!endMessage.endAnime)
+        {
+            yield return null;
+        }
+
+
+        yield return 0;
+    }
 
 }
 
