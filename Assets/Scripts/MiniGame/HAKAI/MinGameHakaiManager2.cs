@@ -47,25 +47,28 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
     [SerializeField] private MinGameHakaiItemGetUI ItemGetUI;//UIのアイテム欄を更新する.
 
+    public HakaiSoundManager soundManager;
+
+
     //UIがシェイク時にぶれるバグを修正仕様とした跡地
     //private Vector3 initShakeObj;
     //private Vector3 initLifeGage;
-    enum Game_State
+    enum GAME_STATE
     {
-        Playing,
-        PreStart,
-        Pause,
-        Result,
-        End,
-        EndProcessing
+        PLAYING,
+        PRESTART,
+        PAUSE,
+        RESULT,
+        END,
+        END_PROCESSING
     }
-    [SerializeField] private Game_State State;
+    [SerializeField] private GAME_STATE State;
     private void Start()
     {
         //インベントリ初期化
         inventory = GameObject.Find("Managers").GetComponent<Inventry>();
 
-        State = Game_State.PreStart;
+        State = GAME_STATE.PRESTART;
         WallInit();
         WallAnimeInit();
         GetSpriteName();
@@ -74,7 +77,9 @@ public class MinGameHakaiManager2 : MonoBehaviour
         //UIのアイテム情報の更新
         ItemGetUI.ChangeGetItemUI();
 
-        State = Game_State.Playing;
+        State = GAME_STATE.PLAYING;
+
+        soundManager.PlayBGM();
     }
     private void Update()
     {
@@ -91,32 +96,32 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
         switch (State)
         {
-            case Game_State.PreStart:
+            case GAME_STATE.PRESTART:
                 break;
-            case Game_State.Playing:
+            case GAME_STATE.PLAYING:
                 Click();
                 //ゲームが終わったかどうかの判定
                 CheckGameEnd();
 
                 break;
-            case Game_State.Result:
-                State = Game_State.EndProcessing;
+            case GAME_STATE.RESULT:
+                State = GAME_STATE.END_PROCESSING;
 
                 result.SetActive(true);
 
                 //リザルトの表示
                 yield return  StartCoroutine(CreatGetItem());
 
-                State = Game_State.End;
+                State = GAME_STATE.END;
 
                 break;
-            case Game_State.Pause:
+            case GAME_STATE.PAUSE:
                 break;
 
-            case Game_State.EndProcessing://終了の処理待ち
+            case GAME_STATE.END_PROCESSING://終了の処理待ち
                 break;
 
-            case Game_State.End:
+            case GAME_STATE.END:
 
                 //フェードアウト
                 yield return StartCoroutine(FadeOut(1.5f));
@@ -210,6 +215,30 @@ public class MinGameHakaiManager2 : MonoBehaviour
         //    AttackErrorEffect();
         //    return;
         //}
+
+
+        //ToDo道具によってSEを変化させる
+        //削る時に出るSE。
+        switch (toolManager.SelectToolNum)
+        {
+            case 0:
+                soundManager.PlaySE(HakaiSoundManager.SE_TYPE.TOOL1);
+                break;
+            case 1:
+                soundManager.PlaySE(HakaiSoundManager.SE_TYPE.TOOL2);
+
+                break;
+            case 2:
+                soundManager.PlaySE(HakaiSoundManager.SE_TYPE.TOOL3);
+
+                break;
+
+        }
+
+
+
+
+
 
         Debug.Log(clickedGameObject.name);
         int raw = 0, column = 0;
@@ -416,7 +445,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
         if (!canDig) end = true;
 
-        if (end) State = Game_State.Result;
+        if (end) State = GAME_STATE.RESULT;
 
 
     }
