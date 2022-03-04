@@ -8,6 +8,7 @@ public class Children : MonoBehaviour
     [SerializeField] Text m_Text;
     [SerializeField] RectTransform rectTransform;
     [SerializeField] Transform target = null;
+    [SerializeField] GameObject view = null;
 
     void Awake()
     {
@@ -28,8 +29,16 @@ public class Children : MonoBehaviour
         
     }
 
+    public void SetPosition()
+    {
+        rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, view.transform.position);
+    }
+
     public void SetText(string s)
     {
+        Vector3 pos = target.position;
+        pos.y += 1.5f;
+        rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, pos);
         m_Text.text = s;
     }
 
