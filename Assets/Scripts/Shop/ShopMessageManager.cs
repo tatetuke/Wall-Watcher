@@ -18,6 +18,10 @@ public class ShopMessageManager : MonoBehaviour
     private bool selectDialog;
     Color gray;
     Color black;
+    
+    public SoundManagerShop soundManager;
+
+
     enum ShopMode
     {
         buy,
@@ -75,6 +79,12 @@ public class ShopMessageManager : MonoBehaviour
             messageTextObj.SetActive(false);
             yield return StartCoroutine(SelectYes());
         }
+        else
+        {
+            //SEを鳴らす
+            soundManager.PlayBackSE();
+
+        }
 
         messageTextObj.SetActive(false);
         canGenerateDialog = true;
@@ -93,10 +103,13 @@ public class ShopMessageManager : MonoBehaviour
         {
             selectDialog = true;
             DialogColorChange();
+            soundManager.PlaySelectSE();
         }
         if (Input.GetKeyDown("d")) { 
             selectDialog = false;
             DialogColorChange();
+            soundManager.PlaySelectSE();
+
         }
 
     }
@@ -107,6 +120,8 @@ public class ShopMessageManager : MonoBehaviour
     /// </summary>
     IEnumerator SelectYes()
     {
+        soundManager.PlayDecideSE();
+
         switch (mode)
         {
             case ShopMode.buy:

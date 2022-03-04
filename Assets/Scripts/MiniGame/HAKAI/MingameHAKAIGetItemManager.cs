@@ -69,7 +69,7 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
         foreach(GameObject m_Item in Item)
         {
             CheckGetItem(m_Item);
-            UpdateGlowImage(m_Item);
+            //UpdateGlowImage(m_Item);
         }
     }
     /// <summary>
@@ -84,7 +84,7 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
         {
             for(int j = m_Item.m_TopLeftColumn; j < m_Item.m_TopLeftColumn + m_Item.m_Ysize; j++)
             {
-                if (Wall[i, j].GetComponent<SpriteRenderer>().sprite.name != GameManager.PolutedLevel3)
+                if (Wall[i, j].GetComponent<SpriteRenderer>().sprite.name != GameManager.PolutedLevel6)
                 {
                     m_Item.CanGetItem = false;
                     return;
@@ -111,7 +111,7 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
         else
         {
             SetGlowLine(m_Item.gameObject, LineThickness);
-        Debug.Log("線");
+       
         }
 
 
