@@ -56,6 +56,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     private Vector3 originalBordPosition;
     private Vector3 originalHPBarPosition;
 
+    [SerializeField] private SpriteRenderer backBlack;
 
     //UIがシェイク時にぶれるバグを修正仕様とした跡地
     //private Vector3 initShakeObj;
@@ -67,7 +68,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
         PAUSE,
         RESULT,
         END,
-        END_PROCESSING
+        PROCESSING
     }
     [SerializeField] private GAME_STATE State;
     private void Start()
@@ -116,7 +117,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
                 break;
             case GAME_STATE.RESULT:
-                State = GAME_STATE.END_PROCESSING;
+                State = GAME_STATE.PROCESSING;
 
                 result.SetActive(true);
 
@@ -134,10 +135,14 @@ public class MinGameHakaiManager2 : MonoBehaviour
             case GAME_STATE.PAUSE:
                 break;
 
-            case GAME_STATE.END_PROCESSING://終了の処理待ち
+            case GAME_STATE.PROCESSING://処理の終了待ち
                 break;
 
             case GAME_STATE.END:
+                
+                State = GAME_STATE.PROCESSING;
+
+                yield return new WaitForSeconds(1f);
 
                 //フェードアウト
                 yield return StartCoroutine(FadeOut(1.5f));
@@ -286,6 +291,13 @@ public class MinGameHakaiManager2 : MonoBehaviour
         //ToDo
         //レベルが0の時の例外処理（多分いらない）
         gameStatus.Damage(tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1]);
+
+        //背景の黒画像の透過度を更新
+        Color tmpColor = backBlack.color;
+        Debug.Log(tmpColor.a+"aaa");
+        tmpColor.a =150f/255f-150f/255f*gameStatus.life/gameStatus.maxLife;
+        backBlack.color = tmpColor;
+
 
         //取得できるかどうかについてアイテムの情報を更新
         UpdateItemData.Invoke();
@@ -567,7 +579,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
         {
             yield return null;
         }
-
+        yield return new WaitForSeconds(0.3f);
 
         yield return 0;
     }
