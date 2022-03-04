@@ -14,18 +14,21 @@ public class PlayerPositionSet : MonoBehaviour
     {
         //int prev = AllMapSet.prevMap;
         //int crnt = AllMapSet.currentMap;
-        float newx = AllMapSet.get_initial_position().Item1;
-        float newy = AllMapSet.get_initial_position().Item2;
-        this.transform.position = new Vector3(newx, newy, 0);
+        if (AllMapSet.prevMap != MAP_NUM.invalid)  // デバッグ以外
+        {
+            float newx = AllMapSet.get_initial_position().Item1;
+            float newy = AllMapSet.get_initial_position().Item2;
+            this.transform.position = new Vector3(newx, newy, 0);
 
 
-        if (AllMapSet.prevMap != AllMapSet.currentMap)   // この条件文は後で書き換える
-          {
-            if (AllMapSet.autoWalkingDirection != Direction2D.Invalid)
+            if (AllMapSet.prevMap != AllMapSet.currentMap)   // この条件文は後で書き換える
             {
-                StartCoroutine(autoMove());
-            }
+                if (AllMapSet.autoWalkingDirection != Direction2D.Invalid)
+                {
+                    StartCoroutine(autoMove());
+                }
 
+            }
         }
 
     }
