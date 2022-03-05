@@ -58,6 +58,17 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
     [SerializeField] private SpriteRenderer backBlack;
 
+    [SerializeField] private RawImage noise;
+
+
+    [SerializeField]
+    [Range(0, 1)]
+    private float backBalckAlpha = 0.4f;
+    [SerializeField]
+    [Range(0, 1)]
+    private float noiseAlpha = 0.15f;
+
+
     //UIがシェイク時にぶれるバグを修正仕様とした跡地
     //private Vector3 initShakeObj;
     //private Vector3 initLifeGage;
@@ -292,11 +303,22 @@ public class MinGameHakaiManager2 : MonoBehaviour
         //レベルが0の時の例外処理（多分いらない）
         gameStatus.Damage(tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1]);
 
+
+
         //背景の黒画像の透過度を更新
         Color tmpColor = backBlack.color;
         Debug.Log(tmpColor.a+"aaa");
-        tmpColor.a =150f/255f-150f/255f*gameStatus.life/gameStatus.maxLife;
+        tmpColor.a =backBalckAlpha-backBalckAlpha*gameStatus.life/gameStatus.maxLife;
         backBlack.color = tmpColor;
+
+        //ノイズの透過度を更新
+        if (gameStatus.life * 2 <= gameStatus.maxLife)
+        {
+            Color noiseTmp = noise.color;
+            noiseTmp.a = noiseAlpha - noiseAlpha * 2 * gameStatus.life / gameStatus.maxLife;
+            noise.color = noiseTmp;
+        }
+
 
 
         //取得できるかどうかについてアイテムの情報を更新
