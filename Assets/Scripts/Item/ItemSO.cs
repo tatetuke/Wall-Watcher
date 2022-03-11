@@ -22,5 +22,7 @@ public class ItemSO : ScriptableObject
     public int sellPrice;
     public bool canUpgradeItem;
     public bool canSellItem;
+    [Tooltip("アップデート後のアイテム(アップデートできないアイテムはnull")]
+    public ItemSO afterUpdateItem;
 
 }

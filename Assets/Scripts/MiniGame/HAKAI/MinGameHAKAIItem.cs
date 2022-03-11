@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class MinGameHAKAIItem : MonoBehaviour
 {
+    public ItemSO itemSO;
     [ReadOnly]public GameObject KeyWall;
     public int m_Xsize;
     public int m_Ysize;
     public int m_TopLeftRaw;
     public int m_TopLeftColumn;
     public bool CanGetItem;
+    public SpriteRenderer sprite;
     /// <summary>
     /// アイテムの出現確率
     /// </summary>
@@ -18,6 +20,7 @@ public class MinGameHAKAIItem : MonoBehaviour
     void Start()
     {
         CanGetItem = false;
+        sprite.sprite = itemSO.icon;
  
     }
     //左上の座標を取得
