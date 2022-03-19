@@ -13,7 +13,7 @@ public class PauseManager : SingletonMonoBehaviour<PauseManager>
     public UnityEvent OnPauseExit { get; } = new UnityEvent();
 
     //ポーズしてるかどうか
-    bool pause = false;
+    [SerializeField,ReadOnly]bool pause = false;
 
     // Update is called once per frame
     void Update()

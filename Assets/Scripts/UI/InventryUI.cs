@@ -10,8 +10,6 @@ public class InventryUI : UIView
     [SerializeField] GameObject itemContainerUI;
     [Header("Object references")]
     [SerializeField] RectTransform container;
-    //[SerializeField] TMP_Dropdown dropdown;
-    [SerializeField] Dropdown dropdown;
     [SerializeField] Image itemIcon;
     [SerializeField] TextMeshProUGUI itemName;
     [SerializeField] TextMeshProUGUI description;
@@ -32,7 +30,6 @@ public class InventryUI : UIView
     }
     private void Start()
     {
-        dropdown.onValueChanged.AddListener(OnSelectRarelity);
 
     }
     public void OnSelectRarelity(int value)
