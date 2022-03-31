@@ -602,7 +602,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
             //インベントリーの更新(追加)
             inventory.AddItem(itemData.itemSO);
 
-            GameObject view = Instantiate(Resources.Load("MinGameHakai/ResultGetItem"),resultCanvas.transform) as GameObject;
+            GameObject view = Instantiate(Resources.Load("MinGameHakai/ResultGetItem2"),resultCanvas.transform) as GameObject;
 
             HakaiResultGetItem viewData = view.GetComponent<HakaiResultGetItem>();
             viewData.itemIcon.GetComponent<Image>().sprite = itemData.itemSO.icon;
