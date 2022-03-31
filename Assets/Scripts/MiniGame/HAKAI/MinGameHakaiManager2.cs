@@ -320,21 +320,25 @@ public class MinGameHakaiManager2 : MonoBehaviour
         for (int i = 0; i < 9; i++)
         {
             //使用している道具の裏返せる範囲で無ければスキップ
-            if (!tool.Tools[toolManager.SelectToolNum].CanChangeSprite[i]) continue;
             int nraw = raw + dy[i];
             int ncolumn = column + dx[i];
             if (nraw < 0 || nraw >= rawSize || ncolumn < 0 || ncolumn >= collumnSize) continue;
-            if (gameType == 1)
+            for (int j = 0; j < tool.Tools[toolManager.SelectToolNum].CanChangeSprite[i]; j++)
             {
-                ChangeSprite1(Wall[nraw, ncolumn],WallAnime[nraw,ncolumn]);
-            }else if (gameType == 2)
-            {
-                ChangeSprite2(Wall[nraw, ncolumn]);
+                if (gameType == 1)
+                {
+                    ChangeSprite1(Wall[nraw, ncolumn], WallAnime[nraw, ncolumn]);
+                }
+                else if (gameType == 2)
+                {
+                    ChangeSprite2(Wall[nraw, ncolumn]);
 
-            }else if (gameType == 3)
-            {
-                ChangeSprite3(Wall[nraw, ncolumn]);
-                ChangeShadow();
+                }
+                else if (gameType == 3)
+                {
+                    ChangeSprite3(Wall[nraw, ncolumn]);
+                    ChangeShadow();
+                }
             }
         }
         //道具を使用した時のエフェクトを出す。

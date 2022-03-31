@@ -73,7 +73,7 @@ public class ShopUpgrade : MonoBehaviour
         inventry.AddItem(selectManager.item.afterUpdateItem);
 
         
-        yield return StartCoroutine(ShowUpgradeMessage());
+        //yield return StartCoroutine(ShowUpgradeMessage());
 
         //店員が話す
         flowchart.SendFungusMessage("SellItem!");

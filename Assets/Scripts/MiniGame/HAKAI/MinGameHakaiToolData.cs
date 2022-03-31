@@ -132,6 +132,9 @@ public class MinGameHakaiToolData : MonoBehaviour
         //クリックした周囲8マス
         Tools[0].HanniImage = ToolImages[0];
         Tools[0].level = 1;
+
+        Tools[0].CanChangeSprite = new int[9] { 1,1,1,1,1,1,1,1,1};
+
     }
     private void Tool1InitLv2()
     {
@@ -144,6 +147,9 @@ public class MinGameHakaiToolData : MonoBehaviour
         //クリックした周囲8マス
         Tools[0].HanniImage = ToolImages[0];
         Tools[0].level = 2;
+
+        Tools[0].CanChangeSprite = new int[9] { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
     }
     private void Tool1InitLv3()
     {
@@ -156,6 +162,9 @@ public class MinGameHakaiToolData : MonoBehaviour
         //クリックした周囲8マス
         Tools[0].HanniImage = ToolImages[0];
         Tools[0].level = 3;
+
+        Tools[0].CanChangeSprite = new int[9] { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
     }
 
 
@@ -176,10 +185,8 @@ public class MinGameHakaiToolData : MonoBehaviour
         //クリックした周囲8マス
         Tools[1].HanniImage = ToolImages[1];
         Tools[1].level = 1;
-        Tools[1].CanChangeSprite[0] = false;
-        Tools[1].CanChangeSprite[2] = false;
-        Tools[1].CanChangeSprite[6] = false;
-        Tools[1].CanChangeSprite[8] = false;
+        Tools[1].CanChangeSprite = new int[9] { 0, 1, 0, 1, 2, 1, 0, 1, 0 };
+
 
     }
     private void Tool2InitLv2()
@@ -193,10 +200,8 @@ public class MinGameHakaiToolData : MonoBehaviour
         //クリックした周囲8マス
         Tools[1].HanniImage = ToolImages[1];
         Tools[1].level = 2;
-        Tools[1].CanChangeSprite[0] = false;
-        Tools[1].CanChangeSprite[2] = false;
-        Tools[1].CanChangeSprite[6] = false;
-        Tools[1].CanChangeSprite[8] = false;
+        Tools[1].CanChangeSprite = new int[9] { 0, 1, 0, 1, 2, 1, 0, 1, 0 };
+
 
     }
     private void Tool2InitLv3()
@@ -210,10 +215,8 @@ public class MinGameHakaiToolData : MonoBehaviour
         //クリックした周囲8マス
         Tools[1].HanniImage = ToolImages[1];
         Tools[1].level = 3;
-        Tools[1].CanChangeSprite[0] = false;
-        Tools[1].CanChangeSprite[2] = false;
-        Tools[1].CanChangeSprite[6] = false;
-        Tools[1].CanChangeSprite[8] = false;
+        Tools[1].CanChangeSprite = new int[9] { 0, 1, 0, 1, 2, 1, 0, 1, 0 };
+
 
     }
 
@@ -234,14 +237,8 @@ public class MinGameHakaiToolData : MonoBehaviour
         Tools[2].HanniImage = ToolImages[2];
         Tools[2].level = 1;
         //クリックした壁のみ
-        Tools[2].CanChangeSprite[0] = false;
-        Tools[2].CanChangeSprite[1] = false;
-        Tools[2].CanChangeSprite[2] = false;
-        Tools[2].CanChangeSprite[3] = false;
-        Tools[2].CanChangeSprite[5] = false;
-        Tools[2].CanChangeSprite[6] = false;
-        Tools[2].CanChangeSprite[7] = false;
-        Tools[2].CanChangeSprite[8] = false;
+        Tools[2].CanChangeSprite = new int[9] { 0, 0, 0, 0, 4, 0, 0, 0, 0 };
+
 
     }
     private void Tool3InitLv2()
@@ -255,14 +252,8 @@ public class MinGameHakaiToolData : MonoBehaviour
         Tools[2].HanniImage = ToolImages[2];
         Tools[2].level = 2;
         //クリックした壁のみ
-        Tools[2].CanChangeSprite[0] = false;
-        Tools[2].CanChangeSprite[1] = false;
-        Tools[2].CanChangeSprite[2] = false;
-        Tools[2].CanChangeSprite[3] = false;
-        Tools[2].CanChangeSprite[5] = false;
-        Tools[2].CanChangeSprite[6] = false;
-        Tools[2].CanChangeSprite[7] = false;
-        Tools[2].CanChangeSprite[8] = false;
+        Tools[2].CanChangeSprite = new int[9] { 0, 0, 0, 0, 4, 0, 0, 0, 0 };
+
 
     }
     private void Tool3InitLv3()
@@ -276,14 +267,8 @@ public class MinGameHakaiToolData : MonoBehaviour
         Tools[2].HanniImage = ToolImages[2];
         Tools[2].level = 3;
         //クリックした壁のみ
-        Tools[2].CanChangeSprite[0] = false;
-        Tools[2].CanChangeSprite[1] = false;
-        Tools[2].CanChangeSprite[2] = false;
-        Tools[2].CanChangeSprite[3] = false;
-        Tools[2].CanChangeSprite[5] = false;
-        Tools[2].CanChangeSprite[6] = false;
-        Tools[2].CanChangeSprite[7] = false;
-        Tools[2].CanChangeSprite[8] = false;
+        Tools[2].CanChangeSprite = new int[9] { 0, 0, 0, 0, 4, 0, 0, 0, 0 };
+
 
     }
 
