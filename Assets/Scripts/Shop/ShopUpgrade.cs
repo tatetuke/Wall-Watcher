@@ -11,7 +11,7 @@ public class ShopUpgrade : MonoBehaviour
     public Fungus.Flowchart flowchart;
     public Inventry inventry;
     public ChangeShopEventTab tabManager;
-    private bool canUpgrade=true;
+    private bool canUpgrade = true;
 
     [SerializeField] private ShopUpgradeItemGenerater generator;
 
@@ -47,9 +47,21 @@ public class ShopUpgrade : MonoBehaviour
         if (selectManager.item == null)
         {
             NoItem();
+            yield return 0;
         }
-        else if(money.Money< selectManager.item.price)
+
+
+        //必要アイテムを所持しているかどうか判定
+        if (!inventry.HasItems(selectManager.item.requiredUpgradeItems))
         {
+
+            NotHaveItems();
+
+        }
+        //必要金額以上の所持金を持っているかどうか判定
+        else if (money.Money < selectManager.item.price)
+        {
+
             CantUpgradeItem();
         }
         else
@@ -72,8 +84,8 @@ public class ShopUpgrade : MonoBehaviour
         inventry.PopItem(selectManager.item);
         inventry.AddItem(selectManager.item.afterUpdateItem);
 
-        
-        yield return StartCoroutine(ShowUpgradeMessage());
+
+        //yield return StartCoroutine(ShowUpgradeMessage());
 
         //店員が話す
         flowchart.SendFungusMessage("SellItem!");
@@ -82,6 +94,13 @@ public class ShopUpgrade : MonoBehaviour
         //お金の表示の更新
         moneyUI.ChangeMoneyUI();
 
+        //所持品の更新
+        foreach(ItemSO i in selectManager.item.requiredUpgradeItems)
+        {
+            inventry.PopItem(i, 1);
+        }
+
+
         //アイテムリストのリロード
         generator.reloadItemlist();
 
@@ -89,14 +108,19 @@ public class ShopUpgrade : MonoBehaviour
         tabManager.ClearUI();
         //選択しているオブジェクトの初期化
         selectManager.ClearItemSelect();
-        
+
         //次のアップグレードが行えるようにする。
         canUpgrade = true;
 
         yield return 0;
 
     }
+    public void NotHaveItems()
+    {
+        //店員の会話
+        flowchart.SendFungusMessage("NoItems");
 
+    }
     public void CantUpgradeItem()
     {
         //店員の会話
@@ -130,7 +154,7 @@ public class ShopUpgrade : MonoBehaviour
         }
         yield return 0;
     }
-    
+
     private void UpdateMoney()
     {
         money.Money -= selectManager.item.price;

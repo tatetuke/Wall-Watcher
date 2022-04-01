@@ -31,7 +31,7 @@ public class MinGameHakaiToolStatus : MonoBehaviour
     /// <summary>
     /// 3x3マスの正方形を左から右に、上から下に見たとき、画像を変更できるかどうか.
     /// </summary>
-    public bool[] CanChangeSprite = new bool[9] {true,true,true,true,true,true,true,true,true};
+    public int[] CanChangeSprite = new int[9] {0,0,0,0,0,0,0,0,0};
 
     /*行動スキルについて
      * 
