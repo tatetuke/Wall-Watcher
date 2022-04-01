@@ -32,9 +32,9 @@ public class WarpSameMap : MonoBehaviour
                     move = false;
                     
                     GameObject player = GameObject.Find("Player");
-                    float newx = AllMapSet.warpSameMapPosition[num, (index + 1) % 2].Item1;
-                    float newy = AllMapSet.warpSameMapPosition[num, (index + 1) % 2].Item2;
-                    FadeManager2.Instance.LoadLevel2(1.2f, player, newx, newy);
+                    //float newx = AllMapSet.warpSameMapPosition[num, (index + 1) % 2].Item1;
+                    //float newy = AllMapSet.warpSameMapPosition[num, (index + 1) % 2].Item2;
+                    //FadeManager2.Instance.LoadLevel2(1.2f, player, newx, newy);
                 }
             }
         }        
