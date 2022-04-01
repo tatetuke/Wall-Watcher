@@ -20,4 +20,7 @@ MonoBehaviour:
   sellPrice: 0
   canUpgradeItem: 1
   canSellItem: 0
+  requiredUpgradeItems:
+  - {fileID: 11400000, guid: a56f7efcba1114d44b2eb13df0b16d4a, type: 2}
+  - {fileID: 11400000, guid: 2ca85096711e59e43999ad500e429d48, type: 2}
   afterUpdateItem: {fileID: 11400000, guid: 368a7519022392541b032e43f1353ba6, type: 2}

@@ -6760,6 +6760,12 @@ GameObject:
   - component: {fileID: 878906349955322491}
   - component: {fileID: 8013578439848953399}
   - component: {fileID: 487209653868322800}
+  - component: {fileID: 6589746839372605104}
+  - component: {fileID: 5460366981452838218}
+  - component: {fileID: 2317611425591674588}
+  - component: {fileID: 470000660330208355}
+  - component: {fileID: 3284163159906972214}
+  - component: {fileID: 5384163687856927784}
   m_Layer: 0
   m_Name: ShopKeeperFlowChart
   m_TagString: Untagged
@@ -6794,11 +6800,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
-  scrollPos: {x: -305.49295, y: 257.0532}
+  scrollPos: {x: -831.5126, y: 355.92303}
   variablesScrollPos: {x: 0, y: 0}
   variablesExpanded: 1
   blockViewHeight: 280
-  zoom: 0.6699999
+  zoom: 0.7899998
   scrollViewRect:
     serializedVersion: 2
     x: -343
@@ -6806,8 +6812,9 @@ MonoBehaviour:
     width: 1114
     height: 859
   selectedBlocks:
-  - {fileID: 878906349955322491}
-  selectedCommands: []
+  - {fileID: 470000660330208355}
+  selectedCommands:
+  - {fileID: 3284163159906972214}
   variables: []
   description: 
   stepPause: 0
@@ -6835,7 +6842,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 691.26025
     y: -15
-    width: 70.89552
+    width: 60
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -6878,7 +6885,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 1048
     y: 127
-    width: 88.80598
+    width: 60
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -6905,7 +6912,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 893
     y: 128
-    width: 87.31344
+    width: 60
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -7043,7 +7050,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 961.9851
     y: -55.104504
-    width: 111.19404
+    width: 75.8228
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -7112,7 +7119,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 383
     y: 163
-    width: 87.31344
+    width: 60
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -7181,7 +7188,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 503
     y: 175
-    width: 66.417915
+    width: 60
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -7250,7 +7257,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 486
     y: 376
-    width: 88.80598
+    width: 60
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -7319,7 +7326,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 614
     y: 377
-    width: 109.7015
+    width: 74.55698
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -7388,7 +7395,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 766
     y: 371
-    width: 102.238815
+    width: 65.69621
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -7457,7 +7464,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 1021.10645
     y: 375.25513
-    width: 91.791046
+    width: 60
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -7604,7 +7611,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 480
     y: 72.00001
-    width: 132.08957
+    width: 101.13927
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -7673,7 +7680,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 1119.2987
     y: 18.029839
-    width: 94.77612
+    width: 60
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
@@ -7726,6 +7733,144 @@ MonoBehaviour:
   parentBlock: {fileID: 878906349955322491}
   suppressBlockAutoSelect: 0
   message: NoMoney
+--- !u!114 &6589746839372605104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6765163302760100900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d3d73aef2cfc4f51abf34ac00241f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodeRect:
+    serializedVersion: 2
+    x: 1178.5394
+    y: -159.18541
+    width: 94.81015
+    height: 40
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  useCustomTint: 1
+  itemId: 39
+  blockName: NoMoney (Copy)
+  description: "\u304A\u91D1\u304C\u8DB3\u308A\u306A\u3044\u6642\u306B\u547C\u3073\u51FA\u3055\u308C\u308B"
+  eventHandler: {fileID: 2317611425591674588}
+  commandList:
+  - {fileID: 5460366981452838218}
+  suppressAllAutoSelections: 0
+--- !u!114 &5460366981452838218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6765163302760100900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 41
+  indentLevel: 0
+  storyText: "\u91D1\u304C\u8DB3\u308A\u306A\u3044\u305E"
+  description: 
+  character: {fileID: 0}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 6765163302172966786}
+--- !u!114 &2317611425591674588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6765163302760100900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d7d417659cd54a6787f70f763950c34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentBlock: {fileID: 6589746839372605104}
+  suppressBlockAutoSelect: 0
+  message: NoMoney
+--- !u!114 &470000660330208355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6765163302760100900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d3d73aef2cfc4f51abf34ac00241f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodeRect:
+    serializedVersion: 2
+    x: 1178.5394
+    y: -159.18541
+    width: 101.13927
+    height: 40
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  useCustomTint: 1
+  itemId: 39
+  blockName: NoMoney (Copy)1
+  description: "\u5FC5\u8981\u5F37\u5316\u7D20\u6750\u304C\u8DB3\u308A\u306A\u3044\u6642"
+  eventHandler: {fileID: 5384163687856927784}
+  commandList:
+  - {fileID: 3284163159906972214}
+  suppressAllAutoSelections: 0
+--- !u!114 &3284163159906972214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6765163302760100900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 43
+  indentLevel: 0
+  storyText: "\u5FC5\u8981\u306A\u7D20\u6750\u304C\u8DB3\u308A\u306A\u3044\u305E"
+  description: 
+  character: {fileID: 0}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 6765163302172966786}
+--- !u!114 &5384163687856927784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6765163302760100900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d7d417659cd54a6787f70f763950c34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentBlock: {fileID: 470000660330208355}
+  suppressBlockAutoSelect: 0
+  message: NoItems
 --- !u!1 &6765163302839698709
 GameObject:
   m_ObjectHideFlags: 0
