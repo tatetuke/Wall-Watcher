@@ -33,7 +33,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MiniGame/MainMap/MainMap3_Bokujou.unity
     guid: eafec40375c27a44a9641e4dff29d32b
   - enabled: 1
-    path: Assets/Scenes/MiniGame/MainMap/MainMap3_Hekimen.unity
+    path: Assets/Scenes/MiniGame/MainMap/MainMap3F_Hekimen.unity
     guid: f2dca6c7dbc25fb4c986cf58bbe52e68
   - enabled: 1
     path: Assets/Scenes/MiniGame/Paint.unity
@@ -53,6 +53,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MiniGame/HAKAI.unity
     guid: c7914bef46d4f384db78219bcfa755e9
+  - enabled: 1
+    path: Assets/Scenes/MiniGame/MainMap/MainMap2F_MainRoom1.unity
+    guid: 97ada22459be0b1428af2449b209cd2b
+  - enabled: 1
+    path: Assets/Scenes/MiniGame/MainMap/MainMap2F_MainRoom2.unity
+    guid: 34b125a8ca660744dae2baf55c46d422
+  - enabled: 1
+    path: Assets/Scenes/MiniGame/MainMap/MainMap2F_MainRoom3.unity
+    guid: af2c787925d4b0e4e91b8714aadc5c93
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 4825a4e1bc6314a4b8e0e0a366b6b1b4,
       type: 2}

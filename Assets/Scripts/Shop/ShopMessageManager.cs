@@ -8,14 +8,20 @@ public class ShopMessageManager : MonoBehaviour
     public GameObject Manager;
     public Text yesText;
     public Text noText;
+    [SerializeField] private ShopUpgrade upgrade;
     [SerializeField] private ShopPushSellButton sellButton;
     [SerializeField] private Text messageText;
+   // [SerializeField] private ShopUpgrade upgradeItem;
     public ShopSelectItemManager selectItemManager;
     public ShopBuyItem buyItem;
     private bool canGenerateDialog;
     private bool selectDialog;
     Color gray;
     Color black;
+    
+    public SoundManagerShop soundManager;
+
+
     enum ShopMode
     {
         buy,
@@ -70,11 +76,19 @@ public class ShopMessageManager : MonoBehaviour
         Debug.Log("wait select End");
         if (selectDialog)//「はい」を選択したときの処理
         {
-            SelectYes();
+            messageTextObj.SetActive(false);
+            yield return StartCoroutine(SelectYes());
+        }
+        else
+        {
+            //SEを鳴らす
+            soundManager.PlayBackSE();
+
         }
 
-        canGenerateDialog = true;
         messageTextObj.SetActive(false);
+        canGenerateDialog = true;
+        
 
     }
     
@@ -89,10 +103,13 @@ public class ShopMessageManager : MonoBehaviour
         {
             selectDialog = true;
             DialogColorChange();
+            soundManager.PlaySelectSE();
         }
         if (Input.GetKeyDown("d")) { 
             selectDialog = false;
             DialogColorChange();
+            soundManager.PlaySelectSE();
+
         }
 
     }
@@ -101,8 +118,10 @@ public class ShopMessageManager : MonoBehaviour
     /// <summary>
     /// 「はい」を選択したときのUI、内部データの変更
     /// </summary>
-    private void SelectYes()
+    IEnumerator SelectYes()
     {
+        soundManager.PlayDecideSE();
+
         switch (mode)
         {
             case ShopMode.buy:
@@ -112,10 +131,27 @@ public class ShopMessageManager : MonoBehaviour
                 sellButton.PushSellButton();
                 break;
             case ShopMode.upgrade:
+                yield return StartCoroutine(upgrade.Select());
                 break;
         }
+        yield return 0;
     }
 
+    //private void SelectYes()
+    //{
+    //    switch (mode)
+    //    {
+    //        case ShopMode.buy:
+    //            buyItem.PushBuyButton();
+    //            break;
+    //        case ShopMode.sell:
+    //            sellButton.PushSellButton();
+    //            break;
+    //        case ShopMode.upgrade:
+    //            StartCoroutine(upgrade.Select());
+    //            break;
+    //    }
+    //}
 
 
 

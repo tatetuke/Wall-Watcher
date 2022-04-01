@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
+using UnityEngine.UI;
+using Kyoichi;
 public class MinGameHakaiManager2 : MonoBehaviour
 {
     public int gameType = 1;
     public const int RawSize = 8;//盤面のサイズ
-    public const int ColumnSize = 8;
+    public const int ColumnSize = 11;
     [HideInInspector]public int Rsize=RawSize; 
     [HideInInspector]public int Csize=ColumnSize; 
     [HideInInspector]public GameObject[,] Wall = new GameObject[RawSize, ColumnSize];//盤面全体
@@ -27,28 +29,58 @@ public class MinGameHakaiManager2 : MonoBehaviour
     [SerializeField]MinGameHakaiToolDataManager toolManager;
     [SerializeField]MinGameHakaiToolData tool;
 
+
     [SerializeField] GameObject shakeObj;//揺らすゲームオブジェクトの選択
     [SerializeField] GameObject lifeGage;//揺らすゲームオブジェクトの選択
 
+    [SerializeField] private GameObject result;
+    [SerializeField] private Transform resultCanvas;
+
     public Sprite []WallSprite=new Sprite[6];//壁の画像
 
+    public MingameHAKAIGetItemManager itemManager;
+
+    private Inventry inventory;
+
+    public Image blackImage;//暗転のための画像
+    public GameObject blackImageObj;
+
+
     [SerializeField] private MinGameHakaiItemGetUI ItemGetUI;//UIのアイテム欄を更新する.
+
+    public HakaiSoundManager soundManager;
+
+    public HakaiEndMessage endMessage;
+    public GameObject endMessageObj;
+
+    private Vector3 originalBordPosition;
+    private Vector3 originalHPBarPosition;
+
+    [SerializeField] private SpriteRenderer backBlack;
 
     //UIがシェイク時にぶれるバグを修正仕様とした跡地
     //private Vector3 initShakeObj;
     //private Vector3 initLifeGage;
-    enum Game_State
+    enum GAME_STATE
     {
-        Playing,
-        PreStart,
-        Pause,
-        Result,
-        End
+        PLAYING,
+        PRESTART,
+        PAUSE,
+        RESULT,
+        END,
+        PROCESSING
     }
-    Game_State State;
+    [SerializeField] private GAME_STATE State;
     private void Start()
     {
-        State = Game_State.PreStart;
+        //インベントリ初期化
+        inventory = GameObject.Find("Managers").GetComponent<Inventry>();
+
+        //揺れによってオブジェクトが移動するバグ修正のための
+        originalBordPosition = shakeObj.transform.position;
+        originalHPBarPosition = lifeGage.transform.position;
+
+        State = GAME_STATE.PRESTART;
         WallInit();
         WallAnimeInit();
         GetSpriteName();
@@ -56,33 +88,70 @@ public class MinGameHakaiManager2 : MonoBehaviour
         UpdateItemData.Invoke();
         //UIのアイテム情報の更新
         ItemGetUI.ChangeGetItemUI();
+
+        State = GAME_STATE.PLAYING;
+
+        soundManager.PlayBGM();
     }
     private void Update()
     {
-        ClickProcessing();
+        
+
+        //ゲーム状態に応じた処理を選択、実行
+        StartCoroutine(MinGameState());
+
 
     }
-    private void MinGameState()
+    IEnumerator MinGameState()
     {
+
 
         switch (State)
         {
-            case Game_State.PreStart:
+            case GAME_STATE.PRESTART:
                 break;
-            case Game_State.Playing:
+            case GAME_STATE.PLAYING:
+                Click();
+                //ゲームが終わったかどうかの判定
+                CheckGameEnd();
+
+                break;
+            case GAME_STATE.RESULT:
+                State = GAME_STATE.PROCESSING;
+
+                result.SetActive(true);
+
+
+                //終了メッセージの表示
+                yield return  StartCoroutine(EndMessageAnime());
+
+
+                //リザルトの表示
+                yield return  StartCoroutine(CreatGetItem());
+
+                State = GAME_STATE.END;
+
+                break;
+            case GAME_STATE.PAUSE:
                 break;
 
-            case Game_State.Result:
+            case GAME_STATE.PROCESSING://処理の終了待ち
                 break;
-            case Game_State.Pause:
-                break;
-            case Game_State.End:
+
+            case GAME_STATE.END:
+                
+                State = GAME_STATE.PROCESSING;
+
+                yield return new WaitForSeconds(1f);
+
+                //フェードアウト
+                yield return StartCoroutine(FadeOut(1.5f));
+
                 PollutionManager.breakMarker();  // hekimenマップのマーカー状態を変更させる関数
                 break;
-
-
         }
 
+        yield return 0;
 
     }
     /// <summary>
@@ -96,17 +165,17 @@ public class MinGameHakaiManager2 : MonoBehaviour
         j = 0;
         foreach (GameObject v in GameObject.FindGameObjectsWithTag("Wall"))
         {
-            if (j >= RawSize)
+            if (i >= RawSize)
             {
                 Debug.LogError("壁の数が多すぎます");
                 break;
             }
             Wall[i, j] = v;
-            i++;
-            if (i == ColumnSize)
+            j++;
+            if (j == ColumnSize)
             {
-                i = 0;
-                j++;
+                j = 0;
+                i++;
             }
 
         }
@@ -141,7 +210,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     /// <summary>
     /// クリックしたオブジェクトを取得
     /// </summary>
-    private void ClickProcessing()
+    private void Click()
     {
 
         GameObject clickedGameObject;
@@ -159,12 +228,38 @@ public class MinGameHakaiManager2 : MonoBehaviour
         //クリックしたものが壁でなければリターン
         if (clickedGameObject==null||clickedGameObject.tag != "Wall") return;
 
-        //現在のHPよりくらうダメージが大きい場合ゲージを揺らしてreturn 
-        if (gameStatus.life - (int)tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1] < 0)
+
+        //下。HPを0にする必要があるため削除?
+        ////現在のHPよりくらうダメージが大きい場合,ゲージを揺らしてreturn 
+        //if (gameStatus.life - (int)tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1] < 0)
+        //{
+        //    AttackErrorEffect();
+        //    return;
+        //}
+
+
+        //ToDo道具によってSEを変化させる
+        //削る時に出るSE。
+        switch (toolManager.SelectToolNum)
         {
-            AttackErrorEffect();
-            return;
+            case 0:
+                soundManager.PlaySE(HakaiSoundManager.SE_TYPE.TOOL1);
+                break;
+            case 1:
+                soundManager.PlaySE(HakaiSoundManager.SE_TYPE.TOOL2);
+
+                break;
+            case 2:
+                soundManager.PlaySE(HakaiSoundManager.SE_TYPE.TOOL3);
+
+                break;
+
         }
+
+
+
+
+
 
         Debug.Log(clickedGameObject.name);
         int raw = 0, column = 0;
@@ -197,14 +292,20 @@ public class MinGameHakaiManager2 : MonoBehaviour
         //レベルが0の時の例外処理（多分いらない）
         gameStatus.Damage(tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1]);
 
+        //背景の黒画像の透過度を更新
+        Color tmpColor = backBlack.color;
+        Debug.Log(tmpColor.a+"aaa");
+        tmpColor.a =150f/255f-150f/255f*gameStatus.life/gameStatus.maxLife;
+        backBlack.color = tmpColor;
+
+
         //取得できるかどうかについてアイテムの情報を更新
         UpdateItemData.Invoke();
 
         //UIのアイテム情報の更新
         ItemGetUI.ChangeGetItemUI();
     }
-
-    //道具を使用できないときのエフェクト
+    //アイテムが使えないときの揺れ
     private void AttackErrorEffect()
     {
         Debug.Log("この道具を使うには体力が足りません");
@@ -222,7 +323,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     }
 
     /// <summary>
-    /// 盤面を反転させるときのエフェクト
+    /// 盤面を反転させるときの画面の揺れ
     /// </summary>
     private void ReverseSpriteEffect()
     {
@@ -240,6 +341,23 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
         //athleics
 
+        StartCoroutine(SetOriginalPositionBord(duration));
+
+
+    }
+    private IEnumerator SetOriginalPositionBord(float time)
+    {
+        float t=0;
+        
+        while(t<=time){
+
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        shakeObj.transform.position = originalBordPosition;
+
+        yield return 0;
     }
 
     /// <summary>
@@ -348,5 +466,123 @@ public class MinGameHakaiManager2 : MonoBehaviour
         PolutedLevel5 = WallSprite[4].name;
         PolutedLevel6 = WallSprite[5].name;
     }
+
+    /// <summary>
+    /// ゲームを終了するかどうかの判定をとる。
+    /// </summary>
+    private void CheckGameEnd()
+    {
+        bool end = false;
+        //HPが0ないときに終了する。
+        if (gameStatus.life <= 0) end = true;
+
+
+        //掘る場所がないとき終了する
+        bool canDig = false;
+        for(int i = 0; i <RawSize;i++)
+        {
+            for(int j = 0; j < ColumnSize; j++)
+            {
+                if (Wall[i, j].GetComponent<SpriteRenderer>().sprite.name != PolutedLevel6) canDig = true;
+            }
+        }
+
+        if (!canDig) end = true;
+
+        if (end) State = GAME_STATE.RESULT;
+
+
+    }
+
+    IEnumerator ResultGetItem(GameObject res)
+    {
+        HakaiResultGetItem resultData = res.GetComponent<HakaiResultGetItem>();
+        //アニメーションの終了待ち
+        while (!resultData.endFadeInAnime)
+        {
+            yield return null;
+        }
+
+        //入力待ち
+        while (!Input.anyKeyDown)
+        {
+            yield return null;
+        }
+        resultData.animator.SetTrigger("fadeOut");
+
+        //フェードアウトアニメの終了待ち
+        while (!resultData.endFadeOutAnime)
+        {
+            yield return null;
+        }
+
+        //削除
+        Destroy(res);
+        
+
+        yield return 0; 
+    }
+
+    IEnumerator CreatGetItem()
+    {
+        Debug.Log(itemManager.Item.Count);
+        foreach (GameObject res in itemManager.Item)
+        {
+            MinGameHAKAIItem itemData = res.GetComponent<MinGameHAKAIItem>();
+            //取得できないアイテムならパス
+            if (!itemData.CanGetItem) continue;
+
+            //インベントリーの更新(追加)
+            inventory.AddItem(itemData.itemSO);
+
+            GameObject view = Instantiate(Resources.Load("MinGameHakai/ResultGetItem"),resultCanvas.transform) as GameObject;
+
+            HakaiResultGetItem viewData = view.GetComponent<HakaiResultGetItem>();
+            viewData.itemIcon.GetComponent<Image>().sprite = itemData.itemSO.icon;
+            viewData.itemDiscription.GetComponent<Text>().text = itemData.itemSO.description;
+            viewData.itemName.GetComponent<Text>().text = itemData.itemSO.item_name;
+            viewData.itemInInventoryNum.GetComponent<Text>().text = "x" + inventory.DataCount(itemData.itemSO).ToString();
+
+            
+            yield return StartCoroutine(ResultGetItem(view));
+
+        }
+
+        yield return 0;
+    }
+
+    IEnumerator FadeOut(float interval)
+    {
+        blackImageObj.SetActive(true);
+
+        float time = 0;
+       
+        Color alpha = blackImage.color;
+        
+        while (time<=interval)
+        {
+            alpha.a = Mathf.Lerp(0f, 1f, time / interval);
+            time += Time.deltaTime;
+            blackImage.color = alpha;
+            yield return null;
+        }
+        yield return 0;
+    }
+
+    IEnumerator EndMessageAnime()
+    {
+        endMessageObj.SetActive(true);
+
+        endMessage.animator.SetTrigger("ShowMessage");
+
+        while (!endMessage.endAnime)
+        {
+            yield return null;
+        }
+        yield return new WaitForSeconds(0.3f);
+
+        yield return 0;
+    }
+
 }
 

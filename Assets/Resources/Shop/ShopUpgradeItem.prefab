@@ -147,9 +147,8 @@ MonoBehaviour:
     item: {fileID: 0}
     count: 0
   itemdata: {fileID: 0}
-  ItemName: {fileID: 0}
+  ItemName: {fileID: 7403151317579281043}
   priceText: {fileID: 0}
-  blackImage: {fileID: 0}
 --- !u!1 &7403151317579281045
 GameObject:
   m_ObjectHideFlags: 0
