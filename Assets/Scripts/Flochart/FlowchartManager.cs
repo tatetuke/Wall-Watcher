@@ -6,6 +6,7 @@ using UnityEngine;
 public class FlowchartManager : MonoBehaviour
 {
     CinemachineBrain m_CinemachineBrain;
+    CinemachineVirtualCamera m_CinemachineVirtualCamera;
     [SerializeField] GameObject m_Parent;
     [SerializeField] GameObject Player;
     [SerializeField] GameObject Osananazimi;
@@ -15,6 +16,7 @@ public class FlowchartManager : MonoBehaviour
         GameObject camera = GameObject.Find("Main Camera");
         Debug.Log(camera);
         m_CinemachineBrain = camera.GetComponent<CinemachineBrain>();
+        m_CinemachineVirtualCamera = camera.GetComponent<CinemachineVirtualCamera>();
     }
 
     public void SetActiveCinemachineBrain(bool isActive)
@@ -32,5 +34,10 @@ public class FlowchartManager : MonoBehaviour
     {
         Player.gameObject.transform.parent = null;
         Osananazimi.gameObject.transform.parent = null;
+    }
+
+    public void SetCameraFollowObject(GameObject gameObject)
+    {
+        m_CinemachineVirtualCamera.Follow = gameObject.transform;
     }
 }

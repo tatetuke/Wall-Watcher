@@ -11567,6 +11567,7 @@ GameObject:
   - component: {fileID: 1307888056}
   - component: {fileID: 1307888050}
   - component: {fileID: 1307888058}
+  - component: {fileID: 1307887996}
   m_Layer: 0
   m_Name: Josyou
   m_TagString: Untagged
@@ -11630,9 +11631,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeRect:
     serializedVersion: 2
-    x: 221.61758
-    y: 186.36652
-    width: 117.14283
+    x: 220.18901
+    y: 187.79509
+    width: 117.42854
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -11644,6 +11645,21 @@ MonoBehaviour:
   - {fileID: 1307887993}
   - {fileID: 1307888000}
   suppressAllAutoSelections: 0
+--- !u!114 &1307887996
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307887992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2f6487d21a03404cb21b245f0242e79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentBlock: {fileID: 1307887997}
+  suppressBlockAutoSelect: 0
+  waitForFrames: 1
 --- !u!114 &1307887997
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -11658,16 +11674,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeRect:
     serializedVersion: 2
-    x: 68.42857
-    y: 74.28572
-    width: 111.42854
+    x: 79.85714
+    y: 67.14287
+    width: 111.714264
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
   itemId: 0
   blockName: New Block
   description: 
-  eventHandler: {fileID: 0}
+  eventHandler: {fileID: 1307887996}
   commandList:
   - {fileID: 1307888015}
   - {fileID: 1307887994}
@@ -11760,7 +11776,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeRect:
     serializedVersion: 2
-    x: 605.90265
+    x: 604.47406
     y: 217.79524
     width: 118.5714
     height: 40
@@ -11868,7 +11884,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 414.47418
     y: 220.65233
-    width: 119.99997
+    width: 119.71426
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -12111,7 +12127,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 351.61682
     y: 72.080956
-    width: 119.99997
+    width: 119.71426
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -12315,7 +12331,7 @@ MonoBehaviour:
   callMode: 0
 --- !u!114 &1307888020
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13062,7 +13078,7 @@ MonoBehaviour:
   callMode: 0
 --- !u!114 &1307888035
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13097,7 +13113,7 @@ MonoBehaviour:
   durationOLD: 0
 --- !u!114 &1307888037
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13421,7 +13437,7 @@ MonoBehaviour:
   callMode: 0
 --- !u!114 &1307888050
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13549,7 +13565,7 @@ MonoBehaviour:
   callMode: 0
 --- !u!114 &1307888054
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13596,7 +13612,7 @@ MonoBehaviour:
   suppressAllAutoSelections: 0
 --- !u!114 &1307888056
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13613,7 +13629,7 @@ MonoBehaviour:
     integerVal: 10
 --- !u!114 &1307888057
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13630,7 +13646,7 @@ MonoBehaviour:
     integerVal: 10
 --- !u!114 &1307888058
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
