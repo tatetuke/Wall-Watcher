@@ -9,14 +9,14 @@ namespace Fungus
     /// <summary>
     /// Writes text in a dialog box.
     /// </summary>
-    [CommandInfo("Narrative", 
-                 "Say", 
+    [CommandInfo("Narrative",
+                 "Say",
                  "Writes text in a dialog box.")]
     [AddComponentMenu("")]
     public class Say : Command, ILocalizable
     {
         // Removed this tooltip as users's reported it obscures the text box
-        [TextArea(5,10)]
+        [TextArea(5, 10)]
         [SerializeField] protected string storyText = "";
 
         [Tooltip("Notes about this story text for other authors, localization, etc.")]
@@ -103,7 +103,7 @@ namespace Fungus
                 Continue();
                 return;
             }
-    
+
             var flowchart = GetFlowchart();
 
             sayDialog.SetActive(true);
@@ -127,8 +127,20 @@ namespace Fungus
                     RectTransform rectTransform = storytext.GetComponent<RectTransform>();
                     GameObject spriteGameObject = character.transform.GetChild(0).gameObject;
                     Vector3 pos = RectTransformUtility.WorldToScreenPoint(Camera.main, spriteGameObject.transform.position);
-                    pos.y = 750;
+                    //pos.y = 700; // これのせいで文字が画面外にいってた　どうして・・・
+                    pos.y += 150;
                     rectTransform.position = pos;
+
+                    //// NPCの頭上ちょい上に合わせる
+                    //RectTransform panelRectTransform = panel.GetComponent<RectTransform>();
+                    //pos.y += 40;
+                    //panelRectTransform.position = pos;
+
+                    //////panelの上端に合わせる 試行錯誤の結果なので不具合起きやすいかも・・・
+                    ////rectTransform.anchorMin = new Vector2(0.5f, 1);
+                    ////rectTransform.anchorMax = new Vector2(0.5f, 1);
+                    ////rectTransform.pivot = new Vector2(0.5f, 0);
+                    ////rectTransform.localPosition = Vector3.zero;
                 }
                 else
                 {
@@ -157,7 +169,7 @@ namespace Fungus
         public override string GetSummary()
         {
             string namePrefix = "";
-            if (character != null) 
+            if (character != null)
             {
                 namePrefix = character.NameText + ": ";
             }
@@ -207,7 +219,7 @@ namespace Fungus
         {
             return description;
         }
-        
+
         public virtual string GetStringId()
         {
             // String id for Say commands is SAY.<Localization Id>.<Command id>.[Character Name]

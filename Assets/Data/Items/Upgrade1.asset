@@ -13,9 +13,14 @@ MonoBehaviour:
   m_Name: Upgrade1
   m_EditorClassIdentifier: 
   item_name: "\u30A2\u30EB\u30D1\u30AB"
-  description: "\u5F37\u5316\u3067\u304D\u308B\u30A2\u30A4\u30C6\u30E01"
+  description: "\u5F37\u5316\u30A2\u30A4\u30C6\u30E01"
   icon: {fileID: 21300000, guid: 514a490a3bf37c54494e5b377f8049ff, type: 3}
   type: 0
   price: 10
-  canSellItem: 0
+  sellPrice: 0
   canUpgradeItem: 1
+  canSellItem: 0
+  requiredUpgradeItems:
+  - {fileID: 11400000, guid: 2ca85096711e59e43999ad500e429d48, type: 2}
+  - {fileID: 11400000, guid: a56f7efcba1114d44b2eb13df0b16d4a, type: 2}
+  afterUpdateItem: {fileID: 11400000, guid: 912d87db98ec3e342a99492e37323ffc, type: 2}

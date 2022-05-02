@@ -12,31 +12,53 @@ public class MinGameHakaiToolDataManager : MonoBehaviour
    [SerializeField] private Image hanniImage;
     private MinGameHakaiToolStatus[] Tools;
     public int SelectToolNum;
+    public Toggle toggle1;
+    public Toggle toggle2;
+    public Toggle toggle3;
+
     private void Start()
     {
         SelectToolNum = 0;
         Tools = toolDataScript.Tools;
   
     }
-    //それぞれのボタンを押した際に呼ばれる関数
-    public void PushTool1()
+    /// <summary>
+    /// Toggleを変更したときに呼び出される関数
+    /// </summary>
+    public void ChangeTool()
     {
-        SelectToolNum = 0;
+        if (toggle1.isOn)
+        {
+            SelectToolNum = 0;
+        }else if (toggle2.isOn)
+        {
+            SelectToolNum = 1;
+        }else if (toggle3.isOn)
+        {
+            SelectToolNum = 2;
+        }
         ChangeUI();
-
     }
-    public void PushTool2()
-    {
-        SelectToolNum = 1;
-        ChangeUI();
 
-    }
-    public void PushTool3()
-    {
-        SelectToolNum = 2;
-        ChangeUI();
+    ////それぞれのボタンを押した際に呼ばれる関数
+    //public void PushTool1()
+    //{
+    //    SelectToolNum = 0;
+    //    ChangeUI();
 
-    }
+    //}
+    //public void PushTool2()
+    //{
+    //    SelectToolNum = 1;
+    //    ChangeUI();
+
+    //}
+    //public void PushTool3()
+    //{
+    //    SelectToolNum = 2;
+    //    ChangeUI();
+
+    //}
 
 
     /// <summary>

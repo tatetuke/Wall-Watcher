@@ -37,4 +37,7 @@ public class ShopPushUpgradeButton : MonoBehaviour
         //店員が話す
         flowchart.SendFungusMessage("CantUpgradeItem!");
     }
+
+
+
 }

@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -147,9 +147,8 @@ MonoBehaviour:
     item: {fileID: 0}
     count: 0
   itemdata: {fileID: 0}
-  ItemName: {fileID: 0}
+  ItemName: {fileID: 7403151317579281043}
   priceText: {fileID: 0}
-  blackImage: {fileID: 0}
 --- !u!1 &7403151317579281045
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,7 +19,7 @@ public class PauseUIManager : CanvasManager
      Animator animator;
     [SerializeField] string fadeInTrriger = "FadeIn";
     [SerializeField] string fadeOutTrriger = "FadeOut";
-    [SerializeField] Button saveButton;
+    [SerializeField] Button quitButton;
     [Header("Debug")]
     [SerializeField, ReadOnly] State m_state;
 
@@ -63,6 +63,14 @@ public class PauseUIManager : CanvasManager
         {
             saveButton.interactable = true;
         });*/
+        quitButton.onClick.AddListener(() =>
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#elif UNITY_STANDALONE
+      UnityEngine.Application.Quit();
+#endif
+        });
     }
 
     /// <summary>

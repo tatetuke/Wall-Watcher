@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 [CreateAssetMenu(fileName = "NewItem", menuName = "ScriptableObject/Item")]
 public class ItemSO : ScriptableObject
 {
@@ -19,7 +18,11 @@ public class ItemSO : ScriptableObject
     public Sprite icon;
     public Rarelity type;
     public int price;
+    public int sellPrice;
     public bool canUpgradeItem;
     public bool canSellItem;
+    public List<ItemSO>requiredUpgradeItems= new List<ItemSO>();
+    [Tooltip("アップデート後のアイテム(アップデートできないアイテムはnull")]
+    public ItemSO afterUpdateItem;
 
 }
