@@ -56,22 +56,29 @@ public class EditorInventry : Editor
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal(GUI.skin.box);
         {
+            if (GUILayout.Button("Load ItemSO"))
+            {
+                if (!EditorApplication.isPlaying)
+                {
+                    Debug.Log("ItemSO Loading");
+                    Kyoichi.ItemManager.Instance.LoadAsync();
+                }
+            }
+        }
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal(GUI.skin.box);
+        {
             if (GUILayout.Button("Load from file"))
             {
-                if (EditorApplication.isPlaying)
+                if (!EditorApplication.isPlaying)
                 {
                     Debug.Log("Inventry loading");
                     scr.LoadFromFile();
                 }
-                else
-                {
-                    Debug.Log("Inventry loading");
-                    //editorCSVData = scr.GetFileData();
-                }
             }
             if (GUILayout.Button("Save to file"))
             {
-                if (EditorApplication.isPlaying)
+                if (!EditorApplication.isPlaying)
                 {
                     Debug.Log("Inventry saving");
                     scr.SaveToFile();

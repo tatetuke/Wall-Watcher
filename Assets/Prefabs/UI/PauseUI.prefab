@@ -1590,7 +1590,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3833655953398318544}
   - component: {fileID: 3833655953398318550}
-  - component: {fileID: 3833655953398318551}
+  - component: {fileID: 4199671996143787847}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -1631,7 +1631,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 1
---- !u!114 &3833655953398318551
+--- !u!114 &4199671996143787847
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1640,7 +1640,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3833655953398318545}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -1649,13 +1649,12 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 3.16
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 1
-  m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 100, y: 100}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1 &3833655953413037876
 GameObject:
   m_ObjectHideFlags: 0
@@ -2114,7 +2113,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3833655953795145432}
   m_HandleRect: {fileID: 3833655953795145433}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -2484,7 +2483,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 927, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3833655954251344804
@@ -2501,7 +2500,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSelectUI: {fileID: 7814936841096224435}
   backButton: {fileID: 7814936841096224435}
-  itemContainerUI: {fileID: 4373537636168385465, guid: 166df7e32b79d9e4c92c38531a1dd8b4,
+  itemContainerUI: {fileID: 721215260197807492, guid: 4cb001972e7307d4591ec7e297b6fc8b,
     type: 3}
   container: {fileID: 3833655953398318544}
   itemIcon: {fileID: 3833655954451068850}
@@ -2678,7 +2677,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 927, y: -500}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3833655954575855758

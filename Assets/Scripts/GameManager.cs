@@ -52,31 +52,31 @@ namespace Kyoichi
             IsSaveFinished = false;
 
             OnGameLoad.Invoke();
-            await SaveLoadManager.Instance.LoadAllAsync();
             m_state = GameState.running;
             IsLoadFinished = true;
             OnLoadFinished.Invoke();
 
-           PauseManager.Instance.OnPauseEnter.AddListener(() =>
-            {
-                FindObjectOfType<Player>()?.ChangeState(Player.State.FREEZE);
-            });
+            await QuestsManager.Instance.LoadAsync();
+            await ItemManager.Instance.LoadAsync();
+
+            Inventry.Instance.LoadFromFile();
+
+            PauseManager.Instance.OnPauseEnter.AddListener(() =>
+             {
+                 FindObjectOfType<Player>()?.ChangeState(Player.State.FREEZE);
+             });
             PauseManager.Instance.OnPauseExit.AddListener(() =>
             {
                 FindObjectOfType<Player>()?.ChangeState(Player.State.IDLE);
             });
         }
-        private void Update()
-        {
-
-        }
 
         //ゲームを終了したときに自動でセーブされるようになってます
-       async private void OnApplicationQuit()
+       private void OnApplicationQuit()
         {
             Debug.Log("Player Data Saving...");
+            Inventry.Instance.SaveToFile();
             OnGameSave.Invoke();
-            await SaveLoadManager.Instance.SaveAllAsync();
             OnSaveFinished.Invoke();
             IsSaveFinished = false;
         }

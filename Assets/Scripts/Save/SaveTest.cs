@@ -14,6 +14,11 @@ namespace Save.Test {
     public class AudioSettingData : SaveDataBaseClass
     {
         public List<float> volumes = new List<float>(3);
+
+        public string ToData()
+        {
+                return $"{base.ToString()} {JsonUtility.ToJson(this)}";
+        }
         //いつもInspectorに表示されるような単純な型は保存できる
         //GameObject型やTransform型なども一応できる
     }
@@ -27,6 +32,10 @@ namespace Save.Test {
         public MyClass myClass;
         public Transform transform;
         public GameObject gameObject;
+        public string ToData()
+        {
+            return $"{base.ToString()} {JsonUtility.ToJson(this)}";
+        }
     }
 
     public class MyClass
@@ -78,14 +87,15 @@ namespace Save.Test {
             //テスト用のセーブデータを定義
             SaveData saveData = new SaveData()
             {
-                header = new SaveDataHeader { loopCount = 3, chapterCount = 1 },
+                loopCount=3,
+                chapterCount=1,
                 playerPosition = new Vector3(10, 0, 0),
                 roomName = "room1",
                 money = 999,
                 inventry = new List<Kyoichi.ItemStack>(),
                 quests = new List<QuestSaveData> {
-                new QuestSaveData { questName="quest1",cuestChapter=1,state=QuestChecker.QuestState.not_yet}
-            },
+                    new QuestSaveData { questName="quest1",cuestChapter=1,state=QuestChecker.QuestState.not_yet}
+                },
             };
             Debug.Log(saveData);
 

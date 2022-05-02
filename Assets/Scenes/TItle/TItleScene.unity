@@ -957,7 +957,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1353038871}
   - component: {fileID: 1353038870}
-  - component: {fileID: 1353038872}
   - component: {fileID: 1353038873}
   m_Layer: 0
   m_Name: Managers
@@ -980,7 +979,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PushAnyKeyAnimator: {fileID: 120961440}
   optionsParent: {fileID: 72848985}
-  loadGameSceneName: FileSelect
+  loadGameSceneName: MainMap3_CircleWay
   newGameSceneName: MainMap3_CircleWay
   enterKey: 32
   m_Select: 0
@@ -999,19 +998,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1353038872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1353038869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f20bec26ccf52b4f8a2b628a2105848, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  saveDirectoryPath: Data/Saves
 --- !u!114 &1353038873
 MonoBehaviour:
   m_ObjectHideFlags: 0
