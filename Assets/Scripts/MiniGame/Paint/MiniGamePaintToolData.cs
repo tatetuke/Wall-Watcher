@@ -29,7 +29,6 @@ public class MiniGamePaintToolData : MonoBehaviour
         //クリックした周囲8マス
         Tools[0].HanniImage = ToolImages[0];
         Tools[0].level = 1;
-
     }
     private void Tool2Init()
     {
@@ -45,7 +44,6 @@ public class MiniGamePaintToolData : MonoBehaviour
         Tools[1].CanChangeSprite[2] = false;
         Tools[1].CanChangeSprite[6] = false;
         Tools[1].CanChangeSprite[8] = false;
-
     }
     private void Tool3Init()
     {
@@ -65,7 +63,5 @@ public class MiniGamePaintToolData : MonoBehaviour
         Tools[2].CanChangeSprite[6] = false;
         Tools[2].CanChangeSprite[7] = false;
         Tools[2].CanChangeSprite[8] = false;
-
     }
-
 }

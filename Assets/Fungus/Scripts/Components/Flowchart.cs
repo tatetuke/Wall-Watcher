@@ -18,6 +18,7 @@ namespace Fungus
     [ExecuteInEditMode]
     public class Flowchart : MonoBehaviour, ISubstitutionHandler
     {
+
         public const string SubstituteVariableRegexString = "{\\$.*?}";
 
         [HideInInspector]
