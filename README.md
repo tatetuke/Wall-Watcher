@@ -16,19 +16,29 @@
 - [anman6347](https://github.com/anman6347)
 - [kyoichi001](https://github.com/kyoichi001)
 
+### イラスト
+- rousok
+- せりぜ
+
+### シナリオ
+- rousok
+- レミ
+
 ### 音楽
-- Solfrail [twitter](https://twitter.com/OmFIS_Solfrail)
+- Solfrail
 - Matsuki
 - さら梅
-- ゆうがお [soundcloud](https://soundcloud.com/yuhgao)
+- [ゆうがお](https://soundcloud.com/yuhgao)
 
-## 必要なアセット
+## 使用アセット
 
 - DoTween
 - Addressable
-- UniRx
-- UniTask
 - TextMeshPro
 - Cinemachine
 - Timeline
+- Fungus
 
+
+
+© 2022 Wall Watcher All Rights Reserved.

@@ -61,10 +61,10 @@ public class ShopSellItem : MonoBehaviour
         ChangeSelectSellItem();
         ChangeUI();
         //アイテムリストに格納
-        if (ShopSellItemListToggle.toggle.isOn)
-        {
-            PushSellItemList();
-        }
+        //if (ShopSellItemListToggle.toggle.isOn)
+        //{
+        //    PushSellItemList();
+        //}
     }
     /// <summary>
     ///売却するアイテムを変更する．

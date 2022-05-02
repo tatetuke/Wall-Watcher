@@ -25,6 +25,7 @@ public class ShopUpgradeItem : MonoBehaviour
 
     ShopSelectItemManager selectManager;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -65,6 +66,36 @@ public class ShopUpgradeItem : MonoBehaviour
     private void ChangeUI()
     {
         description.text = itemdata.description;
+        description.text += "\n 必要素材：";
+        for (int j=0 ; j < itemdata.requiredUpgradeItems.Count; j++)
+        {
+            ItemSO i = itemdata.requiredUpgradeItems[j];
+            if (!selectManager.inventry.HasItem(i))
+            {
+                description.text += "<color=#ff0000>" + i.name + ":" + "1" + "</color>";
+            }
+            else description.text += i.name + ":" + "1";
+
+            if(j!= itemdata.requiredUpgradeItems.Count-1)
+            description.text += ", ";
+
+
+        }
+        //foreach (ItemSO i in itemdata.requiredUpgradeItems)
+        //{
+        //    if (!selectManager.inventry.HasItem(i))
+        //    {
+        //        description.text += "<color=#ff0000>" + i.name + ":" + "1" + "</color>";
+        //    }
+        //    else description.text += i.name+":"+"1";
+
+
+        //    description.text += ", ";
+
+        //}
+
+
+
         Icon.sprite = itemdata.icon;
         UIItemName.text = itemdata.item_name;
         selectManager.ChangeUIHasItemNum();

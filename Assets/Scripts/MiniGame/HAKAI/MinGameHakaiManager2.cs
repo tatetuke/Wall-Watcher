@@ -8,20 +8,21 @@ using Kyoichi;
 public class MinGameHakaiManager2 : MonoBehaviour
 {
     public int gameType = 1;
-    public const int RawSize = 8;//盤面のサイズ
-    public const int ColumnSize = 11;
-    [HideInInspector]public int Rsize=RawSize; 
-    [HideInInspector]public int Csize=ColumnSize; 
-    [HideInInspector]public GameObject[,] Wall = new GameObject[RawSize, ColumnSize];//盤面全体
-    [HideInInspector]public GameObject[,] WallAnime = new GameObject[RawSize, ColumnSize];//盤面全体
+    public const int rawSize = 8;//盤面のサイズ
+    public const int collumnSize = 11;
+    [HideInInspector]public int rsize=rawSize; 
+    [HideInInspector]public int csize=collumnSize; 
+    [HideInInspector]public GameObject[,] Wall = new GameObject[rawSize, collumnSize];//盤面全体
+    [HideInInspector]public SpriteRenderer[,] shadow = new SpriteRenderer[rawSize, collumnSize];//盤面全体
+    [HideInInspector]public GameObject[,] WallAnime = new GameObject[rawSize, collumnSize];//盤面全体
     int[] dx = new int[9] { -1, 0, 1, -1, 0, 1, -1, 0, 1 };//裏返す壁のIndex
     int[] dy = new int[9] { -1, -1, -1, 0, 0, 0, 1, 1, 1 };//
-    public string PolutedLevel1;//壁の画像の名前
-    public string PolutedLevel2;//
-    public string PolutedLevel3;//
-    public string PolutedLevel4;//
-    public string PolutedLevel5;//
-    public string PolutedLevel6;//
+    public string polutedLevel1;//壁の画像の名前
+    public string polutedLevel2;//
+    public string polutedLevel3;//
+    public string polutedLevel4;//
+    public string polutedLevel5;//
+    public string polutedLevel6;//
     [SerializeField] private UnityEvent UpdateItemData=new UnityEvent(); //アイテムデータのアップデート
 
     [SerializeField] private MinGameHAKAIStatus gameStatus;//HPやHPを減らす関数を持つクラス
@@ -36,7 +37,8 @@ public class MinGameHakaiManager2 : MonoBehaviour
     [SerializeField] private GameObject result;
     [SerializeField] private Transform resultCanvas;
 
-    public Sprite []WallSprite=new Sprite[6];//壁の画像
+    public Sprite []wallSprite=new Sprite[6];//壁の画像
+    public Sprite []shadowSprite=new Sprite[3];//影の画像
 
     public MingameHAKAIGetItemManager itemManager;
 
@@ -58,6 +60,17 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
     [SerializeField] private SpriteRenderer backBlack;
 
+    [SerializeField] private RawImage noise;
+
+
+    [SerializeField]
+    [Range(0, 1)]
+    private float backBalckAlpha = 0.4f;
+    [SerializeField]
+    [Range(0, 1)]
+    private float noiseAlpha = 0.15f;
+
+
     //UIがシェイク時にぶれるバグを修正仕様とした跡地
     //private Vector3 initShakeObj;
     //private Vector3 initLifeGage;
@@ -71,19 +84,28 @@ public class MinGameHakaiManager2 : MonoBehaviour
         PROCESSING
     }
     [SerializeField] private GAME_STATE State;
-    private void Start()
+
+
+    private void Awake()
     {
+        State = GAME_STATE.PRESTART;
+
         //インベントリ初期化
         inventory = GameObject.Find("Managers").GetComponent<Inventry>();
+        WallInit();
+        WallAnimeInit();
+        ShadowInit();
+        GetSpriteName();
+
+    }
+    private void Start()
+    {
+       
 
         //揺れによってオブジェクトが移動するバグ修正のための
         originalBordPosition = shakeObj.transform.position;
         originalHPBarPosition = lifeGage.transform.position;
 
-        State = GAME_STATE.PRESTART;
-        WallInit();
-        WallAnimeInit();
-        GetSpriteName();
         //取得できるかどうかについてアイテムの情報を更新
         UpdateItemData.Invoke();
         //UIのアイテム情報の更新
@@ -165,14 +187,14 @@ public class MinGameHakaiManager2 : MonoBehaviour
         j = 0;
         foreach (GameObject v in GameObject.FindGameObjectsWithTag("Wall"))
         {
-            if (i >= RawSize)
+            if (i >= rawSize)
             {
                 Debug.LogError("壁の数が多すぎます");
                 break;
             }
             Wall[i, j] = v;
             j++;
-            if (j == ColumnSize)
+            if (j == collumnSize)
             {
                 j = 0;
                 i++;
@@ -182,6 +204,35 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
 
     }
+    /// <summary>
+    /// Wallを初期化する関数。
+    /// タグがWallであるゲームオブジェクトをすべて取得する。
+    /// </summary>
+    private void ShadowInit()
+    {
+        int i, j;
+        i = 0;
+        j = 0;
+        foreach (GameObject v in GameObject.FindGameObjectsWithTag("shadow"))
+        {
+            if (i >= rawSize)
+            {
+                Debug.LogError("壁の数が多すぎます");
+                break;
+            }
+            shadow[i, j] = v.GetComponent<SpriteRenderer>();
+            j++;
+            if (j == collumnSize)
+            {
+                j = 0;
+                i++;
+            }
+
+        }
+
+
+    }
+
     private void WallAnimeInit()
     {
         int i, j;
@@ -189,14 +240,14 @@ public class MinGameHakaiManager2 : MonoBehaviour
         j = 0;
         foreach (GameObject v in GameObject.FindGameObjectsWithTag("WallAnime"))
         {
-            if (j >= RawSize)
+            if (j >= rawSize)
             {
                 Debug.LogError("壁の数が多すぎます");
                 break;
             }
             WallAnime[i, j] = v;
             i++;
-            if (i == ColumnSize)
+            if (i == collumnSize)
             {
                 i = 0;
                 j++;
@@ -269,20 +320,25 @@ public class MinGameHakaiManager2 : MonoBehaviour
         for (int i = 0; i < 9; i++)
         {
             //使用している道具の裏返せる範囲で無ければスキップ
-            if (!tool.Tools[toolManager.SelectToolNum].CanChangeSprite[i]) continue;
             int nraw = raw + dy[i];
             int ncolumn = column + dx[i];
-            if (nraw < 0 || nraw >= RawSize || ncolumn < 0 || ncolumn >= ColumnSize) continue;
-            if (gameType == 1)
+            if (nraw < 0 || nraw >= rawSize || ncolumn < 0 || ncolumn >= collumnSize) continue;
+            for (int j = 0; j < tool.Tools[toolManager.SelectToolNum].CanChangeSprite[i]; j++)
             {
-                ChangeSprite1(Wall[nraw, ncolumn],WallAnime[nraw,ncolumn]);
-            }else if (gameType == 2)
-            {
-                ChangeSprite2(Wall[nraw, ncolumn]);
+                if (gameType == 1)
+                {
+                    ChangeSprite1(Wall[nraw, ncolumn], WallAnime[nraw, ncolumn]);
+                }
+                else if (gameType == 2)
+                {
+                    ChangeSprite2(Wall[nraw, ncolumn]);
 
-            }else if (gameType == 3)
-            {
-                ChangeSprite3(Wall[nraw, ncolumn]);
+                }
+                else if (gameType == 3)
+                {
+                    ChangeSprite3(Wall[nraw, ncolumn]);
+                    ChangeShadow();
+                }
             }
         }
         //道具を使用した時のエフェクトを出す。
@@ -292,11 +348,22 @@ public class MinGameHakaiManager2 : MonoBehaviour
         //レベルが0の時の例外処理（多分いらない）
         gameStatus.Damage(tool.Tools[toolManager.SelectToolNum].damage[tool.Tools[toolManager.SelectToolNum].level - 1]);
 
+
+
         //背景の黒画像の透過度を更新
         Color tmpColor = backBlack.color;
         Debug.Log(tmpColor.a+"aaa");
-        tmpColor.a =150f/255f-150f/255f*gameStatus.life/gameStatus.maxLife;
+        tmpColor.a =backBalckAlpha-backBalckAlpha*gameStatus.life/gameStatus.maxLife;
         backBlack.color = tmpColor;
+
+        //ノイズの透過度を更新
+        if (gameStatus.life * 2 <= gameStatus.maxLife)
+        {
+            Color noiseTmp = noise.color;
+            noiseTmp.a = noiseAlpha - noiseAlpha * 2 * gameStatus.life / gameStatus.maxLife;
+            noise.color = noiseTmp;
+        }
+
 
 
         //取得できるかどうかについてアイテムの情報を更新
@@ -365,9 +432,9 @@ public class MinGameHakaiManager2 : MonoBehaviour
     /// </summary>
     public (int,int) SearchIndex(GameObject obj)
     {
-        for (int i = 0; i < RawSize; i++)
+        for (int i = 0; i < rawSize; i++)
         {
-            for (int j = 0; j < ColumnSize; j++)
+            for (int j = 0; j < collumnSize; j++)
             {
                 if (obj == Wall[i, j])
                 {
@@ -388,14 +455,14 @@ public class MinGameHakaiManager2 : MonoBehaviour
     {
         string spriteName = m_Wall.GetComponent<SpriteRenderer>().sprite.name;
         Animator animt = m_WallAnime.GetComponent<Animator>();
-        if (spriteName == PolutedLevel1)
+        if (spriteName == polutedLevel1)
         {
-            m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[2];
+            m_Wall.GetComponent<SpriteRenderer>().sprite = wallSprite[2];
             animt.SetTrigger("StartAnime");
         }
-        else if (spriteName == PolutedLevel3)
+        else if (spriteName == polutedLevel3)
         {
-            m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[0];
+            m_Wall.GetComponent<SpriteRenderer>().sprite = wallSprite[0];
             animt.SetTrigger("StartAnime");
 
         }
@@ -409,14 +476,14 @@ public class MinGameHakaiManager2 : MonoBehaviour
     private void ChangeSprite2(GameObject m_Wall)
     {
         string spriteName = m_Wall.GetComponent<SpriteRenderer>().sprite.name;
-        if (spriteName == PolutedLevel1) {
-            m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[1];
+        if (spriteName == polutedLevel1) {
+            m_Wall.GetComponent<SpriteRenderer>().sprite = wallSprite[1];
         }
-        else if(spriteName==PolutedLevel2)
+        else if(spriteName==polutedLevel2)
         {
-            m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[2];
+            m_Wall.GetComponent<SpriteRenderer>().sprite = wallSprite[2];
             
-        }else if (spriteName == PolutedLevel3)
+        }else if (spriteName == polutedLevel3)
         {
             return;
             //m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[0];//サイクルバージョン
@@ -433,25 +500,25 @@ public class MinGameHakaiManager2 : MonoBehaviour
        
         string spriteName = m_Wall.GetComponent<SpriteRenderer>().sprite.name;
 
-        if (spriteName == PolutedLevel1)
+        if (spriteName == polutedLevel1)
         {
-            m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[1];
+            m_Wall.GetComponent<SpriteRenderer>().sprite = wallSprite[1];
         }
-        else if (spriteName == PolutedLevel2)
+        else if (spriteName == polutedLevel2)
         {
-            m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[2];
+            m_Wall.GetComponent<SpriteRenderer>().sprite = wallSprite[2];
         }
-        else if (spriteName == PolutedLevel3)
+        else if (spriteName == polutedLevel3)
         {
-            m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[3];
+            m_Wall.GetComponent<SpriteRenderer>().sprite = wallSprite[3];
         }
-        else if (spriteName == PolutedLevel4)
+        else if (spriteName == polutedLevel4)
         {
-            m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[4];
+            m_Wall.GetComponent<SpriteRenderer>().sprite = wallSprite[4];
         }
-        else if (spriteName == PolutedLevel5)
+        else if (spriteName == polutedLevel5)
         {
-            m_Wall.GetComponent<SpriteRenderer>().sprite = WallSprite[5];
+            m_Wall.GetComponent<SpriteRenderer>().sprite = wallSprite[5];
         }
     }
     /// <summary>
@@ -459,12 +526,12 @@ public class MinGameHakaiManager2 : MonoBehaviour
     /// </summary>
     private void GetSpriteName()
     {
-        PolutedLevel1 = WallSprite[0].name;
-        PolutedLevel2 = WallSprite[1].name;
-        PolutedLevel3 = WallSprite[2].name;
-        PolutedLevel4 = WallSprite[3].name;
-        PolutedLevel5 = WallSprite[4].name;
-        PolutedLevel6 = WallSprite[5].name;
+        polutedLevel1 = wallSprite[0].name;
+        polutedLevel2 = wallSprite[1].name;
+        polutedLevel3 = wallSprite[2].name;
+        polutedLevel4 = wallSprite[3].name;
+        polutedLevel5 = wallSprite[4].name;
+        polutedLevel6 = wallSprite[5].name;
     }
 
     /// <summary>
@@ -479,11 +546,11 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
         //掘る場所がないとき終了する
         bool canDig = false;
-        for(int i = 0; i <RawSize;i++)
+        for(int i = 0; i <rawSize;i++)
         {
-            for(int j = 0; j < ColumnSize; j++)
+            for(int j = 0; j < collumnSize; j++)
             {
-                if (Wall[i, j].GetComponent<SpriteRenderer>().sprite.name != PolutedLevel6) canDig = true;
+                if (Wall[i, j].GetComponent<SpriteRenderer>().sprite.name != polutedLevel6) canDig = true;
             }
         }
 
@@ -535,7 +602,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
             //インベントリーの更新(追加)
             inventory.AddItem(itemData.itemSO);
 
-            GameObject view = Instantiate(Resources.Load("MinGameHakai/ResultGetItem"),resultCanvas.transform) as GameObject;
+            GameObject view = Instantiate(Resources.Load("MinGameHakai/ResultGetItem2"),resultCanvas.transform) as GameObject;
 
             HakaiResultGetItem viewData = view.GetComponent<HakaiResultGetItem>();
             viewData.itemIcon.GetComponent<Image>().sprite = itemData.itemSO.icon;
@@ -584,5 +651,54 @@ public class MinGameHakaiManager2 : MonoBehaviour
         yield return 0;
     }
 
+
+   public void ChangeShadow()
+    {
+        for(int i=1; i < rawSize; i++)
+        {
+            for(int j = 0; j < collumnSize; j++)
+            {
+                string v = Wall[i, j].GetComponent<SpriteRenderer>().sprite.name;
+                string comp= Wall[i-1, j].GetComponent<SpriteRenderer>().sprite.name;
+                if (comp == polutedLevel2 || comp == polutedLevel1) {
+                    if (v != polutedLevel2 && v != polutedLevel1)
+                    {
+                        shadow[i, j].sprite = shadowSprite[0];
+                    }
+                    else
+                    {
+                        shadow[i, j].sprite = shadowSprite[3];
+                    }
+                }
+                else if (comp == polutedLevel3|| comp == polutedLevel4)
+                {
+                    if (v == polutedLevel6)
+                    {
+                        shadow[i, j].sprite = shadowSprite[1];
+                    }
+                    else
+                    {
+                        shadow[i, j].sprite = shadowSprite[3];
+                    }
+                }
+                else if(comp == polutedLevel5)
+                {
+                    if (v == polutedLevel6)
+                    {
+                        shadow[i, j].sprite = shadowSprite[2];
+                    }
+                    else
+                    {
+                        shadow[i, j].sprite = shadowSprite[3];
+                    }
+                }
+                else
+                {
+                    shadow[i, j].sprite = shadowSprite[3];
+                }
+
+            }
+        }
+    }
 }
 
