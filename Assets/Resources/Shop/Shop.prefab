@@ -1155,7 +1155,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3113682260179802142
 Transform:
   m_ObjectHideFlags: 0
@@ -5224,7 +5224,6 @@ MonoBehaviour:
   itemContainerUI: {fileID: 4373537636168385465, guid: 166df7e32b79d9e4c92c38531a1dd8b4,
     type: 3}
   container: {fileID: 6765163303811197263}
-  dropdown: {fileID: 6765163304000245840}
   itemIcon: {fileID: 6765163302511168936}
   itemName: {fileID: 6765163303670139688}
   description: {fileID: 6765163302044428171}
@@ -7753,7 +7752,7 @@ MonoBehaviour:
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
-  itemId: 39
+  itemId: 44
   blockName: NoMoney (Copy)
   description: "\u304A\u91D1\u304C\u8DB3\u308A\u306A\u3044\u6642\u306B\u547C\u3073\u51FA\u3055\u308C\u308B"
   eventHandler: {fileID: 2317611425591674588}
@@ -7822,7 +7821,7 @@ MonoBehaviour:
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 1
-  itemId: 39
+  itemId: 45
   blockName: NoMoney (Copy)1
   description: "\u5FC5\u8981\u5F37\u5316\u7D20\u6750\u304C\u8DB3\u308A\u306A\u3044\u6642"
   eventHandler: {fileID: 5384163687856927784}

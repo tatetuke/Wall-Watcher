@@ -49,7 +49,7 @@ public class ShopMessageManager : MonoBehaviour
     {
         if (selectItemManager.item == null) return;
         //購買キーが押された時，買うかどうかのメッセージを表示する
-        if (!Input.GetKeyDown("v"))return;
+        if (!Input.GetKeyDown(KeyCode.Space))return;
         //既にメッセージが表示されている場合は何もしない
         if (!canGenerateDialog) return;
         //買うかどうかのメッセージを表示する
@@ -69,7 +69,7 @@ public class ShopMessageManager : MonoBehaviour
         Debug.Log("wait select Start");
         //入力が決定されたら次に進む
 
-        while (!Input.GetKeyDown("v")) {
+        while (!Input.GetKeyDown(KeyCode.Space)) {
             DialogSelect();
             yield return 0;
         }
