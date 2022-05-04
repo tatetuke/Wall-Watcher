@@ -1,8 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -10,7 +7,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 /// <summary>
 /// ゲーム内のクエストデータをロードし、一覧としてまとめる
 /// </summary>
-public class QuestsManager : SaveLoadableSingletonMonoBehaviour<QuestsManager>
+public class QuestsManager : SingletonMonoBehaviour<QuestsManager>
 {
     [SerializeField] private AssetLabelReference _labelReference;
     [SerializeField,ReadOnly] List<QuestDataSO> m_quests = new List<QuestDataSO>();
@@ -35,20 +32,7 @@ public class QuestsManager : SaveLoadableSingletonMonoBehaviour<QuestsManager>
         Addressables.Release(m_handle);
     }
 
-    protected override void Save()
-    {
-    }
-
-    protected override void Load()
-    {
-    }
-
-    protected override async UniTask SaveAsync()
-    {
-
-    }
-
-    protected override async UniTask LoadAsync()
+    public async UniTask LoadAsync()
     {
         m_handle = Addressables.LoadAssetsAsync<QuestDataSO>(_labelReference, null);
         await m_handle.Task;
@@ -57,10 +41,5 @@ public class QuestsManager : SaveLoadableSingletonMonoBehaviour<QuestsManager>
         {
             m_quests.Add(res);
         }
-    }
-
-    protected override List<string> GetKeyList()
-    {
-        return null;
     }
 }

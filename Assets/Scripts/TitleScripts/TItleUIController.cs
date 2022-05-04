@@ -12,7 +12,7 @@ public class TItleUIController : MonoBehaviour
     [SerializeField] Animator PushAnyKeyAnimator;
     [SerializeField] Transform optionsParent;//選択肢を保持する親
     [Header("Options")]
-    [SerializeField] string loadGameSceneName = "FileSelect";//LOAD GAME押したときに飛ぶシーン名
+    [SerializeField] string loadGameSceneName = "MainMap3_CircleWay";//LOAD GAME押したときに飛ぶシーン名
     [SerializeField] string newGameSceneName = "MainMap3_CircleWay";//NEW GAME押したときに飛ぶシーン名
     [SerializeField] KeyCode enterKey=KeyCode.Space;//選択肢を決定するキー
     [Header("Debug")]
@@ -48,11 +48,6 @@ public class TItleUIController : MonoBehaviour
                     Debug.Log("何らかのキーが押されました");
                     PushAnyKeyAnimator.SetBool("IsPushAnyKey", true);
                     m_State = TitleState.GameTitleSlideMovie;
-                    if (!SaveDataReader.Instance.ExistsSaveFiles())
-                    {
-                        //セーブデータが存在しない場合LoadGamesを選べないようにする
-                        m_options[0].enableFlag = false;
-                    }
                 }
             break;
 
