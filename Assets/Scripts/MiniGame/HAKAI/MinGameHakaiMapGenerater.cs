@@ -57,7 +57,8 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
         generateWall();
         //アイテムの生成
         generateItem();
-         
+
+        gameManager.ChangeShadow();
     }
 
 

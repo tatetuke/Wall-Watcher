@@ -14,7 +14,12 @@ TagManager:
   - Item
   - WallAnime
   - WallColor
+<<<<<<< HEAD
   - camera_relo
+=======
+  - ShopPrefab
+  - shadow
+>>>>>>> upstream/main
   layers:
   - Default
   - TransparentFX

@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.Playables;
+using Fungus;
 
 /// <summary>
 /// ミニゲームの塗るパートを統括する
@@ -11,6 +12,9 @@ using UnityEngine.Playables;
 /// </summary>
 public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
 {
+    [SerializeField] Flowchart GuideMiniGameFlowChart;
+
+
     [SerializeField] private MiniGamePaintStatus gameStatus;//HPやHPを減らす関数を持つクラス
 
     [SerializeField] MiniGamePaintToolDataManager toolManager;
@@ -34,11 +38,12 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
 
     public int ParamSize = 15;
     public int ConditionCanClick = 8;
-    public const int WallLength = 7;
+    public const int WallLengthRaw = 9;
+    public const int WallLengthColumn = 12;
     private int Cost = 0;
-    GameObject[,] Wall = new GameObject[WallLength, WallLength];
-    int[,] WallParam = new int[WallLength, WallLength];
-    TextMeshProUGUI[,] ParameterText = new TextMeshProUGUI[WallLength, WallLength];
+    GameObject[,] Wall = new GameObject[WallLengthRaw, WallLengthColumn];
+    int[,] WallParam = new int[WallLengthRaw, WallLengthColumn];
+    TextMeshProUGUI[,] ParameterText = new TextMeshProUGUI[WallLengthRaw, WallLengthColumn];
     public TextMeshProUGUI m_TextRange;
     public TextMeshProUGUI m_TextCost;
     private string[] Textes = new string[5] { "□", "↑", "→", "↓", "←" };
@@ -56,7 +61,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
         Playing,
         Finished
     }
-    State m_State = State.Tutorial;
+    State m_State = State.Playing;
 
     public enum Range
     {
@@ -124,9 +129,9 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
                     HideRangeFrame();
             }
 
-            for (int i = 0; i < WallLength; i++)
+            for (int i = 0; i < WallLengthRaw; i++)
             {
-                for (int j = 0; j < WallLength; j++)
+                for (int j = 0; j < WallLengthColumn; j++)
                 {
                     if (IsBrown(i, j))
                     {
@@ -139,6 +144,46 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
                     }
                 }
             }
+        }
+    }
+
+    void TutorialRightClick()
+    {
+        if (/*右クリックが押されたら*/Input.GetMouseButtonDown(1))
+        {
+            int raw, column;
+            (raw, column) = GetCursorObjectIndex();
+            if (raw == 3 && column == 3)
+            {
+                int damage = 14 + 24 - WallParam[raw, column];
+                if (gameStatus.life >= damage && !IsBrown(raw, column))
+                {
+                    gameStatus.Damage(40);
+                    FillSoil(raw, column);
+                }
+                GuideMiniGameFlowChart.SetBooleanVariable("IsTutorialRightClicked", true);
+
+            }
+        }
+    }
+
+    void TutorialLeftClick()
+    {
+        if (/*左クリックが押されたら*/Input.GetMouseButtonDown(0))
+        {
+            int raw, column;
+            (raw, column) = GetCursorObjectIndex();
+            int add, sub;
+            (add, sub) = SetAddSub(m_Range, raw, column);
+            if (raw == 3 && column == 3)
+            {
+                if (CanClick(raw, column, sub))
+                {
+                    UpdateWall(m_Range, raw, column, add, sub);
+                    GuideMiniGameFlowChart.SetBooleanVariable("IsTutorialLeftClicked", true);
+                }
+            }
+
         }
     }
 
@@ -161,12 +206,13 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
             Wall[i, j] = v;
             SpriteRenderer spriteRenderer = Wall[i, j].GetComponent<SpriteRenderer>();
             int rndm = Random.Range(0, ParamSize - 1);
+            if (m_State == State.Tutorial) rndm = 0;
             WallParam[i, j] = rndm;
             // 内部のパラメータは[0,14]，スプライトは5段階
             spriteRenderer.sprite = WallSprites[rndm / 3];
             //spriteRenderer.color = new Color(1, 1, 1, ParamList[Random.Range(0, ParamSize - 1)]);
             i++;
-            if (i == WallLength)
+            if (i == WallLengthRaw)
             {
                 i = 0;
                 j++;
@@ -183,7 +229,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
             ParameterText[i, j] = v.GetComponent<TextMeshProUGUI>();
             ParameterText[i, j].text = WallParam[i, j].ToString();
             i++;
-            if (i == WallLength)
+            if (i == WallLengthRaw)
             {
                 i = 0;
                 j++;
@@ -194,9 +240,9 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
 
     private void UpdateParameters()
     {
-        for (int i = 0; i < WallLength; i++)
+        for (int i = 0; i < WallLengthRaw; i++)
         {
-            for (int j = 0; j < WallLength; j++)
+            for (int j = 0; j < WallLengthColumn; j++)
             {
                 int param;
                 if (IsBrown(i, j))
@@ -227,9 +273,9 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
         GameObject cursorObject = GetCursorObject();
         if (cursorObject == null) return (-1, -1);
         int raw = -100, column = -100;
-        for (int i = 0; i < WallLength; i++)
+        for (int i = 0; i < WallLengthRaw; i++)
         {
-            for (int j = 0; j < WallLength; j++)
+            for (int j = 0; j < WallLengthColumn; j++)
             {
                 if (cursorObject == Wall[i, j])
                 {
@@ -282,7 +328,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
 
     private bool CanClick(int raw, int column, int sub)
     {
-        if (raw < 0 || raw >= WallLength || column < 0 || column >= WallLength) return false;
+        if (raw < 0 || raw >= WallLengthRaw || column < 0 || column >= WallLengthColumn) return false;
 
         return IsEnoughCost(raw, column, sub) && !IsOutOfFrame(m_Range, raw, column);
     }
@@ -308,7 +354,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
                 if (dx[i] == 0 && dy[i] == 0) continue;
                 int nraw = raw + dy[i];
                 int ncolumn = column + dx[i];
-                if (nraw < 0 || nraw >= WallLength || ncolumn < 0 || ncolumn >= WallLength)
+                if (nraw < 0 || nraw >= WallLengthRaw || ncolumn < 0 || ncolumn >= WallLengthColumn)
                     return true;
             }
             return false;
@@ -322,7 +368,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
             for (int i = 0; i < 3; i++)
             {
                 nraw += draw; ncolumn += dcolumn;
-                if (nraw < 0 || nraw >= WallLength || ncolumn < 0 || ncolumn >= WallLength)
+                if (nraw < 0 || nraw >= WallLengthRaw || ncolumn < 0 || ncolumn >= WallLengthColumn)
                     return true;
             }
             return false;
@@ -338,7 +384,7 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
             {
                 int nraw = raw + dy[i];
                 int ncolumn = column + dx[i];
-                if (nraw < 0 || nraw >= WallLength || ncolumn < 0 || ncolumn >= WallLength) continue;
+                if (nraw < 0 || nraw >= WallLengthRaw || ncolumn < 0 || ncolumn >= WallLengthColumn) continue;
                 if (dx[i] == 0 && dy[i] == 0) ChangeSprite(nraw, ncolumn, sub);
                 else ChangeSprite(nraw, ncolumn, add);
                 for (int j = 0; j < 5; j++)
@@ -518,8 +564,8 @@ public class MiniGamePaintManager : SingletonMonoBehaviour<MiniGamePaintManager>
     {
         string res;
         int diff = 0;
-        for (int i = 0; i < WallLength; i++)
-            for (int j = 0; j < WallLength; j++)
+        for (int i = 0; i < WallLengthRaw; i++)
+            for (int j = 0; j < WallLengthColumn; j++)
                 diff += (WallParam[i, j] - (ParamSize - 1)) / 3;
 
         if (diff == 0)

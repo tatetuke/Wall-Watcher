@@ -17,9 +17,6 @@ GameObject:
   - component: {fileID: 4368147750092273802}
   - component: {fileID: 6620006400604418315}
   - component: {fileID: 8375348173525352303}
-  - component: {fileID: 4406423633135891124}
-  - component: {fileID: 2005104341916565844}
-  - component: {fileID: 4236181000602136703}
   - component: {fileID: 3386658694790212803}
   - component: {fileID: -6601384200722135496}
   m_Layer: 0
@@ -152,45 +149,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_quests: []
---- !u!114 &4406423633135891124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5258322693995725206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f20bec26ccf52b4f8a2b628a2105848, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  saveDirectoryPath: Data/Saves
---- !u!114 &2005104341916565844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5258322693995725206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ecb9de66d7fc164d81b635cd9f944a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  saveDirectoryPath: Data/Saves
---- !u!114 &4236181000602136703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5258322693995725206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b06fd825ed2b7e0449745733278abf2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: 
 --- !u!114 &3386658694790212803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,3 +173,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 835f7dac583d186458facef8f86214d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pause: 0

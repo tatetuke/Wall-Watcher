@@ -9,7 +9,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Kyoichi
 {
-    public class ItemManager : SaveLoadableSingletonMonoBehaviour<ItemManager>
+    public class ItemManager :SingletonMonoBehaviour<ItemManager>
     {
         enum LoadState
         {
@@ -17,7 +17,7 @@ namespace Kyoichi
             loading,
             loaded
         }
-        LoadState m_state = LoadState.notLoaded;
+      [SerializeField,ReadOnly]  LoadState m_state = LoadState.notLoaded;
 
         [SerializeField] private AssetLabelReference _labelReference;
         Dictionary<string, ItemSO> m_data = new Dictionary<string, ItemSO>();
@@ -32,63 +32,23 @@ namespace Kyoichi
         public void AddInventry(Inventry inventry) { m_inventries.Add(inventry); }
 
         // Start is called before the first frame update
-        protected override void Awake()
+         void Awake()
         {
-            base.Awake();
-            Kyoichi.GameManager.Instance.OnGameSave.AddListener(Save);
+            if (m_state == LoadState.loaded)//エディタ上でロードしたとき
+            {
+                m_state = LoadState.notLoaded;
+            }
             if (m_state == LoadState.loaded)//エディタ上でロードしたとき
             {
                 Addressables.Release(m_handle);
                 m_state = LoadState.notLoaded;
             }
         }
-
         AsyncOperationHandle<IList<ItemSO>> m_handle;
 
         void OnDisable()
         {
             Addressables.Release(m_handle);
-        }
-
-        /// <summary>
-        /// プレイヤーのインベントリをファイルから読み込む
-        /// </summary>
-        /// <param name="directory"></param>
-        /// <param name="filename"></param>
-        /// <returns></returns>
-        public List<Kyoichi.ItemStack> LoadItemFrom(string directory, string filename)
-        {
-            var res = new List<Kyoichi.ItemStack>();
-            if (m_state != LoadState.loaded)
-            {
-                Debug.LogError("item not loaded");
-                return res;
-            }
-            var dat = CSVReader.Read(directory, filename);
-            foreach (var i in dat)
-            {
-                if (!m_data.ContainsKey(i[0]))
-                {
-                    Debug.Log($"error item not found '{i[0]}'");
-                    continue;
-                }
-                res.Add(
-                    new Kyoichi.ItemStack(GetItem(i[0]), int.Parse(i[1]))
-                    );
-            }
-            return res;
-        }
-        public void SaveItemTo(string directory, string filename, IEnumerable<Kyoichi.ItemStack> target)
-        {
-            var dat = new List<List<string>>();
-            foreach (var i in target)
-            {
-                var lis = new List<string>();
-                lis.Add(i.item.name);
-                lis.Add(i.count.ToString());
-                dat.Add(lis);
-            }
-            CSVReader.Write(directory, filename, dat);
         }
         public ItemSO GetItem(string name)
         {
@@ -104,31 +64,7 @@ namespace Kyoichi
             }
             return m_data[name];
         }
-
-        protected override void Save()
-        {
-            for (int i = 0; i < m_inventries.Count;)
-            {
-                //   m_inventries[i].SaveToFile();
-                m_inventries.RemoveAt(i);
-            }
-        }
-
-        protected override void Load()
-        {
-        }
-
-        protected override List<string> GetKeyList()
-        {
-            return null;
-        }
-
-        protected override async UniTask SaveAsync()
-        {
-
-        }
-
-        protected override async UniTask LoadAsync()
+        public async UniTask LoadAsync()
         {
             if (m_state != LoadState.notLoaded)
             {
@@ -148,5 +84,6 @@ namespace Kyoichi
             }
             m_state = LoadState.loaded;
         }
+
     }
 }

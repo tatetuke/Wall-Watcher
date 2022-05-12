@@ -22,18 +22,19 @@ public class MiniGamePaintToolDataManager : MonoBehaviour
     public void PushTool1()
     {
         MiniGamePaintManager.Instance.ChangeRange(MiniGamePaintManager.Range.Square);
+        SelectToolNum = 0;
         ChangeUI();
     }
     public void PushTool2()
     {
-        Debug.Log("2が押された");
         MiniGamePaintManager.Instance.ChangeRange(MiniGamePaintManager.Range.Up);
+        SelectToolNum = 1;
         ChangeUI();
-        Debug.Log(MiniGamePaintManager.Instance.m_Range);
     }
     public void PushTool3()
     {
         MiniGamePaintManager.Instance.ChangeRange(MiniGamePaintManager.Range.Up);
+        SelectToolNum = 2;
         ChangeUI();
     }
 
@@ -43,6 +44,7 @@ public class MiniGamePaintToolDataManager : MonoBehaviour
     /// </summary>
     public void ChangeUI()
     {
+        Debug.Log(SelectToolNum);
         //レベルが0(アイテム取得状態でない)ならば終了
         if (Tools[SelectToolNum].level == 0) return;
         //表示するレベルを変更

@@ -22,14 +22,24 @@ namespace Kyoichi
         }
     }
 
+    [System.Serializable]
+    public class InventryData: SaveDataBaseClass
+    {
+    [System.Serializable]
+        public class ItemData
+        {
+            public string item_id;
+            public int count;
+        }
+        public List<ItemData> inventry = new List<ItemData>();
+    }
+
     /// <summary>
     /// インベントリ管理クラス
     /// </summary>
     [DisallowMultipleComponent]
-    public class Inventry : SaveLoadableMonoBehaviour
+    public class Inventry : SingletonMonoBehaviour<Inventry>
     {
-        public string directory = "Data";
-        public string filename = "inventry.csv";
         public class ItemEvent : UnityEvent<ItemStack> { }
         public ItemEvent OnItemAdd { get; } = new ItemEvent();
         public ItemEvent OnItemRemove { get; } = new ItemEvent();
@@ -165,59 +175,34 @@ namespace Kyoichi
             }
             return true;
         }
-
-        protected override void Save()
-        {
-            SaveToFile();
-        }
-
-        protected override void Load()
-        {
-            //インベントリが生成されたとき、ItemManagerのロードが終わってたらアイテムをロード
-            if (Kyoichi.GameManager.Instance.IsLoadFinished)
-            {
-                LoadFromFile();
-            }
-            else
-            {
-                //ロードが終わってなかったら終わったときに読み込むようにする
-                Kyoichi.GameManager.Instance.OnLoadFinished.AddListener(() =>
-                {
-                    LoadFromFile();
-                });
-            }
-        }
-
-        /// <summary>
-        /// 今あるアイテムをすべて削除し、csvファイルからロード
-        /// </summary>
         public void LoadFromFile()
         {
-            Clear();
-            m_inventry = ItemManager.Instance.LoadItemFrom(directory, filename);
-            foreach (var i in m_inventry)
+            DataBank bank = DataBank.Instance;
+            bank.Load<InventryData>("inventry");
+            var dat = bank.Get<InventryData>("inventry");
+            if (dat==null)
             {
-                Debug.Log($"Inventry loaded '{i.item.name}':{i.count}");
+                m_inventry = new List<ItemStack>();
+                return;
+            }
+            foreach(var i in dat.inventry) {
+                m_inventry.Add(new ItemStack(ItemManager.Instance.GetItem(i.item_id),i.count));
             }
         }
+
         public void SaveToFile()
         {
-        }
+            DataBank bank = DataBank.Instance;
+            Debug.Log("DataBank.Open()");
+            Debug.Log($"save path of bank is { bank.SavePath }");
+            InventryData data = new InventryData();
 
-        protected override UniTask SaveAsync()
-        {
-            return new UniTask();
-        }
-
-        protected override UniTask LoadAsync()
-        {
-            return new UniTask();
-        }
-
-        protected override List<string> GetKeyList()
-        {
-            return null;
+            foreach (var i in m_inventry)
+            {
+                data.inventry.Add(new InventryData.ItemData() {item_id= i.item.item_name,count= i.count });
+            }
+            bank.Store("inventry", data);
+            bank.SaveAll();
         }
     }
-
 }

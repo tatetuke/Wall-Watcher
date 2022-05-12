@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SampleShopItemLoader : SaveLoadableMonoBehaviour
+public class SampleShopItemLoader
 {
     private string saveKey = "sampleShopItem";
     // Start is called before the first frame update
@@ -12,36 +12,14 @@ public class SampleShopItemLoader : SaveLoadableMonoBehaviour
     {
         Load();
     }
-    protected override void Save()
+    protected void Save()
     {
         DataBank.Instance.Store(saveKey, sampleLineUp);
         DataBank.Instance.Save(saveKey);
-
     }
-    protected override void Load()
+    protected void Load()
     {
         DataBank.Instance.Load<SampleShopLineUp>(saveKey);
         sampleLineUp = DataBank.Instance.Get<SampleShopLineUp>(saveKey);
-    }
-
-    protected override UniTask SaveAsync()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    protected override UniTask LoadAsync()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    protected override List<string> GetKeyList()
-    {
-        return new List<string>() { saveKey };
-    }
-
-    protected override void Awake()
-    {
-        //base.Awake()を忘れない SaveLoadManagerでの重複チェック・登録が行われる
-        base.Awake();
     }
 }
