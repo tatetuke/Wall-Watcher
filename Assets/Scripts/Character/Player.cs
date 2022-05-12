@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using map;
+
 /// <summary>
 /// プレイヤーの移動・見た目周りを管理するクラス
 /// </summary>
@@ -22,6 +24,10 @@ public class Player : MonoBehaviour
     private float m_Inertia; // 慣性 0なら止まる
     [SerializeField]
     private float m_InertiaMultiplier;
+
+    public float past_walkForce { get; private set; } = 0.0f;
+    //public float autoMoveTime { get; private set; } = 0.0f;
+    //public IEnumerator _v_autoMove { get; private set; } = null;
 
     public enum State
     {
@@ -51,6 +57,9 @@ public class Player : MonoBehaviour
             ChangeState(State.FREEZE);
         if (Input.GetKeyDown(KeyCode.Y))
             ChangeState(State.IDLE);
+        if (playerState.player_auto_direction != player.PLAYER_AUTO_WALKING.INVALID) {
+
+        }
         UpdateState();
     }
 
@@ -210,5 +219,33 @@ public class Player : MonoBehaviour
         else
             m_Inertia = Mathf.Clamp(m_Inertia + Time.deltaTime * m_InertiaMultiplier, -1, 0);
 
+    }
+
+    // 自動移動前に行う設定関数（後に改良予定）
+    public void autoMove(float auto_move_time, float auto_speed, Direction2D auto_direction)
+    {
+        //autoMoveTime = auto_move_time;
+        past_walkForce = m_WalkForce;
+        m_WalkForce = auto_speed;
+        AllMapSet.autoWalkingDirection = auto_direction;
+        v_autoMove();
+    }
+
+    private void v_autoMove()
+    {
+        if (AllMapSet.autoWalkingDirection == Direction2D.Right)
+        {
+            ChangeState(State.AUTOR);
+        }
+        else if (AllMapSet.autoWalkingDirection == Direction2D.Left)
+        {
+            ChangeState(State.AUTOL);
+        }
+    }
+
+    public void stopAutoMove()
+    {
+        ChangeState(State.WALKING);
+        m_WalkForce = past_walkForce;
     }
 }

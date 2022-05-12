@@ -14,6 +14,7 @@ TagManager:
   - Item
   - WallAnime
   - WallColor
+  - camera_relo
   layers:
   - Default
   - TransparentFX
