@@ -5,15 +5,43 @@ using Cinemachine;
 
 public class camera_relocate : MonoBehaviour
 {
-    public GameObject player;
-    //public GameObject vcamera;
-    public CinemachineVirtualCamera vcamera;
-    private bool allow_right_relocate;
-    private bool pressed_right_key;
+    [SerializeField]
+    private CinemachineVirtualCamera vcamera;
+    [SerializeField]
+    private GameObject player;
+    [SerializeField]
+    private float move_x = 0f;
+    //[SerializeField]
+    //private float move_y = 0f;
+
+    [SerializeField]
+    private float player_speed = 0.0f;
+
+    private Vector3 camera_position_buf;
+    private bool allow_right_relocate = false;
+    private bool allow_left_relocate = false;
+    private bool pressed_right_key = false;
+    private bool pressed_left_key = false;
+    private map.Position2D player_pos = map.Position2D.Invalid;
+
+
     void Start()
     {
-        allow_right_relocate = false;
-        vcamera.Follow = null;
+        BoxCollider2D tmp = this.GetComponent<BoxCollider2D>();
+        if (player.transform.position.x > this.transform.position.x + tmp.offset.x + tmp.size.x / 2)
+        {
+            player_pos = map.Position2D.Right;
+        } else if (player.transform.position.x < this.transform.position.x + tmp.offset.x - tmp.size.x / 2)
+        {
+            player_pos = map.Position2D.Left;
+        } else
+        {
+            Debug.LogError("player_position_error");
+            if (UnityEditor.EditorApplication.isPlaying)
+            {
+                UnityEditor.EditorApplication.isPaused = true;
+            }
+        }
     }
 
     void Update() {
@@ -21,8 +49,16 @@ public class camera_relocate : MonoBehaviour
         if (allow_right_relocate) {
             vcamera.transform.position +=  new Vector3(10, 0, 0) * Time.deltaTime;
             
-            if (vcamera.transform.position.x >= 12) {
+            if (vcamera.transform.position.x >= camera_position_buf.x + move_x) {
                 allow_right_relocate = false;
+                player.GetComponent<Player>().stopAutoMove();
+            }
+        } else if (allow_left_relocate)
+        {
+            vcamera.transform.position -= new Vector3(10, 0, 0) * Time.deltaTime;
+
+            if (vcamera.transform.position.x <= camera_position_buf.x - move_x) {
+                allow_left_relocate = false;
                 player.GetComponent<Player>().stopAutoMove();
             }
         }
@@ -31,9 +67,22 @@ public class camera_relocate : MonoBehaviour
     
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.tag == "Player") {
-            vcamera.Follow = null;
-            allow_right_relocate = true;
-            player.GetComponent<Player>().autoMove(3f, 2f, map.Direction2D.Right);
+            camera_position_buf = vcamera.transform.position;   // 移動前のカメラの位置を保持
+            if (player_pos == map.Position2D.Left)
+            {
+                allow_right_relocate = true;
+                allow_left_relocate = false;
+                Debug.Log(player_speed);
+                player.GetComponent<Player>().autoMove(player_speed, map.Direction2D.Right);  // プレイヤー自動移動
+                player_pos = map.Position2D.Right;
+            } else if (player_pos == map.Position2D.Right)
+            {
+                allow_left_relocate = true;
+                allow_right_relocate = false;
+                player.GetComponent<Player>().autoMove(player_speed, map.Direction2D.Left);
+                player_pos = map.Position2D.Left;
+            }
+            
         }
     }
 
