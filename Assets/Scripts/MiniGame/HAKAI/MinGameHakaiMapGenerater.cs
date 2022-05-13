@@ -58,7 +58,18 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
         //アイテムの生成
         generateItem();
 
+        StartCoroutine(MakeShadow());
+    }
+    IEnumerator MakeShadow()
+    {
+        //gameMangerのshadowの初期化をまつ。
+        while (gameManager.State == MinGameHakaiManager2.GAME_STATE.PRESTART)
+        {
+            yield return null;
+        }
         gameManager.ChangeShadow();
+
+        yield return 0;
     }
 
 
@@ -179,11 +190,15 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
 
             int j = UnityEngine.Random.Range(0, ItemData.Count);
 
-            
+
             //生成確率より大きい場合スキップ
             //if (ItemData[j].Prob < RandomNum) continue;
             //アイテムのインデックスが盤面のサイズを超える場合スキップ
-            if (RandomRaw + ItemData[j].m_Ysize - 1 >= Rsize && RandomColumn + ItemData[j].m_Xsize - 1 >= Csize) continue;
+            if (RandomRaw + ItemData[j].m_Ysize - 1 >= Rsize || RandomColumn + ItemData[j].m_Xsize - 1 >= Csize)
+            {
+                i--;
+                continue;
+            }
 
             bool m_cansetItem = new bool();
             m_cansetItem = true;

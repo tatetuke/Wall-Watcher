@@ -8,6 +8,7 @@ public class MinGameHakaiToolData : MonoBehaviour
     [HideInInspector] public MinGameHakaiToolStatus[] Tools = new MinGameHakaiToolStatus[3];
     public Sprite[] ToolImages;
     private Inventry inventry;
+    private ItemManager itemManager;
     /// <summary>
     /// レベル1から順に入れる必要がある。
     /// </summary>
@@ -17,7 +18,9 @@ public class MinGameHakaiToolData : MonoBehaviour
 
     private void Start()
     {
+        
         inventry = GameObject.Find("Managers").GetComponent<Inventry>();
+        itemManager = GameObject.Find("Managers").GetComponent<ItemManager>();
 
         for (int i = 0; i < Tools.Length; i++)
         {
@@ -32,12 +35,13 @@ public class MinGameHakaiToolData : MonoBehaviour
     IEnumerator InitCoruitine()
     {
         int t = 0;
-        while (t <= 2)
+        while (t<30)
         {
             yield return null;
 
             t++;
         }
+        //inventry.LoadFromFile();
         Tool1Init();
         Tool2Init();
         Tool3Init();
@@ -64,7 +68,13 @@ public class MinGameHakaiToolData : MonoBehaviour
         }
         else
         {
-            Debug.LogError("ツールの初期化に失敗しました");
+
+            Debug.LogError("inventryにツール1が存在しません。\nツール1の初期化に失敗しました。\nツール1レベル1をinventryに追加します。");
+
+            inventry.AddItem(tool1[0]);
+            Tool1InitLv1();
+            //inventry.SaveToFile();
+
         }
     }
 
@@ -86,7 +96,11 @@ public class MinGameHakaiToolData : MonoBehaviour
         }
         else
         {
-            Debug.LogError("ツールの初期化に失敗しました");
+            Debug.LogError("inventryにツール2が存在しません。\nツール2の初期化に失敗しました。\nツール2レベル1をinventryに追加します。");
+            inventry.AddItem(tool2[0]);
+            Tool2InitLv1();
+            //inventry.SaveToFile();
+
         }
     }
 
@@ -107,7 +121,10 @@ public class MinGameHakaiToolData : MonoBehaviour
         }
         else
         {
-            Debug.LogError("ツールの初期化に失敗しました");
+            Debug.LogError("inventryにツール3が存在しません。\nツール2の初期化に失敗しました。\nツール2レベル1をinventryに追加します。");
+            inventry.AddItem(tool3[0]);
+            Tool3InitLv1();
+            //inventry.SaveToFile();
         }
     }
 

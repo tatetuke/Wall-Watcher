@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 public class MinGameHakaiToolDataManager : MonoBehaviour
 {
-   [SerializeField]private MinGameHakaiToolData toolDataScript;
-   [SerializeField] private Text level;
-   [SerializeField] private Text toolName;
-   [SerializeField] private Text discription;
-   [SerializeField] private Text damage;
-   [SerializeField] private Image hanniImage;
+    [SerializeField] private MinGameHakaiToolData toolDataScript;
+    [SerializeField] private Text level;
+    [SerializeField] private Text toolName;
+    [SerializeField] private Text discription;
+    [SerializeField] private Text damage;
+    [SerializeField] private Image hanniImage;
     private MinGameHakaiToolStatus[] Tools;
     public int SelectToolNum;
     public Toggle toggle1;
@@ -20,8 +20,28 @@ public class MinGameHakaiToolDataManager : MonoBehaviour
     {
         SelectToolNum = 0;
         Tools = toolDataScript.Tools;
-  
+
     }
+    /// <summary>
+    ///　道具を変更するトグルを使えるようにする
+    /// </summary>
+    public void ChangeToolToggleON()
+    {
+        toggle1.interactable = true;
+        toggle2.interactable = true;
+        toggle3.interactable = true;
+
+    }
+    /// <summary>
+    ///　道具を変更するトグルを使えないようにする。
+    /// </summary>
+    public void ChangeToolToggleOFF()
+    {
+        toggle1.interactable = false;
+        toggle2.interactable =false;
+        toggle3.interactable = false;
+    }
+
     /// <summary>
     /// Toggleを変更したときに呼び出される関数
     /// </summary>
