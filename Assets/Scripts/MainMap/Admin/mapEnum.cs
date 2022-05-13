@@ -9,6 +9,7 @@ namespace map {
     // マップ番号
     public enum MAP_NUM
     {
+        MainMap1F_Floor,
         MainMap2F_Floor,
         MainMap3F_Floor,
         MainMap2F_MainRoom1,

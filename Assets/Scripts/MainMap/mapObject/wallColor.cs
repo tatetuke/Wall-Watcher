@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class wallColor : MonoBehaviour
 {
+    public byte R = 0;
+    public byte G = 0;
+    public byte B = 0;
+    public byte A = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -11,7 +16,7 @@ public class wallColor : MonoBehaviour
         
         for (int i = 0; i < Walls.Length; i++)
         {
-            Walls[i].GetComponent<SpriteRenderer>().color = new Color32(225, 250, 200, 255);
+            Walls[i].GetComponent<SpriteRenderer>().color = new Color32(R, G, B, A);
             
         }
     }
