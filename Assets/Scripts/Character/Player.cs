@@ -57,9 +57,6 @@ public class Player : MonoBehaviour
             ChangeState(State.FREEZE);
         if (Input.GetKeyDown(KeyCode.Y))
             ChangeState(State.IDLE);
-        if (playerState.player_auto_direction != player.PLAYER_AUTO_WALKING.INVALID) {
-
-        }
         UpdateState();
     }
 
@@ -221,10 +218,14 @@ public class Player : MonoBehaviour
 
     }
 
-    // 自動移動前に行う設定関数（後に改良予定）
-    public void autoMove(float auto_move_time, float auto_speed, Direction2D auto_direction)
+    /// <summary>
+    /// 自動移動関数（後に改良予定）
+    /// stopAutoMove() を呼ばない限り止まらない
+    /// </summary>
+    /// <param name="auto_speed"> 0以上の移動時にかかる力の強さ</param>
+    /// <param name="auto_direction">移動方向 Left か Right</param>
+    public void autoMove(float auto_speed, Direction2D auto_direction)
     {
-        //autoMoveTime = auto_move_time;
         past_walkForce = m_WalkForce;
         m_WalkForce = auto_speed;
         AllMapSet.autoWalkingDirection = auto_direction;
@@ -243,9 +244,15 @@ public class Player : MonoBehaviour
         }
     }
 
+    IEnumerator v_stopAutoMove()
+    {
+        ChangeState(State.IDLE);
+        yield return new WaitForSeconds(1f);
+        m_WalkForce = past_walkForce;
+    }
+
     public void stopAutoMove()
     {
-        ChangeState(State.WALKING);
-        m_WalkForce = past_walkForce;
+        StartCoroutine(v_stopAutoMove());
     }
 }

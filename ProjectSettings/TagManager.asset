@@ -3,23 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - NPC
-  - CanConversationNPC
-  - Wall1
-  - Wall
-  - WallParameter
-  - MixMachine
-  - PolutedWall
-  - Item
-  - WallAnime
-  - WallColor
-<<<<<<< HEAD
-  - camera_relo
-=======
-  - ShopPrefab
-  - shadow
->>>>>>> upstream/main
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -42,21 +26,18 @@ TagManager:
   - 
   - 
   - 
-  - PostProcessing
   - 
   - 
   - 
   - 
-  - Wall
-  - Item
-  - GreenWall
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: EffectFront
-    uniqueID: 1899944219
     locked: 0
