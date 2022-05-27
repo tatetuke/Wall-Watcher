@@ -9,6 +9,11 @@ public  abstract class PlaceInfo : MonoBehaviour
 {
     [Header("ゲームオブジェクト名から自動で取得")]
     [SerializeField, ReadOnly] private string placeName;
+    public string PlaceName
+    {
+        get { return placeName; }
+    }
+
 
     private void Awake()
     {
