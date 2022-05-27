@@ -9,7 +9,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Kyoichi
 {
-    public class ItemManager :SingletonMonoBehaviour<ItemManager>
+    public class ItemManager : SingletonMonoBehaviour<ItemManager>
     {
         enum LoadState
         {
@@ -17,9 +17,17 @@ namespace Kyoichi
             loading,
             loaded
         }
-      [SerializeField,ReadOnly]  LoadState m_state = LoadState.notLoaded;
-
+        [SerializeField, ReadOnly] LoadState m_state = LoadState.notLoaded;
+        /// <summary>
+        /// アイテムのロードが完了したかどうか
+        /// </summary>
+        public bool IsLoaded() => m_state == LoadState.loaded;
         [SerializeField] private AssetLabelReference _labelReference;
+
+        /// <summary>
+        /// ItemSOの名前（ファイル名）をキーとする辞書
+        /// ゲーム中に存在するItemSOをすべてロードし，管理する
+        /// </summary>
         Dictionary<string, ItemSO> m_data = new Dictionary<string, ItemSO>();
         public IEnumerable<KeyValuePair<string, ItemSO>> Data
         {
@@ -31,8 +39,7 @@ namespace Kyoichi
         List<Inventry> m_inventries = new List<Inventry>();
         public void AddInventry(Inventry inventry) { m_inventries.Add(inventry); }
 
-        // Start is called before the first frame update
-         void Awake()
+        void Awake()
         {
             if (m_state == LoadState.loaded)//エディタ上でロードしたとき
             {
@@ -50,6 +57,9 @@ namespace Kyoichi
         {
             Addressables.Release(m_handle);
         }
+        /// <summary>
+        /// ItemSOの名前（ファイル名）からItemSOを取得する関数
+        /// </summary>
         public ItemSO GetItem(string name)
         {
             if (m_state != LoadState.loaded)
