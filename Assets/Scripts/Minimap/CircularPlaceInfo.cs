@@ -8,9 +8,11 @@ using UnityEngine;
 /// </summary>
 public class CircularPlaceInfo: PlaceInfo
 {
-    [SerializeField] private float radius;
-    [SerializeField,Tooltip("x軸正の向きからの角度")] private float startAngle;// x軸正の向きからの角度　0~360
+    [SerializeField] private Transform startPosition;
+    [SerializeField,ReadOnly] private float radius;
+    [SerializeField,ReadOnly] private float startAngle;// x軸正の向きからの角度　0~360
     [SerializeField] private Direction direction;
+
 
     private enum Direction
     {
@@ -23,6 +25,9 @@ public class CircularPlaceInfo: PlaceInfo
     /// <returns>Minimap上での座標</returns>
     public override Vector3 GetPlayerPositionOnMinimap(float progress)
     {
+        radius = Vector3.Distance(transform.position, startPosition.position);
+        startAngle = Vector3.Angle(startPosition.localPosition, new Vector3(1, 0, 0));
+
         float c = Mathf.Clamp(progress, 0, 1);
         int dir = direction == Direction.CLOCKWISE ? -1 : 1;
         //内分点
@@ -35,6 +40,9 @@ public class CircularPlaceInfo: PlaceInfo
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
+        radius = Vector3.Distance(transform.position, startPosition.position);
+        startAngle = Vector3.Angle(startPosition.localPosition, new Vector3(1, 0, 0));
+
         Vector3 pos = transform.position;
         pos.x += radius * Mathf.Cos(startAngle / 180 * Mathf.PI);
         pos.y += radius * Mathf.Sin(startAngle / 180 * Mathf.PI);

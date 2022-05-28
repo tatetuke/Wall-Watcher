@@ -10,6 +10,8 @@ public class Minimap : MonoBehaviour
 {
     // プレイヤーの現在位置アイコン
     [SerializeField] private GameObject playerIcon;
+    // ミニマップが表示されるパネル
+    [SerializeField] private GameObject minimapPanel;
     // 今表示されているミニマップ
     [SerializeField,ReadOnly] private GameObject currentPlaceInfoParentObject;
     // ミニマップのprefab
@@ -82,6 +84,9 @@ public class Minimap : MonoBehaviour
 
         //　新しい階のミニマップを生成
         currentPlaceInfoParentObject = Instantiate(placeInfoParentPrefabs[floor - 1], transform);
+        //currentPlaceInfoParentObject = Instantiate(placeInfoParentPrefabs[floor - 1], minimapPanel.transform);
+        
+        //描画順を変更
         currentPlaceInfoParentObject.transform.SetAsLastSibling();
         playerIcon.transform.SetAsLastSibling();
 

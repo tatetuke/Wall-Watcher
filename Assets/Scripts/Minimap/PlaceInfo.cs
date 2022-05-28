@@ -15,7 +15,7 @@ public  abstract class PlaceInfo : MonoBehaviour
     }
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         placeName = gameObject.name;
     }
