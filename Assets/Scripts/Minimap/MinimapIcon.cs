@@ -11,7 +11,7 @@ public class MinimapIcon : MonoBehaviour
 
     public string IconName
     {
-        get { return iconName; }
+        get { return gameObject.name; }
     }
 
     private void Awake()

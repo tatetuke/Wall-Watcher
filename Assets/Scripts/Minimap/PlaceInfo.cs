@@ -11,7 +11,7 @@ public  abstract class PlaceInfo : MonoBehaviour
     [SerializeField, ReadOnly] private string placeName;
     public string PlaceName
     {
-        get { return placeName; }
+        get { return gameObject.name; }
     }
 
 
