@@ -31,4 +31,13 @@ namespace map {
         Down,
         Invalid
     }
+
+    public enum Position2D
+    {
+        Up,
+        Right,
+        Left,
+        Down,
+        Invalid
+    }
 }

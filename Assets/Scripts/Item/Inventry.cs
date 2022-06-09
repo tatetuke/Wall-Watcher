@@ -14,8 +14,8 @@ namespace Kyoichi
     public class ItemStack
     {
         public ItemSO item;
-        public int count=0;
-        public ItemStack(ItemSO item_,int count_)
+        public int count = 0;
+        public ItemStack(ItemSO item_, int count_)
         {
             item = item_;
             count = count_;
@@ -23,9 +23,9 @@ namespace Kyoichi
     }
 
     [System.Serializable]
-    public class InventryData: SaveDataBaseClass
+    public class InventryData : SaveDataBaseClass
     {
-    [System.Serializable]
+        [System.Serializable]
         public class ItemData
         {
             public string item_id;
@@ -72,7 +72,7 @@ namespace Kyoichi
 
         public void AddItem(ItemSO item)
         {
-            AddItem(new ItemStack(item,1));
+            AddItem(new ItemStack(item, 1));
         }
         public void AddItem(ItemStack item)
         {
@@ -127,7 +127,7 @@ namespace Kyoichi
             {
                 if (i.item == item)
                 {
-                     OnItemRemove.Invoke(new ItemStack(item, m_inventry[index].count));
+                    OnItemRemove.Invoke(new ItemStack(item, m_inventry[index].count));
                     m_inventry[index].count = 0;
                     return;
                 }
@@ -160,7 +160,7 @@ namespace Kyoichi
         {
             foreach (var i in item)
             {
-                if (!HasItem(i))return false;
+                if (!HasItem(i)) return false;
             }
             return true;
         }
@@ -180,13 +180,14 @@ namespace Kyoichi
             DataBank bank = DataBank.Instance;
             bank.Load<InventryData>("inventry");
             var dat = bank.Get<InventryData>("inventry");
-            if (dat==null)
+            if (dat == null)
             {
                 m_inventry = new List<ItemStack>();
                 return;
             }
-            foreach(var i in dat.inventry) {
-                m_inventry.Add(new ItemStack(ItemManager.Instance.GetItem(i.item_id),i.count));
+            foreach (var i in dat.inventry)
+            {
+                m_inventry.Add(new ItemStack(ItemManager.Instance.GetItem(i.item_id), i.count));
             }
         }
 
@@ -194,12 +195,12 @@ namespace Kyoichi
         {
             DataBank bank = DataBank.Instance;
             Debug.Log("DataBank.Open()");
-            Debug.Log($"save path of bank is { bank.SavePath }");
+            Debug.Log($"save path of bank is {bank.SavePath}");
             InventryData data = new InventryData();
 
             foreach (var i in m_inventry)
             {
-                data.inventry.Add(new InventryData.ItemData() {item_id= i.item.item_name,count= i.count });
+                data.inventry.Add(new InventryData.ItemData() { item_id = i.item.name, count = i.count });
             }
             bank.Store("inventry", data);
             bank.SaveAll();
