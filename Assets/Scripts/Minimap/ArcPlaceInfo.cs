@@ -8,15 +8,20 @@ using UnityEngine;
 /// </summary>
 public class ArcPlaceInfo : PlaceInfo
 {
-    [SerializeField] private float radius;
-    [SerializeField, Range(-360, 360)] private float startAngle;// x軸正の向きから反時計回り　-360~360
+    [SerializeField] private Transform startPosition;
+    [SerializeField,ReadOnly] private float radius;
+    [SerializeField,ReadOnly] private float startAngle;// x軸正の向きからの角度　0~360
     [SerializeField] private float arcMeasure; //反時計回り
+
 
     /// <summary>0~1の値からミニマップ上での座標を返す</summary>
     /// <param name="progress">0~1の値　マップ上での進み具合</param>
     /// <returns>Minimap上での座標</returns>
     public override Vector3 GetPlayerPositionOnMinimap(float progress)
     {
+        radius = Vector3.Distance(transform.position, startPosition.position);
+        startAngle = Vector3.Angle(startPosition.localPosition, new Vector3(1, 0, 0));
+
         float c = Mathf.Clamp(progress, 0, 1);
         //内分点
         Vector3 pos = transform.position;
@@ -49,6 +54,9 @@ public class ArcPlaceInfo : PlaceInfo
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
+        radius = Vector3.Distance(transform.position, startPosition.position);
+        startAngle = Vector3.Angle(startPosition.localPosition, new Vector3(1, 0, 0));
+
         Vector3 startPos = transform.position;
         startPos.x += radius * Mathf.Cos(startAngle / 180 * Mathf.PI);
         startPos.y += radius * Mathf.Sin(startAngle / 180 * Mathf.PI);
