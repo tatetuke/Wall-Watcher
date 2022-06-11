@@ -43,6 +43,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     public MingameHAKAIGetItemManager itemManager;
 
     private Inventry inventory;
+    private ItemManager kyoichiItemManager;
 
     public Image blackImage;//暗転のための画像
     public GameObject blackImageObj;
@@ -111,12 +112,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
         StartCoroutine(MiniGameInitProcess());
     }
-    private void Start()
-    {
-       
-
-        
-    }
+   
     private void Update()
     {
         
@@ -129,13 +125,21 @@ public class MinGameHakaiManager2 : MonoBehaviour
     IEnumerator MiniGameInitProcess()
     {
         State = GAME_STATE.PRESTART;
+        
+
         //インベントリ初期化
         inventory = GameObject.Find("Managers").GetComponent<Inventry>();
-        
+        //インベントリの取得を待つ
+        kyoichiItemManager = GameObject.Find("Managers").GetComponent<ItemManager>();
+        while (kyoichiItemManager.IsLoaded() == false) yield return null;
+
+        //壁を取得。やや重い
         yield return StartCoroutine(WallInit());
         //WallAnimeInit();
+        //影を取得。やや重い
         yield return StartCoroutine(ShadowInit());
-        GetSpriteName();
+        yield return GetSpriteName();
+
 
         //揺れによってオブジェクトが移動するバグ修正のための
         originalBordPosition = shakeObj.transform.position;
@@ -144,7 +148,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
         //取得できるかどうかについてアイテムの情報を更新
         UpdateItemData.Invoke();
         //UIのアイテム情報の更新
-        ItemGetUI.ChangeGetItemUI();
+         ItemGetUI.ChangeGetItemUI();
 
 
         soundManager.PlayBGM();
@@ -154,8 +158,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
         yield return 0;
     }
-
-
+   
     IEnumerator MinGameState()
     {
 
@@ -555,7 +558,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     /// <summary>
     /// スプライトのファイル名を取得
     /// </summary>
-    private void GetSpriteName()
+    private bool GetSpriteName()
     {
         polutedLevel1 = wallSprite[0].name;
         polutedLevel2 = wallSprite[1].name;
@@ -563,6 +566,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
         polutedLevel4 = wallSprite[3].name;
         polutedLevel5 = wallSprite[4].name;
         polutedLevel6 = wallSprite[5].name;
+        return true;
     }
 
     /// <summary>

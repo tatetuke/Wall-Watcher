@@ -20,7 +20,8 @@ public class HakaiSoundManager : MonoBehaviour
     public AudioSource bgmAudioSource;
     public AudioSource seAudioSource;
 
-
+    public AudioClip seTurnThePage;
+    public AudioClip seOpenTutorial;
 
     /// <summary>
     /// BGMの再生
@@ -65,5 +66,15 @@ public class HakaiSoundManager : MonoBehaviour
         }
     }
 
-    
+    public void PlayOpenTutorial()
+    {
+        seAudioSource.PlayOneShot(seOpenTutorial, seVolume);
+        return;
+    }
+
+    public void PlayTurnThePage()
+    {
+        seAudioSource.PlayOneShot(seTurnThePage, seVolume);
+        return;
+    }
 }

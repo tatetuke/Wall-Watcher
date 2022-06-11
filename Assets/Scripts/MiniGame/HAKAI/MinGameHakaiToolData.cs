@@ -34,12 +34,9 @@ public class MinGameHakaiToolData : MonoBehaviour
     }
     IEnumerator InitCoruitine()
     {
-        int t = 0;
-        while (t<30)
+        while (itemManager.IsLoaded() == false) 
         {
             yield return null;
-
-            t++;
         }
         //inventry.LoadFromFile();
         Tool1Init();

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class HakaiTutorialManager : MonoBehaviour
 {
     [SerializeField] private MinGameHakaiManager2 gameManager;
+    [SerializeField] private HakaiSoundManager soundManager;
 
     [System.Serializable]
     public struct BLOCK
@@ -98,6 +99,8 @@ public class HakaiTutorialManager : MonoBehaviour
         }
         //ページを進める
         pageNumber++;
+        //SEを鳴らす
+        soundManager.PlayTurnThePage();
         UpdatePage();
         return; 
     }
@@ -114,6 +117,8 @@ public class HakaiTutorialManager : MonoBehaviour
         }
         //ページを戻す。
         pageNumber--;
+        //SEを鳴らす
+        soundManager.PlayTurnThePage();
         UpdatePage();
         return;
     }
@@ -141,6 +146,7 @@ public class HakaiTutorialManager : MonoBehaviour
     
     public void ExitTutorial()
     {
+        soundManager.PlayTurnThePage();
         state = STATE.END_PROCESSING;
         return;
     }
@@ -153,6 +159,7 @@ public class HakaiTutorialManager : MonoBehaviour
         //ミニゲームの状態をPAUSEに変更する
         gameManager.State = MinGameHakaiManager2.GAME_STATE.PAUSE;
         state = STATE.PRE_PROCESSING;
+        soundManager.PlayOpenTutorial();
         return;
     }
 
