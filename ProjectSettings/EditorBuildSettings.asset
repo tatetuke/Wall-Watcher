@@ -27,7 +27,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MiniGame/MainMap/MainMap3F_Renraku1.unity
     guid: 1ffb7d1477dd1ea4eb69cdcaf4f38c93
   - enabled: 1
-    path: Assets/Scenes/MiniGame/MainMap/MainMap3F_Renraku2.unity
+    path: Assets/Scenes/MiniGame/MainMap/MainMap2F_Renraku1.unity
     guid: 154c94666db719b419a5a4bf8ef973e7
   - enabled: 1
     path: Assets/Scenes/MiniGame/MainMap/MainMap3_Bokujou.unity
@@ -71,6 +71,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MiniGame/MainMap/MainMap1F_Floor.unity
     guid: 28d772098239be347bf5e9e06c7efa89
+  - enabled: 1
+    path: Assets/Scenes/MiniGame/MainMap/MainMap3F_Renraku2.unity
+    guid: 5a5586611125409439db3ee3636e228e
+  - enabled: 1
+    path: Assets/Scenes/MiniGame/MainMap/MainMap4F_Floor.unity
+    guid: c04b8e8f03c7cb644a32ec9a0c61264b
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 4825a4e1bc6314a4b8e0e0a366b6b1b4,
       type: 2}
