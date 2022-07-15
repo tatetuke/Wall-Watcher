@@ -6,6 +6,9 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
 
+/// <summary>
+/// Viewの切り替えを管理するUIライブラリ
+/// </summary>
 public class CanvasManager : MonoBehaviour
 {
     [Tooltip("ポーズしたときにいつも表示されるview（ポーズしてないときは表示されない）")]
@@ -28,10 +31,15 @@ public class CanvasManager : MonoBehaviour
 
     private void Start()
     {
-        if (allwaysShowView != null)
-            allwaysShowView.gameObject.SetActive(false);
         foreach (var i in m_views)
+        {
+            Debug.Log(i.name);
+            i.OnViewHided.AddListener(() =>
+            {
+                i.gameObject.SetActive(false);
+            });
             i.gameObject.SetActive(false);
+        }
     }
 
     protected UIView GetView(string viewName)
@@ -86,7 +94,14 @@ public class CanvasManager : MonoBehaviour
     }
     protected void HideView(UIView view)
     {
-        view.gameObject.SetActive(false);
-        view.OnViewHide.Invoke();
+        view.OnViewHideStart.Invoke();
+    }
+    /// <summary>
+    /// Viewを閉じ、UIを終了する
+    /// </summary>
+    public void CloseView()
+    {
+        GetView(m_viewHistory.Peek()).OnViewHideStart.Invoke();
+        m_viewHistory.Clear();
     }
 }
