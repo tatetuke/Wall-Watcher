@@ -19,7 +19,6 @@ public class PauseUIManager : CanvasManager
      Animator animator;
     [SerializeField] string fadeInTrriger = "FadeIn";
     [SerializeField] string fadeOutTrriger = "FadeOut";
-    [SerializeField] Button quitButton;
     [Header("Debug")]
     [SerializeField, ReadOnly] State m_state;
 
@@ -37,10 +36,16 @@ public class PauseUIManager : CanvasManager
     private void Start()
     {
         m_state = State.idle;
-        allwaysShowView.gameObject.SetActive(false);
+        //すべてのviewのアクティブをいったん切る
         foreach (var i in m_views)
+        {
+            i.OnViewHided.AddListener(() =>
+            {
+                i.gameObject.SetActive(false);
+            });
             i.gameObject.SetActive(false);
-
+        }
+        //ポーズ開始
         PauseManager.Instance.OnPauseEnter.AddListener(() =>
         {
             m_state = State.fadeIn;
@@ -48,11 +53,18 @@ public class PauseUIManager : CanvasManager
             SwitchView(firstViewName);
             allwaysShowView.gameObject.SetActive(true);
         });
+
+        //ポーズ終了
         PauseManager.Instance.OnPauseExit.AddListener(() =>
         {
             m_state = State.fadeOut;
             animator.SetTrigger(fadeOutTrriger);
+            CloseView();
         });
+
+
+
+
         //会話中はセーブできないようにする
         /*ConversationDataManager.Instance.OnTalkAccepted.AddListener(() =>
         {
@@ -63,14 +75,6 @@ public class PauseUIManager : CanvasManager
         {
             saveButton.interactable = true;
         });*/
-        quitButton.onClick.AddListener(() =>
-        {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#elif UNITY_STANDALONE
-      UnityEngine.Application.Quit();
-#endif
-        });
     }
 
     /// <summary>

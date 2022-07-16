@@ -14,5 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item_name: error
   description: "\u30C7\u30D0\u30C3\u30B0\u7528\n\u4E0D\u6B63\u306A\u5024\u3092\u691C\u77E5\u3057\u305F\u3068\u304D\u8FD4\u3059\u30A2\u30A4\u30C6\u30E0\u30C7\u30FC\u30BF"
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: eb5f6e2757c821940b69cf1456f7865a, type: 3}
   type: 0
+  price: 0
+  sellPrice: 0
+  canUpgradeItem: 0
+  canSellItem: 0
+  requiredUpgradeItems: []
+  afterUpdateItem: {fileID: 0}

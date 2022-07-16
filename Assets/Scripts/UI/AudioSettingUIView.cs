@@ -18,7 +18,7 @@ public class AudioSettingUIView : UIView
         {
             audioSettingUIObject.SetActive(true);
         });
-        OnViewHide.AddListener(() =>
+        OnViewHided.AddListener(() =>
         {
             audioSettingUIObject.SetActive(false);
         });
@@ -36,7 +36,7 @@ public class AudioSettingUIView : UIView
 
     public void CloseUI()
     {
-        OnViewHide.Invoke();
+        OnViewHided.Invoke();
     }
 
 }
