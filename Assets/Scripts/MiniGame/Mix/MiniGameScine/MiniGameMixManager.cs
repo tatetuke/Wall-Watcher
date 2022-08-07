@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Fungus;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -26,6 +27,7 @@ public class MiniGameMixManager : MonoBehaviour
 
     [SerializeField] GameObject shakeObj;//揺らすゲームオブジェクトの選択
     [SerializeField] Button CompleteButton;
+    [SerializeField] Flowchart GuideMiniGameFlowChart;
 
     //[SerializeField] GameObject TaskCompleteText;
 
@@ -343,6 +345,7 @@ public class MiniGameMixManager : MonoBehaviour
         MarkAnim.SetBool("IsStarted", true);
         Invoke("CalcMark", 2f);
         Invoke("FinishTask", 3f);
+        GuideMiniGameFlowChart.SetBooleanVariable("IsCompleted", true);
 
         //CompleteButton.interactable = false;
         //// シェイク(一定間のランダムな動き)
@@ -418,5 +421,10 @@ public class MiniGameMixManager : MonoBehaviour
         if (Mathf.Abs(pos - gauge.fillAmount) < 15f / (mx - mn)) Debug.Log("Red");
         else if (Mathf.Abs(pos - gauge.fillAmount) < 50f / (mx - mn)) Debug.Log("Orange");
         else Debug.Log("Miss");
+    }
+
+    void SetIsCompleted()
+    {
+
     }
 }
