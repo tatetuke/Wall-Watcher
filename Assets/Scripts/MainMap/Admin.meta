@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/MainMap/Admin.meta
 guid: 336cd55950c99054093f22cfa63e2917
+========
+guid: 8f7308500f322e644817ccfc3e0a17a5
+>>>>>>>> upstream/main:Assets/Standard Assets/Editor.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
