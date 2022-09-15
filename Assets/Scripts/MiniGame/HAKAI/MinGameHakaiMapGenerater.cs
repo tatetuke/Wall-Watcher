@@ -22,9 +22,12 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
 
     //各レアリティの確率(あとで累積和をとる)
     public int nprob = 100;
-    public int rprob = 30;
-    public int srprob = 15;
-    public int ssrprob = 5;
+    //public int rprob = 30;
+    ////public int srprob = 15;
+    ////public int ssrprob = 5;
+    public int rprob = 0;
+    public int srprob = 0;
+    public int ssrprob = 0;
 
 
     private List<MinGameHAKAIItem> nItems=new List<MinGameHAKAIItem>();
@@ -156,73 +159,83 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
             }
         }
     }
+
+    /// WARNING アイテムデータのロードが終了する前に呼び出すとアイテムが生成されない現象が起きていた
     private void generateItem()
     {
         //設置できるアイテムの個数分だけ考える
         for(int i = 0; i < itemcount; i++)
         {
             //int RandomNum = UnityEngine.Random.Range(0, RandomRageLengthItem);
-            int RandomRaw = UnityEngine.Random.Range(0, Rsize);
-            int RandomColumn = UnityEngine.Random.Range(0, Csize);
+            int randomRow = UnityEngine.Random.Range(0, Rsize);
+            int randomColumn = UnityEngine.Random.Range(0, Csize);
 
             //レア度を決める
-            List<MinGameHAKAIItem> ItemData = new List<MinGameHAKAIItem>();
+            List<MinGameHAKAIItem> itemData = new List<MinGameHAKAIItem>();
             int randProb = UnityEngine.Random.Range(0, nprob+1);
             if (randProb <= ssrprob)
             {
-                ItemData = ssrItems;
+                itemData = ssrItems;
             }else if (randProb <= srprob)
             {
-                ItemData = srItems;
+                itemData = srItems;
             }
             else if (randProb <= rprob)
             {
-                ItemData = rItems;
+                itemData = rItems;
             }
             else if (randProb <= nprob)
             {
-                ItemData = nItems;
+                itemData = nItems;
             }
 
 
-            if (ItemData.Count == 0) continue;
+            if (itemData.Count == 0)
+            {
+                i--;
+                continue;
+            }
             //j：アイテムのindex、アイテムとアイテムデータのindexは同じ
 
-            int j = UnityEngine.Random.Range(0, ItemData.Count);
+            int j = UnityEngine.Random.Range(0, itemData.Count);
 
 
             //生成確率より大きい場合スキップ
             //if (ItemData[j].Prob < RandomNum) continue;
             //アイテムのインデックスが盤面のサイズを超える場合スキップ
-            if (RandomRaw + ItemData[j].m_Ysize - 1 >= Rsize || RandomColumn + ItemData[j].m_Xsize - 1 >= Csize)
+            if (randomRow + itemData[j].m_Ysize - 1 >= Rsize || randomColumn + itemData[j].m_Xsize - 1 >= Csize)
             {
                 i--;
                 continue;
             }
 
-            bool m_cansetItem = new bool();
-            m_cansetItem = true;
-            for(int k=0;k< ItemData[j].m_Ysize; k++)
+            bool canSetItem = new bool();
+            canSetItem = true;
+            for(int k=0;k< itemData[j].m_Ysize; k++)
             {
-                for(int l= 0;l< ItemData[j].m_Xsize; l++)
+                for(int l= 0;l< itemData[j].m_Xsize; l++)
                 {
-                    if (CanSetItem[k+RandomRaw, l+RandomColumn] == false)
+                    if (CanSetItem[k+randomRow, l+randomColumn] == false)
                     {
-                        m_cansetItem = false;
+                        canSetItem = false;
                     }
                 }
             }
             //既に枠にアイテムが入っていたらスキップ
-            if (m_cansetItem == false) continue;
+            if (canSetItem == false)
+            {
+                i--;
+                continue;
+            }
 
             Debug.Log("アイテムを盤面に配置:" + Items[j].name);
             //盤面にアイテムを格納する;
-            for (int k = 0; k < ItemData[j].m_Ysize; k++)
+            for (int k = 0; k < itemData[j].m_Ysize; k++)
             {
-                for (int l = 0; l < ItemData[j].m_Xsize; l++)
+                for (int l = 0; l < itemData[j].m_Xsize; l++)
                 {
                         
-                    CanSetItem[k+RandomRaw, l+RandomColumn] = false;
+                    CanSetItem[k+randomRow, l+randomColumn] = false;
                       
                 }
             }
@@ -232,18 +245,18 @@ public class MinGameHakaiMapGenerater : MonoBehaviour
             CreatItem = Instantiate(Items[j]);
             //アイテムの生成
             Transform transform_ = CreatItem.transform;
-            transform_.position= Wall[RandomRaw, RandomColumn].transform.position;
-            transform_.position +=Wall[RandomRaw + ItemData[j].m_Ysize - 1, RandomColumn + ItemData[j].m_Xsize - 1].transform.position;
+            transform_.position= Wall[randomRow, randomColumn].transform.position;
+            transform_.position +=Wall[randomRow + itemData[j].m_Ysize - 1, randomColumn + itemData[j].m_Xsize - 1].transform.position;
             transform_.position = transform_.position / 2;
             // transform_.position += new Vector3(0, -2.8f, 0);
 
             CreatItemData = CreatItem.GetComponent<MinGameHAKAIItem>();
 
-            CreatItemData.transform.parent = Wall[RandomRaw, RandomColumn].transform;
+            CreatItemData.transform.parent = Wall[randomRow, randomColumn].transform;
 
-            CreatItemData.m_TopLeftColumn = RandomColumn;
-            CreatItemData.m_TopLeftRaw = RandomRaw;
-            CreatItemData.KeyWall = Wall[RandomRaw, RandomColumn];
+            CreatItemData.m_TopLeftColumn = randomColumn;
+            CreatItemData.m_TopLeftRaw = randomRow;
+            CreatItemData.KeyWall = Wall[randomRow, randomColumn];
 
 
         }

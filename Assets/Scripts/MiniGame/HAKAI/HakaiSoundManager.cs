@@ -9,6 +9,9 @@ public class HakaiSoundManager : MonoBehaviour
     public AudioClip[] bgm;
     public AudioClip[] toolSE;
     public AudioClip[] clearSE;
+    public AudioClip[] humerSE;
+    public AudioClip[] pickelSE;
+    public AudioClip getItemSE;
 
     [SerializeField]
     [Range(0, 1)]
@@ -53,11 +56,13 @@ public class HakaiSoundManager : MonoBehaviour
         switch (seType)
         {
             case SE_TYPE.TOOL1:
-                seAudioSource.PlayOneShot(toolSE[0], seVolume);
+                int randomValue1 = Random.Range(0, pickelSE.Length);
+                seAudioSource.PlayOneShot(pickelSE[randomValue1],seVolume);
                 break;
 
             case SE_TYPE.TOOL2:
-                seAudioSource.PlayOneShot(toolSE[1], seVolume);
+                int randomValue2 = Random.Range(0, humerSE.Length);
+                seAudioSource.PlayOneShot(humerSE[randomValue2], seVolume);
                 break;
 
             case SE_TYPE.TOOL3:
@@ -65,6 +70,8 @@ public class HakaiSoundManager : MonoBehaviour
                 break;
         }
     }
+
+
 
     public void PlayOpenTutorial()
     {
@@ -76,5 +83,11 @@ public class HakaiSoundManager : MonoBehaviour
     {
         seAudioSource.PlayOneShot(seTurnThePage, seVolume);
         return;
+    }
+
+    public void PlayGetItemSound()
+    {
+        seAudioSource.PlayOneShot(getItemSE, seVolume);
+
     }
 }

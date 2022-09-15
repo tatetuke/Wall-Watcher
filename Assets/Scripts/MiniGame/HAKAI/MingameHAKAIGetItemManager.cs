@@ -2,24 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
+
 public class MingameHAKAIGetItemManager : MonoBehaviour
 {
     [ ReadOnly] public List<GameObject> Item;
     [ ReadOnly] public GameObject[,] Wall;
     private int col_size=11;
     private int row_size=8;
-    MinGameHakaiManager2 GameManager;
+    MinGameHakaiManager2 gameManager;
+    HakaiSoundManager soundManager;
+
     private float LineThickness = 1;  // 光らせる際の線の太さ
+    
+    [SerializeField] private GameObject particle_Star;//アイテム獲得時の星のパーティクル
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
-        GameManager = this.GetComponent<MinGameHakaiManager2>();
+        gameManager = this.GetComponent<MinGameHakaiManager2>();
+        soundManager = this.GetComponent<HakaiSoundManager>();
         foreach (GameObject m_Item in GameObject.FindGameObjectsWithTag("Item"))
         {
 
             Item.Add(m_Item);
         }
-        Wall = GameManager.Wall;
+        Wall = gameManager.Wall;
 
     }
     private void Update()
@@ -84,13 +95,20 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
         {
             for(int j = m_Item.m_TopLeftColumn; j < m_Item.m_TopLeftColumn + m_Item.m_Ysize; j++)
             {
-                if (Wall[i, j].GetComponent<SpriteRenderer>().sprite.name != GameManager.polutedLevel6)
+                if (Wall[i, j].GetComponent<SpriteRenderer>().sprite.name != gameManager.polutedLevel6)
                 {
                     m_Item.CanGetItem = false;
                     return;
                 }
             }
         }
+        //TODO ここにアイテム獲得時の演出をつける
+        if (m_Item.CanGetItem==false)
+        {
+            GetItemEffect(obj);
+            soundManager.PlayGetItemSound();
+        }
+
         m_Item.CanGetItem = true;
         return;
 
@@ -124,4 +142,51 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
         Material material = image.GetComponent<Renderer>().material;
         material.SetFloat("_Thick", num);
     }
+
+
+    private void GetItemEffect(GameObject obj)
+    {
+        //パーティクルを出す
+        CreateStarParticle(obj.GetComponent<MinGameHAKAIItem>().transform.position);
+        //アイテムを点滅させる
+        StartCoroutine(FlashImage(obj.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>()));
+
+    }
+
+    /// <summary>
+    /// 星のパーティクルを発生させる
+    /// </summary>
+    /// <param name="objPos">パーティクルを発生させる位置</param>
+    private void CreateStarParticle(Vector3 objPos)
+    {
+        objPos.z = 10;
+        //星のパーティクルを出す
+        Instantiate(particle_Star, objPos, Quaternion.identity);
+    }
+
+    /// <summary>
+    /// 画像を点滅させる
+    /// </summary>
+    IEnumerator FlashImage(SpriteRenderer obj)
+    {
+        int flashNum = 0;
+        int maxFlashNum = 3;
+        
+        while (flashNum<maxFlashNum*2)
+        {
+            if (flashNum % 2 == 0)
+            {
+                obj.color = Color.gray;
+            }
+            else
+            {
+                obj.color = Color.white;
+            }
+            flashNum++;
+            yield return new WaitForSeconds(0.1f);
+        }
+        yield return 0;
+    }
+    
+
 }

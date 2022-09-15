@@ -43,7 +43,7 @@ public class HakaiTutorialManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("チュートリアルの状態："+state);
+        //Debug.Log("チュートリアルの状態："+state);
         switch (state)
         {
             case STATE.PRE_PROCESSING:

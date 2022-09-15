@@ -34,6 +34,9 @@ public class MinGameHakaiManager2 : MonoBehaviour
     [SerializeField] private GameObject shakeObj;//揺らすゲームオブジェクトの選択
     [SerializeField] private GameObject lifeGage;//揺らすゲームオブジェクトの選択
 
+    [SerializeField] private GameObject particle_Soil;//エフェクト（パーティクル）の選択
+    [SerializeField] private GameObject particle_ShockWave;//エフェクト（パーティクル）の選択
+
     [SerializeField] private GameObject result;
     [SerializeField] private Transform resultCanvas;
 
@@ -162,7 +165,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     IEnumerator MinGameState()
     {
 
-        Debug.Log("ミニゲームの状態：" + State);
+        //Debug.Log("ミニゲームの状態：" + State);
 
         switch (State)
         {
@@ -443,6 +446,15 @@ public class MinGameHakaiManager2 : MonoBehaviour
         //athleics
 
         StartCoroutine(SetOriginalPositionBord(duration));
+
+        //パーティクルを出す
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = 10;
+        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        //土ボコり
+        Instantiate(particle_Soil, objPosition, Quaternion.identity);
+        //衝撃波
+        Instantiate(particle_ShockWave, objPosition, Quaternion.identity);
 
 
     }
