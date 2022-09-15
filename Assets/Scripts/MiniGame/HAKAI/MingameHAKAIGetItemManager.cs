@@ -20,7 +20,7 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
 
 
 
-    // Start is called before the first frame update
+    //BUG:Wallの初期化が終わっていないにもかかわらず,UpdateCheckが呼ばれる
     void Start()
     {
         gameManager = this.GetComponent<MinGameHakaiManager2>();
@@ -33,6 +33,8 @@ public class MingameHAKAIGetItemManager : MonoBehaviour
         Wall = gameManager.Wall;
 
     }
+    
+
     private void Update()
     {
 

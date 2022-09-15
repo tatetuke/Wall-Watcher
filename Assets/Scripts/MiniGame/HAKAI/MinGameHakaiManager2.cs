@@ -45,7 +45,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
     public MingameHAKAIGetItemManager itemManager;
 
-    private Inventry inventory;
+    [HideInInspector]public Inventry inventory;
     private ItemManager kyoichiItemManager;
 
     public Image blackImage;//暗転のための画像
@@ -67,12 +67,16 @@ public class MinGameHakaiManager2 : MonoBehaviour
     [SerializeField] private RawImage noise;
 
 
+    public HakaiResultManager resultManager;
+    
     [SerializeField]
     [Range(0, 1)]
     private float backBalckAlpha = 0.4f;
     [SerializeField]
     [Range(0, 1)]
     private float noiseAlpha = 0.15f;
+
+    
 
 
     //UIがシェイク時にぶれるバグを修正仕様とした跡地
@@ -150,6 +154,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
         //取得できるかどうかについてアイテムの情報を更新
         UpdateItemData.Invoke();
+        
         //UIのアイテム情報の更新
          ItemGetUI.ChangeGetItemUI();
 
@@ -188,7 +193,8 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
 
                 //リザルトの表示
-                yield return  StartCoroutine(CreatGetItem());
+                //yield return  StartCoroutine(CreatGetItem());
+                yield return  StartCoroutine(resultManager.ShowResult());
 
                 State = GAME_STATE.END;
 
@@ -228,7 +234,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
         {
             if (i >= rawSize)
             {
-                Debug.LogError("壁の数が多すぎます");
+                Debug.LogError("壁の数が多い");
                 break;
             }
             Wall[i, j] = v;
@@ -240,7 +246,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
             }
 
         }
-        if (i != rawSize || j != 0) Debug.LogError("壁の数が少ないです。");
+        if (i != rawSize || j != 0) Debug.LogError("壁の数が少ない");
         yield return 0;
     }
     /// <summary>
