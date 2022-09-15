@@ -22,7 +22,7 @@ public class QuestUIView : UIView
     private void Awake()
     {
         OnViewShow.AddListener(Initialize);
-        OnViewHide.AddListener(() =>
+        OnViewHided.AddListener(() =>
         {
             foreach (Transform child in questListContainer)
             {

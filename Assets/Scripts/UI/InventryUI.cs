@@ -15,10 +15,14 @@ public class InventryUI : UIView
     [SerializeField] TextMeshProUGUI description;
     [Header("debug")]
     [SerializeField, ReadOnly] Kyoichi.Inventry target;
+
+    ItemContainerUI selectedContainer;
+
     private void Awake()
     {
         OnViewShow.AddListener(Initialize);
-        OnViewHide.AddListener(() => {
+        OnViewHided.AddListener(() =>
+        {
             foreach (Transform child in container)
             {
                 Destroy(child.gameObject);
@@ -28,14 +32,9 @@ public class InventryUI : UIView
             description.text = "";
         });
     }
-    private void Start()
-    {
 
-    }
-    public void OnSelectRarelity(int value)
-    {
+    public void OnSelectRarelity(int value){}
 
-    }
     public void Initialize()
     {
         target = FindObjectOfType<Kyoichi.Inventry>();
@@ -50,13 +49,17 @@ public class InventryUI : UIView
             obj.Initialize(i);
             obj.OnClickItem.AddListener(() =>
             {
+                if (selectedContainer) selectedContainer.UnSelect();
                 SelectItem(i.item);
+                obj.Select();
+                selectedContainer = obj;
             });
         }
     }
 
     void SelectItem(ItemSO target)
     {
+        Debug.Log(target.icon);
         itemIcon.sprite = target.icon;
         itemName.text = target.item_name;
         description.text = target.description;

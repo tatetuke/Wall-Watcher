@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Map上での位置や名前を知るためのクラス
@@ -13,6 +14,8 @@ class LocationGetter : SingletonMonoBehaviour<LocationGetter>
     [Header("マップ端の座標")]
     [SerializeField] private Transform startPosition; //Minimap上のstartPositionとendPositionを揃えないと向きが逆になるので注意
     [SerializeField] private Transform endPosition;
+    [Header("currentPlaceNameをシーン名から自動取得するか")]
+    [SerializeField] private bool autoPlaceName;
 
     public string CurrentPlaceName
     {
@@ -23,6 +26,14 @@ class LocationGetter : SingletonMonoBehaviour<LocationGetter>
     {
         get { return currentFloor; }
         set { currentFloor = value; }
+    }
+
+    private void Awake()
+    {
+        if (autoPlaceName)
+        {
+            currentPlaceName = SceneManager.GetActiveScene().name;
+        }
     }
 
     public float GetProgressOnMap()
