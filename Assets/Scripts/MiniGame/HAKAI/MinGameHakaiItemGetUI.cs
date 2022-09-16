@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
+
+
+/// HACK MinGameHakaiGetItemManagerに統合するべき
+/// CanGetItemがFalseからTrueに切り替わるときに変化させるべきだった
+
 public class MinGameHakaiItemGetUI : MonoBehaviour
 {
     [SerializeField] private List<Image> ItemBox;

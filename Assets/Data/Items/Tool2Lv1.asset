@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8860c03c51768744a90d35dcb0d0fc7, type: 3}
   m_Name: Tool2Lv1
   m_EditorClassIdentifier: 
-  item_name: "\u30AA\u30EA\u30C3\u30AF\u30B9Lv1"
+  item_name: "\u30C4\u30FC\u30EB2Lv1"
   description: "\u30AA\u30EA\u30C3\u30AF\u30B91\u6BB5\u968E\u5F37\u5316"
   icon: {fileID: 21300000, guid: fef3bd136c5979844b85c8da79a6df9e, type: 3}
   type: 0
@@ -20,4 +20,5 @@ MonoBehaviour:
   sellPrice: 0
   canUpgradeItem: 1
   canSellItem: 0
+  requiredUpgradeItems: []
   afterUpdateItem: {fileID: 11400000, guid: 389c9bce77b6a574caec0407f4a81274, type: 2}

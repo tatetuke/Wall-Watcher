@@ -27,12 +27,15 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
     [SerializeField] private MinGameHAKAIStatus gameStatus;//HPやHPを減らす関数を持つクラス
 
-    [SerializeField]MinGameHakaiToolDataManager toolManager;
-    [SerializeField]MinGameHakaiToolData tool;
+    [SerializeField] private MinGameHakaiToolDataManager toolManager;
+    [SerializeField] private MinGameHakaiToolData tool;
 
 
-    [SerializeField] GameObject shakeObj;//揺らすゲームオブジェクトの選択
-    [SerializeField] GameObject lifeGage;//揺らすゲームオブジェクトの選択
+    [SerializeField] private GameObject shakeObj;//揺らすゲームオブジェクトの選択
+    [SerializeField] private GameObject lifeGage;//揺らすゲームオブジェクトの選択
+
+    [SerializeField] private GameObject particle_Soil;//エフェクト（パーティクル）の選択
+    [SerializeField] private GameObject particle_ShockWave;//エフェクト（パーティクル）の選択
 
     [SerializeField] private GameObject result;
     [SerializeField] private Transform resultCanvas;
@@ -42,7 +45,8 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
     public MingameHAKAIGetItemManager itemManager;
 
-    private Inventry inventory;
+    [HideInInspector]public Inventry inventory;
+    private ItemManager kyoichiItemManager;
 
     public Image blackImage;//暗転のための画像
     public GameObject blackImageObj;
@@ -63,6 +67,8 @@ public class MinGameHakaiManager2 : MonoBehaviour
     [SerializeField] private RawImage noise;
 
 
+    public HakaiResultManager resultManager;
+    
     [SerializeField]
     [Range(0, 1)]
     private float backBalckAlpha = 0.4f;
@@ -70,11 +76,13 @@ public class MinGameHakaiManager2 : MonoBehaviour
     [Range(0, 1)]
     private float noiseAlpha = 0.15f;
 
+    
+
 
     //UIがシェイク時にぶれるバグを修正仕様とした跡地
     //private Vector3 initShakeObj;
     //private Vector3 initLifeGage;
-    enum GAME_STATE
+    public enum GAME_STATE
     {
         PLAYING,
         PRESTART,
@@ -83,38 +91,35 @@ public class MinGameHakaiManager2 : MonoBehaviour
         END,
         PROCESSING
     }
-    [SerializeField] private GAME_STATE State;
+    public GAME_STATE state;
+    public GAME_STATE State
+    {
+        set
+        {
+            state = value;
+            if (state == GAME_STATE.PLAYING)
+            {
+                toolManager.ChangeToolToggleON();
+            }
+            else
+            {
+                toolManager.ChangeToolToggleOFF();
+            }
+        }
+        get
+        {
+            return state;
+
+        }
+    }
 
 
     private void Awake()
     {
-        State = GAME_STATE.PRESTART;
 
-        //インベントリ初期化
-        inventory = GameObject.Find("Managers").GetComponent<Inventry>();
-        WallInit();
-        WallAnimeInit();
-        ShadowInit();
-        GetSpriteName();
-
+        StartCoroutine(MiniGameInitProcess());
     }
-    private void Start()
-    {
-       
-
-        //揺れによってオブジェクトが移動するバグ修正のための
-        originalBordPosition = shakeObj.transform.position;
-        originalHPBarPosition = lifeGage.transform.position;
-
-        //取得できるかどうかについてアイテムの情報を更新
-        UpdateItemData.Invoke();
-        //UIのアイテム情報の更新
-        ItemGetUI.ChangeGetItemUI();
-
-        State = GAME_STATE.PLAYING;
-
-        soundManager.PlayBGM();
-    }
+   
     private void Update()
     {
         
@@ -124,9 +129,53 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
 
     }
+    IEnumerator MiniGameInitProcess()
+    {
+        State = GAME_STATE.PRESTART;
+        
+
+        //インベントリ初期化
+        inventory = GameObject.Find("Managers").GetComponent<Inventry>();
+        //インベントリの取得を待つ
+        kyoichiItemManager = GameObject.Find("Managers").GetComponent<ItemManager>();
+        while (kyoichiItemManager.IsLoaded() == false) yield return null;
+
+        yield return GetSpriteName();
+
+
+        //壁を取得。やや重い
+        yield return StartCoroutine(WallInit());
+        yield return new WaitForSeconds(0.1f);
+        //WallAnimeInit();
+        //影を取得。やや重い
+        yield return StartCoroutine(ShadowInit());
+        yield return new WaitForSeconds(0.1f);
+
+
+
+        //揺れによってオブジェクトが移動するバグ修正のための
+        originalBordPosition = shakeObj.transform.position;
+        originalHPBarPosition = lifeGage.transform.position;
+
+        //取得できるかどうかについてアイテムの情報を更新
+        UpdateItemData.Invoke();
+        
+        //UIのアイテム情報の更新
+         ItemGetUI.ChangeGetItemUI();
+
+
+        soundManager.PlayBGM();
+
+        State = GAME_STATE.PLAYING;
+
+
+        yield return 0;
+    }
+   
     IEnumerator MinGameState()
     {
 
+        //Debug.Log("ミニゲームの状態：" + State);
 
         switch (State)
         {
@@ -149,12 +198,13 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
 
                 //リザルトの表示
-                yield return  StartCoroutine(CreatGetItem());
+                //yield return  StartCoroutine(CreatGetItem());
+                yield return  StartCoroutine(resultManager.ShowResult());
 
                 State = GAME_STATE.END;
 
                 break;
-            case GAME_STATE.PAUSE:
+            case GAME_STATE.PAUSE://チュートリアル中など
                 break;
 
             case GAME_STATE.PROCESSING://処理の終了待ち
@@ -180,7 +230,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     /// Wallを初期化する関数。
     /// タグがWallであるゲームオブジェクトをすべて取得する。
     /// </summary>
-    private void WallInit()
+    private IEnumerator WallInit()
     {
         int i, j;
         i = 0;
@@ -189,7 +239,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
         {
             if (i >= rawSize)
             {
-                Debug.LogError("壁の数が多すぎます");
+                Debug.LogError("壁の数が多い");
                 break;
             }
             Wall[i, j] = v;
@@ -201,14 +251,14 @@ public class MinGameHakaiManager2 : MonoBehaviour
             }
 
         }
-
-
+        if (i != rawSize || j != 0) Debug.LogError("壁の数が少ない");
+        yield return 0;
     }
     /// <summary>
     /// Wallを初期化する関数。
     /// タグがWallであるゲームオブジェクトをすべて取得する。
     /// </summary>
-    private void ShadowInit()
+    private IEnumerator ShadowInit()
     {
         int i, j;
         i = 0;
@@ -229,34 +279,33 @@ public class MinGameHakaiManager2 : MonoBehaviour
             }
 
         }
-
-
-    }
-
-    private void WallAnimeInit()
-    {
-        int i, j;
-        i = 0;
-        j = 0;
-        foreach (GameObject v in GameObject.FindGameObjectsWithTag("WallAnime"))
-        {
-            if (j >= rawSize)
-            {
-                Debug.LogError("壁の数が多すぎます");
-                break;
-            }
-            WallAnime[i, j] = v;
-            i++;
-            if (i == collumnSize)
-            {
-                i = 0;
-                j++;
-            }
-
-        }
-
+        if (i != rawSize || j != 0) Debug.LogError("壁の数が少ないです。");
+        yield return 0;
 
     }
+
+    //private void WallAnimeInit()
+    //{
+    //    int i, j;
+    //    i = 0;
+    //    j = 0;
+    //    foreach (GameObject v in GameObject.FindGameObjectsWithTag("WallAnime"))
+    //    {
+    //        if (j >= rawSize)
+    //        {
+    //            Debug.LogError("壁の数が多すぎます");
+    //            break;
+    //        }
+    //        WallAnime[i, j] = v;
+    //        i++;
+    //        if (i == collumnSize)
+    //        {
+    //            i = 0;
+    //            j++;
+    //        }
+
+    //    }
+    //}
 
     /// <summary>
     /// クリックしたオブジェクトを取得
@@ -312,7 +361,6 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
 
 
-        Debug.Log(clickedGameObject.name);
         int raw = 0, column = 0;
         //クリックしたタイルのindexを取得。
         (raw, column) = SearchIndex(clickedGameObject);
@@ -352,7 +400,6 @@ public class MinGameHakaiManager2 : MonoBehaviour
 
         //背景の黒画像の透過度を更新
         Color tmpColor = backBlack.color;
-        Debug.Log(tmpColor.a+"aaa");
         tmpColor.a =backBalckAlpha-backBalckAlpha*gameStatus.life/gameStatus.maxLife;
         backBlack.color = tmpColor;
 
@@ -372,22 +419,23 @@ public class MinGameHakaiManager2 : MonoBehaviour
         //UIのアイテム情報の更新
         ItemGetUI.ChangeGetItemUI();
     }
+
     //アイテムが使えないときの揺れ
-    private void AttackErrorEffect()
-    {
-        Debug.Log("この道具を使うには体力が足りません");
-        //揺らす前に元の位置に初期化
-        //lifeGage.transform.position = initLifeGage;
-        //画面を揺らす。
-        // シェイク(一定時間のランダムな動き)
-        var duration = 0.35f;    // 時間
-        var strength = 50f;    // 力
-        var vibrato = 100;    // 揺れ度合い
-        var randomness = 90f;   // 揺れのランダム度合い(0で一定方向のみの揺れになる)
-        var snapping = false; // 値を整数に変換するか
-        var fadeOut = true;  // 揺れが終わりに向かうにつれ段々小さくなっていくか(falseだとピタッと止まる)
-        lifeGage.transform.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut);
-    }
+    //private void AttackErrorEffect()
+    //{
+    //    Debug.Log("この道具を使うには体力が足りません");
+    //    //揺らす前に元の位置に初期化
+    //    //lifeGage.transform.position = initLifeGage;
+    //    //画面を揺らす。
+    //    // シェイク(一定時間のランダムな動き)
+    //    var duration = 0.35f;    // 時間
+    //    var strength = 50f;    // 力
+    //    var vibrato = 100;    // 揺れ度合い
+    //    var randomness = 90f;   // 揺れのランダム度合い(0で一定方向のみの揺れになる)
+    //    var snapping = false; // 値を整数に変換するか
+    //    var fadeOut = true;  // 揺れが終わりに向かうにつれ段々小さくなっていくか(falseだとピタッと止まる)
+    //    lifeGage.transform.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut);
+    //}
 
     /// <summary>
     /// 盤面を反転させるときの画面の揺れ
@@ -409,6 +457,15 @@ public class MinGameHakaiManager2 : MonoBehaviour
         //athleics
 
         StartCoroutine(SetOriginalPositionBord(duration));
+
+        //パーティクルを出す
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = 10;
+        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        //土ボコり
+        Instantiate(particle_Soil, objPosition, Quaternion.identity);
+        //衝撃波
+        Instantiate(particle_ShockWave, objPosition, Quaternion.identity);
 
 
     }
@@ -524,7 +581,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
     /// <summary>
     /// スプライトのファイル名を取得
     /// </summary>
-    private void GetSpriteName()
+    private bool GetSpriteName()
     {
         polutedLevel1 = wallSprite[0].name;
         polutedLevel2 = wallSprite[1].name;
@@ -532,6 +589,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
         polutedLevel4 = wallSprite[3].name;
         polutedLevel5 = wallSprite[4].name;
         polutedLevel6 = wallSprite[5].name;
+        return true;
     }
 
     /// <summary>
@@ -646,7 +704,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
         {
             yield return null;
         }
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.8f);
 
         yield return 0;
     }

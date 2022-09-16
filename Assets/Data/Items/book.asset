@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8860c03c51768744a90d35dcb0d0fc7, type: 3}
   m_Name: book
   m_EditorClassIdentifier: 
-  item_name: "\u672C"
-  description: "\u306A\u3093\u304B\u306E\u672C"
+  item_name: "\u30CD\u30B8"
+  description: "\u306A\u3093\u304B\u306E\u30CD\u30B8"
   icon: {fileID: 21300000, guid: 1a6d53b58a5be6644bbaf61aac267b00, type: 3}
   type: 0
   price: 300
   sellPrice: 150
   canUpgradeItem: 0
   canSellItem: 1
+  requiredUpgradeItems: []
   afterUpdateItem: {fileID: 0}
