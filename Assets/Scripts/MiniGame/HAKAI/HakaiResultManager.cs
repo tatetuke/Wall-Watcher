@@ -21,14 +21,24 @@ public class HakaiResultManager : MonoBehaviour
     public GameObject CObj;
     public GameObject DObj;
 
+    public GameObject endObj;
+
     private bool isSkipShowLoot = false;
 
   
 
     public IEnumerator ShowResult()
     {
-        resultUI.SetActive(true);
+        //スコアの前計算
         scoreManager.Eval();
+
+        //終了の垂れ幕
+        //endObj.SetActive(true);
+        //yield return new WaitForSeconds(1.5f);
+
+        //スコアボードを表示
+        resultUI.SetActive(true);
+
 
         yield return new WaitForSeconds(1f);
 
@@ -45,11 +55,11 @@ public class HakaiResultManager : MonoBehaviour
             ShowLoot(itemData.itemSO);
             if (isSkipShowLoot) continue;
 
+            soundManager.PlayResultSE();
             yield return new WaitForSeconds(0.5f);
 
         }
 
-        yield return new WaitForSeconds(0.5f);
 
         //スコアを表示
         foreach (HakaiScoreManager.ScoreData score in scoreManager.Scores)
@@ -57,16 +67,19 @@ public class HakaiResultManager : MonoBehaviour
             if (!score.canGetScore) continue;
 
             ShowScore(score);
-            yield return new WaitForSeconds(0.03f);
-
-
+            //yield return new WaitForSeconds(0.06f);
         }
+        soundManager.PlayResultSE();
 
-        yield return new WaitForSeconds(0.8f);
+
+        yield return new WaitForSeconds(0.5f);
         scoreText.text = ((int)scoreManager.score).ToString();
         scoreText.gameObject.SetActive(true);
+        soundManager.PlayResultSE();
 
-        yield return new WaitForSeconds(1f);
+
+
+        yield return new WaitForSeconds(0.8f);
 
         //評定を表示
         if (scoreManager.score < 2000)
@@ -89,6 +102,9 @@ public class HakaiResultManager : MonoBehaviour
         {
             AObj.SetActive(true);
         }
+
+        soundManager.PlayResultSE2();
+
 
         //入力待ち
         while (!Input.anyKeyDown)

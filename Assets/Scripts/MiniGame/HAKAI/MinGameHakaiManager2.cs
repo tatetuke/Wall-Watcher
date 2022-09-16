@@ -140,12 +140,17 @@ public class MinGameHakaiManager2 : MonoBehaviour
         kyoichiItemManager = GameObject.Find("Managers").GetComponent<ItemManager>();
         while (kyoichiItemManager.IsLoaded() == false) yield return null;
 
+        yield return GetSpriteName();
+
+
         //壁を取得。やや重い
         yield return StartCoroutine(WallInit());
+        yield return new WaitForSeconds(0.1f);
         //WallAnimeInit();
         //影を取得。やや重い
         yield return StartCoroutine(ShadowInit());
-        yield return GetSpriteName();
+        yield return new WaitForSeconds(0.1f);
+
 
 
         //揺れによってオブジェクトが移動するバグ修正のための
@@ -699,7 +704,7 @@ public class MinGameHakaiManager2 : MonoBehaviour
         {
             yield return null;
         }
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.8f);
 
         yield return 0;
     }

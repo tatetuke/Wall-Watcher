@@ -26,6 +26,9 @@ public class HakaiSoundManager : MonoBehaviour
     public AudioClip seTurnThePage;
     public AudioClip seOpenTutorial;
 
+    public AudioClip resultSE;
+    public AudioClip resultSE2;
+
     /// <summary>
     /// BGMの再生
     /// </summary>
@@ -88,6 +91,20 @@ public class HakaiSoundManager : MonoBehaviour
     public void PlayGetItemSound()
     {
         seAudioSource.PlayOneShot(getItemSE, seVolume);
+        return;
+    }
 
+    public void PlayResultSE()
+    {
+        seAudioSource.PlayOneShot(resultSE, seVolume);
+        return;
+    }
+    /// <summary>
+    /// 評定を表示する際のSE
+    /// </summary>
+    public void PlayResultSE2()
+    {
+        seAudioSource.PlayOneShot(resultSE2, seVolume);
+        return;
     }
 }
